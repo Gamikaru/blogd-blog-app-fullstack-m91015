@@ -7,6 +7,8 @@ import RecordList from "./components/RecordList";
 import "./index.css";
 import LoginPage from "./components/LoginPage";
 import "./loginPage.css";
+import RegisterPage from "./components/RegisterPage";
+import "./registerPage.css";
 
 const router = createBrowserRouter([
 	{
@@ -46,6 +48,16 @@ const router = createBrowserRouter([
 			{
 				path: "/login",
 				element: <LoginPage />,
+			},
+		],
+	},
+	{
+		path: "/register",
+		element: <App />,
+		children: [
+			{
+				path: "/register",
+				element: <RegisterPage />,
 			},
 		],
 	},

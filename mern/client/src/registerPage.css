@@ -1,0 +1,64 @@
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.register-card-container {
+    width: 800px;
+    height: 700px;
+    background-color: #c0c5c5;
+    border: 5px solid #0f0404;
+    border-radius: 40px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.register-card-header {
+    margin-bottom: 5px;
+    font-size: 50px;
+    text-align: center;
+}
+.register-input-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.register-input-column {
+    width: 55%; 
+}
+.register-input-container > div {
+    margin-bottom: 30px;
+}
+.register-input-container input {
+    width: calc(100% - 40px);
+    padding: 30px;
+    border: 1px solid #000000;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+}
+.register-input-container input::placeholder {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #000000;
+    font-size: 25px;
+}
+.register-form-group {
+    margin-top: 5px;
+    display: flex;
+    justify-content: center;
+}
+.register-form-group input[type="submit"] {
+    background-color: rgb(44, 175, 204);
+    color: #000000; 
+    border: 1px solid #000000; 
+    border-radius: 30px; 
+    font-weight: bold;
+    font-size: 30px;
+    width: 50%;
+    padding: 20px;
+}

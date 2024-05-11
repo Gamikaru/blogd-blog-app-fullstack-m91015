@@ -14,7 +14,7 @@ export default function LoginPage() {
 	// Define the updateLoginForm function to update the loginForm state
 	function updateLoginForm(value) {
 		return setLoginForm((prev) => {
-			return { ...prev, ...value };
+		return { ...prev, ...value };
 		});
 	}
 	// Define the handleLogin function to handle the form submission
@@ -78,9 +78,7 @@ export default function LoginPage() {
 									id="login_password"
 									placeholder="Password"
 									value={loginForm.password}
-									onChange={(e) =>
-										updateLoginForm({ password: e.target.value })
-									}
+									onChange={(e) => updateLoginForm({ password: e.target.value })}
 									required
 								/>
 								<label htmlFor="login_password"></label>
