@@ -12,11 +12,11 @@ import "./registerPage.css";
 
 const router = createBrowserRouter([
 	{
-		path: "/",
+		path: "/record",
 		element: <App />,
 		children: [
 			{
-				path: "/",
+				path: "/record",
 				element: <RecordList />,
 			},
 		],
@@ -42,11 +42,11 @@ const router = createBrowserRouter([
 		],
 	},
 	{
-		path: "/login",
+		path: "/",
 		element: <App />,
 		children: [
 			{
-				path: "/login",
+				path: "/",
 				element: <LoginPage />,
 			},
 		],

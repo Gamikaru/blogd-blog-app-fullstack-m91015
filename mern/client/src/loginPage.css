@@ -1,4 +1,4 @@
-/* Container styles to center the card container vertically and horizontally */
+/* Container for layout, positioned relatively */
 .container {
   position: relative;
   display: flex;
@@ -6,7 +6,7 @@
   align-items: center;
   height: 100vh;
 }
-/* Styles for the card container */
+/* Card container with dimensions and styling */
 .card-container {
   width: 550px;
   height: 450px;
@@ -20,14 +20,17 @@
   left: 62%;
   transform: translate(-50%, -50%);
 }
+/* Card header with margin bottom and font size */
 .card-header {
   margin-bottom: 5px;
   font-size: 50px;
   text-align: center;
 }
+/* Input container with margin bottom */
 .input-container {
   margin-bottom: 30px;
 }
+/* Input element with width, padding, border */
 .input-container input {
   width: 100%;
   padding: 25px;
@@ -35,17 +38,20 @@
   border-radius: 30px;
   transition: all 0.3s ease;
 }
+/* Placeholder text styling for input element */
 .input-container input::placeholder {
   text-align: center;
   color: #000000;
   font-weight: bold;
   font-size: 25px;
 }
+/* Form group with margin top and centered display */
 .form-group {
   margin-top: 5px;
   display: flex;
   justify-content: center;
 }
+/* Submit button with background color, border, font */
 .form-group input[type="submit"] {
   background-color: rgb(44, 175, 204);
   color: #000000; 
@@ -55,4 +61,11 @@
   font-size: 24px;
   width: 50%;
   padding: 15px;
+}
+/* Register link with cursor style, text decoration, and font */
+.register-link {
+  cursor: pointer;
+  color: rgb(207, 113, 18);
+  text-decoration: underline;
+  font-size: 25px;
 }

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import Card from "react-bootstrap/Card";
-
+// Component for the registration page
 export default function RegisterPage() {
+	// Initialize state for the registration form
 	const [registerForm, setRegisterForm] = useState({
 		first_name: "",
 		last_name: "",
@@ -12,6 +13,7 @@ export default function RegisterPage() {
         occupation: "",
         location: "",
 	});
+	// Initialize the navigation object to redirect the user
 	const navigate = useNavigate();
 
 	function updateRegisterForm(value) {
@@ -19,22 +21,26 @@ export default function RegisterPage() {
 		return { ...prev, ...value };
 		});
 	}
+	// Function to update the registration form state
 	async function handleRegister(e) {
 		e.preventDefault();
-
+		// Check if all fields are filled
 		if (!registerForm.email || !registerForm.password || !registerForm.birthdate || !registerForm.occupation || !registerForm.location) {
 			window.alert("Please fill out all fields.");
 			return;
 		}
 		try {
+    // Send a POST request to the server to register the user	
 	const response = await fetch("http://localhost:5050/register/register/", {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify(registerForm),
 	});
+		// Check if the registration was successful	
 	    if (!response.ok) {
 		throw new Error("Registration failed");
-	}
+		}
+	// Reset the registration form
 	setRegisterForm({
 		first_name: "",
 		last_name: "",
@@ -44,11 +50,13 @@ export default function RegisterPage() {
         occupation: "",
         location: "",
 	});
-		navigate("/");
+ 	// Redirect the user to the login page
+		navigate("/login");
 	   }catch (error) {
 		console.error(error);
 	}
-}
+	}
+  // Render the registration form	
 	return (
 		<div className="register-container">
 			<div className="register-card-container">

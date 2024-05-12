@@ -91,6 +91,11 @@ export default function LoginPage() {
 								/>
 							</div>
 						</form>
+						   <div className="form-group">
+  								<a href="/register" className="register-link">
+    								<p>Not a member? Register Now!</p>
+  								</a>
+							</div>
 					</Card.Body>
 				</Card>
 			</div>
