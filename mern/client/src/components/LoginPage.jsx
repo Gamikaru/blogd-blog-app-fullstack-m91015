@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import Card from "react-bootstrap/Card";
+import Toast from "react-bootstrap/Toast";
 
 // Export the LoginPage component
 export default function LoginPage() {
@@ -11,6 +12,8 @@ export default function LoginPage() {
 	});
 	// Initialize the navigate function using the useNavigate hook
 	const navigate = useNavigate();
+  // State for managing the display of failed login attempt toast
+  const [showToast, setShowToast] = useState(false);
 	// Define the updateLoginForm function to update the loginForm state
 	function updateLoginForm(value) {
 		return setLoginForm((prev) => {
@@ -30,15 +33,16 @@ export default function LoginPage() {
 		}
 		try {
 			// Send a POST request to the /login/login endpoint with the loginForm data
-			const response = await fetch("http://localhost:5050/login/login", {
+			const response = await fetch("http://localhost:5050/login", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(loginForm),
 			});
 			// Check if the response is not ok
 			if (!response.ok) {
-				// Throw an error if the login failed
-				throw new Error("Login failed");
+        		// Display toast for failed login attempt
+        		setShowToast(true);
+        		return;
 			}
 			// Log a success message to the console if the login was successful
 			console.log("Login successful");
@@ -99,6 +103,18 @@ export default function LoginPage() {
 					</Card.Body>
 				</Card>
 			</div>
+      		<Toast
+        		show={showToast}
+        		onClose={() => setShowToast(false)}
+        		className="toast-container"
+        		autohide
+       			delay={3000}
+     			>
+        	<Toast.Header>
+         		<strong className="me-auto">Failed Login Attempt</strong>
+        	</Toast.Header>
+        	<Toast.Body className="toast-body">Invalid email or password.</Toast.Body>
+      		</Toast>
 		</div>
 	);
 }

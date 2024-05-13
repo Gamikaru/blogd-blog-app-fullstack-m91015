@@ -69,3 +69,15 @@
   text-decoration: underline;
   font-size: 25px;
 }
+/* Toast styling */
+.custom-toast {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+}
+.toast-body {
+  background-color: #f8d7da; /* Red background */
+  color: #721c24; /* Red text color */
+}
