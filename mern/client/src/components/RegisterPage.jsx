@@ -4,13 +4,14 @@ import Card from "react-bootstrap/Card";
 
 // Component for the registration page
 export default function RegisterPage() {
+
 	// Initialize state for the registration form
 	const [registerForm, setRegisterForm] = useState({
 		first_name: "",
 		last_name: "",
 		email: "",
 		password: "",
-		birthdate: "",
+		birthdate: "Date",
 		occupation: "",
 		location: "",
 	});
@@ -55,7 +56,7 @@ export default function RegisterPage() {
 		last_name: "",
 		email: "",
         password: "",
-        birthdate: "",
+        birthdate: "Date",
         occupation: "",
 		location: "",
 	});
