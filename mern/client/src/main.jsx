@@ -7,14 +7,16 @@ import RecordList from "./components/RecordList";
 import "./index.css";
 import LoginPage from "./components/LoginPage";
 import "./loginPage.css";
+import RegisterPage from "./components/RegisterPage";
+import "./registerPage.css";
 
 const router = createBrowserRouter([
 	{
-		path: "/",
+		path: "/record",
 		element: <App />,
 		children: [
 			{
-				path: "/",
+				path: "/record",
 				element: <RecordList />,
 			},
 		],
@@ -40,12 +42,22 @@ const router = createBrowserRouter([
 		],
 	},
 	{
-		path: "/login",
+		path: "/",
 		element: <App />,
 		children: [
 			{
-				path: "/login",
+				path: "/",
 				element: <LoginPage />,
+			},
+		],
+	},
+	{
+		path: "/register",
+		element: <App />,
+		children: [
+			{
+				path: "/register",
+				element: <RegisterPage />,
 			},
 		],
 	},

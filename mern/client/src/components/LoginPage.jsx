@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import Card from "react-bootstrap/Card";
+import Toast from "react-bootstrap/Toast";
 
 // Export the LoginPage component
 export default function LoginPage() {
@@ -11,10 +12,12 @@ export default function LoginPage() {
 	});
 	// Initialize the navigate function using the useNavigate hook
 	const navigate = useNavigate();
+  // State for managing the display of failed login attempt toast
+  const [showToast, setShowToast] = useState(false);
 	// Define the updateLoginForm function to update the loginForm state
 	function updateLoginForm(value) {
 		return setLoginForm((prev) => {
-			return { ...prev, ...value };
+		return { ...prev, ...value };
 		});
 	}
 	// Define the handleLogin function to handle the form submission
@@ -30,15 +33,16 @@ export default function LoginPage() {
 		}
 		try {
 			// Send a POST request to the /login/login endpoint with the loginForm data
-			const response = await fetch("http://localhost:5050/login/login", {
+			const response = await fetch("http://localhost:5050/login", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(loginForm),
 			});
 			// Check if the response is not ok
 			if (!response.ok) {
-				// Throw an error if the login failed
-				throw new Error("Login failed");
+        		// Display toast for failed login attempt
+        		setShowToast(true);
+        		return;
 			}
 			// Log a success message to the console if the login was successful
 			console.log("Login successful");
@@ -55,38 +59,63 @@ export default function LoginPage() {
 	}
 	// Return the JSX for the login form
 	return (
-		<Card>
-			<Card.Body>
-				<h1>Welcome to CodeBloggs Please Login!</h1>
-				<form onSubmit={handleLogin}>
-					<div className="form-group col-md-3">
-						<label htmlFor="login_email">Email:</label>
-						<input
-							type="text"
-							className="form-control"
-							id="login_email"
-							value={loginForm.email}
-							onChange={(e) => updateLoginForm({ email: e.target.value })}
-							required
-						/>
-					</div>
-					<div className="form-group  col-md-3">
-						<label htmlFor="login_password">Password:</label>
-						<input
-							type="password"
-							className="form-control"
-							id="login_password"
-							value={loginForm.password}
-							onChange={(e) => updateLoginForm({ password: e.target.value })}
-							required
-						/>
-					</div>
-					<div className="form-group">
-						<input type="submit" value="Login" className="btn btn-primary" />
-					</div>
-				</form>
-			</Card.Body>
-		</Card>
+		<div className="container">
+			<div className="card-container">
+				<Card>
+					<Card.Body>
+						<h1 className="card-header">Login</h1>
+						<form onSubmit={handleLogin}>
+							<div className="input-container">
+								<input
+									type="text"
+									id="login_email"
+									placeholder="Email"
+									value={loginForm.email}
+									onChange={(e) => updateLoginForm({ email: e.target.value })}
+									required
+								/>
+								<label htmlFor="login_email"></label>
+							</div>
+							<div className="input-container">
+								<input
+									type="password"
+									id="login_password"
+									placeholder="Password"
+									value={loginForm.password}
+									onChange={(e) => updateLoginForm({ password: e.target.value })}
+									required
+								/>
+								<label htmlFor="login_password"></label>
+							</div>
+							<div className="form-group">
+								<input
+									type="submit"
+									value="Submit"
+									className="btn btn-primary"
+								/>
+							</div>
+						</form>
+						   <div className="form-group">
+  								<a href="/register" className="register-link">
+    								<p>Not a member? Register Now!</p>
+  								</a>
+							</div>
+					</Card.Body>
+				</Card>
+			</div>
+      		<Toast
+        		show={showToast}
+        		onClose={() => setShowToast(false)}
+        		className="toast-container"
+        		autohide
+       			delay={3000}
+     			>
+        	<Toast.Header>
+         		<strong className="me-auto">Failed Login Attempt</strong>
+        	</Toast.Header>
+        	<Toast.Body className="toast-body">Invalid email or password.</Toast.Body>
+      		</Toast>
+		</div>
 	);
 }
 
