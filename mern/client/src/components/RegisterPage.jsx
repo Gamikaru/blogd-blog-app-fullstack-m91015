@@ -4,6 +4,7 @@ import Card from "react-bootstrap/Card";
 
 // Component for the registration page
 export default function RegisterPage() {
+
 	// Initialize state for the registration form
 	const [registerForm, setRegisterForm] = useState({
 		first_name: "",
@@ -60,7 +61,7 @@ export default function RegisterPage() {
 		location: "",
 	});
  	// Redirect the user to the login page
-		navigate("/login");
+		navigate("/");
 	   }catch (error) {
 		console.error(error);
 	}
