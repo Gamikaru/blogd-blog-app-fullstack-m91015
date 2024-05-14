@@ -11,7 +11,7 @@ export default function RegisterPage() {
 		last_name: "",
 		email: "",
 		password: "",
-		birthdate: "Date",
+		birthdate: "",
 		occupation: "",
 		location: "",
 	});
@@ -56,12 +56,12 @@ export default function RegisterPage() {
 		last_name: "",
 		email: "",
         password: "",
-        birthdate: "Date",
+        birthdate: "",
         occupation: "",
 		location: "",
 	});
  	// Redirect the user to the login page
-		navigate("/login");
+		navigate("/");
 	   }catch (error) {
 		console.error(error);
 	}
