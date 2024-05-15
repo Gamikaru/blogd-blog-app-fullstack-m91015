@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 //import register from "./routes/register.js";
-import registerRoute from "./routes/register.js";
+import register from "./routes/register.js";
 import './db/connection.js';
 
 
@@ -11,7 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/register", registerRoute);
+app.use("/register", register);
 
 
 // start the Express server

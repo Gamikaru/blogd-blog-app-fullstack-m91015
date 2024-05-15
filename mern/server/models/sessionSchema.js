@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 const { Schema, model } = mongoose; 
 
 const sessionSchema = new Schema({
-    _id: ObjectId, 
     session_id: String,
     sessions_date: Date,
     user : {
