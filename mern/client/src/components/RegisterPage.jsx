@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import Card from "react-bootstrap/Card";
+// import userSchema from "../../../server/models/userSchema";
 
 // Component for the registration page
 export default function RegisterPage() {
@@ -23,49 +24,50 @@ export default function RegisterPage() {
 		return { ...prev, ...value };
 		});
 	}
-	// Function to update the registration form state
-	async function handleRegister(e) {
-		e.preventDefault();
-		// Check if all fields are filled
-		if (
-			!registerForm.first_name ||
-			!registerForm.last_name ||
-			!registerForm.email ||
-			!registerForm.password ||
-			!registerForm.birthdate ||
-			!registerForm.occupation ||
-			!registerForm.location
-		) {
-			window.alert("Please fill out all fields.");
-			return;
+async function handleRegister(e) {
+	e.preventDefault();
+
+	if (
+		!registerForm.first_name ||
+		!registerForm.last_name ||
+		!registerForm.email ||
+		!registerForm.password ||
+		!registerForm.birthdate ||
+		!registerForm.occupation ||
+		!registerForm.location
+	) {
+		window.alert("Please fill out all fields.");
+		return;
+	}
+
+	try {
+		const response = await fetch("http://localhost:5050/register/", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(registerForm),
+		});
+
+		if (!response.ok) {
+			throw new Error("Server responded with status: " + response.status);
 		}
-		try {
-    // Send a POST request to the server to register the user	
-	const response = await fetch("http://localhost:5050/register", {
-		method: "POST",
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify(registerForm),
-	});
-		// Check if the registration was successful	
-	    if (!response.ok) {
-		throw new Error("Registration failed");
-		}
-	// Reset the registration form
-	setRegisterForm({
-		first_name: "",
-		last_name: "",
-		email: "",
-        password: "",
-        birthdate: "",
-        occupation: "",
-		location: "",
-	});
- 	// Redirect the user to the login page
+
+		setRegisterForm({
+			first_name: "",
+			last_name: "",
+			email: "",
+			password: "",
+			birthdate: "",
+			occupation: "",
+			location: "",
+		});
+
 		navigate("/");
-	   }catch (error) {
-		console.error(error);
+	} catch (error) {
+		console.error("Error occurred during registration:", error.message);
+		window.alert("Registration failed. Please try again later.");
 	}
-	}
+}
+
   // Render the registration form	
 	return (
 		<div className="register-container">

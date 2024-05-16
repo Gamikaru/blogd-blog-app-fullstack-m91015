@@ -49,7 +49,7 @@ export default function LoginPage() {
 			// Reset the loginForm state
 			setLoginForm({ email: "", password: "" });
 			// Navigate to the root route
-			navigate("/");
+			navigate("/record");
 		} catch (error) {
 			// Log the error message to the console if the login failed
 			console.error(error);
