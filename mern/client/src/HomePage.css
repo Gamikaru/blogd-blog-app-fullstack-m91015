@@ -1,0 +1,82 @@
+/* Container for the homepage */
+.container {
+  margin-top: 20px;
+}
+
+/* Card container for user info */
+.card-container {
+  margin-bottom: 20px;
+}
+
+/* User info card */
+.user-info-card {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 10px solid #08c8d2; /* Add border */
+}
+
+/* User info card title */
+.user-info-card .card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* User info card text */
+.user-info-card .card-text {
+  margin-bottom: 10px;
+}
+
+/* Post card */
+.post-card {
+  margin-bottom: 20px;
+  border: 10px solid #08c8d2; /* Add border */
+  border-radius: 5px;
+}
+
+/* Post card content */
+.post-card .card-text {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+/* Post date subtitle */
+.post-card .card-subtitle {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+/* Like button */
+.post-card .btn-primary {
+  margin-right: 10px;
+}
+
+/* Comments section */
+.post-card .comments-section {
+  margin-top: 15px;
+}
+
+/* Comments section title */
+.post-card .comments-section h6 {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Comments list */
+.post-card .comments-section ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+/* Individual comment */
+.post-card .comments-section ul li {
+  background-color: #1864af;
+  border: 1px solid #090404;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 5px;
+}

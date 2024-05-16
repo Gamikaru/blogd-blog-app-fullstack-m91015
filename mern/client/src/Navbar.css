@@ -4,7 +4,7 @@
   align-items: center;
   padding: 10px 20px;
   background-color: #08c8d2; /* Example background color */
-  border-bottom: 1px solid #cccccc; /* Example border color */
+  border-bottom: 3px solid #000000; /* Example border color */
 }
 
 .navbar {
@@ -14,6 +14,17 @@
 
 .navbar img {
   margin-right: 20px;
+}
+
+.nav-container {
+ background-color: #08c8d2;
+ border-right: 3px solid #060303; /* Example border color */
+ width: 250px;
+ height: 1000px;
+}
+
+.nav {
+ align-items: center;
 }
 
 .dropdown {
@@ -59,7 +70,7 @@
   padding: 0.5rem 1rem;
   clear: both;
   font-weight: 400;
-  color: #dee2e6;
+  color: #dee5e6;
   text-align: inherit;
   white-space: nowrap;
   background-color: transparent;
