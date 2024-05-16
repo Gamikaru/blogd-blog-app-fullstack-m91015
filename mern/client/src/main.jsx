@@ -9,6 +9,9 @@ import LoginPage from "./components/LoginPage";
 import "./loginPage.css";
 import RegisterPage from "./components/RegisterPage";
 import "./registerPage.css";
+import "./Navbar.css"; 
+import HomePage from "./components/HomePage";
+import "./HomePage.css";
 
 const router = createBrowserRouter([
 	{
@@ -58,6 +61,16 @@ const router = createBrowserRouter([
 			{
 				path: "/register",
 				element: <RegisterPage />,
+			},
+		],
+	},
+	{
+		path: "/home",
+		element: <App />,
+		children: [
+			{
+				path: "/home",
+				element: <HomePage />,
 			},
 		],
 	},
