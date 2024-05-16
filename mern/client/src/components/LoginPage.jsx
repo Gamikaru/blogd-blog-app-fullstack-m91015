@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import Card from "react-bootstrap/Card";
 import Toast from "react-bootstrap/Toast";
+import { useCookies } from "react-cookie";
 
 // Export the LoginPage component
 export default function LoginPage() {
@@ -10,6 +11,10 @@ export default function LoginPage() {
 		email: "",
 		password: "",
 	});
+
+
+	const [cookie, setCookie, removeCookie] = useCookies()
+
 	// Initialize the navigate function using the useNavigate hook
 	const navigate = useNavigate();
   // State for managing the display of failed login attempt toast
@@ -44,6 +49,9 @@ export default function LoginPage() {
         		setShowToast(true);
         		return;
 			}
+			const serverResponse = await response.json();
+			console.log(serverResponse)
+			// setCookie("accessToken", loginAttempt.data, { path: "/" });
 			// Log a success message to the console if the login was successful
 			console.log("Login successful");
 			// Reset the loginForm state
