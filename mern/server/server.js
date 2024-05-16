@@ -1,8 +1,13 @@
 import express from "express";
 import cors from "cors";
-//import register from "./routes/register.js";
-import register from "./routes/register.js";
+import userRoutes from "./routes/userRoutes.js";
 import './db/connection.js';
+import { authenticate } from './middleware/authMiddleware.js';
+import dotenv from 'dotenv';
+
+
+dotenv.config();
+
 
 
 const PORT = process.env.PORT || 5050;
@@ -11,7 +16,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/register", register);
+app.use('/user', authenticate, userRoutes);
 
 
 // start the Express server
