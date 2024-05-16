@@ -13,7 +13,7 @@ const commentSchema = new Schema({
         ref: 'User'
     },
     likes: Number,
-    time_stamp: String
+    time_stamp: { type: Date, default: Date.now }
 });
 
 export default model('Comment', commentSchema);

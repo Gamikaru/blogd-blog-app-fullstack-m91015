@@ -5,10 +5,16 @@ import bcrypt from 'bcrypt';
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-    const { first_name, last_name, birthdate, email, password, location, occupation } = req.body;
+    const { first_name, last_name, birthdate, email, password, location, occupation, auth_level } = req.body;
 
     if (!first_name || !last_name || !birthdate || !email || !password || !location || !occupation) {
         return res.status(400).send('Please fill in all required fields');
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).send('Please enter a valid email address');
     }
 
     try {
@@ -27,7 +33,9 @@ router.post('/', async (req, res) => {
             email,
             password: hashedPassword,
             location,
-            occupation
+            occupation,
+            auth_level: auth_level || 'basic', // default to 'basic' if not provided
+            status: '' // default to empty string
         });
 
         await newUser.save();

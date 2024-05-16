@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 
 const { Schema, model } = mongoose;
 
-//the schema for the post should include the user_id, content, likes (integer), and comments. The user_id should be a reference to the user schema.
 const postSchema = new Schema({
     content: String,
     user_id: {
@@ -10,7 +9,7 @@ const postSchema = new Schema({
         ref: 'User'
     },
     likes: Number,
-    time_stamp: String,
+    time_stamp: { type: Date, default: Date.now },
     comments: [{
         type: Schema.Types.ObjectId,
         ref: 'Comment'
