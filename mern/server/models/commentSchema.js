@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 const { Schema, model } = mongoose;
 
 const commentSchema = new Schema({
-    _id: ObjectId, 
     content: String,
     post_id: {
         type: Schema.Types.ObjectId,
@@ -14,7 +13,7 @@ const commentSchema = new Schema({
         ref: 'User'
     },
     likes: Number,
-    time_stamp: string
+    time_stamp: { type: Date, default: Date.now }
 });
 
 export default model('Comment', commentSchema);
