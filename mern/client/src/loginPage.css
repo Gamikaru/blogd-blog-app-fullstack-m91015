@@ -1,3 +1,10 @@
+.logo-image {
+  position: absolute;
+  top: 24%;
+  left: 61%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
 /* Container for layout, positioned relatively */
 .container {
   position: relative;
@@ -16,7 +23,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
   position: absolute;
-  top: 40%;
+  top: 55%;
   left: 62%;
   transform: translate(-50%, -50%);
 }

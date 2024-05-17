@@ -1,3 +1,10 @@
+.reg-logo-image {
+  position: absolute;
+  top: 10%;
+  left: 49%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
 /* Centered registration form container */
 .register-container {
     display: flex;
@@ -15,7 +22,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
     position: absolute;
-    top: 50%;
+    top: 55%;
     left: 50%;
     transform: translate(-50%, -50%);
 }

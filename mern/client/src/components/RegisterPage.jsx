@@ -71,6 +71,11 @@ async function handleRegister(e) {
   // Render the registration form	
 	return (
 		<div className="register-container">
+			<img
+				alt="CodeBloggs logo"
+				className="reg-logo-image"
+				src="/CodeBloggs logo2.png"
+			/>
 			<div className="register-card-container">
 				<Card>
 					<Card.Body>
@@ -85,7 +90,9 @@ async function handleRegister(e) {
 											placeholder="First Name"
 											id="register_first_name"
 											value={registerForm.first_name}
-											onChange={(e) => updateRegisterForm({ first_name: e.target.value })}
+											onChange={(e) =>
+												updateRegisterForm({ first_name: e.target.value })
+											}
 											required
 										/>
 									</div>
@@ -96,7 +103,9 @@ async function handleRegister(e) {
 											placeholder="Email"
 											id="register_email"
 											value={registerForm.email}
-											onChange={(e) => updateRegisterForm({ email: e.target.value })}
+											onChange={(e) =>
+												updateRegisterForm({ email: e.target.value })
+											}
 											required
 										/>
 									</div>
@@ -107,7 +116,9 @@ async function handleRegister(e) {
 											placeholder="Password"
 											id="register_password"
 											value={registerForm.password}
-											onChange={(e) => updateRegisterForm({ password: e.target.value })}
+											onChange={(e) =>
+												updateRegisterForm({ password: e.target.value })
+											}
 											required
 										/>
 									</div>
@@ -118,7 +129,9 @@ async function handleRegister(e) {
 											placeholder="Location"
 											id="register_location"
 											value={registerForm.location}
-											onChange={(e) => updateRegisterForm({ location: e.target.value })}
+											onChange={(e) =>
+												updateRegisterForm({ location: e.target.value })
+											}
 											required
 										/>
 									</div>
@@ -131,7 +144,9 @@ async function handleRegister(e) {
 											placeholder="Last Name"
 											id="register_last_name"
 											value={registerForm.last_name}
-											onChange={(e) => updateRegisterForm({ last_name: e.target.value })}
+											onChange={(e) =>
+												updateRegisterForm({ last_name: e.target.value })
+											}
 											required
 										/>
 									</div>
@@ -142,7 +157,9 @@ async function handleRegister(e) {
 											placeholder="Birthdate"
 											id="register_birthdate"
 											value={registerForm.birthdate}
-											onChange={(e) => updateRegisterForm({ birthdate: e.target.value })}
+											onChange={(e) =>
+												updateRegisterForm({ birthdate: e.target.value })
+											}
 											required
 										/>
 									</div>
@@ -153,7 +170,9 @@ async function handleRegister(e) {
 											placeholder="Occupation"
 											id="register_occupation"
 											value={registerForm.occupation}
-											onChange={(e) => updateRegisterForm({ occupation: e.target.value })}
+											onChange={(e) =>
+												updateRegisterForm({ occupation: e.target.value })
+											}
 											required
 										/>
 									</div>

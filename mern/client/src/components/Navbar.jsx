@@ -21,19 +21,10 @@ export default function Navbar({ first_name, last_name }) {
 						<a href="/home">
 							<img
 								alt="CodeBloggs logo"
-								className="h-10 inline"
-								src="/CodeBloggs logo2.png"
+								className="nav-logo-image"
+								src="/CodeBloggs logo.png"
 							/>
 						</a>
-						<Dropdown>
-							<DropdownToggle variant="success" id="dropdown">
-								{userName}
-							</DropdownToggle>
-							<Dropdown.Menu>
-								<Dropdown.Item href="/settings">Account Settings</Dropdown.Item>
-								<Dropdown.Item href="/logout">Logout</Dropdown.Item>
-							</Dropdown.Menu>
-						</Dropdown>
 					</nav>
 				</div>
 				<div className="nav-container">

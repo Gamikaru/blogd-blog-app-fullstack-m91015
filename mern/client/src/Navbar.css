@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 2px 5px;
   background-color: #08c8d2; /* Example background color */
   border-bottom: 3px solid #000000; /* Example border color */
 }
@@ -13,7 +13,10 @@
 }
 
 .navbar img {
-  margin-right: 20px;
+  margin-left: 80px;
+  width: 150px; 
+  height: 150px;
+  transform: scale(2.5);
 }
 
 .nav-container {
@@ -25,61 +28,4 @@
 
 .nav {
  align-items: center;
-}
-
-.dropdown {
-  position: relative;
-  left: 1000px;
-}
-
-.dropdown-toggle {
-  display: inline-block; /* Ensure the toggle button is displayed as an inline block */
-  padding: 0.5rem 1rem;
-  font-weight: 400;
-  color: #212529;
-  text-align: inherit;
-  white-space: nowrap;
-  background-color: transparent;
-  border: 0;
-  cursor: pointer; /* Add cursor pointer to indicate it's clickable */
-}
-
-
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 20px; /* Adjust this value to move the dropdown more to the right */
-  z-index: 1000;
-  display: none;
-  float: left;
-  min-width: 10rem;
-  padding: 0.5rem 0;
-  margin: 0.125rem 0 0;
-  font-size: 1rem;
-  color: #212529;
-  text-align: left;
-  list-style: none;
-  background-color: #343a40;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 0.25rem;
-}
-
-.dropdown-menu .dropdown-item {
-  display: block;
-  width: 100%;
-  padding: 0.5rem 1rem;
-  clear: both;
-  font-weight: 400;
-  color: #dee5e6;
-  text-align: inherit;
-  white-space: nowrap;
-  background-color: transparent;
-  border: 0;
-}
-
-.dropdown-menu .dropdown-item:hover,
-.dropdown-menu .dropdown-item:focus {
-  color: #adb5bd;
-  text-decoration: none;
-  background-color: #212529;
 }

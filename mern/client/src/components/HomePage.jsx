@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
-import { useCookies } from "react-cookie";
-import Post from "./Post"; // Import the Post component
+import Post from "./Post";
 
 export default function HomePage() {
 	const [userData, setUserData] = useState({
@@ -11,13 +10,9 @@ export default function HomePage() {
 		username: "",
 	});
 	const [userPosts, setUserPosts] = useState([]);
-	const [cookies, setCookie, removeCookie] = useCookies(["accessToken"]);
 
 	useEffect(() => {
-		// Fetch user data and posts after successful login
-		// Replace with your actual data fetching logic
 		const fetchUserData = async () => {
-			// Dummy user data and posts
 			const data = {
 				user: {
 					firstName: "John",
@@ -41,7 +36,6 @@ export default function HomePage() {
 		fetchUserData();
 	}, []);
 
-	// Function to get initials
 	const getInitials = (firstName, lastName) => {
 		const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : "";
 		const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : "";
@@ -51,37 +45,35 @@ export default function HomePage() {
 	const userInitials = getInitials(userData.firstName, userData.lastName);
 
 	return (
-		<div className="container">
-			<div className="row">
-				<div className="col-md-12">
-					<Card className="user-info-card">
-						<Card.Body>
-							<Card.Title>{userInitials}</Card.Title>
-							<Card.Text>Email: {userData.email}</Card.Text>
-							<Card.Text>Username: {userData.username}</Card.Text>
-						</Card.Body>
-					</Card>
-				</div>
-				<div className="col-md-12 mt-4">
-					<Card className="posts-card">
-						<Card.Body>
-							<Card.Title>Posts</Card.Title>
-							{userPosts.length > 0 ? (
-								userPosts.map((post, index) => (
-									<Post
-										key={index}
-										content={post.content}
-										postDate={post.postDate}
-										likes={post.likes}
-										comments={post.comments}
-									/>
-								))
-							) : (
-								<p>No posts available.</p>
-							)}
-						</Card.Body>
-					</Card>
-				</div>
+		<div className="main-container">
+			<div className="user-card-container">
+				<Card className="user-card">
+					<Card.Body>
+						<Card.Title>{userInitials}</Card.Title>
+						<Card.Text>Email: {userData.email}</Card.Text>
+						<Card.Text>Username: {userData.username}</Card.Text>
+					</Card.Body>
+				</Card>
+			</div>
+			<div className="post-card-container">
+				<Card className="posts-card">
+					<Card.Body>
+						<Card.Title>Posts</Card.Title>
+						{userPosts.length > 0 ? (
+							userPosts.map((post, index) => (
+								<Post
+									key={index}
+									content={post.content}
+									postDate={post.postDate}
+									likes={post.likes}
+									comments={post.comments}
+								/>
+							))
+						) : (
+							<p>No posts available.</p>
+						)}
+					</Card.Body>
+				</Card>
 			</div>
 		</div>
 	);

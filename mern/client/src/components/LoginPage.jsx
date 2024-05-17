@@ -68,6 +68,11 @@ export default function LoginPage() {
 	// Return the JSX for the login form
 	return (
 		<div className="container">
+			<img
+				alt="CodeBloggs logo"
+				className="logo-image"
+				src="/CodeBloggs logo2.png"
+			/>
 			<div className="card-container">
 				<Card>
 					<Card.Body>
@@ -90,7 +95,9 @@ export default function LoginPage() {
 									id="login_password"
 									placeholder="Password"
 									value={loginForm.password}
-									onChange={(e) => updateLoginForm({ password: e.target.value })}
+									onChange={(e) =>
+										updateLoginForm({ password: e.target.value })
+									}
 									required
 								/>
 								<label htmlFor="login_password"></label>
@@ -103,26 +110,28 @@ export default function LoginPage() {
 								/>
 							</div>
 						</form>
-						   <div className="form-group">
-  								<a href="/register" className="register-link">
-    								<p>Not a member? Register Now!</p>
-  								</a>
-							</div>
+						<div className="form-group">
+							<a href="/register" className="register-link">
+								<p>Not a member? Register Now!</p>
+							</a>
+						</div>
 					</Card.Body>
 				</Card>
 			</div>
-      		<Toast
-        		show={showToast}
-        		onClose={() => setShowToast(false)}
-        		className="toast-container"
-        		autohide
-       			delay={3000}
-     			>
-        	<Toast.Header>
-         		<strong className="me-auto">Failed Login Attempt</strong>
-        	</Toast.Header>
-        	<Toast.Body className="toast-body">Invalid email or password.</Toast.Body>
-      		</Toast>
+			<Toast
+				show={showToast}
+				onClose={() => setShowToast(false)}
+				className="toast-container"
+				autohide
+				delay={3000}
+			>
+				<Toast.Header>
+					<strong className="me-auto">Failed Login Attempt</strong>
+				</Toast.Header>
+				<Toast.Body className="toast-body">
+					Invalid email or password.
+				</Toast.Body>
+			</Toast>
 		</div>
 	);
 }
