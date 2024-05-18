@@ -71,7 +71,7 @@ export default function LoginPage() {
 			<img
 				alt="CodeBloggs logo"
 				className="logo-image"
-				src="/CodeBloggs logo2.png"
+				src="/CodeBloggs logo.png"
 			/>
 			<div className="card-container">
 				<Card>

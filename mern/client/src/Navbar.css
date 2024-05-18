@@ -3,8 +3,12 @@
   justify-content: space-between;
   align-items: center;
   padding: 2px 5px;
-  background-color: #08c8d2; /* Example background color */
-  border-bottom: 3px solid #000000; /* Example border color */
+  background-color: #F8F8FF;
+  border-bottom: 3px solid #000000; 
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .navbar {
@@ -20,12 +24,54 @@
 }
 
 .nav-container {
- background-color: #08c8d2;
- border-right: 3px solid #060303; /* Example border color */
- width: 250px;
- height: 1000px;
+  background-color: #F8F8FF;
+  border-right: 3px solid #060303;
+  width: 250px;
+  height: 1000px;
+  margin-top: 0;
+  position: absolute;
+  top: 16.1%;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  padding-top: 60px;
 }
 
 .nav {
- align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding-top: 60px;
+}
+
+.nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.nav li {
+  width: 100%;
+  margin-bottom:35px;
+  display: flex;
+  justify-content: center;
+}
+
+.nav a {
+  display: block;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: #000;
+  background-color: #ddd;
+  border: 3px solid #000;
+  border-radius: 30px;
+  width: 140%;
+  text-align: center;
+}
+
+.nav a.active {
+  background-color: #9B30FF;
+  font-weight: bold;
 }

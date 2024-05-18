@@ -74,7 +74,7 @@ async function handleRegister(e) {
 			<img
 				alt="CodeBloggs logo"
 				className="reg-logo-image"
-				src="/CodeBloggs logo2.png"
+				src="/CodeBloggs logo.png"
 			/>
 			<div className="register-card-container">
 				<Card>

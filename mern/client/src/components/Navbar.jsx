@@ -56,5 +56,5 @@ export default function Navbar({ first_name, last_name }) {
 					</div>
 				</div>
 			</>
-		);
+	);
 }

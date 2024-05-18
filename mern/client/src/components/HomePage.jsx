@@ -4,10 +4,13 @@ import Post from "./Post";
 
 export default function HomePage() {
 	const [userData, setUserData] = useState({
-		firstName: "",
-		lastName: "",
+		first_name: "",
+		last_name: "",
+		status: "",
 		email: "",
-		username: "",
+		birthdate: "",
+		occupation: "",
+		location: "",
 	});
 	const [userPosts, setUserPosts] = useState([]);
 
@@ -15,10 +18,13 @@ export default function HomePage() {
 		const fetchUserData = async () => {
 			const data = {
 				user: {
-					firstName: "John",
-					lastName: "Doe",
-					email: "john.doe@example.com",
-					username: "johndoe",
+					first_name: "Ash",
+					last_name: "Ketchum",
+					status: "Motivated",
+					email: "AshK@CatchEmAll.com",
+					birthdate: "05/22/1987",
+					occupation: "Pokemon Trainer",
+					location: "Pallet Town",
 				},
 				posts: [
 					{
@@ -36,23 +42,28 @@ export default function HomePage() {
 		fetchUserData();
 	}, []);
 
-	const getInitials = (firstName, lastName) => {
-		const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : "";
-		const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : "";
+	const getInitials = (first_Name, last_name) => {
+		const firstInitial = first_Name ? first_Name.charAt(0).toUpperCase() : "";
+		const lastInitial = last_name ? last_name.charAt(0).toUpperCase() : "";
 		return `${firstInitial}${lastInitial}`;
 	};
 
-	const userInitials = getInitials(userData.firstName, userData.lastName);
+	const userInitials = getInitials(userData.first_name, userData.last_name);
 
 	return (
 		<div className="main-container">
 			<div className="user-card-container">
 				<Card className="user-card">
-					<Card.Body>
-						<Card.Title>{userInitials}</Card.Title>
-						<Card.Text>Email: {userData.email}</Card.Text>
-						<Card.Text>Username: {userData.username}</Card.Text>
-					</Card.Body>
+				<Card.Title>{userInitials}</Card.Title>
+					<Card.Text className="card-text">
+ 						<ul>
+    						<li><span>Status:</span> {userData.status}</li>
+    						<li><span>Email:</span> {userData.email}</li>
+    						<li><span>Birthdate:</span> {userData.birthdate}</li>
+    						<li><span>Occupation:</span> {userData.occupation}</li>
+   							<li><span>Location:</span> {userData.location}</li>
+  						</ul>
+					</Card.Text>
 				</Card>
 			</div>
 			<div className="post-card-container">
