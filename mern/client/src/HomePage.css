@@ -8,19 +8,16 @@ body {
 }
 /* Main container for all content */
 .main-container {
-  position: absolute;
-  top: 35%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding-top: 20px;
-}
-/* Container for user card */
-.user-card-container {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  margin-right: 150px;
+  padding-top: 320px;
+  width: 100%;
+  /* position: fixed; */ 
+}
+/* Container for user card */
+.user-card-container {
+  margin-right: 60px;
 }
 /* User info card */
 .user-card {
@@ -29,8 +26,12 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 400px;
   height: 500px;
-  background-color: #F8F8FF;
+  background-color: #f8f8ff;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 /* User info card title */
 .user-card .card-title {
@@ -47,59 +48,70 @@ body {
   padding: 18px;
   position: absolute;
   top: 30px;
-  left: 50%;
+  left: 49%;
   transform: translateX(-50%);
-}
-/* User info card text */
-.user-card .card-text {
-  margin-top: 125px; 
-  text-align: align-center; 
-  padding: 1 20px; 
 }
 /* Style for the list items */
 .user-card .card-text ul {
-  list-style-type: none; 
-  padding: 25px; 
+  list-style-type: none;
+  padding: 0;
 }
 .user-card .card-text ul li {
   margin-bottom: 10px;
 }
 .user-card .card-text ul li span {
-  font-weight: bold; 
+  font-weight: bold;
 }
-
+.card-text input[type="text"] {
+  width: 30%;
+  padding: 5px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.edit-button {
+  margin-left: 10px; /* Adjusted margin for the edit button */
+  border: 1px solid #000000;
+  border-radius: 10px;
+  width: 50px;
+  background-color: #9b30ff;
+  font: bold;
+}
+.card-text li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
 /* Post CSS */
 
 /* Container for post card */
 .post-card-container {
   display: flex;
   justify-content: center;
-  align-items: flex-start; 
+  align-items: flex-start;
 }
 /* Post card */
 .posts-card {
-  background-color: #F8F8FF;
+  background-color: #f8f8ff;
   border: 3px solid #000000;
   border-radius: 30px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 600px;
+  width: 500px;
   height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 /* Post card content */
+.posts-card .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
 .posts-card .card-text {
-  font-size: 1.1rem;
-  margin-bottom: 10px;
-  line-height: 1.5;
-}
-/* Post date subtitle */
-.posts-card .card-subtitle {
-  font-size: 0.9rem;
-  color: #666;
-  margin-bottom: 10px;
-}
-/* Like button */
-.posts-card .btn-primary {
-  margin-right: 10px;
+  text-align: center;
 }
 /* Comments section */
 .posts-card .comments-section {
@@ -119,7 +131,7 @@ body {
 }
 /* Individual comment */
 .posts-card .comments-section ul li {
-  background-color: #9B30FF;
+  background-color: #9b30ff;
   border: 1px solid #090404;
   border-radius: 10px;
   padding: 10px;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
-import Post from "./Post";
+import { Button } from "react-bootstrap";
+import Post from "./PostModal";
 
 export default function HomePage() {
 	const [userData, setUserData] = useState({
@@ -20,7 +21,7 @@ export default function HomePage() {
 				user: {
 					first_name: "Ash",
 					last_name: "Ketchum",
-					status: "Motivated",
+					status: "",
 					email: "AshK@CatchEmAll.com",
 					birthdate: "05/22/1987",
 					occupation: "Pokemon Trainer",
@@ -28,10 +29,9 @@ export default function HomePage() {
 				},
 				posts: [
 					{
-						content: "This is my first post!",
-						postDate: "2023-05-15T12:00:00Z",
-						likes: 10,
-						comments: ["Great post!", "Nice work!"],
+						content: "",
+						postDate: "",
+						comments: "",
 					},
 				],
 			};
@@ -41,6 +41,15 @@ export default function HomePage() {
 
 		fetchUserData();
 	}, []);
+
+  const [newStatus, setNewStatus] = useState("");
+
+	const handleEditStatus = () => {
+		const status = prompt("Enter new status:");
+		if (status !== null) {
+			setUserData({ ...userData, status });
+		}
+	};
 
 	const getInitials = (first_Name, last_name) => {
 		const firstInitial = first_Name ? first_Name.charAt(0).toUpperCase() : "";
@@ -54,16 +63,36 @@ export default function HomePage() {
 		<div className="main-container">
 			<div className="user-card-container">
 				<Card className="user-card">
-				<Card.Title>{userInitials}</Card.Title>
-					<Card.Text className="card-text">
- 						<ul>
-    						<li><span>Status:</span> {userData.status}</li>
-    						<li><span>Email:</span> {userData.email}</li>
-    						<li><span>Birthdate:</span> {userData.birthdate}</li>
-    						<li><span>Occupation:</span> {userData.occupation}</li>
-   							<li><span>Location:</span> {userData.location}</li>
-  						</ul>
-					</Card.Text>
+					<Card.Title>{userInitials}</Card.Title>
+					<div className="card-text">
+						<ul>
+							<li>
+      							<span>Status:</span>{" "}
+      							<input
+        							type="text"
+       								value={userData.status}
+        							onChange={(e) =>
+          							setUserData({ ...userData, status: e.target.value })
+        							}
+     							/>
+      							<Button onClick={handleEditStatus} className="edit-button">
+        							Edit
+      							</Button>
+							</li>
+							<li>
+								<span>Email:</span> {userData.email}
+							</li>
+							<li>
+								<span>Birthdate:</span> {userData.birthdate}
+							</li>
+							<li>
+								<span>Occupation:</span> {userData.occupation}
+							</li>
+							<li>
+								<span>Location:</span> {userData.location}
+							</li>
+						</ul>
+					</div>
 				</Card>
 			</div>
 			<div className="post-card-container">
@@ -76,7 +105,6 @@ export default function HomePage() {
 									key={index}
 									content={post.content}
 									postDate={post.postDate}
-									likes={post.likes}
 									comments={post.comments}
 								/>
 							))

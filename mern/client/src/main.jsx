@@ -12,6 +12,9 @@ import "./registerPage.css";
 import "./Navbar.css"; 
 import HomePage from "./components/HomePage";
 import "./HomePage.css";
+import PostModal from "./components/PostModal";
+import "./PostModal.css";
+
 
 const router = createBrowserRouter([
 	{
@@ -71,6 +74,16 @@ const router = createBrowserRouter([
 			{
 				path: "/home",
 				element: <HomePage />,
+			},
+		],
+	},
+	{
+		path: "/post",
+		element: <App />,
+		children: [
+			{
+				path: "/post",
+				element: <PostModal />,
 			},
 		],
 	},

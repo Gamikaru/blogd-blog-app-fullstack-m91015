@@ -1,3 +1,4 @@
+/* Updated CSS for the navbar */
 .nav-header {
   display: flex;
   justify-content: space-between;
@@ -6,7 +7,8 @@
   background-color: #F8F8FF;
   border-bottom: 3px solid #000000; 
   width: 100%;
-  position: absolute;
+  height: 15%;
+  position: fixed;
   top: 0;
   left: 0;
 }
@@ -14,23 +16,80 @@
 .navbar {
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
-.navbar img {
-  margin-left: 80px;
-  width: 150px; 
-  height: 150px;
+.nav-logo-image {
+  margin-right: 1060px; /* Push the logo to the right */
+  margin-left: 170px;
+  width: 300px; 
+  height: 300px;
   transform: scale(2.5);
+}
+
+.post-button {
+  background-color: #9B30FF;
+  border: none; /* Remove border */
+  color: #fff; /* Text color */
+  padding: 10px 20px; /* Padding */
+  font-size: 16px; /* Font size */
+  border-radius: 30px; /* Rounded corners */
+  margin-right: 20px; /* Add margin between the logo and the button */
+  cursor: pointer; /* Cursor style */
+}
+
+.dropdown-container {
+  margin-left: 20px; /* Add margin between the button and the dropdown */
+}
+
+.dropdown-toggle {
+  background-color: #9B30FF;
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  background-color: #9B30FF;
+  border: 3px solid #000;
+  border-radius: 10px;
+  margin-top: 10px;
+  position: absolute;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-item {
+  color: #000;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: #ddd;
+  color: #000;
+}
+
+.dropdown-item.active {
+  background-color: #9B30FF;
+  color: white;
+  font-weight: bold;
 }
 
 .nav-container {
   background-color: #F8F8FF;
   border-right: 3px solid #060303;
-  width: 250px;
+  width: 200px;
   height: 1000px;
   margin-top: 0;
-  position: absolute;
-  top: 16.1%;
+  position: fixed;
+  top: 15.1%;
   left: 0;
   display: flex;
   justify-content: center;

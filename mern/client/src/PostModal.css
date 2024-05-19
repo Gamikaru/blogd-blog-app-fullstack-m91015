@@ -1,0 +1,54 @@
+/* PostModal.css */
+.modal-dialog {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align to the top of the modal container */
+  width: 50%;
+  height: 70%;
+  padding-top: 10%; /* Adjust padding to move the modal down */
+  border: 3px solid #000000;
+  border-radius: 40px;
+  background-color: #9b30ff;
+}
+
+.modal-card {
+  width: 0%; /* Adjust this width as needed */
+  margin: auto;
+  border-radius: 10px;
+  border: 3px solid #000000;
+  background-color: #9b30ff;
+}
+
+.post-card {
+  margin: auto;
+  width: 90%;
+  padding: 20px;
+  border-radius: 10px;
+  border: 3px solid #000000;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  background-color: #000080;
+}
+
+.post-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.post-textarea {
+  width: 100%;
+  height: 200px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.submit-button {
+  align-self: flex-end;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #f8f8ff;
+  border: 3px #000000;
+  border-radius: 20px;
+}
