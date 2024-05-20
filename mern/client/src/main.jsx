@@ -14,7 +14,12 @@ import HomePage from "./components/HomePage";
 import "./HomePage.css";
 import PostModal from "./components/PostModal";
 import "./PostModal.css";
-
+import Bloggs from "./components/Bloggs";
+import "./Bloggs.css";
+import Network from "./components/Network";
+import "./Network.css";
+import Admin from "./components/Admin";
+import "./Admin.css";
 
 const router = createBrowserRouter([
 	{
@@ -84,6 +89,36 @@ const router = createBrowserRouter([
 			{
 				path: "/post",
 				element: <PostModal />,
+			},
+		],
+	},
+	{
+		path: "bloggs",
+		element: <App />,
+		children: [
+			{
+				path: "/bloggs",
+				element: <Bloggs />,
+			},
+		],
+	},
+	{
+		path: "network",
+		element: <App />,
+		children: [
+			{
+				path: "/network",
+				element: <Network />,
+			},
+		],
+	},
+	{
+		path: "admin",
+		element: <App />,
+		children: [
+			{
+				path: "/admin",
+				element: <Admin />,
 			},
 		],
 	},
