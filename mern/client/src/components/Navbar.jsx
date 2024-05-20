@@ -1,20 +1,38 @@
-// Navbar.jsx
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Card, Dropdown, Button } from "react-bootstrap";
-import PostModal from "./PostModal"; // Import the PostModal
+import PostModal from "./PostModal";
 
 export default function Navbar({ first_name, last_name }) {
 	const location = useLocation();
 	const [showModal, setShowModal] = useState(false);
+	const [showDropdown, setShowDropdown] = useState(false);
+	const dropdownRef = useRef(null);
+
+	useEffect(() => {
+		const handleClickOutside = (event) => {
+			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+				setShowDropdown(false);
+			}
+		};
+		document.addEventListener("mousedown", handleClickOutside);
+
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, []);
 
 	const handleModal = () => {
 		setShowModal(!showModal);
 	};
 
+	const handleDropdown = () => {
+		setShowDropdown(!showDropdown);
+	};
+
 	const handlePostSubmit = (content) => {
 		console.log("Post submitted:", content);
-		// Add logic to save the post
+		// i need help with the logic to save the post
 	};
 
 	// Don't render the navbar on the login and registration pages
@@ -39,9 +57,12 @@ export default function Navbar({ first_name, last_name }) {
 					<Button className="post-button" onClick={handleModal}>
 						Post
 					</Button>
-					<div className="dropdown-container">
-						<Dropdown>
-							<Dropdown.Toggle variant="success" id="dropdown">
+					<div className="dropdown-container" ref={dropdownRef}>
+						<Dropdown
+							show={showDropdown}
+							onClose={() => setShowDropdown(false)}
+						>
+							<Dropdown.Toggle id="dropdown" onClick={handleDropdown}>
 								{userName}
 							</Dropdown.Toggle>
 							<Dropdown.Menu>

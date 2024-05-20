@@ -10,10 +10,15 @@ export default function PostModal({ show, handleClose, onSubmit }) {
 		handleClose();
 	};
 
+	const handleChange = (e) => {
+		setContent(e.target.value);
+	};
+
 	return (
-		<Modal show={show} onHide={handleClose} dialogClassName="modal-dialog">
+		<Modal show={show} onHide={handleClose} centered>
+			<Card className="modal-card">
 				<Modal.Header closeButton>
-					<Modal.Title>Create Post</Modal.Title>
+					<Modal.Title>Create a Post!</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<Card className="post-card">
@@ -24,7 +29,7 @@ export default function PostModal({ show, handleClose, onSubmit }) {
 									rows={5}
 									className="post-textarea"
 									value={content}
-									onChange={(e) => setContent(e.target.value)}
+									onChange={handleChange}
 									placeholder="Write your post here..."
 								/>
 								<Button
@@ -32,12 +37,13 @@ export default function PostModal({ show, handleClose, onSubmit }) {
 									onClick={handleSubmit}
 									className="submit-button"
 								>
-									Submit
+									POST
 								</Button>
 							</Form>
 						</Card.Body>
 					</Card>
 				</Modal.Body>
+			</Card>
 		</Modal>
 	);
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
 import { Button } from "react-bootstrap";
-import Post from "./PostModal";
+import PostModal from "./PostModal";
 
 export default function HomePage() {
 	const [userData, setUserData] = useState({
@@ -14,6 +14,7 @@ export default function HomePage() {
 		location: "",
 	});
 	const [userPosts, setUserPosts] = useState([]);
+	const [showModal, setShowModal] = useState(false);
 
 	useEffect(() => {
 		const fetchUserData = async () => {
@@ -42,13 +43,20 @@ export default function HomePage() {
 		fetchUserData();
 	}, []);
 
-  const [newStatus, setNewStatus] = useState("");
-
 	const handleEditStatus = () => {
 		const status = prompt("Enter new status:");
 		if (status !== null) {
 			setUserData({ ...userData, status });
 		}
+	};
+
+	const handleCreatePost = (content) => {
+		const newPost = {
+			content,
+			postDate: new Date().toLocaleString(),
+			comments: [],
+		};
+		setUserPosts([newPost, ...userPosts]);
 	};
 
 	const getInitials = (first_Name, last_name) => {
@@ -67,17 +75,17 @@ export default function HomePage() {
 					<div className="card-text">
 						<ul>
 							<li>
-      							<span>Status:</span>{" "}
-      							<input
-        							type="text"
-       								value={userData.status}
-        							onChange={(e) =>
-          							setUserData({ ...userData, status: e.target.value })
-        							}
-     							/>
-      							<Button onClick={handleEditStatus} className="edit-button">
-        							Edit
-      							</Button>
+								<span>Status:</span>{" "}
+								<input
+									type="text"
+									value={userData.status}
+									onChange={(e) =>
+										setUserData({ ...userData, status: e.target.value })
+									}
+								/>
+								<Button onClick={handleEditStatus} className="edit-button">
+									Edit
+								</Button>
 							</li>
 							<li>
 								<span>Email:</span> {userData.email}
@@ -101,19 +109,23 @@ export default function HomePage() {
 						<Card.Title>Posts</Card.Title>
 						{userPosts.length > 0 ? (
 							userPosts.map((post, index) => (
-								<Post
-									key={index}
-									content={post.content}
-									postDate={post.postDate}
-									comments={post.comments}
-								/>
+								<div key={index}>
+									<p>{post.content}</p>
+									<p>{post.postDate}</p>
+								</div>
 							))
 						) : (
 							<p>No posts available.</p>
 						)}
+						<Button onClick={() => setShowModal(true)}>Create Post</Button>
 					</Card.Body>
 				</Card>
 			</div>
+			<PostModal
+				show={showModal}
+				handleClose={() => setShowModal(false)}
+				onSubmit={handleCreatePost}
+			/>
 		</div>
 	);
 }

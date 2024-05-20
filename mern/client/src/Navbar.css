@@ -20,7 +20,7 @@
 }
 
 .nav-logo-image {
-  margin-right: 1060px; /* Push the logo to the right */
+  margin-right: 1060px;
   margin-left: 170px;
   width: 300px; 
   height: 300px;
@@ -29,36 +29,42 @@
 
 .post-button {
   background-color: #9B30FF;
-  border: none; /* Remove border */
-  color: #fff; /* Text color */
-  padding: 10px 20px; /* Padding */
-  font-size: 16px; /* Font size */
-  border-radius: 30px; /* Rounded corners */
-  margin-right: 20px; /* Add margin between the logo and the button */
-  cursor: pointer; /* Cursor style */
+  border: 3px solid #000; 
+  border-radius: 30px;
+  color: #fff; 
+  padding: 15px 30px;
+  font-size: 30px; 
+  font: bold;
+  border-radius: 30px; 
+  margin-right: 70px;
+  cursor: pointer;
+  width: 15%;
 }
 
 .dropdown-container {
-  margin-left: 20px; /* Add margin between the button and the dropdown */
+  margin-right: 215px; 
 }
 
 .dropdown-toggle {
   background-color: #9B30FF;
-  border: none;
+  border: 3px solid #000; 
+  border-radius: 30px;
   color: #fff;
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 20px 40px;
+  font-size: 30px;
+  font: bold;
   border-radius: 30px;
   cursor: pointer;
+  width: 170%;
 }
 
 .dropdown-menu {
   background-color: #9B30FF;
   border: 3px solid #000;
   border-radius: 10px;
-  margin-top: 10px;
+  margin-top: 8px;
+  margin-right: -5px;
   position: absolute;
-  right: 0;
   display: flex;
   flex-direction: column;
 }
