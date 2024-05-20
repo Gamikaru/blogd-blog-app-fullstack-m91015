@@ -5,7 +5,6 @@ import Card from "react-bootstrap/Card";
 
 // Component for the registration page
 export default function RegisterPage() {
-
 	// Initialize state for the registration form
 	const [registerForm, setRegisterForm] = useState({
 		first_name: "",
@@ -14,6 +13,7 @@ export default function RegisterPage() {
 		password: "",
 		birthdate: "",
 		occupation: "",
+		status: "",
 		location: "",
 	});
 	// Initialize the navigation object to redirect the user
@@ -34,7 +34,8 @@ async function handleRegister(e) {
 		!registerForm.password ||
 		!registerForm.birthdate ||
 		!registerForm.occupation ||
-		!registerForm.location
+		!registerForm.location ||
+		!registerForm.status
 	) {
 		window.alert("Please fill out all fields.");
 		return;
@@ -59,9 +60,10 @@ async function handleRegister(e) {
 			birthdate: "",
 			occupation: "",
 			location: "",
+			status: "",
 		});
 
-		navigate("/");
+		navigate("/login");
 	} catch (error) {
 		console.error("Error occurred during registration:", error.message);
 		window.alert("Registration failed. Please try again later.");
@@ -71,6 +73,11 @@ async function handleRegister(e) {
   // Render the registration form	
 	return (
 		<div className="register-container">
+			<img
+				alt="CodeBloggs logo"
+				className="reg-logo-image"
+				src="/CodeBloggs logo.png"
+			/>
 			<div className="register-card-container">
 				<Card>
 					<Card.Body>
@@ -85,7 +92,9 @@ async function handleRegister(e) {
 											placeholder="First Name"
 											id="register_first_name"
 											value={registerForm.first_name}
-											onChange={(e) => updateRegisterForm({ first_name: e.target.value })}
+											onChange={(e) =>
+												updateRegisterForm({ first_name: e.target.value })
+											}
 											required
 										/>
 									</div>
@@ -96,7 +105,9 @@ async function handleRegister(e) {
 											placeholder="Email"
 											id="register_email"
 											value={registerForm.email}
-											onChange={(e) => updateRegisterForm({ email: e.target.value })}
+											onChange={(e) =>
+												updateRegisterForm({ email: e.target.value })
+											}
 											required
 										/>
 									</div>
@@ -107,7 +118,9 @@ async function handleRegister(e) {
 											placeholder="Password"
 											id="register_password"
 											value={registerForm.password}
-											onChange={(e) => updateRegisterForm({ password: e.target.value })}
+											onChange={(e) =>
+												updateRegisterForm({ password: e.target.value })
+											}
 											required
 										/>
 									</div>
@@ -118,7 +131,9 @@ async function handleRegister(e) {
 											placeholder="Location"
 											id="register_location"
 											value={registerForm.location}
-											onChange={(e) => updateRegisterForm({ location: e.target.value })}
+											onChange={(e) =>
+												updateRegisterForm({ location: e.target.value })
+											}
 											required
 										/>
 									</div>
@@ -131,7 +146,9 @@ async function handleRegister(e) {
 											placeholder="Last Name"
 											id="register_last_name"
 											value={registerForm.last_name}
-											onChange={(e) => updateRegisterForm({ last_name: e.target.value })}
+											onChange={(e) =>
+												updateRegisterForm({ last_name: e.target.value })
+											}
 											required
 										/>
 									</div>
@@ -142,7 +159,9 @@ async function handleRegister(e) {
 											placeholder="Birthdate"
 											id="register_birthdate"
 											value={registerForm.birthdate}
-											onChange={(e) => updateRegisterForm({ birthdate: e.target.value })}
+											onChange={(e) =>
+												updateRegisterForm({ birthdate: e.target.value })
+											}
 											required
 										/>
 									</div>
@@ -153,7 +172,22 @@ async function handleRegister(e) {
 											placeholder="Occupation"
 											id="register_occupation"
 											value={registerForm.occupation}
-											onChange={(e) => updateRegisterForm({ occupation: e.target.value })}
+											onChange={(e) =>
+												updateRegisterForm({ occupation: e.target.value })
+											}
+											required
+										/>
+									</div>
+									<div className="register-input-container">
+										<label htmlFor="register_status"></label>
+										<input
+											type="text"
+											placeholder="status"
+											id="register_status"
+											value={registerForm.status}
+											onChange={(e) =>
+												updateRegisterForm({ status: e.target.value })
+											}
 											required
 										/>
 									</div>

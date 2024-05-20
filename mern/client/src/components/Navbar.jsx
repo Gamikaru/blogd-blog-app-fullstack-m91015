@@ -1,69 +1,111 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { Card, Dropdown, DropdownToggle } from "react-bootstrap";
-// import { toast } from "react-toastify";
+import { Card, Dropdown, Button } from "react-bootstrap";
+import PostModal from "./PostModal";
 
 export default function Navbar({ first_name, last_name }) {
-    const location = useLocation();
+	const location = useLocation();
+	const [showModal, setShowModal] = useState(false);
+	const [showDropdown, setShowDropdown] = useState(false);
+	const dropdownRef = useRef(null);
 
-    // Don't render the navbar on the login and registration pages
-    if (location.pathname === "/" || location.pathname === "/register") {
-        return null;
-    }
+	useEffect(() => {
+		const handleClickOutside = (event) => {
+			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+				setShowDropdown(false);
+			}
+		};
+		document.addEventListener("mousedown", handleClickOutside);
 
-    // Combine first name and last name to form the full name
-    const userName = `${first_name} ${last_name}`;
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, []);
 
-    return (
-			<>
-				<div className="nav-header">
-					<nav className="navbar">
-						<a href="/home">
-							<img
-								alt="CodeBloggs logo"
-								className="h-10 inline"
-								src="/CodeBloggs logo2.png"
-							/>
-						</a>
-						<Dropdown>
-							<DropdownToggle variant="success" id="dropdown">
+	const handleModal = () => {
+		setShowModal(!showModal);
+	};
+
+	const handleDropdown = () => {
+		setShowDropdown(!showDropdown);
+	};
+
+	const handlePostSubmit = (content) => {
+		console.log("Post submitted:", content);
+		// i need help with the logic to save the post
+	};
+
+	// Don't render the navbar on the login and registration pages
+	if (location.pathname === "/login" || location.pathname === "/register") {
+		return null;
+	}
+
+	// Combine first name and last name to form the full name
+	const userName = `${first_name} ${last_name}`;
+
+	return (
+		<>
+			<div className="nav-header">
+				<nav className="navbar">
+					<a href="/">
+						<img
+							alt="CodeBloggs logo"
+							className="nav-logo-image"
+							src="/CodeBloggs logo.png"
+						/>
+					</a>
+					<Button className="post-button" onClick={handleModal}>
+						Post
+					</Button>
+					<div className="dropdown-container" ref={dropdownRef}>
+						<Dropdown
+							show={showDropdown}
+							onClose={() => setShowDropdown(false)}
+						>
+							<Dropdown.Toggle id="dropdown" onClick={handleDropdown}>
 								{userName}
-							</DropdownToggle>
+							</Dropdown.Toggle>
 							<Dropdown.Menu>
-								<Dropdown.Item href="/settings">Account Settings</Dropdown.Item>
-								<Dropdown.Item href="/logout">Logout</Dropdown.Item>
+								<Dropdown.Item href="/">Account Settings</Dropdown.Item>
+								<Dropdown.Item href="/login">Logout</Dropdown.Item>
 							</Dropdown.Menu>
 						</Dropdown>
-					</nav>
-				</div>
-				<div className="nav-container">
-					<div className="nav">
-						<Card>
-							<ul>
-								<li>
-									<a href="/home" className="active">
-										Home
-									</a>
-								</li>
-								<li>
-									<a href="/bloggs" className="active">
-										Bloggs
-									</a>
-								</li>
-								<li>
-									<a href="/network" className="active">
-										Network
-									</a>
-								</li>
-								<li>
-									<a href="/admin" className="active">
-										Admin
-									</a>
-								</li>
-							</ul>
-						</Card>
 					</div>
+				</nav>
+			</div>
+			<div className="nav-container">
+				<div className="nav">
+					<Card>
+						<ul>
+							<li>
+								<a href="/" className="active">
+									Home
+								</a>
+							</li>
+							<li>
+								<a href="/bloggs" className="active">
+									Bloggs
+								</a>
+							</li>
+							<li>
+								<a href="/network" className="active">
+									Network
+								</a>
+							</li>
+							<li>
+								<a href="/admin" className="active">
+									Admin
+								</a>
+							</li>
+						</ul>
+					</Card>
 				</div>
-			</>
-		);
+			</div>
+			<PostModal
+				show={showModal}
+				handleClose={handleModal}
+				onSubmit={handlePostSubmit}
+			/>
+		</>
+	);
 }

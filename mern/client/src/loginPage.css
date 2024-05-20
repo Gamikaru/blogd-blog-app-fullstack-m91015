@@ -1,3 +1,10 @@
+.logo-image {
+  position: absolute;
+  top: 24%;
+  left: 61%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
 /* Container for layout, positioned relatively */
 .container {
   position: relative;
@@ -10,13 +17,13 @@
 .card-container {
   width: 550px;
   height: 450px;
-  background-color: #c0c5c5;
+  background-color: #9B30FF;
   border: 5px solid #0f0404;
   border-radius: 40px; 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
   position: absolute;
-  top: 40%;
+  top: 55%;
   left: 62%;
   transform: translate(-50%, -50%);
 }
@@ -34,7 +41,7 @@
 .input-container input {
   width: 100%;
   padding: 25px;
-  border: 1px solid #000000;
+  border: 3px solid #000000;
   border-radius: 30px;
   transition: all 0.3s ease;
 }
@@ -53,9 +60,9 @@
 }
 /* Submit button with background color, border, font */
 .form-group input[type="submit"] {
-  background-color: rgb(44, 175, 204);
+  background-color: #F8F8FF;
   color: #000000; 
-  border: 1px solid #000000; 
+  border: 3px solid #000000; 
   border-radius: 30px; 
   font-weight: bold;
   font-size: 24px;
@@ -65,9 +72,10 @@
 /* Register link with cursor style, text decoration, and font */
 .register-link {
   cursor: pointer;
-  color: rgb(207, 113, 18);
+  color: #000000;
   text-decoration: underline;
   font-size: 25px;
+  font-weight: bold;
 }
 /* Toast styling */
 .custom-toast {

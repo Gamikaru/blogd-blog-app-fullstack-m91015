@@ -2,8 +2,9 @@ import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
-import Record from "./components/Record";
-import RecordList from "./components/RecordList";
+import Bloggs from "./components/Bloggs";
+import "./Bloggs.css";
+import BloggsList from "./components/BloggsList";
 import "./index.css";
 import LoginPage from "./components/LoginPage";
 import "./loginPage.css";
@@ -12,15 +13,21 @@ import "./registerPage.css";
 import "./Navbar.css"; 
 import HomePage from "./components/HomePage";
 import "./HomePage.css";
+import PostModal from "./components/PostModal";
+import "./PostModal.css";
+import Network from "./components/Network";
+import "./Network.css";
+import Admin from "./components/Admin";
+import "./Admin.css";
 
 const router = createBrowserRouter([
 	{
-		path: "/record",
+		path: "/bloggs",
 		element: <App />,
 		children: [
 			{
-				path: "/record",
-				element: <RecordList />,
+				path: "/bloggs",
+				element: <BloggsList />,
 			},
 		],
 	},
@@ -30,7 +37,7 @@ const router = createBrowserRouter([
 		children: [
 			{
 				path: "/edit/:id",
-				element: <Record />,
+				element: <Bloggs />,
 			},
 		],
 	},
@@ -40,16 +47,16 @@ const router = createBrowserRouter([
 		children: [
 			{
 				path: "/create",
-				element: <Record />,
+				element: <Bloggs />,
 			},
 		],
 	},
 	{
-		path: "/",
+		path: "/login",
 		element: <App />,
 		children: [
 			{
-				path: "/",
+				path: "/login",
 				element: <LoginPage />,
 			},
 		],
@@ -65,12 +72,42 @@ const router = createBrowserRouter([
 		],
 	},
 	{
-		path: "/home",
+		path: "/",
 		element: <App />,
 		children: [
 			{
-				path: "/home",
+				path: "/",
 				element: <HomePage />,
+			},
+		],
+	},
+	{
+		path: "/post",
+		element: <App />,
+		children: [
+			{
+				path: "/post",
+				element: <PostModal />,
+			},
+		],
+	},
+	{
+		path: "network",
+		element: <App />,
+		children: [
+			{
+				path: "/network",
+				element: <Network />,
+			},
+		],
+	},
+	{
+		path: "admin",
+		element: <App />,
+		children: [
+			{
+				path: "/admin",
+				element: <Admin />,
 			},
 		],
 	},

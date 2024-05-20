@@ -1,74 +1,142 @@
+/* Updated CSS for the navbar */
 .nav-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
-  background-color: #08c8d2; /* Example background color */
-  border-bottom: 1px solid #cccccc; /* Example border color */
+  padding: 2px 5px;
+  background-color: #F8F8FF;
+  border-bottom: 3px solid #000000; 
+  width: 100%;
+  height: 15%;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 .navbar {
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
-.navbar img {
-  margin-right: 20px;
+.nav-logo-image {
+  margin-right: 1060px;
+  margin-left: 170px;
+  width: 300px; 
+  height: 300px;
+  transform: scale(2.5);
 }
 
-.dropdown {
-  position: relative;
-  left: 1000px;
+.post-button {
+  background-color: #9B30FF;
+  border: 3px solid #000; 
+  border-radius: 30px;
+  color: #fff; 
+  padding: 15px 30px;
+  font-size: 30px; 
+  font: bold;
+  border-radius: 30px; 
+  margin-right: 70px;
+  cursor: pointer;
+  width: 15%;
+}
+
+.dropdown-container {
+  margin-right: 215px; 
 }
 
 .dropdown-toggle {
-  display: inline-block; /* Ensure the toggle button is displayed as an inline block */
-  padding: 0.5rem 1rem;
-  font-weight: 400;
-  color: #212529;
-  text-align: inherit;
-  white-space: nowrap;
-  background-color: transparent;
-  border: 0;
-  cursor: pointer; /* Add cursor pointer to indicate it's clickable */
+  background-color: #9B30FF;
+  border: 3px solid #000; 
+  border-radius: 30px;
+  color: #fff;
+  padding: 20px 40px;
+  font-size: 30px;
+  font: bold;
+  border-radius: 30px;
+  cursor: pointer;
+  width: 170%;
 }
-
 
 .dropdown-menu {
+  background-color: #9B30FF;
+  border: 3px solid #000;
+  border-radius: 10px;
+  margin-top: 8px;
+  margin-right: -5px;
   position: absolute;
-  top: 100%;
-  left: 20px; /* Adjust this value to move the dropdown more to the right */
-  z-index: 1000;
-  display: none;
-  float: left;
-  min-width: 10rem;
-  padding: 0.5rem 0;
-  margin: 0.125rem 0 0;
-  font-size: 1rem;
-  color: #212529;
-  text-align: left;
-  list-style: none;
-  background-color: #343a40;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 0.25rem;
+  display: flex;
+  flex-direction: column;
 }
 
-.dropdown-menu .dropdown-item {
-  display: block;
+.dropdown-item {
+  color: #000;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: #ddd;
+  color: #000;
+}
+
+.dropdown-item.active {
+  background-color: #9B30FF;
+  color: white;
+  font-weight: bold;
+}
+
+.nav-container {
+  background-color: #F8F8FF;
+  border-right: 3px solid #060303;
+  width: 200px;
+  height: 1000px;
+  margin-top: 0;
+  position: fixed;
+  top: 15.1%;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  padding-top: 60px;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
-  padding: 0.5rem 1rem;
-  clear: both;
-  font-weight: 400;
-  color: #dee2e6;
-  text-align: inherit;
-  white-space: nowrap;
-  background-color: transparent;
-  border: 0;
+  padding-top: 60px;
 }
 
-.dropdown-menu .dropdown-item:hover,
-.dropdown-menu .dropdown-item:focus {
-  color: #adb5bd;
+.nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.nav li {
+  width: 100%;
+  margin-bottom:35px;
+  display: flex;
+  justify-content: center;
+}
+
+.nav a {
+  display: block;
+  padding: 10px 20px;
   text-decoration: none;
-  background-color: #212529;
+  color: #000;
+  background-color: #ddd;
+  border: 3px solid #000;
+  border-radius: 30px;
+  width: 140%;
+  text-align: center;
+}
+
+.nav a.active {
+  background-color: #9B30FF;
+  font-weight: bold;
 }
