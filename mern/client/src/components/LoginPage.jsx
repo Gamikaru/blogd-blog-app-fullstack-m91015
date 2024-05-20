@@ -12,7 +12,6 @@ export default function LoginPage() {
 		password: "",
 	});
 
-
 	const [cookie, setCookie, removeCookie] = useCookies()
 
 	// Initialize the navigate function using the useNavigate hook
@@ -57,7 +56,7 @@ export default function LoginPage() {
 			// Reset the loginForm state
 			setLoginForm({ email: "", password: "" });
 			// Navigate to the root route
-			navigate("/record");
+			navigate("/home");
 		} catch (error) {
 			// Log the error message to the console if the login failed
 			console.error(error);

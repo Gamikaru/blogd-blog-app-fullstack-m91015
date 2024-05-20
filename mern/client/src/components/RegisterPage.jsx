@@ -5,7 +5,6 @@ import Card from "react-bootstrap/Card";
 
 // Component for the registration page
 export default function RegisterPage() {
-
 	// Initialize state for the registration form
 	const [registerForm, setRegisterForm] = useState({
 		first_name: "",
@@ -14,6 +13,7 @@ export default function RegisterPage() {
 		password: "",
 		birthdate: "",
 		occupation: "",
+		status: "",
 		location: "",
 	});
 	// Initialize the navigation object to redirect the user
@@ -34,7 +34,8 @@ async function handleRegister(e) {
 		!registerForm.password ||
 		!registerForm.birthdate ||
 		!registerForm.occupation ||
-		!registerForm.location
+		!registerForm.location ||
+		!registerForm.status
 	) {
 		window.alert("Please fill out all fields.");
 		return;
@@ -59,9 +60,10 @@ async function handleRegister(e) {
 			birthdate: "",
 			occupation: "",
 			location: "",
+			status: "",
 		});
 
-		navigate("/");
+		navigate("/login");
 	} catch (error) {
 		console.error("Error occurred during registration:", error.message);
 		window.alert("Registration failed. Please try again later.");
@@ -172,6 +174,19 @@ async function handleRegister(e) {
 											value={registerForm.occupation}
 											onChange={(e) =>
 												updateRegisterForm({ occupation: e.target.value })
+											}
+											required
+										/>
+									</div>
+									<div className="register-input-container">
+										<label htmlFor="register_status"></label>
+										<input
+											type="text"
+											placeholder="status"
+											id="register_status"
+											value={registerForm.status}
+											onChange={(e) =>
+												updateRegisterForm({ status: e.target.value })
 											}
 											required
 										/>

@@ -36,7 +36,7 @@ export default function Navbar({ first_name, last_name }) {
 	};
 
 	// Don't render the navbar on the login and registration pages
-	if (location.pathname === "/" || location.pathname === "/register") {
+	if (location.pathname === "/login" || location.pathname === "/register") {
 		return null;
 	}
 
@@ -47,7 +47,7 @@ export default function Navbar({ first_name, last_name }) {
 		<>
 			<div className="nav-header">
 				<nav className="navbar">
-					<a href="/home">
+					<a href="/">
 						<img
 							alt="CodeBloggs logo"
 							className="nav-logo-image"
@@ -67,7 +67,7 @@ export default function Navbar({ first_name, last_name }) {
 							</Dropdown.Toggle>
 							<Dropdown.Menu>
 								<Dropdown.Item href="/">Account Settings</Dropdown.Item>
-								<Dropdown.Item href="/">Logout</Dropdown.Item>
+								<Dropdown.Item href="/login">Logout</Dropdown.Item>
 							</Dropdown.Menu>
 						</Dropdown>
 					</div>
@@ -78,7 +78,7 @@ export default function Navbar({ first_name, last_name }) {
 					<Card>
 						<ul>
 							<li>
-								<a href="/home" className="active">
+								<a href="/" className="active">
 									Home
 								</a>
 							</li>

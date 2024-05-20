@@ -2,11 +2,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; /* Ensure it takes full height for centering */
+  min-height: 100vh;
 }
 
 .modal-card {
-  width: 300%; /* Adjust this width as needed */
+  width: 300%;
   max-width: 800px;
   margin: auto;
   border-radius: 25px;
