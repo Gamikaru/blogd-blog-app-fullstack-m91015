@@ -1,70 +1,10 @@
 import React, { useState } from "react";
+import { Card, Toast } from "react-bootstrap";
 import { useNavigate } from "react-router";
-import Card from "react-bootstrap/Card";
-import Toast from "react-bootstrap/Toast";
 import { useCookies } from "react-cookie";
 
-// Export the LoginPage component
-export default function LoginPage() {
-	// Initialize the loginForm state with an empty email and password
-	const [loginForm, setLoginForm] = useState({
-		email: "",
-		password: "",
-	});
-
-	const [cookie, setCookie, removeCookie] = useCookies()
-
-	// Initialize the navigate function using the useNavigate hook
-	const navigate = useNavigate();
-  // State for managing the display of failed login attempt toast
-  const [showToast, setShowToast] = useState(false);
-	// Define the updateLoginForm function to update the loginForm state
-	function updateLoginForm(value) {
-		return setLoginForm((prev) => {
-		return { ...prev, ...value };
-		});
-	}
-	// Define the handleLogin function to handle the form submission
-	async function handleLogin(e) {
-		e.preventDefault();
-		// Log the login form data to the console
-		console.log("Login form data:", loginForm);
-		// Check if the email and password fields are not empty
-		if (!loginForm.email || !loginForm.password) {
-			// Log an error message to the console if the form is incomplete
-			console.log("Login form is incomplete");
-			return;
-		}
-		try {
-			// Send a POST request to the /login/login endpoint with the loginForm data
-			const response = await fetch("http://localhost:5050/login", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(loginForm),
-			});
-			// Check if the response is not ok
-			if (!response.ok) {
-        		// Display toast for failed login attempt
-        		setShowToast(true);
-        		return;
-			}
-			const serverResponse = await response.json();
-			console.log(serverResponse)
-			// setCookie("accessToken", loginAttempt.data, { path: "/" });
-			// Log a success message to the console if the login was successful
-			console.log("Login successful");
-			// Reset the loginForm state
-			setLoginForm({ email: "", password: "" });
-			// Navigate to the root route
-			navigate("/home");
-		} catch (error) {
-			// Log the error message to the console if the login failed
-			console.error(error);
-			navigate("/");
-			console.log("Login failed:", error.message);
-		}
-	}
-	// Return the JSX for the login form
+function LoginForm({ handleLogin, loginForm, updateLoginForm, showToast, setShowToast,})
+{
 	return (
 		<div className="container">
 			<img
@@ -134,4 +74,59 @@ export default function LoginPage() {
 		</div>
 	);
 }
+export default function LoginPage() {
+	const [loginForm, setLoginForm] = useState({
+		email: "",
+		password: "",
+	});
 
+	const [showToast, setShowToast] = useState(false);
+
+	const [cookie, setCookie, removeCookie] = useCookies();
+
+	const navigate = useNavigate();
+
+	function updateLoginForm(value) {
+		setLoginForm((prev) => {
+			return { ...prev, ...value };
+		});
+	}
+	async function handleLogin(e) {
+		e.preventDefault();
+		console.log("Login form data:", loginForm);
+		if (!loginForm.email || !loginForm.password) {
+			console.log("Login form is incomplete");
+			return;
+		}
+		try {
+			const response = await fetch("http://localhost:5050/login", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(loginForm),
+			});
+			if (!response.ok) {
+				setShowToast(true);
+				return;
+			}
+			const serverResponse = await response.json();
+			console.log(serverResponse);
+			console.log("Login successful");
+			setLoginForm({ email: "", password: "" });
+			navigate("/home");
+		} catch (error) {
+			console.error(error);
+			navigate("/");
+			console.log("Login failed:", error.message);
+		}
+	}
+
+	return (
+		<LoginForm
+			handleLogin={handleLogin}
+			loginForm={loginForm}
+			updateLoginForm={updateLoginForm}
+			showToast={showToast}
+			setShowToast={setShowToast}
+		/>
+	);
+}

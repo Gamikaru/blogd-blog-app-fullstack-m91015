@@ -7,11 +7,23 @@ export default function PostModal({ show, handleClose }) {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			await createPost(content);
-			setContent(""); 
+			// Send a POST request to create a new post
+			const response = await fetch("http://localhost:5050/posts", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ content }),
+			});
+			if (!response.ok) {
+				throw new Error("Failed to create post");
+			}
+			// Reset content and close modal on success
+			setContent("");
 			handleClose();
 		} catch (error) {
 			console.error("Error creating post:", error);
+			// Handle error here
 		}
 	};
 
