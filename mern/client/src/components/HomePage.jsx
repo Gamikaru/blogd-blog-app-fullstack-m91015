@@ -48,7 +48,7 @@ const PostsCard = ({ userPosts, showModal, handleLike, setShowModal }) => (
 				) : (
 					<p>No posts available.</p>
 				)}
-				<Button onClick={() => setShowModal(true)}>Create Post</Button>
+				<Button onClick={() => setShowModal(true)}>Make a Post!</Button>
 			</Card.Body>
 		</Card>
 	</div>
@@ -64,6 +64,7 @@ export default function HomePage() {
 		birthdate: "",
 		occupation: "",
 		location: "",
+		status: "",
 	});
 	const [userPosts, setUserPosts] = useState([]);
 	const [showModal, setShowModal] = useState(false);
@@ -75,7 +76,7 @@ export default function HomePage() {
 	const fetchUserData = async () => {
 		try {
 			// Fetch user data from server
-			const response = await fetch("http://localhost:5050/userData");
+			const response = await fetch("http://localhost:5050/user");
 			if (!response.ok) {
 				throw new Error(`Failed to fetch user data: ${response.statusText}`);
 			}
