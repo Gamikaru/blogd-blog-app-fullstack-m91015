@@ -1,0 +1,62 @@
+/* admin.css */
+/* Style for the admin container */
+.admin-container {
+    margin-top: 50px; /* Adjust margin-top as needed */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* Space between cards */
+}
+         /* USER CARD */
+/* Style for the User Manager card */
+.user-manager {
+    position: absolute; /* Set position to absolute */
+    top: 9%; /* Set top position to 0 */
+    left: 16%; /* Set left position to 0 */
+    background-color: #9b30ff; /* Light background color */
+    width: 20%; /* Set width */
+    height: 300px; /* Set height */
+}
+
+/* Style for the User Manager card body */
+.user-body {
+    padding: 90px; /* Add padding to the card body */
+    border: 3px solid #000000;
+    border-radius: 20px;
+    background-color: #9b30ff; /* Light background color */
+
+}
+
+/* Style for the User Manager card title */
+.user-title {
+    margin-bottom: 55px; /* Add margin below the title */
+    font-size: 200%;
+    font: bold;
+    text-align: center;
+}
+         /* MANAGER CARD */
+/* Style for the Content Manager card */
+.content-manager {
+    position: absolute; /* Set position to absolute */
+    top: 9%; /* Set top position to 0 */
+    left: 50%; /* Set left position to 25% (to the right of the User Manager card) */
+    background-color: #9b30ff; /* Slightly darker background color */
+    width: 20%; /* Set width */
+    height: 200px; /* Set height */
+}
+
+/* Style for the Content Manager card body */
+.content-body {
+    padding: 90px; /* Add padding to the card body */
+    border: 3px solid #000000;
+    border-radius: 20px;
+    background-color: #9b30ff; /* Light background color */
+}
+
+/* Style for the Content Manager card title */
+.content-title {
+    margin-bottom: 30px; /* Add margin below the title */
+    font-size: 200%;
+    font: bold;
+    text-align: center;
+}

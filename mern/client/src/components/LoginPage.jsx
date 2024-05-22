@@ -12,16 +12,16 @@ export default function LoginPage() {
 		password: "",
 	});
 
-	const [cookie, setCookie, removeCookie] = useCookies()
+	const [cookie, setCookie, removeCookie] = useCookies();
 
 	// Initialize the navigate function using the useNavigate hook
 	const navigate = useNavigate();
-  // State for managing the display of failed login attempt toast
-  const [showToast, setShowToast] = useState(false);
+	// State for managing the display of failed login attempt toast
+	const [showToast, setShowToast] = useState(false);
 	// Define the updateLoginForm function to update the loginForm state
 	function updateLoginForm(value) {
 		return setLoginForm((prev) => {
-		return { ...prev, ...value };
+			return { ...prev, ...value };
 		});
 	}
 	// Define the handleLogin function to handle the form submission
@@ -37,26 +37,26 @@ export default function LoginPage() {
 		}
 		try {
 			// Send a POST request to the /login/login endpoint with the loginForm data
-			const response = await fetch("http://localhost:5050/login", {
+			const response = await fetch("http://localhost:5050/user/login", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(loginForm),
 			});
 			// Check if the response is not ok
 			if (!response.ok) {
-        		// Display toast for failed login attempt
-        		setShowToast(true);
-        		return;
+				// Display toast for failed login attempt
+				setShowToast(true);
+				return;
 			}
 			const serverResponse = await response.json();
-			console.log(serverResponse)
-			// setCookie("accessToken", loginAttempt.data, { path: "/" });
+			console.log(serverResponse.token);
+			setCookie("PassBloggs", serverResponse.token, {path:"/"})
 			// Log a success message to the console if the login was successful
 			console.log("Login successful");
 			// Reset the loginForm state
 			setLoginForm({ email: "", password: "" });
 			// Navigate to the root route
-			navigate("/home");
+			navigate("/");
 		} catch (error) {
 			// Log the error message to the console if the login failed
 			console.error(error);
@@ -134,4 +134,3 @@ export default function LoginPage() {
 		</div>
 	);
 }
-

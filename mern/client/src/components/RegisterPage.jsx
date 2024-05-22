@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import Card from "react-bootstrap/Card";
-// import userSchema from "../../../server/models/userSchema";
 
 // Component for the registration page
 export default function RegisterPage() {
-	// Initialize state for the registration form
 	const [registerForm, setRegisterForm] = useState({
 		first_name: "",
 		last_name: "",
@@ -13,45 +11,35 @@ export default function RegisterPage() {
 		password: "",
 		birthdate: "",
 		occupation: "",
-		status: "",
 		location: "",
+		status: "",
+		auth_level: "",
 	});
-	// Initialize the navigation object to redirect the user
 	const navigate = useNavigate();
 
 	function updateRegisterForm(value) {
-		return setRegisterForm((prev) => {
-		return { ...prev, ...value };
-		});
+		console.log("Updating form field:", value);
+		setRegisterForm((prev) => ({ ...prev, ...value }));
 	}
+
 async function handleRegister(e) {
 	e.preventDefault();
-
-	if (
-		!registerForm.first_name ||
-		!registerForm.last_name ||
-		!registerForm.email ||
-		!registerForm.password ||
-		!registerForm.birthdate ||
-		!registerForm.occupation ||
-		!registerForm.location ||
-		!registerForm.status
-	) {
-		window.alert("Please fill out all fields.");
-		return;
-	}
-
 	try {
-		const response = await fetch("http://localhost:5050/register/", {
+		const response = await fetch("http://localhost:5050/user/register", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(registerForm),
 		});
 
 		if (!response.ok) {
-			throw new Error("Server responded with status: " + response.status);
+			// Handle non-successful response (e.g., 404, 500, etc.)
+			const errorMessage = await response.text();
+			throw new Error(
+				`Server responded with status: ${response.status}. Message: ${errorMessage}`
+			);
 		}
 
+		// If the response is successful, reset the form fields
 		setRegisterForm({
 			first_name: "",
 			last_name: "",
@@ -61,16 +49,20 @@ async function handleRegister(e) {
 			occupation: "",
 			location: "",
 			status: "",
+			auth_level: "",
 		});
 
+		// Optionally, you can navigate to another page after successful registration
 		navigate("/login");
 	} catch (error) {
+		// Handle fetch error (e.g., network error, etc.)
 		console.error("Error occurred during registration:", error.message);
-		window.alert("Registration failed. Please try again later.");
+		alert("Registration failed. " + error.message);
 	}
 }
 
-  // Render the registration form	
+
+	// Render the registration form
 	return (
 		<div className="register-container">
 			<img
@@ -182,7 +174,7 @@ async function handleRegister(e) {
 										<label htmlFor="register_status"></label>
 										<input
 											type="text"
-											placeholder="status"
+											placeholder="Status"
 											id="register_status"
 											value={registerForm.status}
 											onChange={(e) =>
