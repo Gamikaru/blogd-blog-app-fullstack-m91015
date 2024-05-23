@@ -7,7 +7,7 @@ export default function BloggsPosts() {
 	useEffect(() => {
 		const fetchBloggsPosts = async () => {
 			try {
-				const response = await fetch("http://localhost:5050/blogPosts");
+				const response = await fetch("http://localhost:5050/post/blogPosts");
 				if (!response.ok) {
 					throw new Error("Failed to fetch blog posts");
 				}
