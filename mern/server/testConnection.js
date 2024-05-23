@@ -4,7 +4,7 @@ dotenv.config();
 
 const uri = process.env.ATLAS_URI || "";
 
-const userSchema = new mongoose.Schema({
+const user = new mongoose.Schema({
     first_name: { type: String, required: true },
     last_name: { type: String, required: true },
     birthdate: { type: Date, required: true },
@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
     occupation: { type: String, required: true }
 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model('User', user);
 
 async function testConnection() {
     try {

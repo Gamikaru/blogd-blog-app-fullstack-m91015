@@ -7,10 +7,9 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-
 const router = express.Router();
 
-//User registration
+// User registration
 router.post('/register', async (req, res) => {
     const { first_name, last_name, birthdate, email, password, location, occupation, auth_level } = req.body;
 
@@ -54,42 +53,38 @@ router.post('/register', async (req, res) => {
         } else if (error.name === 'ValidationError') {
             return res.status(400).send(error.message);
         } else {
-            return res.status(500).send('Server error:' + error.message);
+            return res.status(500).send('Server error: ' + error.message);
         }
     }
 });
 
+// User login
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
-    // Check if both email and password are provided
     if (!email || !password) {
         return res.status(400).send('Please fill in all required fields');
     }
 
     try {
-        // Look up the user by email
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(404).send('User not found');
         }
 
-        // Compare the provided password with the hashed password in the database
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(401).send('Invalid credentials');
         }
 
-        // Create a JWT token that includes the user's ID and email
         const token = jwt.sign(
             { id: user._id, email: user.email, auth_level: user.auth_level },
             process.env.JWT_SECRET,
-            { expiresIn: '24h' } // Token is valid for 1 hour
+            { expiresIn: '24h' } // Token is valid for 24 hours
         );
 
-        // Return the token and user information
         res.status(200).json({
-            token: token,
+            token,
             user: {
                 id: user._id,
                 email: user.email,
@@ -102,14 +97,13 @@ router.post('/login', async (req, res) => {
             message: 'Login successful'
         });
 
-
     } catch (error) {
         console.error("Error during login:", error);
         return res.status(500).send('Server error: ' + error.message);
     }
 });
 
-// Get user info (protected route). On the front end, this can be used to display user profile information.
+// Get user info (protected route)
 router.get('/:id', authenticate, async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
@@ -119,7 +113,7 @@ router.get('/:id', authenticate, async (req, res) => {
         res.status(200).json(user);
     } catch (error) {
         console.error("Error fetching user:", error);
-        return res.status(500).send('Server error:' + error.message);
+        return res.status(500).send('Server error: ' + error.message);
     }
 });
 
@@ -141,20 +135,18 @@ router.put('/user-update/:id', authenticate, async (req, res) => {
         res.status(200).send('User updated successfully');
     } catch (error) {
         console.error("Error updating user:", error);
-        return res.status(500).send('Server error:' + error.message);
+        return res.status(500).send('Server error: ' + error.message);
     }
+});
 
-}
-);
-
-//route to list all other except for the current user (protected route, for viewing current user's 'network')
+// List all users except for the current user (protected route)
 router.get('/list/:id', authenticate, async (req, res) => {
     try {
         const users = await User.find({ _id: { $ne: req.params.id } });
         res.status(200).json(users);
     } catch (error) {
         console.error("Error fetching users:", error);
-        return res.status(500).send('Server error:' + error.message);
+        return res.status(500).send('Server error: ' + error.message);
     }
 });
 
