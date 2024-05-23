@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { Card, Dropdown, Button } from "react-bootstrap";
+import { Card, Dropdown, Button, Modal } from "react-bootstrap";
 import PostModal from "./PostModal";
 
 export default function Navbar({ first_name, last_name }) {
 	const location = useLocation();
 	const [showModal, setShowModal] = useState(false);
+	const [showAccountModal, setShowAccountModal] = useState(false);
 	const [showDropdown, setShowDropdown] = useState(false);
 	const dropdownRef = useRef(null);
 
@@ -25,21 +26,19 @@ export default function Navbar({ first_name, last_name }) {
 	const handleModal = () => {
 		setShowModal(!showModal);
 	};
-
+	const handleAccountModal = () => {
+		setShowAccountModal(!showAccountModal);
+	};
 	const handleDropdown = () => {
 		setShowDropdown(!showDropdown);
 	};
-
 	const handlePostSubmit = (content) => {
 		console.log("Post submitted:", content);
-		// i need help with the logic to save the post
 	};
-
 	// Don't render the navbar on the login and registration pages
 	if (location.pathname === "/login" || location.pathname === "/register") {
 		return null;
 	}
-
 	// Combine first name and last name to form the full name
 	const userName = `${first_name} ${last_name}`;
 
@@ -66,7 +65,9 @@ export default function Navbar({ first_name, last_name }) {
 								{userName}
 							</Dropdown.Toggle>
 							<Dropdown.Menu>
-								<Dropdown.Item href="/">Account Settings</Dropdown.Item>
+								<Dropdown.Item onClick={handleAccountModal}>
+									Account Settings
+								</Dropdown.Item>
 								<Dropdown.Item href="/login">Logout</Dropdown.Item>
 							</Dropdown.Menu>
 						</Dropdown>
@@ -106,6 +107,24 @@ export default function Navbar({ first_name, last_name }) {
 				handleClose={handleModal}
 				onSubmit={handlePostSubmit}
 			/>
+			<Modal
+				className="nav-toast-container"
+				show={showAccountModal}
+				onHide={handleAccountModal}
+				centered
+			>
+				<Modal.Title className="nav-toast-title">
+					Account Settings
+				</Modal.Title>
+				<Modal.Body className="nav-toast-mssg">
+					<p>Go to Account Setting.</p>
+				</Modal.Body>
+				<Modal.Footer>
+					<Button className="nav-toast-button" onClick={handleAccountModal}>
+						Comfirm
+					</Button>
+				</Modal.Footer>
+			</Modal>
 		</>
 	);
 }

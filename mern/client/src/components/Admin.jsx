@@ -47,7 +47,7 @@ export default function Admin() {
 				<Modal.Body className="admin-toast-mssg">{modalMessage}</Modal.Body>
 				<Modal.Footer>
 					<Button className="admin-toast-button" variant="primary" onClick={handleCloseModal}>
-						Okay
+						Comfirm
 					</Button>
 				</Modal.Footer>
 			</Modal>

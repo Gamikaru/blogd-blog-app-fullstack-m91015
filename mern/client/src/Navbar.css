@@ -140,3 +140,37 @@
   background-color: #9B30FF;
   font-weight: bold;
 }
+
+/* Toast CSS */
+/* Styling for the toast container */
+.nav-toast-container {
+    position: fixed;
+    width: fit-content !important;
+    height: 150px !important;
+    top: 60%;
+    left: 50%;
+    background-color: #f8f8ff;
+    padding: 10px;
+    border-radius: 50px;
+    border: 3px solid #000000;
+    text-align: center;
+}
+.admin-toast-title {
+background-color: #f8f8ff;
+font-size: 20;
+font-weight: bold;
+}
+.nav-toast-messg{
+    font-size: 16px;
+    text-align: center;
+}
+.nav-toast-button {
+    top: 10px;
+    right: 10px;
+    width: 50%;
+    cursor: pointer;
+    color: #f8f8ff;
+    background-color: #000080; 
+    border: 2px solid #000000;
+    border-radius: 20px;
+}
