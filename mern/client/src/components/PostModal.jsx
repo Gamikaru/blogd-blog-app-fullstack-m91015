@@ -23,7 +23,6 @@ export default function PostModal({ show, handleClose }) {
 			handleClose();
 		} catch (error) {
 			console.error("Error creating post:", error);
-			// Handle error here
 		}
 	};
 
