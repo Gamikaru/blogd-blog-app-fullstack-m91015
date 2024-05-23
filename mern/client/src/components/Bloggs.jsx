@@ -58,7 +58,7 @@ export default function BloggsPosts() {
 			<div className="blog-posts">
 				{blogPosts.map((post, index) => (
 					<Card className="post-section" key={index}>
-						<Card.Body className="card-body">
+						<Card.Body className="bloggs-body">
 							<Card.Title className="card-title">
 								{getInitials(post.first_name, post.last_name)}
 							</Card.Title>
