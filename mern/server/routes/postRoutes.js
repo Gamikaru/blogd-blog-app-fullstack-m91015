@@ -1,10 +1,8 @@
-//this file will set up the routs of the post aciticity. 
+// This file serves as the route handler for post-related requests.
 
 import express from 'express';
-import postSchema from '../models/postSchema.js';
+import Post from '../models/postSchema.js';
 import { authenticate } from '../middleware/authMiddleware.js';
-
-
 
 const router = express.Router();
 
@@ -21,18 +19,8 @@ router.post('/post-submit', authenticate, async (req, res) => {
         return res.status(400).send('Please enter some content to post');
     }
 
-    if (!user_id) {
-        console.log('No user ID provided');
-        return res.status(400).send('No user ID provided');
-    }
-
-    if (!time_stamp) {
-        console.log('No time stamp provided');
-        return res.status(400).send('No time stamp provided');
-    }
-
     try {
-        const newPost = new postSchema({
+        const newPost = new Post({
             content,
             user_id,
             likes,
@@ -49,36 +37,38 @@ router.post('/post-submit', authenticate, async (req, res) => {
     }
 });
 
-// Get all posts
-router.get('/posts', async (req, res) => {
+// Get all posts by the current user
+router.get('/posts/:id', async (req, res) => {
     try {
-        const posts = await postSchema.find().sort({ time_stamp: -1 });
-        console.log('Posts:', posts);
+        const posts = await Post.find({ user_id: req.params.id });
+        console.log(`Posts by user ${req.params.id}:`, posts);
         res.send(posts);
     } catch (error) {
         console.error('Error getting posts:', error);
-        res.send('Server error: ' + error.message);
+        res.status(500).send('Server error: ' + error.message);
     }
-}
-);
+});
 
 // Get a single post
 router.get('/post-specific/:id', async (req, res) => {
     try {
-        const post = await postSchema.findById(req.params.id);
+        const post = await Post.findById(req.params.id);
+        if (!post) {
+            console.log('Post not found');
+            return res.status(404).send('Post not found');
+        }
         console.log('Post:', post);
         res.send(post);
     } catch (error) {
         console.error('Error getting post:', error);
-        res.send('Server error: ' + error.message);
+        res.status(500).send('Server error: ' + error.message);
     }
-}
-);
+});
 
 // Update a post
 router.put('/post-edit/:id', authenticate, async (req, res) => {
     try {
-        const post = await postSchema.findById(req.params.id);
+        const post = await Post.findById(req.params.id);
         if (!post) {
             console.log('Post not found');
             return res.status(404).send('Post not found');
@@ -87,8 +77,7 @@ router.put('/post-edit/:id', authenticate, async (req, res) => {
         const fieldsToUpdate = req.body;
         Object.keys(fieldsToUpdate).forEach((field) => {
             post[field] = fieldsToUpdate[field];
-        }
-        );
+        });
 
         await post.save();
         console.log('Post updated successfully');
@@ -97,19 +86,12 @@ router.put('/post-edit/:id', authenticate, async (req, res) => {
         console.error('Error updating post:', error);
         return res.status(500).send('Server error: ' + error.message);
     }
-}
-);
-
-// Delete a post - here is what is wrong with the delete route:
-// The delete route is missing the code to actually delete the post from the database.
-// The delete route is missing the code to check if the user is authorized to delete the post.
-// The delete route is missing the code to check if the post actually exists.
-// The delete route is missing the code to handle errors.
+});
 
 // Delete a post
 router.delete('/post-delete/:id', authenticate, async (req, res) => {
     try {
-        const post = await postSchema.findById(req.params.id);
+        const post = await Post.findById(req.params.id);
         if (!post) {
             console.log('Post not found');
             return res.status(404).send('Post not found');
@@ -127,7 +109,7 @@ router.delete('/post-delete/:id', authenticate, async (req, res) => {
 // Like a post
 router.put('/post-like/:id', authenticate, async (req, res) => {
     try {
-        const post = await postSchema.findById(req.params.id);
+        const post = await Post.findById(req.params.id);
         if (!post) {
             console.log('Post not found!');
             return res.status(404).send('Post not found');
@@ -142,17 +124,15 @@ router.put('/post-like/:id', authenticate, async (req, res) => {
         console.error('Error liking post:', error);
         return res.status(500).send('Server error: ' + error.message);
     }
-}
-);
+});
 
 // Unlike a post
 router.put('/post-unlike/:id', authenticate, async (req, res) => {
     try {
-        const post = await postSchema.findById(req.params.id);
+        const post = await Post.findById(req.params.id);
         if (!post) {
             console.log('Post not found');
             return res.status(404).send('Post not found');
-
         }
 
         post.likes -= 1;
@@ -164,9 +144,8 @@ router.put('/post-unlike/:id', authenticate, async (req, res) => {
         console.error('Error unliking post:', error);
         return res.status(500).send('Server error: ' + error.message);
     }
-}
+});
 
-);
 
 
 
