@@ -1,50 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Container, Card } from "react-bootstrap";
 
+const dummyData = [
+	{
+		id: 1,
+		first_name: "John",
+		last_name: "Doe",
+		content: "This is the content of the first blog post.",
+		author: "John Doe",
+		date: "2024-05-01",
+		comments: [
+			{ id: 1, author: "Jane Smith", text: "Great post!" },
+		],
+	},
+	{
+		id: 2,
+		first_name: "Jane",
+		last_name: "Smith",
+		content: "This is the content of the second blog post.",
+		author: "Jane Smith",
+		date: "2024-05-02",
+		comments: [{ id: 1, author: "John Doe", text: "Nice article!" }],
+	},
+	{
+		id: 3,
+		first_name: "Alice",
+		last_name: "Johnson",
+		content: "This is the content of the third blog post.",
+		author: "Alice Johnson",
+		date: "2024-05-03",
+		comments: [],
+	},
+];
+
 export default function BloggsPosts() {
-	const [blogPosts, setBlogPosts] = useState([
-		{
-			first_name: "John",
-			last_name: "Doe",
-			content: "This is the content of the first blog post.",
-			author: "John Doe",
-			date: "2024-05-01",
-		},
-		{
-			first_name: "Jane",
-			last_name: "Smith",
-			content: "This is the content of the second blog post.",
-			author: "Jane Smith",
-			date: "2024-05-02",
-		},
-		{
-			first_name: "Alice",
-			last_name: "Johnson",
-			content: "This is the content of the third blog post.",
-			author: "Alice Johnson",
-			date: "2024-05-03",
-		},
-	]);
-
-	useEffect(() => {
-		// Uncomment the below code when ready to fetch from the server
-		/*
-    const fetchBloggsPosts = async () => {
-      try {
-        const response = await fetch("http://localhost:5050/post/blogPosts");
-        if (!response.ok) {
-          throw new Error("Failed to fetch blog posts");
-        }
-        const data = await response.json();
-        setBlogPosts(data);
-      } catch (error) {
-        console.error("Error fetching blog posts:", error);
-      }
-    };
-
-    fetchBloggsPosts();
-    */
-	}, []);
+	const [blogPosts] = useState(dummyData);
 
 	const getInitials = (firstName, lastName) => {
 		const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : "";
@@ -69,7 +59,16 @@ export default function BloggsPosts() {
 								<span className="blog-author">{post.author} </span>
 								<span className="blog-date">{post.date} </span>
 							</small>
+							<button className="like-button">Like</button>
 						</Card.Footer>
+						<div className="comments">
+							{post.comments.map((comment) => (
+								<div key={comment.id} className="comment">
+									<p className="comment-author"> {comment.author}</p>
+									<p className="comment-text">{comment.text}</p>
+								</div>
+							))}
+						</div>
 					</Card>
 				))}
 				{blogPosts.length === 0 && (

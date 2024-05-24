@@ -5,7 +5,7 @@
   flex-direction: column;
   align-items: center;
   width: 1000% !important; /* Adjust the width as needed */
-  height: 750px !important; /* Set a maximum width */
+  height: 790px !important; /* Set a maximum width */
   background-color: #9b30ff;
   border: 3px solid #000000;
   border-radius: 35px;
@@ -29,6 +29,7 @@
   flex-direction: column; /* Stack posts vertically */
   gap: 20px; /* Space between posts */
   width: 100%; /* Make sure posts take full width of container */
+  margin-bottom: 30px;
 }
 
 /* Card styles */
@@ -77,6 +78,50 @@
 .blog-date {
   font-size: 14px;
   color: #f8f8ff;
+}
+
+/* Comments section */
+.comments-section {
+  margin-top: 30px;
+  padding: 10px;
+  background-color: #f8f8ff;
+  border: 3px solid #000000;
+  border-radius: 10px;
+}
+
+/* Comment styles */
+.comment {
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+}
+
+.comment-user {
+  font-weight: bold;
+  color: #0b0505;
+}
+
+.comment-text {
+  margin-top: 5px;
+  color: #666666;
+}
+
+/* Like button */
+.like-button {
+  cursor: pointer;
+  display: inline-block;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #cccccc;
+  color: #ffffff;
+  transition: background-color 0.3s ease;
+}
+
+.like-button:hover {
+  background-color: #009900;
 }
 
 /* No blog posts available */

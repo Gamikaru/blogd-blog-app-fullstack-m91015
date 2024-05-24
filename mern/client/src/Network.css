@@ -1,0 +1,53 @@
+/* UserCard Component */
+.network-card {
+  border: 3px solid #000000;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  width: 300px; /* Adjust the width as needed */
+  background-color: #9B30FF;
+}
+
+.network-card-body {
+  display: flex;
+  padding: 20px;
+  background-color:#f8f8ff ;
+}
+
+.initials {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+}
+
+.user-info {
+  flex-grow: 1;
+}
+
+.user-info h5 {
+  margin-bottom: 10px;
+}
+
+.user-info p {
+  margin-bottom: 5px;
+}
+
+.latest-post {
+  margin-top: 20px;
+}
+
+.latest-post h6 {
+  margin-bottom: 10px;
+}
+
+.latest-post p {
+  margin-bottom: 5px;
+}

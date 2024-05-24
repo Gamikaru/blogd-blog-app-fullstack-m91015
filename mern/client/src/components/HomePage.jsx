@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Button, Card } from "react-bootstrap";
 import PostModal from "./PostModal";
 
-// UserCard component
 const UserCard = ({ userInitials, userData }) => (
 	<div className="user-card-container">
 		<Card className="user-card">
@@ -10,19 +9,19 @@ const UserCard = ({ userInitials, userData }) => (
 			<div className="card-text">
 				<ul>
 					<li>
-						<span>Status:</span> {userData.status}
+						<span>Status: </span> {userData.status}
 					</li>
 					<li>
-						<span>Email:</span> {userData.email}
+						<span>Email: </span> {userData.email}
 					</li>
 					<li>
-						<span>Birthdate:</span> {userData.birthdate}
+						<span>Birthdate: </span> {userData.birthdate}
 					</li>
 					<li>
-						<span>Occupation:</span> {userData.occupation}
+						<span>Occupation: </span> {userData.occupation}
 					</li>
 					<li>
-						<span>Location:</span> {userData.location}
+						<span>Location: </span> {userData.location}
 					</li>
 				</ul>
 			</div>
@@ -30,7 +29,6 @@ const UserCard = ({ userInitials, userData }) => (
 	</div>
 );
 
-// PostsCard component
 const PostsCard = ({ userPosts, showModal, handleLike, setShowModal }) => (
 	<div className="post-card-container">
 		<Card className="posts-card">
@@ -54,17 +52,15 @@ const PostsCard = ({ userPosts, showModal, handleLike, setShowModal }) => (
 	</div>
 );
 
-// HomePage component
 export default function HomePage() {
 	const [userData, setUserData] = useState({
-		first_name: "",
-		last_name: "",
-		status: "",
-		email: "",
-		birthdate: "",
-		occupation: "",
-		location: "",
-		status: "",
+		first_name: "Ash",
+		last_name: "Ketchum",
+		status: "Motivated",
+		email: "AskKetchum@pokemon.com",
+		birthdate: "05/22/1987",
+		occupation: "Pokemon Trainer",
+		location: "Pallet Town",
 	});
 	const [userPosts, setUserPosts] = useState([]);
 	const [showModal, setShowModal] = useState(false);
@@ -73,24 +69,28 @@ export default function HomePage() {
 		fetchUserData();
 	}, []);
 
-	const fetchUserData = async () => {
-		try {
-			// Fetch user data from server
-			const response = await fetch("http://localhost:5050/user");
-			if (!response.ok) {
-				throw new Error(`Failed to fetch user data: ${response.statusText}`);
-			}
-			const data = await response.json();
-			setUserData(data.user);
-			setUserPosts(data.posts);
-		} catch (error) {
-			console.error("Error fetching user data:", error);
+const fetchUserData = async () => {
+	try {
+		const token = localStorage.getItem("token");
+		const response = await fetch("http://localhost:5050/user", {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		if (!response.ok) {
+			throw new Error(`Failed to fetch user data: ${response.statusText}`);
 		}
-	};
+		const data = await response.json();
+		setUserData(data.user);
+		setUserPosts(data.posts);
+	} catch (error) {
+		console.error("Error fetching user data:", error);
+	}
+};
+
 
 	const handleCreatePost = async (content) => {
 		try {
-			// Create new post
 			const newPost = {
 				content,
 				postDate: new Date().toLocaleString(),
@@ -98,9 +98,7 @@ export default function HomePage() {
 				likes: 0,
 			};
 			setUserPosts([newPost, ...userPosts]);
-			setShowModal(false); // Close modal after creating post
-
-			// Send post data to server to save
+			setShowModal(false);
 			await savePostToServer(newPost);
 		} catch (error) {
 			console.error("Error creating post:", error);
