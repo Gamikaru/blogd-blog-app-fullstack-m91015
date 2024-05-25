@@ -21,36 +21,6 @@ import "./Admin.css";
 
 const router = createBrowserRouter([
 	{
-		path: "/bloggs",
-		element: <App />,
-		children: [
-			{
-				path: "/bloggs",
-				element: <Bloggs />,
-			},
-		],
-	},
-	{
-		path: "/edit/:id",
-		element: <App />,
-		children: [
-			{
-				path: "/edit/:id",
-				element: <Bloggs />,
-			},
-		],
-	},
-	{
-		path: "/create",
-		element: <App />,
-		children: [
-			{
-				path: "/create",
-				element: <Bloggs />,
-			},
-		],
-	},
-	{
 		path: "/login",
 		element: <App />,
 		children: [
@@ -77,6 +47,36 @@ const router = createBrowserRouter([
 			{
 				path: "/",
 				element: <HomePage />,
+			},
+		],
+	},
+	{
+		path: "/bloggs",
+		element: <App />,
+		children: [
+			{
+				path: "/bloggs",
+				element: <Bloggs />,
+			},
+		],
+	},
+	{
+		path: "/edit/:id",
+		element: <App />,
+		children: [
+			{
+				path: "/edit/:id",
+				element: <Bloggs />,
+			},
+		],
+	},
+	{
+		path: "/create",
+		element: <App />,
+		children: [
+			{
+				path: "/create",
+				element: <Bloggs />,
 			},
 		],
 	},
