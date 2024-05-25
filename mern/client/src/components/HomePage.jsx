@@ -2,26 +2,26 @@ import React, { useEffect, useState } from "react";
 import { Button, Card } from "react-bootstrap";
 import PostModal from "./PostModal";
 
-const UserCard = ({ userInitials, userData }) => (
+const UserCard = ({ userInitials, user }) => (
 	<div className="user-card-container">
 		<Card className="user-card">
 			<Card.Title>{userInitials}</Card.Title>
 			<div className="card-text">
 				<ul>
 					<li>
-						<span>Status: </span> {userData.status}
+						<span>Status: </span> {user.status}
 					</li>
 					<li>
-						<span>Email: </span> {userData.email}
+						<span>Email: </span> {user.email}
 					</li>
 					<li>
-						<span>Birthdate: </span> {userData.birthdate}
+						<span>Birthdate: </span> {user.birthdate}
 					</li>
 					<li>
-						<span>Occupation: </span> {userData.occupation}
+						<span>Occupation: </span> {user.occupation}
 					</li>
 					<li>
-						<span>Location: </span> {userData.location}
+						<span>Location: </span> {user.location}
 					</li>
 				</ul>
 			</div>
@@ -53,41 +53,44 @@ const PostsCard = ({ userPosts, showModal, handleLike, setShowModal }) => (
 );
 
 export default function HomePage() {
-	const [userData, setUserData] = useState({
-		first_name: "Ash",
-		last_name: "Ketchum",
-		status: "Motivated",
-		email: "AskKetchum@pokemon.com",
-		birthdate: "05/22/1987",
-		occupation: "Pokemon Trainer",
-		location: "Pallet Town",
+	const [user, setUser] = useState({
+		first_name: "",
+		last_name: "",
+		status: "",
+		email: "",
+		birthdate: "",
+		occupation: "",
+		location: "",
 	});
 	const [userPosts, setUserPosts] = useState([]);
 	const [showModal, setShowModal] = useState(false);
 
 	useEffect(() => {
-		fetchUserData();
+		fetchUser();
 	}, []);
 
-const fetchUserData = async () => {
-	try {
-		const token = localStorage.getItem("token");
-		const response = await fetch("http://localhost:5050/user", {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		});
-		if (!response.ok) {
-			throw new Error(`Failed to fetch user data: ${response.statusText}`);
+	const fetchUser = async () => {
+		const token = localStorage.getItem("PassBloggs");
+		if (!token) {
+			console.error("Token not found in localStorage");
+			return;
 		}
-		const data = await response.json();
-		setUserData(data.user);
-		setUserPosts(data.posts);
-	} catch (error) {
-		console.error("Error fetching user data:", error);
-	}
-};
-
+		try {
+			const response = await fetch(`http://localhost:5050/user`, {
+				headers: {
+				Authorization: `Bearer ${token}`,
+				},
+			});
+			if (!response.ok) {
+				throw new Error(`Failed to fetch user data: ${response.statusText}`);
+			}
+			const data = await response.json();
+			setUser(data.user);
+			setUserPosts(data.posts);
+		} catch (error) {
+			console.error("Error fetching user data:", error);
+		}
+	};
 
 	const handleCreatePost = async (content) => {
 		try {
@@ -122,13 +125,13 @@ const fetchUserData = async () => {
 		}
 	};
 
-	const getInitials = (firstName, lastName) => {
-		const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : "";
-		const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : "";
+	const getInitials = (first_name, last_name) => {
+		const firstInitial = first_name ? first_name.charAt(0).toUpperCase() : "";
+		const lastInitial = last_name ? last_name.charAt(0).toUpperCase() : "";
 		return `${firstInitial}${lastInitial}`;
 	};
 
-	const userInitials = getInitials(userData.first_name, userData.last_name);
+	const userInitials = getInitials(user.first_name, user.last_name);
 
 	const handleLike = (index) => {
 		setUserPosts((prevPosts) => {
@@ -140,7 +143,7 @@ const fetchUserData = async () => {
 
 	return (
 		<div className="main-container">
-			<UserCard userInitials={userInitials} userData={userData} />
+			<UserCard userInitials={userInitials} user={user} />
 			<PostsCard
 				userPosts={userPosts}
 				showModal={showModal}

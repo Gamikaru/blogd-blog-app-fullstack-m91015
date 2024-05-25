@@ -51,8 +51,6 @@ async function handleRegister(e) {
 			status: "",
 			auth_level: "",
 		});
-
-		// Optionally, you can navigate to another page after successful registration
 		navigate("/login");
 	} catch (error) {
 		// Handle fetch error (e.g., network error, etc.)
