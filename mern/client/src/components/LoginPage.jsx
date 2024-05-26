@@ -50,7 +50,7 @@ export default function LoginPage() {
 			}
 			const serverResponse = await response.json();
 			console.log(serverResponse.token);
-			setCookie("PassBloggs", serverResponse.token, {path:"/"})
+			setCookie("PassBloggs", serverResponse.token, { path: "/" });
 			// Log a success message to the console if the login was successful
 			console.log("Login successful");
 			// Reset the loginForm state
@@ -72,6 +72,17 @@ export default function LoginPage() {
 				className="logo-image"
 				src="/CodeBloggs logo.png"
 			/>
+			<Toast
+				show={showToast}
+				onClose={() => setShowToast(false)}
+				className="login-toast-container"
+				autohide
+				delay={6000}
+			>
+				<Toast.Body className="login-toast-body">
+				Failed Login Attempt: Invalid email or password
+				</Toast.Body>
+			</Toast>
 			<div className="card-container">
 				<Card>
 					<Card.Body>
@@ -117,20 +128,6 @@ export default function LoginPage() {
 					</Card.Body>
 				</Card>
 			</div>
-			<Toast
-				show={showToast}
-				onClose={() => setShowToast(false)}
-				className="toast-container"
-				autohide
-				delay={3000}
-			>
-				<Toast.Header>
-					<strong className="me-auto">Failed Login Attempt</strong>
-				</Toast.Header>
-				<Toast.Body className="toast-body">
-					Invalid email or password.
-				</Toast.Body>
-			</Toast>
 		</div>
 	);
 }
