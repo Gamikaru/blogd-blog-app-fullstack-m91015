@@ -3,7 +3,6 @@
   top: 24%;
   left: 61%;
   transform: translate(-50%, -50%);
-  z-index: 0;
 }
 /* Container for layout, positioned relatively */
 .container {
@@ -69,7 +68,7 @@
   width: 50%;
   padding: 15px;
 }
-/* Register link with cursor style, text decoration, and font */
+/* Register link styling*/
 .register-link {
   cursor: pointer;
   color: #000000;
@@ -77,15 +76,20 @@
   font-size: 25px;
   font-weight: bold;
 }
-/* Toast styling */
-.custom-toast {
+/* toast styling */
+.toast-container {
   position: fixed;
-  top: 0;
+  top: 10%; 
   left: 50%;
   transform: translateX(-50%);
-  z-index: 9999;
+  width: 200px;
+  height: fit-content;
 }
 .toast-body {
-  background-color: #f8d7da; /* Red background */
-  color: #721c24; /* Red text color */
+  background-color: #f8d7da; 
+  color: #721c24; 
+}
+.toast-header {
+  background-color: #f5c6cb; 
+  color: #721c24;
 }

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import Card from "react-bootstrap/Card";
+import Toast from "react-bootstrap/Toast";
 
 // Component for the registration page
 export default function RegisterPage() {
@@ -15,6 +16,7 @@ export default function RegisterPage() {
 		status: "",
 		auth_level: "",
 	});
+	const [showToast, setShowToast] = useState(false);
 	const navigate = useNavigate();
 
 	function updateRegisterForm(value) {
@@ -32,12 +34,16 @@ async function handleRegister(e) {
 		});
 
 		if (!response.ok) {
-			// Handle non-successful response (e.g., 404, 500, etc.)
-			const errorMessage = await response.text();
-			throw new Error(
-				`Server responded with status: ${response.status}. Message: ${errorMessage}`
-			);
+			setShowToast(true);
+			return;
 		}
+
+		// if (!response.ok) {
+		// 	const errorMessage = await response.text();
+		// 	throw new Error(
+		// 		`Server responded with status: ${response.status}. Message: ${errorMessage}`
+		// 	);
+		// }
 
 		// If the response is successful, reset the form fields
 		setRegisterForm({
@@ -58,8 +64,6 @@ async function handleRegister(e) {
 		alert("Registration failed. " + error.message);
 	}
 }
-
-
 	// Render the registration form
 	return (
 		<div className="register-container">
@@ -68,6 +72,20 @@ async function handleRegister(e) {
 				className="reg-logo-image"
 				src="/CodeBloggs logo.png"
 			/>
+			<Toast
+				show={showToast}
+				onClose={() => setShowToast(false)}
+				className="reg-toast-container"
+				autohide
+				delay={6000}
+			>
+				<Toast.Header className="red-toast-header">
+					<strong className="me-auto">Registration Error</strong>
+				</Toast.Header>
+				<Toast.Body className="reg-toast-body">
+					Invalid registration attempt or user already exists.
+				</Toast.Body>
+			</Toast>
 			<div className="register-card-container">
 				<Card>
 					<Card.Body>
