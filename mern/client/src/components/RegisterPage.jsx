@@ -16,7 +16,9 @@ export default function RegisterPage() {
 		status: "",
 		auth_level: "",
 	});
-	const [showToast, setShowToast] = useState(false);
+
+	const [showSuccessToast, setShowSuccessToast] = useState(false);
+	const [showErrorToast, setShowErrorToast] = useState(false);
 	const navigate = useNavigate();
 
 	function updateRegisterForm(value) {
@@ -24,46 +26,41 @@ export default function RegisterPage() {
 		setRegisterForm((prev) => ({ ...prev, ...value }));
 	}
 
-async function handleRegister(e) {
-	e.preventDefault();
-	try {
-		const response = await fetch("http://localhost:5050/user/register", {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(registerForm),
-		});
+	async function handleRegister(e) {
+		e.preventDefault();
+		try {
+			const response = await fetch("http://localhost:5050/user/register", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(registerForm),
+			});
 
-		if (!response.ok) {
-			setShowToast(true);
-			return;
+			if (!response.ok) {
+				setShowErrorToast(true); // Corrected from setShowToast
+				return;
+			}
+
+			// If the response is successful, reset the form fields
+			setRegisterForm({
+				first_name: "",
+				last_name: "",
+				email: "",
+				password: "",
+				birthdate: "",
+				occupation: "",
+				location: "",
+				status: "",
+				auth_level: "",
+			});
+			setShowSuccessToast(true);
+			navigate("/login");
+		} catch (error) {
+			// Handle fetch error (e.g., network error, etc.)
+			console.error("Error occurred during registration:", error.message);
+			alert("Registration failed. " + error.message);
 		}
-
-		// if (!response.ok) {
-		// 	const errorMessage = await response.text();
-		// 	throw new Error(
-		// 		`Server responded with status: ${response.status}. Message: ${errorMessage}`
-		// 	);
-		// }
-
-		// If the response is successful, reset the form fields
-		setRegisterForm({
-			first_name: "",
-			last_name: "",
-			email: "",
-			password: "",
-			birthdate: "",
-			occupation: "",
-			location: "",
-			status: "",
-			auth_level: "",
-		});
-		navigate("/login");
-	} catch (error) {
-		// Handle fetch error (e.g., network error, etc.)
-		console.error("Error occurred during registration:", error.message);
-		alert("Registration failed. " + error.message);
 	}
-}
+
 	// Render the registration form
 	return (
 		<div className="register-container">
@@ -73,16 +70,24 @@ async function handleRegister(e) {
 				src="/CodeBloggs logo.png"
 			/>
 			<Toast
-				show={showToast}
-				onClose={() => setShowToast(false)}
-				className="reg-toast-container"
+				show={showSuccessToast}
+				onClose={() => setShowSuccessToast(false)}
+				className="reg-success-toast"
 				autohide
 				delay={6000}
 			>
-				<Toast.Header className="red-toast-header">
-					<strong className="me-auto">Registration Error</strong>
-				</Toast.Header>
-				<Toast.Body className="reg-toast-body">
+				<Toast.Body className="toast-body-success">
+					Successful registration!
+				</Toast.Body>
+			</Toast>
+			<Toast
+				show={showErrorToast}
+				onClose={() => setShowErrorToast(false)}
+				className="reg-error-toast"
+				autohide
+				delay={6000}
+			>
+				<Toast.Body className="toast-body-error">
 					Invalid registration attempt or user already exists.
 				</Toast.Body>
 			</Toast>

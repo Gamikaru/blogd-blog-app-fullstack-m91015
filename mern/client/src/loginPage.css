@@ -6,7 +6,7 @@
 }
 /* Container for layout, positioned relatively */
 .container {
-  position: relative;
+  position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -77,19 +77,18 @@
   font-weight: bold;
 }
 /* toast styling */
-.toast-container {
+.login-toast-container {
   position: fixed;
-  top: 10%; 
-  left: 50%;
+  top: 30.5%; 
+  left: 51%;
   transform: translateX(-50%);
-  width: 200px;
+  width: 350px;
   height: fit-content;
 }
-.toast-body {
+.login-toast-body {
   background-color: #f8d7da; 
   color: #721c24; 
-}
-.toast-header {
-  background-color: #f5c6cb; 
-  color: #721c24;
+  border-radius: 10px;
+  border: 2px solid #000000; 
+  padding: 5px;
 }

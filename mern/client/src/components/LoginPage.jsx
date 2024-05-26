@@ -75,15 +75,12 @@ export default function LoginPage() {
 			<Toast
 				show={showToast}
 				onClose={() => setShowToast(false)}
-				className="toast-container"
+				className="login-toast-container"
 				autohide
 				delay={6000}
 			>
-				<Toast.Header>
-					<strong className="toast-header">Failed Login Attempt</strong>
-				</Toast.Header>
-				<Toast.Body className="toast-body">
-					Invalid email or password.
+				<Toast.Body className="login-toast-body">
+				Failed Login Attempt: Invalid email or password
 				</Toast.Body>
 			</Toast>
 			<div className="card-container">
