@@ -77,10 +77,12 @@ router.post('/login', async (req, res) => {
             return res.status(401).send('Invalid credentials');
         }
 
+        console.log('Generating token for user:', user._id);  // Log before generating the token
+
         const token = jwt.sign(
-            { id: user._id, email: user.email, auth_level: user.auth_level },
+            { _id: user._id, email: user.email, auth_level: user.auth_level }, // Ensure you use _id, not id
             process.env.JWT_SECRET,
-            { expiresIn: '24h' } // Token is valid for 24 hours
+            { expiresIn: '24h' }
         );
 
         res.status(200).json({

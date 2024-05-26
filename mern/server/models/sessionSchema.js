@@ -1,13 +1,21 @@
-import mongoose from 'mongoose';    
+import mongoose from 'mongoose';
 
-const { Schema, model } = mongoose; 
+const { Schema, model } = mongoose;
 
 const sessionSchema = new Schema({
-    session_id: String,
-    sessions_date: Date,
+    sessionId: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    sessionDate: {
+        type: Date,
+        default: Date.now
+    },
     user: {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     }
 });
 

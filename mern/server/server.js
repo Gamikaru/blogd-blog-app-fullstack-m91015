@@ -3,6 +3,7 @@ import cors from "cors";
 import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import commentRoutes from "./routes/commentRoutes.js";
+import sessionRoutes from "./routes/sessionRoutes.js";
 import './db/connection.js';
 import { authenticate } from './middleware/authMiddleware.js';
 import dotenv from 'dotenv';
@@ -21,6 +22,8 @@ app.use(express.json());
 app.use('/user', userRoutes);
 app.use('/post', authenticate, postRoutes);
 app.use('/comment', authenticate, commentRoutes);
+app.use('/session', authenticate, sessionRoutes);
+
 
 
 // start the Express server

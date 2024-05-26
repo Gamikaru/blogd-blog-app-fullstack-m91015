@@ -9,7 +9,7 @@ const router = express.Router();
 // Create a new post
 router.post('/post-submit', authenticate, async (req, res) => {
     const { content } = req.body;
-    const user_id = req.user.id; // Correct user_id extraction from req.user.id
+    const user_id = req.user._id; // Correct user_id extraction from req.user._id
     const likes = 0;
     const comments = [];
     const time_stamp = Date.now();
@@ -38,7 +38,7 @@ router.post('/post-submit', authenticate, async (req, res) => {
 });
 
 // Get all posts by the current user
-router.get('/posts/:id', async (req, res) => {
+router.get('/posts/:id', authenticate, async (req, res) => {
     try {
         const posts = await Post.find({ user_id: req.params.id });
         console.log(`Posts by user ${req.params.id}:`, posts);
@@ -50,7 +50,7 @@ router.get('/posts/:id', async (req, res) => {
 });
 
 // Get a single post
-router.get('/post-specific/:id', async (req, res) => {
+router.get('/post-specific/:id', authenticate, async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
         if (!post) {

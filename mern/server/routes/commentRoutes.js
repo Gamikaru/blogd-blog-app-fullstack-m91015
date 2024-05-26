@@ -5,19 +5,13 @@ import Comment from '../models/commentSchema.js';
 
 const router = express.Router();
 
-// Create a comment
+// In commentRoutes.js
 router.post('/comment-submit', authenticate, async (req, res) => {
     const { content, post_id } = req.body;
-    const { id: user_id } = req.user;
+    const user_id = req.user._id;  // Ensure this is correctly populated
 
-    if (!content) {
-        console.log('No content provided');
-        return res.status(400).send('Please enter some content to post');
-    }
-
-    if (!post_id) {
-        console.log('No post ID provided');
-        return res.status(400).send('No post ID provided');
+    if (!content || !post_id) {
+        return res.status(400).send('Please provide all required fields');
     }
 
     try {
@@ -28,11 +22,10 @@ router.post('/comment-submit', authenticate, async (req, res) => {
         });
 
         await newComment.save();
-        console.log('Comment created successfully');
         return res.status(201).send('Comment created successfully');
     } catch (error) {
         console.error('Error during comment creation:', error);
-        return res.status(500).send('Server error: ' + error.message);
+        return res.status(500).send('Server error');
     }
 });
 
@@ -97,7 +90,7 @@ router.delete('/comment-delete/:comment_id', authenticate, async (req, res) => {
 });
 
 // Like a comment
-router.put('/like-comment/:comment_id', authenticate, async (req, res) => {
+router.put('/comment-like/:comment_id', authenticate, async (req, res) => {
     const { comment_id } = req.params;  // Changed from id to comment_id
 
     try {
@@ -116,7 +109,7 @@ router.put('/like-comment/:comment_id', authenticate, async (req, res) => {
     }
 });
 
-router.put('/unlike-comment/:comment_id', authenticate, async (req, res) => {
+router.put('/comment-unlike/:comment_id', authenticate, async (req, res) => {
     const { comment_id } = req.params;  // Changed from id to comment_id
 
     try {
