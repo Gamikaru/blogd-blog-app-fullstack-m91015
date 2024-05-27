@@ -14,9 +14,9 @@
 .network-card {
     flex: 1 1 calc(33.333% - 40px); /* Adjust card width and spacing */
     margin: 10px; /* Additional margin to ensure spacing if needed */
-    padding: 20px;
+    padding: 5px;
     border-radius: 8px;
-    max-width: 300px; /* Optional: limit the maximum width of each card */
+    max-width: 400px; /* Optional: limit the maximum width of each card */
     width: fit-content;
 }
 
