@@ -5,7 +5,6 @@ import Comment from '../models/commentSchema.js';
 
 const router = express.Router();
 
-// In commentRoutes.js
 router.post('/comment-submit', authenticate, async (req, res) => {
     const { content, post_id } = req.body;
     const user_id = req.user._id;  // Ensure this is correctly populated
@@ -31,7 +30,7 @@ router.post('/comment-submit', authenticate, async (req, res) => {
 
 router.put('/comment-edit/:comment_id', authenticate, async (req, res) => {
     const { content } = req.body;
-    const { id: user_id } = req.user;
+    const { _id: user_id } = req.user;
     const { comment_id } = req.params;
 
     if (!content) {
@@ -64,7 +63,7 @@ router.put('/comment-edit/:comment_id', authenticate, async (req, res) => {
 
 // Delete a comment
 router.delete('/comment-delete/:comment_id', authenticate, async (req, res) => {
-    const { id: user_id } = req.user;
+    const { _id: user_id } = req.user;
     const { comment_id } = req.params;  // Changed from id to comment_id
 
     try {
