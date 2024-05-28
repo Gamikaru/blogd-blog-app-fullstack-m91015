@@ -1,5 +1,6 @@
 /* blogg-container */
 .blogg-container {
+  position: fixed;
   margin: 5% auto; /* Center the container with margin */
   display: flex;
   flex-direction: column;
@@ -11,7 +12,7 @@
   border-radius: 35px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 40px;;
-  left: 100px;
+  left: 280px;
   bottom: -80px;
 }
 
