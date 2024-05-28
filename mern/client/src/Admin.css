@@ -1,0 +1,88 @@
+/* admin.css */
+         /* USER CARD */
+/* Style for the User Manager card */
+.user-manager {
+    position: fixed; 
+    top: 20%;
+    left: 16%; 
+    width: 15%; 
+    height: 200px; 
+    background-color: #9b30ff; 
+    border: 3px solid #000000;
+    border-radius: 20px;
+}
+/* Style for the User Manager card body */
+.user-body {
+    padding: 50px; 
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+/* Style for the User Manager card title */
+.user-title {
+    font-size: 20;
+    font-weight: bold;
+    text-align: center;
+}
+
+         /* MANAGER CARD */
+/* Style for the Content Manager card */
+.content-manager {
+    position: fixed; 
+    top: 20%;
+    left: 35%;
+    background-color: #9b30ff; 
+    width: 15%; 
+    height: 200px; 
+    border: 3px solid #000000;
+    border-radius: 20px;
+}
+
+/* Style for the Content Manager card body */
+.content-body {
+    padding: 50px; 
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+/* Style for the Content Manager card title */
+.content-title {
+    font-size: 20;
+    font-weight: bold;
+    text-align: center;
+}
+
+    /* toast.css */
+/* Styling for the toast container */
+.admin-toast-container {
+    position: fixed;
+    width: fit-content;
+    height: 150px;
+    top: 60%;
+    left: 50%;
+    background-color: #f8f8ff;
+    padding: 10px;
+    border-radius: 50px;
+    border: 3px solid #000000;
+    text-align: center;
+}
+.admin-toast-title {
+background-color: #f8f8ff;
+font-size: 20;
+font-weight: bold;
+}
+.admin-toast-messg {
+    font-size: 16px;
+    text-align: center;
+}
+.admin-toast-button {
+    top: 10px;
+    right: 10px;
+    width: 25%;
+    cursor: pointer;
+    color: #f8f8ff;
+    background-color: #000080; 
+    border: 2px solid #000000;
+    border-radius: 20px;
+}
