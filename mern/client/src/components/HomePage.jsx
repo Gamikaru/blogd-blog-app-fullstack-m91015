@@ -54,13 +54,13 @@ const PostsCard = ({ userPosts, showModal, handleLike, setShowModal }) => (
 
 export default function HomePage() {
 	const [user, setUser] = useState({
-		first_name: "",
-		last_name: "",
-		status: "",
-		email: "",
-		birthdate: "",
-		occupation: "",
-		location: "",
+		first_name: "Ash",
+		last_name: "Ketchum",
+		status: "Motivated",
+		email: "AskKetchum@pokemontrainers.com",
+		birthdate: "05/22/1997",
+		occupation: "Pokemon Trainer",
+		location: "Pallet Town",
 	});
 	const [userPosts, setUserPosts] = useState([]);
 	const [showModal, setShowModal] = useState(false);
@@ -110,7 +110,7 @@ export default function HomePage() {
 
 	const savePostToServer = async (post) => {
 		try {
-			const response = await fetch("http://localhost:5050/posts", {
+			const response = await fetch(`http://localhost:5050/posts`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
