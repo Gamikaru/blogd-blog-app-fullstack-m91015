@@ -1,0 +1,96 @@
+.user-manager-container {
+    position: fixed;
+    width: 1500px;
+    height: fit-content;
+    margin: 140px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    margin-left: 15%;
+}
+
+.user-title{
+    font-size: 400%;
+}
+.user-manager-container input[type="text"] {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.skeleton-loader {
+    margin-top: 20px;
+}
+
+.skeleton-row {
+    height: 20px;
+    margin-bottom: 10px;
+    background-color: #f2f2f2;
+    border-radius: 4px;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 12px;
+    vertical-align: middle;
+    border-top: 1px solid #dee2e6;
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+    background-color: #e9ecef;
+}
+
+.table tbody tr:nth-of-type(odd) {
+    background-color: #f8f9fa;
+}
+
+.table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.table td {
+    text-align: center;
+}
+
+.table th {
+    text-align: center;
+}
+
+.table .btn {
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    border-radius: 4px;
+}
+
+.table .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.table .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+.table .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.table .btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}

@@ -18,6 +18,8 @@ import Network from "./components/Network";
 import "./Network.css";
 import Admin from "./components/Admin";
 import "./Admin.css";
+import UserManager from "./components/userManager";
+import "./userManager.css";
 
 const router = createBrowserRouter([
 	{
@@ -107,6 +109,16 @@ const router = createBrowserRouter([
 			{
 				path: "/admin",
 				element: <Admin />,
+			},
+		],
+	},
+	{
+		path: "/user-manager", // Add UserManager route
+		element: <App />,
+		children: [
+			{
+				path: "/user-manager",
+				element: <UserManager />,
 			},
 		],
 	},
