@@ -22,14 +22,13 @@ export default function Admin() {
 				</Link>
 			</div>
 			<div>
-				<Card
-					className="content-manager"
-					onClick={() => handleCardClick("Content Manager")}
-				>
-					<Card.Body className="content-body">
-						<Card.Title className="content-title">Content Manager</Card.Title>
-					</Card.Body>
-				</Card>
+				<Link to="/content-manager">
+					<Card className="content-manager">
+						<Card.Body className="content-body">
+							<Card.Title className="content-title">Content Manager</Card.Title>
+						</Card.Body>
+					</Card>
+				</Link>
 			</div>
 			<Modal
 				className="admin-toast-container"

@@ -50,7 +50,7 @@ export default function UserManager() {
 
 	return (
 		<div className="user-manager-container">
-			<h1 className="user-title">User Manager</h1>
+			<h1 className="user-content-title">User Manager</h1>
 			<input
 				type="text"
 				placeholder="Search by first or last name"
@@ -66,7 +66,7 @@ export default function UserManager() {
 					<div className="skeleton-row"></div>
 				</div>
 			) : (
-				<Table striped bordered hover>
+				<Table striped bordered hover className="content-table">
 					<thead>
 						<tr>
 							<th>First Name</th>

@@ -7,16 +7,17 @@
     border: 1px solid #ffffff;
     border-radius: 8px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjust column width */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
     gap: 20px;
+    background-color: #9B30FF;
 }
 
 .network-card {
-    flex: 1 1 calc(33.333% - 40px); /* Adjust card width and spacing */
-    margin: 10px; /* Additional margin to ensure spacing if needed */
+    flex: 1 1 calc(33.333% - 40px);
+    margin: 10px;
     padding: 5px;
     border-radius: 8px;
-    max-width: 400px; /* Optional: limit the maximum width of each card */
+    max-width: 400px;
     width: fit-content;
 }
 

@@ -9,7 +9,7 @@
     margin-left: 15%;
 }
 
-.user-title{
+.user-content-title{
     font-size: 400%;
 }
 .user-manager-container input[type="text"] {
@@ -33,7 +33,7 @@
     border-radius: 4px;
 }
 
-.table {
+.content-table {
     width: 100%;
     margin-bottom: 1rem;
     color: #212529;
