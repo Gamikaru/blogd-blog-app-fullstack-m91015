@@ -120,7 +120,7 @@ router.get('/:id', authenticate, async (req, res) => {
 });
 
 // Update user info (protected route)
-router.put('/user-update/:id', authenticate, async (req, res) => {
+router.put('/:id', authenticate, async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
         if (!user) {
@@ -148,6 +148,27 @@ router.get('/list/:id', authenticate, async (req, res) => {
         res.status(200).json(users);
     } catch (error) {
         console.error("Error fetching users:", error);
+        return res.status(500).send('Server error: ' + error.message);
+    }
+});
+
+// List of all users (protected route)
+router.get('/', authenticate, async (req, res) => {
+    try {
+        const users = await User.find();
+        res.status(200).json(users);
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        return res.status(500).send('Server error: ' + error.message);
+    }
+});
+
+// Logout user endpoint
+router.post('/logout', authenticate, async (req, res) => {
+    try {
+        res.status(200).send('User logged out successfully');
+    } catch (error) {
+        console.error("Error logging out user:", error);
         return res.status(500).send('Server error: ' + error.message);
     }
 });

@@ -1,11 +1,11 @@
-// This file serves as the route handler for comment-related requests. The code includes routes to create, update, and delete comments, as well as like and unlike comments. Error handling is included in each route to manage potential errors. All routes have thorough server and terminal logging to track request processing and error handling.
 import express from 'express';
 import { authenticate } from '../middleware/authMiddleware.js';
 import Comment from '../models/commentSchema.js';
 
 const router = express.Router();
 
-router.post('/comment-submit', authenticate, async (req, res) => {
+// Create a new comment
+router.post('/', authenticate, async (req, res) => {
     const { content, post_id } = req.body;
     const user_id = req.user._id;  // Ensure this is correctly populated
 
@@ -28,10 +28,39 @@ router.post('/comment-submit', authenticate, async (req, res) => {
     }
 });
 
-router.put('/comment-edit/:comment_id', authenticate, async (req, res) => {
+// Get all comments
+router.get('/', authenticate, async (req, res) => {
+    try {
+        const comments = await Comment.find().sort({ time_stamp: -1 });
+        console.log('Comments retrieved successfully');
+        return res.status(200).send(comments);
+    } catch (error) {
+        console.error('Error retrieving comments:', error);
+        return res.status(500).send('Server error: ' + error.message);
+    }
+});
+
+// Get a single comment
+router.get('/:id', authenticate, async (req, res) => {
+    try {
+        const comment = await Comment.findById(req.params.id);
+        if (!comment) {
+            console.log('Comment not found');
+            return res.status(404).send('Comment not found');
+        }
+        console.log('Comment:', comment);
+        return res.status(200).send(comment);
+    } catch (error) {
+        console.error('Error getting comment:', error);
+        return res.status(500).send('Server error: ' + error.message);
+    }
+});
+
+// Update a comment
+router.patch('/:id', authenticate, async (req, res) => {
     const { content } = req.body;
     const { _id: user_id } = req.user;
-    const { comment_id } = req.params;
+    const { id } = req.params;
 
     if (!content) {
         console.log('No content provided');
@@ -39,7 +68,7 @@ router.put('/comment-edit/:comment_id', authenticate, async (req, res) => {
     }
 
     try {
-        const comment = await Comment.findById(comment_id);
+        const comment = await Comment.findById(id);
 
         if (!comment) {
             console.log('Comment not found');
@@ -62,12 +91,12 @@ router.put('/comment-edit/:comment_id', authenticate, async (req, res) => {
 });
 
 // Delete a comment
-router.delete('/comment-delete/:comment_id', authenticate, async (req, res) => {
+router.delete('/:id', authenticate, async (req, res) => {
     const { _id: user_id } = req.user;
-    const { comment_id } = req.params;  // Changed from id to comment_id
+    const { id } = req.params;
 
     try {
-        const comment = await Comment.findById(comment_id);
+        const comment = await Comment.findById(id);
 
         if (!comment) {
             console.log('Comment not found');
@@ -89,11 +118,11 @@ router.delete('/comment-delete/:comment_id', authenticate, async (req, res) => {
 });
 
 // Like a comment
-router.put('/comment-like/:comment_id', authenticate, async (req, res) => {
-    const { comment_id } = req.params;  // Changed from id to comment_id
+router.put('/like/:id', authenticate, async (req, res) => {
+    const { id } = req.params;
 
     try {
-        const result = await Comment.findByIdAndUpdate(comment_id, { $inc: { likes: 1 } }, { new: true });
+        const result = await Comment.findByIdAndUpdate(id, { $inc: { likes: 1 } }, { new: true });
 
         if (!result) {
             console.log('Comment not found');
@@ -108,11 +137,12 @@ router.put('/comment-like/:comment_id', authenticate, async (req, res) => {
     }
 });
 
-router.put('/comment-unlike/:comment_id', authenticate, async (req, res) => {
-    const { comment_id } = req.params;  // Changed from id to comment_id
+// Unlike a comment
+router.put('/unlike/:id', authenticate, async (req, res) => {
+    const { id } = req.params;
 
     try {
-        const result = await Comment.findByIdAndUpdate(comment_id, { $inc: { likes: -1 } }, { new: true });
+        const result = await Comment.findByIdAndUpdate(id, { $inc: { likes: -1 } }, { new: true });
 
         if (!result) {
             console.log('Comment not found');
@@ -137,10 +167,7 @@ router.get('/comments/:post_id', authenticate, async (req, res) => {
     } catch (error) {
         console.error('Error retrieving comments:', error);
         return res.status(500).send('Server error: ' + error.message);
-
     }
 });
-
-
 
 export default router;
