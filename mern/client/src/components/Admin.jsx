@@ -1,15 +1,10 @@
 import React, { useState } from "react";
 import { Card, Modal, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 export default function Admin() {
 	const [showModal, setShowModal] = useState(false);
 	const [modalMessage, setModalMessage] = useState("");
-
-	const handleCardClick = (cardType) => {
-		setModalMessage(`You clicked the ${cardType} card!`);
-		setShowModal(true);
-		console.log("Modal should appear now");
-	};
 
 	const handleCloseModal = () => {
 		setShowModal(false);
@@ -18,24 +13,22 @@ export default function Admin() {
 	return (
 		<>
 			<div>
-				<Card
-					className="user-manager"
-					onClick={() => handleCardClick("User Manager")}
-				>
-					<Card.Body className="user-body">
-						<Card.Title className="user-title">User Manager</Card.Title>
-					</Card.Body>
-				</Card>
+				<Link to="/user-manager">
+					<Card className="user-manager">
+						<Card.Body className="user-body">
+							<Card.Title className="user-title">User Manager</Card.Title>
+						</Card.Body>
+					</Card>
+				</Link>
 			</div>
 			<div>
-				<Card
-					className="content-manager"
-					onClick={() => handleCardClick("Content Manager")}
-				>
-					<Card.Body className="content-body">
-						<Card.Title className="content-title">Content Manager</Card.Title>
-					</Card.Body>
-				</Card>
+				<Link to="/content-manager">
+					<Card className="content-manager">
+						<Card.Body className="content-body">
+							<Card.Title className="content-title">Content Manager</Card.Title>
+						</Card.Body>
+					</Card>
+				</Link>
 			</div>
 			<Modal
 				className="admin-toast-container"
@@ -43,11 +36,15 @@ export default function Admin() {
 				onHide={handleCloseModal}
 				centered
 			>
-				<Modal.Title className="admin-toast-title" >Confirmation</Modal.Title>
+				<Modal.Title className="admin-toast-title">Confirmation</Modal.Title>
 				<Modal.Body className="admin-toast-mssg">{modalMessage}</Modal.Body>
 				<Modal.Footer>
-					<Button className="admin-toast-button" variant="primary" onClick={handleCloseModal}>
-						Comfirm
+					<Button
+						className="admin-toast-button"
+						variant="primary"
+						onClick={handleCloseModal}
+					>
+						Confirm
 					</Button>
 				</Modal.Footer>
 			</Modal>
