@@ -1,5 +1,3 @@
-// This file serves as the route handler for post-related requests.
-
 import express from 'express';
 import Post from '../models/postSchema.js';
 import { authenticate } from '../middleware/authMiddleware.js';
@@ -7,7 +5,7 @@ import { authenticate } from '../middleware/authMiddleware.js';
 const router = express.Router();
 
 // Create a new post
-router.post('/post-submit', authenticate, async (req, res) => {
+router.post('/', authenticate, async (req, res) => {
     const { content } = req.body;
     const user_id = req.user._id; // Correct user_id extraction from req.user._id
     const likes = 0;
@@ -38,7 +36,7 @@ router.post('/post-submit', authenticate, async (req, res) => {
 });
 
 // Get all posts by the current user
-router.get('/posts/:id', authenticate, async (req, res) => {
+router.get('/:id', authenticate, async (req, res) => {
     try {
         const posts = await Post.find({ user_id: req.params.id });
         console.log(`Posts by user ${req.params.id}:`, posts);
@@ -50,7 +48,7 @@ router.get('/posts/:id', authenticate, async (req, res) => {
 });
 
 // Get a single post
-router.get('/post-specific/:id', authenticate, async (req, res) => {
+router.get('/specific/:id', authenticate, async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
         if (!post) {
@@ -66,7 +64,7 @@ router.get('/post-specific/:id', authenticate, async (req, res) => {
 });
 
 // Update a post
-router.put('/post-edit/:id', authenticate, async (req, res) => {
+router.patch('/:id', authenticate, async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
         if (!post) {
@@ -89,7 +87,7 @@ router.put('/post-edit/:id', authenticate, async (req, res) => {
 });
 
 // Delete a post
-router.delete('/post-delete/:id', authenticate, async (req, res) => {
+router.delete('/:id', authenticate, async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
         if (!post) {
@@ -107,7 +105,7 @@ router.delete('/post-delete/:id', authenticate, async (req, res) => {
 });
 
 // Like a post
-router.put('/post-like/:id', authenticate, async (req, res) => {
+router.put('/like/:id', authenticate, async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
         if (!post) {
@@ -127,7 +125,7 @@ router.put('/post-like/:id', authenticate, async (req, res) => {
 });
 
 // Unlike a post
-router.put('/post-unlike/:id', authenticate, async (req, res) => {
+router.put('/unlike/:id', authenticate, async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
         if (!post) {
@@ -145,8 +143,5 @@ router.put('/post-unlike/:id', authenticate, async (req, res) => {
         return res.status(500).send('Server error: ' + error.message);
     }
 });
-
-
-
 
 export default router;
