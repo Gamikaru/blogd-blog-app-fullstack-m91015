@@ -2,14 +2,57 @@ import React, { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Card, Dropdown, Button, Modal } from "react-bootstrap";
 import PostModal from "./PostModal";
+import { useCookies } from "react-cookie";
 
 export default function Navbar({ first_name, last_name }) {
+	const [cookie, setCookie, removeCookie] = useCookies();
+
 	const location = useLocation();
 	const [showModal, setShowModal] = useState(false);
 	const [showAccountModal, setShowAccountModal] = useState(false);
 	const [showDropdown, setShowDropdown] = useState(false);
 	const dropdownRef = useRef(null);
 
+const [user, setUser] = useState({
+	first_name: "",
+	last_name: "",
+	status: "",
+	email: "",
+	birthdate: "",
+	occupation: "",
+	location: "",
+});
+
+	useEffect(() => {
+		fetchUser();
+	}, []);
+
+	const fetchUser = async () => {
+		const token = cookie.PassBloggs;
+		if (!token) {
+			console.error("Token not found in localStorage");
+			return;
+		}
+		try {
+			const response = await fetch(
+				`http://localhost:5050/user/${cookie.userID}`,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+			if (!response.ok) {
+				throw new Error(`Failed to fetch user data: ${response.statusText}`);
+			}
+			const data = await response.json();
+			console.log(data);
+			setUser(data);
+		} catch (error) {
+			console.error("Error fetching user data:", error);
+		}
+	};
+	
 	useEffect(() => {
 		const handleClickOutside = (event) => {
 			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -40,7 +83,7 @@ export default function Navbar({ first_name, last_name }) {
 		return null;
 	}
 	// Combine first name and last name to form the full name
-	const userName = `${first_name} ${last_name}`;
+	const userName = `${user.first_name} ${user.last_name}`;
 
 	return (
 		<>

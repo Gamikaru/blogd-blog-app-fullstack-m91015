@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card } from "react-bootstrap";
 import PostModal from "./PostModal";
+import { useCookies } from "react-cookie";
 
 const UserCard = ({ userInitials, user }) => (
 	<div className="user-card-container">
@@ -53,6 +54,9 @@ const PostsCard = ({ userPosts, showModal, handleLike, setShowModal }) => (
 );
 
 export default function HomePage() {
+
+	const [cookie, setCookie, removeCookie] = useCookies();
+
 	const [user, setUser] = useState({
 		first_name: "",
 		last_name: "",
@@ -67,16 +71,17 @@ export default function HomePage() {
 
 	useEffect(() => {
 		fetchUser();
+		fetchPost();
 	}, []);
 
 	const fetchUser = async () => {
-		const token = localStorage.getItem("PassBloggs");
+		const token = cookie.PassBloggs;
 		if (!token) {
 			console.error("Token not found in localStorage");
 			return;
 		}
 		try {
-			const response = await fetch(`http://localhost:5050/user`, {
+			const response = await fetch(`http://localhost:5050/user/${cookie.userID}`, {
 				headers: {
 				Authorization: `Bearer ${token}`,
 				},
@@ -85,46 +90,39 @@ export default function HomePage() {
 				throw new Error(`Failed to fetch user data: ${response.statusText}`);
 			}
 			const data = await response.json();
-			setUser(data.user);
-			setUserPosts(data.posts);
+			console.log(data)
+			setUser(data);
 		} catch (error) {
 			console.error("Error fetching user data:", error);
 		}
 	};
 
-	const handleCreatePost = async (content) => {
-		try {
-			const newPost = {
-				content,
-				postDate: new Date().toLocaleString(),
-				comments: [],
-				likes: 0,
-			};
-			setUserPosts([newPost, ...userPosts]);
-			setShowModal(false);
-			await savePostToServer(newPost);
-		} catch (error) {
-			console.error("Error creating post:", error);
+	const fetchPost = async () => {
+		const token = cookie.PassBloggs;
+		if (!token) {
+			console.error("Token not found in localStorage");
+			return;
 		}
-	};
-
-	const savePostToServer = async (post) => {
 		try {
-			const response = await fetch(`http://localhost:5050/posts`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(post),
-			});
+			const response = await fetch(
+				`http://localhost:5050/post/${cookie.userID}`,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
 			if (!response.ok) {
-				throw new Error(`Failed to save post: ${response.statusText}`);
+				throw new Error(`Failed to fetch user data: ${response.statusText}`);
 			}
+			const data = await response.json();
+			console.log(data);
+			setUserPosts(data);
 		} catch (error) {
-			console.error("Error saving post:", error);
+			console.error("Error fetching user data:", error);
 		}
 	};
-
+	
 	const getInitials = (first_name, last_name) => {
 		const firstInitial = first_name ? first_name.charAt(0).toUpperCase() : "";
 		const lastInitial = last_name ? last_name.charAt(0).toUpperCase() : "";
@@ -153,7 +151,6 @@ export default function HomePage() {
 			<PostModal
 				show={showModal}
 				handleClose={() => setShowModal(false)}
-				createPost={handleCreatePost}
 			/>
 		</div>
 	);

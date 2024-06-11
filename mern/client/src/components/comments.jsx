@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
+import { useCookies } from "react-cookie";
 
 export default function Comments({ comments, handleLike }) {
+	const [cookie, setCookie, removeCookie] = useCookies();
 	const [liked, setLiked] = useState(false);
 
 	const handleLikeClick = () => {
