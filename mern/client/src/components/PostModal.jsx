@@ -10,15 +10,7 @@ export default function PostModal({ show, handleClose }) {
     const handleCreatePost = async (content) => {
 	console.log(content);
 	try {
-		// const newPost = {
-		// 	content,
-		// 	postDate: new Date().toLocaleString(),
-		// 	comments: [],
-		// 	likes: 0,
-		// };
-		// setUserPosts([newPost, ...userPosts]);
-		// setShowModal(false);
-		await savePostToServer(content);
+	  await savePostToServer(content);
 	} catch (error) {
 		console.error("Error creating post:", error);
 	}

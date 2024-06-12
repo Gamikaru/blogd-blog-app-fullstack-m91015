@@ -18,6 +18,8 @@
 
 /* bloggs-heading */
 .bloggs-heading {
+  position: fixed;
+  top: 220px;
   font-size: 30px;
   font-weight: bold;
   margin-bottom: 30px;

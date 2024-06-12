@@ -108,7 +108,7 @@ export default function HomePage() {
 				`http://localhost:5050/post/${cookie.userID}`,
 				{
 					headers: {
-						Authorization: `Bearer ${token}`,
+					Authorization: `Bearer ${token}`,
 					},
 				}
 			);
@@ -122,7 +122,7 @@ export default function HomePage() {
 			console.error("Error fetching user data:", error);
 		}
 	};
-	
+
 	const getInitials = (first_name, last_name) => {
 		const firstInitial = first_name ? first_name.charAt(0).toUpperCase() : "";
 		const lastInitial = last_name ? last_name.charAt(0).toUpperCase() : "";
