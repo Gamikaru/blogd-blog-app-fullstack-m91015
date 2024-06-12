@@ -3,26 +3,33 @@ import { Button, Card } from "react-bootstrap";
 import PostModal from "./PostModal";
 import { useCookies } from "react-cookie";
 
-const UserCard = ({ userInitials, user }) => (
+const UserCard = ({ userInitials, user, updateUserStatus }) => (
 	<div className="user-card-container">
 		<Card className="user-card">
-			<Card.Title>{userInitials}</Card.Title>
-			<div className="card-text">
+			<Card.Title className="initials-title">{userInitials}</Card.Title>
+			<div className="home-card-text">
 				<ul>
 					<li>
-						<span>Status: </span> {user.status}
+						<span>Status: </span>
+						<input
+							className="home-user-status"
+							type="text"
+							value={user.status}
+							onChange={(e) => updateUserStatus(e.target.value)}
+							placeholder="Update Status"
+						/>
 					</li>
 					<li>
-						<span>Email: </span> {user.email}
+						<span> Email: </span> {user.email}
 					</li>
 					<li>
-						<span>Birthdate: </span> {user.birthdate}
+						<span> Birthdate: </span> {user.birthdate}
 					</li>
 					<li>
-						<span>Occupation: </span> {user.occupation}
+						<span> Occupation: </span> {user.occupation}
 					</li>
 					<li>
-						<span>Location: </span> {user.location}
+						<span> Location: </span> {user.location}
 					</li>
 				</ul>
 			</div>
@@ -31,23 +38,21 @@ const UserCard = ({ userInitials, user }) => (
 );
 
 const PostsCard = ({ userPosts, showModal, handleLike, setShowModal }) => (
-	<div className="post-card-container">
-		<Card className="posts-card">
+	<div className="home-post-card-container">
+		<Card className="home-posts-card">
 			<Card.Body>
-				<Card.Title>Posts</Card.Title>
+				<Card.Title className="home-post-title">Your Recent Posts!</Card.Title>
 				{userPosts.length > 0 ? (
 					userPosts.map((post, index) => (
 						<div key={index}>
-							<p>{post.content}</p>
+							<p className="home-post-content">{post.content}</p>
 							<p>{post.postDate}</p>
-							<Button onClick={() => handleLike(index)}>Like</Button>
-							<p>Likes: {post.likes}</p>
+							<p className="home-post-likes">Likes: {post.likes}</p>
 						</div>
 					))
 				) : (
 					<p>No posts available.</p>
 				)}
-				<Button onClick={() => setShowModal(true)}>Make a Post!</Button>
 			</Card.Body>
 		</Card>
 	</div>
@@ -139,9 +144,41 @@ export default function HomePage() {
 		});
 	};
 
+	const updateUserStatus = async (newStatus) => {
+		try {
+			const token = cookie.PassBloggs;
+			if (!token) {
+				console.error("Token not found in localStorage");
+				return;
+			}
+			const response = await fetch(
+				`http://localhost:5050/user/${cookie.userID}`,
+				{
+					method: "PUT",
+					headers: {
+						Authorization: `Bearer ${token}`,
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ status: newStatus }),
+				}
+			);
+			if (!response.ok) {
+				throw new Error(`Failed to update user status: ${response.statusText}`);
+			}
+			setUser((prevUser) => ({ ...prevUser, status: newStatus }));
+		} catch (error) {
+			console.error("Error updating user status:", error);
+		}
+	};
+
+
 	return (
 		<div className="main-container">
-			<UserCard userInitials={userInitials} user={user} />
+			<UserCard
+				userInitials={userInitials}
+				user={user}
+				updateUserStatus={updateUserStatus}
+			/>
 			<PostsCard
 				userPosts={userPosts}
 				showModal={showModal}
@@ -150,8 +187,7 @@ export default function HomePage() {
 			/>
 			<PostModal
 				show={showModal}
-				handleClose={() => setShowModal(false)}
-			/>
+				handleClose={() => setShowModal(false)} />
 		</div>
 	);
 }

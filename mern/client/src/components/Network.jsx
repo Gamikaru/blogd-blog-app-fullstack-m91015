@@ -3,34 +3,60 @@ import { Card } from "react-bootstrap";
 import { useCookies } from "react-cookie";
 
 export default function Network() {
-	const [cookies, setCookie, removeCookie] = useCookies(["PassBloggs"]);
+	const [cookie, setCookie, removeCookie] = useCookies();
 	const [users, setUsers] = useState([]);
+	const [userPosts, setUserPosts] = useState([]);
 
 	useEffect(() => {
-		const fetchUsers = async () => {
-			try {
-				const response = await fetch(
-					`http://localhost:5050/user`,
-					{
-						method: "GET",
-						headers: {
-							"Content-Type": "application/json",
-							Authorization: `Bearer ${cookies.PassBloggs}`,
-						},
-					}
-				);
-				if (!response.ok) {
-					throw new Error("Network response was not ok");
-				}
-				const data = await response.json();
-				setUsers(data);
-			} catch (error) {
-				console.error("Error fetching users:", error);
-			}
-		};
-
 		fetchUsers();
-	}, [cookies.PassBloggs]);
+		fetchPost();
+	}, []);
+
+	const fetchUsers = async () => {
+		const token = cookie.PassBloggs;
+		try {
+			const response = await fetch(`http://localhost:5050/user`, {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+			});
+			if (!response.ok) {
+				throw new Error("Network response was not ok");
+			}
+			const data = await response.json();
+			setUsers(data);
+		} catch (error) {
+			console.error("Error fetching users:", error);
+		}
+	};
+
+	const fetchPost = async () => {
+		const token = cookie.PassBloggs;
+		if (!token) {
+			console.error("Token not found in localStorage");
+			return;
+		}
+		try {
+			const response = await fetch(
+				`http://localhost:5050/post/${cookie.userID}`,
+				{
+					headers: {
+					Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+			if (!response.ok) {
+				throw new Error(`Failed to fetch user data: ${response.statusText}`);
+			}
+			const data = await response.json();
+			console.log(data);
+			setUserPosts(data);
+		} catch (error) {
+			console.error("Error fetching user data:", error);
+		}
+	};
 
 	const getInitials = (first_name, last_name) => {
 		if (first_name && last_name) {
@@ -60,7 +86,9 @@ export default function Network() {
 						</div>
 						<div className="recent-post">
 							<h6>Latest Post:</h6>
-							<p>{user.latest_post}</p>
+							{userPosts.map((post) => (
+								<p key={post._id}>{post.content}</p>
+							))}
 						</div>
 					</Card.Body>
 				</Card>
