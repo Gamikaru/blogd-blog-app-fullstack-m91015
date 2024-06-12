@@ -125,10 +125,10 @@ body {
 .home-post-content{
   background-color: #f8f8ff;
   border: 2px solid #000000;
-  width: 300px;
-  height: 40px;
+  width: 450px;
+  height: 80px;
   border-radius: 30px;
-  padding: auto;
-  text-align: center;
+  text-align:center;
+  padding: 10px;
 }
 

@@ -10,14 +10,14 @@ export default function Comments({ postId, handleLike }) {
 	useEffect(() => {
 		fetchComments();
 	}, []);
-
 	const fetchComments = async () => {
+		const token = cookie.PassBloggs;
 		try {
 			const response = await fetch(`http://localhost:5050/comments/${postId}`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: `Bearer ${cookie.PassBloggs}`,
+					Authorization: `Bearer ${token}`,
 				},
 			});
 			if (!response.ok) {
@@ -27,14 +27,11 @@ export default function Comments({ postId, handleLike }) {
 			setComments(data);
 		} catch (error) {
 			console.error("Error fetching comments:", error);
-		}
-	};
-
+		}};
 	const handleLikeClick = () => {
 		setLiked(!liked);
 		handleLike();
 	};
-
 	return (
 		<div>
 			{comments.map((comment, index) => (

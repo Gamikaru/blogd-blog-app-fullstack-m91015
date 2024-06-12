@@ -3,13 +3,12 @@ import { Card } from "react-bootstrap";
 import { useCookies } from "react-cookie";
 
 export default function Network() {
-	const [cookie, setCookie, removeCookie] = useCookies();
+	const [cookie] = useCookies(["PassBloggs"]);
 	const [users, setUsers] = useState([]);
-	const [userPosts, setUserPosts] = useState([]);
+	const [userPosts, setUserPosts] = useState({});
 
 	useEffect(() => {
 		fetchUsers();
-		fetchPost();
 	}, []);
 
 	const fetchUsers = async () => {
@@ -27,37 +26,33 @@ export default function Network() {
 			}
 			const data = await response.json();
 			setUsers(data);
+			// Fetch posts for each user after fetching users
+			data.forEach((user) => fetchUserPost(user._id, token));
 		} catch (error) {
 			console.error("Error fetching users:", error);
-		}
-	};
-
-	const fetchPost = async () => {
-		const token = cookie.PassBloggs;
-		if (!token) {
-			console.error("Token not found in localStorage");
-			return;
-		}
+		}};
+	
+	const fetchUserPost = async (userId, token) => {
 		try {
-			const response = await fetch(
-				`http://localhost:5050/post/${cookie.userID}`,
-				{
-					headers: {
-					Authorization: `Bearer ${token}`,
-					},
-				}
-			);
+			const response = await fetch(`http://localhost:5050/post/${userId}`, {
+				headers: {
+				Authorization: `Bearer ${token}`,
+				},
+			});
 			if (!response.ok) {
-				throw new Error(`Failed to fetch user data: ${response.statusText}`);
+				throw new Error(`Failed to fetch user posts: ${response.statusText}`);
 			}
 			const data = await response.json();
-			console.log(data);
-			setUserPosts(data);
+			// Assuming data is an array of posts, get the latest post
+			const latestPost = data.length > 0 ? data[data.length - 1] : null;
+			setUserPosts((prevState) => ({
+				...prevState,
+				[userId]: latestPost,
+			}));
 		} catch (error) {
-			console.error("Error fetching user data:", error);
-		}
-	};
-
+			console.error(`Error fetching posts for user ${userId}:`, error);
+		}};
+	
 	const getInitials = (first_name, last_name) => {
 		if (first_name && last_name) {
 			return `${first_name.charAt(0)}${last_name.charAt(0)}`;
@@ -86,9 +81,11 @@ export default function Network() {
 						</div>
 						<div className="recent-post">
 							<h6>Latest Post:</h6>
-							{userPosts.map((post) => (
-								<p key={post._id}>{post.content}</p>
-							))}
+							{userPosts[user._id] ? (
+								<p>{userPosts[user._id].content}</p>
+							) : (
+								<p>No posts yet</p>
+							)}
 						</div>
 					</Card.Body>
 				</Card>

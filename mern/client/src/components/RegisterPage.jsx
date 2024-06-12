@@ -34,12 +34,10 @@ export default function RegisterPage() {
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(registerForm),
 			});
-
 			if (!response.ok) {
-				setShowErrorToast(true); // Corrected from setShowToast
+				setShowErrorToast(true);
 				return;
 			}
-
 			// If the response is successful, reset the form fields
 			setRegisterForm({
 				first_name: "",
@@ -60,7 +58,6 @@ export default function RegisterPage() {
 			alert("Registration failed. " + error.message);
 		}
 	}
-
 	// Render the registration form
 	return (
 		<div className="register-container">

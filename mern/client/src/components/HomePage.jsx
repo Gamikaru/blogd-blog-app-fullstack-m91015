@@ -59,9 +59,7 @@ const PostsCard = ({ userPosts, showModal, handleLike, setShowModal }) => (
 );
 
 export default function HomePage() {
-
 	const [cookie, setCookie, removeCookie] = useCookies();
-
 	const [user, setUser] = useState({
 		first_name: "",
 		last_name: "",
@@ -170,7 +168,6 @@ export default function HomePage() {
 			console.error("Error updating user status:", error);
 		}
 	};
-
 
 	return (
 		<div className="main-container">
