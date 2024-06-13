@@ -28,12 +28,23 @@ router.post('/', authenticate, async (req, res) => {
 
         await newPost.save();
         console.log('Post created successfully');
-        return res.status(201).send('Post created successfully');
+        // thorough client side response, with post id, etc
+
+        return res.status(201).json({
+            message: 'Post created successfully',
+            post: {
+                id: newPost._id,
+                content: newPost.content,
+                createdAt: newPost.time_stamp
+            }
+        });
     } catch (error) {
-        console.error('Error during post creation:', error);
+        console.error('Error creating post:', error);
         return res.status(500).send('Server error: ' + error.message);
     }
 });
+
+
 
 // Get all posts by the current user
 router.get('/:id', authenticate, async (req, res) => {
@@ -46,6 +57,33 @@ router.get('/:id', authenticate, async (req, res) => {
         res.status(500).send('Server error: ' + error.message);
     }
 });
+
+// Get all posts
+router.get('/', authenticate, async (req, res) => {
+    try {
+        const posts = await Post.find().sort({ time_stamp: -1 });
+        console.log('Posts retrieved successfully');
+        res.send(posts);
+    } catch (error) {
+        console.error('Error retrieving posts:', error);
+        res.status(500).send('Server error: ' + error.message);
+    }
+});
+
+// Get all posts by a specific user
+router.get('/user/:id', authenticate, async (req, res) => {
+    try {
+        const posts = await Post.find({ user_id: req.params.id });
+        console.log('Posts retrieved successfully.')
+        console.log(`Posts by user ${req.params.id}:`, posts);
+        res.send(posts);
+    } catch (error) {
+        console.error('Error getting posts:', error);
+        res.status(500).send('Server error: ' + error.message);
+    }
+});
+
+
 
 // Get a single post
 router.get('/specific/:id', authenticate, async (req, res) => {
