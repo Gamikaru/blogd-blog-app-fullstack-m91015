@@ -23,8 +23,11 @@ export const authenticate = (req, res, next) => {
         }
 
         console.log('Decoded token:', decodedToken);
-        if (!decodedToken._id && decodedToken.id) {
-            decodedToken._id = decodedToken.id;
+
+        // Ensure the token contains the expected fields
+        if (!decodedToken._id) {
+            console.log('Token does not contain _id');
+            return res.status(400).send('Invalid token payload');
         }
 
         req.user = {
@@ -32,6 +35,8 @@ export const authenticate = (req, res, next) => {
             email: decodedToken.email,
             auth_level: decodedToken.auth_level
         };
+
+        console.log('req.user set to:', req.user); // Debugging line
 
         next();
     });

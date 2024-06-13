@@ -17,14 +17,18 @@ function sendError(res, error, message, statusCode = 500) {
 }
 
 // Create a new comment
-router.post('/', async (req, res) => {
+router.post('/', authenticate, async (req, res) => {
     try {
         console.log('Headers:', req.headers);
         console.log('Body:', req.body);
-        console.log('User:', req.user);
+        console.log('User:', req.user); // Ensure req.user is set
 
         const { content, post_id } = req.body;
         const user_id = req.user._id;
+
+        console.log('Content:', content);
+        console.log('Post ID:', post_id);
+        console.log('User ID:', user_id);
 
         if (!content || !post_id) {
             return sendError(res, new Error('Validation Error'), 'Please provide all required fields', 400);
@@ -35,6 +39,8 @@ router.post('/', async (req, res) => {
         }
 
         const post = await Post.findById(post_id);
+        console.log('Post:', post); // Log the post
+
         if (!post) {
             return sendError(res, new Error('Post Not Found'), 'No post found with the provided post_id', 404);
         }
@@ -45,7 +51,10 @@ router.post('/', async (req, res) => {
             user_id,
         });
 
+        console.log('New Comment:', newComment); // Log the new comment
+
         await newComment.save();
+        console.log('Comment saved successfully');
         return res.status(201).json({
             message: 'Comment created successfully',
             comment: {
@@ -57,10 +66,10 @@ router.post('/', async (req, res) => {
             }
         });
     } catch (error) {
+        console.log('Error:', error); // Log the error
         sendError(res, error, 'Server error during comment creation');
     }
 });
-
 
 // Get all comments
 router.get('/', authenticate, async (req, res) => {
