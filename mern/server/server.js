@@ -18,7 +18,7 @@ app.use(express.json());
 
 app.use('/user', userRoutes);
 app.use('/post', authenticate, postRoutes);
-app.use('/comment', commentRoutes);
+app.use('/comment', authenticate, commentRoutes);
 app.use('/session', authenticate, sessionRoutes);
 
 // start the Express server
