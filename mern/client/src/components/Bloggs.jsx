@@ -19,6 +19,7 @@ export default function BloggsPosts() {
 	useEffect(() => {
 		fetchBlogPosts();
 		fetchUser();
+		fetchComments();
 	}, []);
 
 	const fetchUser = async () => {
