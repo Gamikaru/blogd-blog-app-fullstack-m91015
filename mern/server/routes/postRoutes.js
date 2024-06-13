@@ -45,7 +45,6 @@ router.post('/', authenticate, async (req, res) => {
 });
 
 
-
 // Get all posts by the current user
 router.get('/:id', authenticate, async (req, res) => {
     try {

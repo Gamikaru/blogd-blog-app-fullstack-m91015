@@ -2,6 +2,7 @@ import express from 'express';
 import User from '../models/userSchema.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import Session from '../models/sessionSchema.js';
 import { authenticate } from '../middleware/authMiddleware.js';
 import dotenv from 'dotenv';
 
@@ -120,7 +121,7 @@ router.get('/:id', authenticate, async (req, res) => {
 });
 
 // Update user info (protected route)
-router.put('/:id', authenticate, async (req, res) => {
+router.patch('/:id', authenticate, async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
         if (!user) {
@@ -163,14 +164,41 @@ router.get('/', authenticate, async (req, res) => {
     }
 });
 
+// Delete user (protected route)
+router.delete('/:id', authenticate, async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+
+        await user.remove();
+        res.status(200).send('User deleted successfully');
+    } catch (error) {
+        console.error("Error deleting user:", error);
+        return res.status(500).send('Server error: ' + error.message);
+    }
+}
+
+);
+
+
+
 // Logout user endpoint
 router.post('/logout', authenticate, async (req, res) => {
     try {
-        res.status(200).send('User logged out successfully');
+        const endSession = await Session.findOneAndDelete({ user: req.user._id });
+        console.log('Session ended:', endSession);
+        res.status(200).send('Session ended: User logged out');
     } catch (error) {
-        console.error("Error logging out user:", error);
-        return res.status(500).send('Server error: ' + error.message);
+        console.error('Error ending session:', error);
+        res.status(500).send('Error ending session');
     }
 });
+
+
+
+
+
 
 export default router;
