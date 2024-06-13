@@ -51,6 +51,7 @@ export default function LoginPage() {
 			const serverResponse = await response.json();
 			console.log(serverResponse.token);
 			setCookie("PassBloggs", serverResponse.token, { path: "/" });
+			setCookie("userID", serverResponse.user.id, { path: "/" });
 			// Log a success message to the console if the login was successful
 			console.log("Login successful");
 			// Reset the loginForm state
