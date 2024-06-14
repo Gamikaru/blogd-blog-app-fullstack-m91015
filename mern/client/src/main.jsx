@@ -22,6 +22,8 @@ import UserManager from "./components/userManager";
 import "./userManager.css";
 import ContentManager from "./components/contentManager";
 import "./contentManager.css";
+import EditUser from "./components/editUser";
+import "./EditUser.css";
 
 const router = createBrowserRouter([
 	{
@@ -65,12 +67,12 @@ const router = createBrowserRouter([
 		],
 	},
 	{
-		path: "/edit/:id",
+		path: "/edit",
 		element: <App />,
 		children: [
 			{
-				path: "/edit/:id",
-				element: <Bloggs />,
+				path: "/edit",
+				element: <EditUser />,
 			},
 		],
 	},

@@ -54,12 +54,8 @@ const fetchUsers = async () => {
         setSearchQuery(event.target.value);
     };
 
-    // const handleEdit = (userId) => {
-    //     navigate(`/user/${userId}`);
-    // };
-
 	const handleEdit = async (userId) => {
-  const token = cookie.PassBloggs;
+  	const token = cookie.PassBloggs;
   if (!token) {
     navigate("/user/${userId");
     return;
@@ -76,9 +72,9 @@ const fetchUsers = async () => {
       throw new Error("Failed to fetch user");
 	}
     const userData = await response.json();
-    navigate(`/home`);
+    navigate(`/id`);
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error updating user:", error);
   }
 };
 
