@@ -52,9 +52,9 @@ export default function EditUser() {
 		setEditForm((prev) => ({ ...prev, ...value }));
 	}
 
-async function handleEdit(e) {
+	async function handleEdit(e) {
+	const token = cookie.PassBloggs;
     e.preventDefault();
-    const token = localStorage.getItem('token');
     if (!token) {
         console.error("Token not found in localStorage");
         return;
