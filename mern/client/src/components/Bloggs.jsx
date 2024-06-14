@@ -80,8 +80,6 @@ export default function BloggsPosts() {
 			}
 			const data = await response.json();
 			setUsers(data);
-			// Fetch posts for each user after fetching users
-			// data.forEach((user) => fetchUserPost(user._id, token));
 		} catch (error) {
 			console.error("Error fetching users:", error);
 		}};

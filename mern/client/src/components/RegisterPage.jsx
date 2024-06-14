@@ -53,7 +53,6 @@ export default function RegisterPage() {
 			setShowSuccessToast(true);
 			navigate("/login");
 		} catch (error) {
-			// Handle fetch error (e.g., network error, etc.)
 			console.error("Error occurred during registration:", error.message);
 			alert("Registration failed. " + error.message);
 		}

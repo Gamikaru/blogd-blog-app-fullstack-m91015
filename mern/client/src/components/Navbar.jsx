@@ -1,15 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Card, Dropdown, Button, Modal } from "react-bootstrap";
 import PostModal from "./PostModal";
 import { useCookies } from "react-cookie";
 
 export default function Navbar() {
-	const [cookie, setCookie, removeCookie] = useCookies([
-		"PassBloggs",
-		"userID",
-	]);
+	const [cookie, setCookie, removeCookie] = useCookies();
 	const location = useLocation();
+	const navigate = useNavigate();
 	const [showModal, setShowModal] = useState(false);
 	const [showAccountModal, setShowAccountModal] = useState(false);
 	const [showDropdown, setShowDropdown] = useState(false);

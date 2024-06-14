@@ -9,9 +9,12 @@
     margin-left: 15%;
 }
 
-.user-content-title{
+.user-content-title {
     font-size: 400%;
+    text-align: center;
+    margin-bottom: 20px;
 }
+
 .user-manager-container input[type="text"] {
     width: 100%;
     max-width: 400px;
@@ -33,7 +36,7 @@
     border-radius: 4px;
 }
 
-.content-table {
+.user-content-table {
     width: 100%;
     margin-bottom: 1rem;
     color: #212529;
@@ -50,7 +53,7 @@
 .table thead th {
     vertical-align: bottom;
     border-bottom: 2px solid #dee2e6;
-    background-color: #e9ecef;
+    background-color: #9b30ff;
 }
 
 .table tbody tr:nth-of-type(odd) {
