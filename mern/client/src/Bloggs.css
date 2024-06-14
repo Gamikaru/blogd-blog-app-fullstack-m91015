@@ -5,30 +5,25 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 1000% !important;
-  height: 790px !important;
+  width: 2000px !important;
+  height: 850px !important;
+  overflow-y: auto;
   background-color: #9b30ff;
-  border: 3px solid #000000;
-  border-radius: 35px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 2px solid #000000;
   padding: 40px;;
   left: 280px;
-  bottom: -80px;
+  bottom: -104px;
 }
-.bloggs-heading {
-  position: fixed;
-  top: 220px;
-  font-size: 30px;
-  font-weight: bold;
-  margin-bottom: 30px;
-  text-align: center;
+.blog-posts-wrapper {
+  flex-grow: 1;
+  overflow-y: auto;
 }
 .blog-posts {
   display: flex;
   flex-direction: column; 
   gap: 20px; 
   width: 100%; 
-  margin-bottom: 30px;
+  margin-top: 400px;
 }
 .bloggs-post-section {
   border: 3px solid #000000;

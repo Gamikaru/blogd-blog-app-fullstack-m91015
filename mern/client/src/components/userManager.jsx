@@ -1,103 +1,157 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 export default function UserManager() {
-	const [users, setUsers] = useState([]);
-	const [loading, setLoading] = useState(true);
-	const [searchQuery, setSearchQuery] = useState("");
-	const navigate = useNavigate();
+    const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [cookie, setCookie, removeCookie] = useCookies();
+    const navigate = useNavigate();
 
-	useEffect(() => {
-		fetchUsers();
-	}, []);
+    useEffect(() => {
+        fetchUsers();
+    }, [searchQuery]); 
 
-	const fetchUsers = async () => {
-		try {
-			const response = await fetch("http://localhost:5050/users");
-			const data = await response.json();
-			setUsers(data);
-			setLoading(false);
-		} catch (error) {
-			console.error("Error fetching users:", error);
-		}
-	};
+const fetchUsers = async () => {
+    const token = cookie.PassBloggs;
+    if (!token) {
+        navigate("/login");
+        return;
+    }
 
-	const handleSearch = (event) => {
-		setSearchQuery(event.target.value);
-	};
+    setLoading(true);
+    try {
+        let url = "http://localhost:5050/users";
+        const params = new URLSearchParams();
+        if (searchQuery) {
+            params.append("filter", searchQuery);
+        }
 
-	const handleEdit = (userId) => {
-		navigate(`/user/${userId}`);
-	};
-
-	const handleDelete = async (userId) => {
-		try {
-			await fetch(`http://localhost:5050/users/${userId}`, {
-				method: "DELETE",
+        const response = await fetch(`http://localhost:5050/user`, {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
 			});
-			setUsers(users.filter((user) => user.id !== userId));
-		} catch (error) {
-			console.error("Error deleting user:", error);
-		}
-	};
 
-	const filteredUsers = users.filter(
-		(user) =>
-			user.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-			user.last_name.toLowerCase().includes(searchQuery.toLowerCase())
-	);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch users: ${response.status} ${response.statusText}`);
+        }
 
-	return (
-		<div className="user-manager-container">
-			<h1 className="user-content-title">User Manager</h1>
-			<input
-				type="text"
-				placeholder="Search by first or last name"
-				value={searchQuery}
-				onChange={handleSearch}
-			/>
-			{loading ? (
-				<div className="skeleton-loader">
-					<div className="skeleton-row"></div>
-					<div className="skeleton-row"></div>
-					<div className="skeleton-row"></div>
-					<div className="skeleton-row"></div>
-					<div className="skeleton-row"></div>
-				</div>
-			) : (
-				<Table striped bordered hover className="content-table">
-					<thead>
-						<tr>
-							<th>First Name</th>
-							<th>Last Name</th>
-							<th>Edit</th>
-							<th>Delete</th>
-						</tr>
-					</thead>
-					<tbody>
-						{filteredUsers.map((user) => (
-							<tr key={user.id}>
-								<td>{user.first_name}</td>
-								<td>{user.last_name}</td>
-								<td>
-									<Button variant="primary" onClick={() => handleEdit(user.id)}>
-										Edit
-									</Button>
-								</td>
-								<td>
-									<Button
-										variant="danger"
-										onClick={() => handleDelete(user.id)}
-									>
-										Delete
-									</Button>
-								</td>
-							</tr>
-						))}
-					</tbody>
-				</Table>
-			)}
-		</div>
-	);
+        const data = await response.json();
+        setUsers(data);
+        setLoading(false);
+    } catch (error) {
+        console.error("Error fetching users:", error.message);
+        setLoading(false);
+    }
+};
+
+    const handleSearch = (event) => {
+        setSearchQuery(event.target.value);
+    };
+
+    // const handleEdit = (userId) => {
+    //     navigate(`/user/${userId}`);
+    // };
+
+	const handleEdit = async (userId) => {
+  const token = cookie.PassBloggs;
+  if (!token) {
+    navigate("/user/${userId");
+    return;
+  }
+
+  try {
+    const response = await fetch(`http://localhost:5050/user/${userId.toString()}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Failed to fetch user");
+	}
+    const userData = await response.json();
+    navigate(`/home`);
+  } catch (error) {
+    console.error("Error fetching user:", error);
+  }
+};
+
+    const handleDelete = async (userId) => {
+        const token = cookie.PassBloggs;
+        if (!token) {
+            navigate("/login");
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:5050/user/${userId.toString()}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            if (!response.ok) {
+                throw new Error("Failed to delete user");
+            }
+            setUsers(users.filter((user) => user._id !== userId));
+        } catch (error) {
+            console.error("Error deleting user:", error);
+        }
+    };
+
+    return (
+        <div className="user-manager-container">
+            <h1 className="user-content-title">User Manager</h1>
+            <input
+                type="text"
+                placeholder="Search by first or last name"
+                value={searchQuery}
+                onChange={handleSearch}
+            />
+            {loading ? (
+                <div className="skeleton-loader">
+                    {[...Array(5)].map((_, index) => (
+                        <div key={index} className="skeleton-row"></div>
+                    ))}
+                </div>
+            ) : (
+                <div>
+                    <Table striped bordered hover className="user-content-table">
+                        <thead>
+                            <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {users.map((user) => (
+                                <tr key={user._id}>
+                                    <td>{user.first_name}</td>
+                                    <td>{user.last_name}</td>
+                                    <td>
+                                        <Button variant="primary" onClick={() => handleEdit(user._id)}>
+                                            Edit
+                                        </Button>
+                                    </td>
+                                    <td>
+                                        <Button variant="danger" onClick={() => handleDelete(user._id)}>
+                                            Delete
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                </div>
+            )}
+        </div>
+    );
 }

@@ -115,12 +115,11 @@ body {
   height: 100%;
 }
 .home-post-title{
-  position: fixed;
   font: bolder;
   font-size: 150%;
   top: 37%;
   justify-content: center;
-  left: 57%;
+  margin-left: 25%;
 }
 .home-post-content{
   background-color: #f8f8ff;

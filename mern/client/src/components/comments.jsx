@@ -9,7 +9,8 @@ export default function Comments({ postId, handleLike }) {
 
 	useEffect(() => {
 		fetchComments();
-	}, []);
+  }, []);
+  
 	const fetchComments = async () => {
 		const token = cookie.PassBloggs;
 		try {
