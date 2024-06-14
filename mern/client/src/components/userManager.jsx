@@ -72,7 +72,7 @@ const fetchUsers = async () => {
       throw new Error("Failed to fetch user");
 	}
     const userData = await response.json();
-    navigate(`/id`);
+    navigate(`/edit`);
   } catch (error) {
     console.error("Error updating user:", error);
   }

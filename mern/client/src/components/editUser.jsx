@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { useNavigate } from "react-router";
 import Card from "react-bootstrap/Card";
 import Toast from "react-bootstrap/Toast";
+import { useCookies } from "react-cookie";
 
 export default function EditUser() {
+	const [cookie, setCookie, removeCookie] = useCookies();
 	const [editForm, setEditForm] = useState({
 		first_name: "",
 		last_name: "",
@@ -18,32 +20,32 @@ export default function EditUser() {
 	const [showErrorToast, setShowErrorToast] = useState(false);
     const navigate = useNavigate();
     
-    useEffect(() => {
-		fetchUser();
-	}, []);
+    // useEffect(() => {
+	// 	fetchUser();
+	// }, []);
 
-    const fetchUser = async () => {
-		const token = cookie.PassBloggs;
-		if (!token) {
-			console.error("Token not found in localStorage");
-			return;
-		}
-		try {
-			const response = await fetch(`http://localhost:5050/user/${cookie.userID}`, {
-				headers: {
-				Authorization: `Bearer ${token}`,
-				},
-			});
-			if (!response.ok) {
-				throw new Error(`Failed to fetch user data: ${response.statusText}`);
-			}
-			const data = await response.json();
-			console.log(data)
-			setUser(data);
-		} catch (error) {
-			console.error("Error fetching user data:", error);
-		}
-    };
+    // const fetchUser = async () => {
+	// 	const token = cookie.PassBloggs;
+	// 	if (!token) {
+	// 		console.error("Token not found in localStorage");
+	// 		return;
+	// 	}
+	// 	try {
+	// 		const response = await fetch(`http://localhost:5050/user/${cookie.userID}`, {
+	// 			headers: {
+	// 			Authorization: `Bearer ${token}`,
+	// 			},
+	// 		});
+	// 		if (!response.ok) {
+	// 			throw new Error(`Failed to fetch user data: ${response.statusText}`);
+	// 		}
+	// 		const data = await response.json();
+	// 		console.log(data)
+	// 		setUser(data);
+	// 	} catch (error) {
+	// 		console.error("Error fetching user data:", error);
+	// 	}
+    // };
     
 	function updateEditForm(value) {
 		console.log("Updating form field:", value);
@@ -83,7 +85,7 @@ async function handleEdit(e) {
             status: "",
         });
         setShowSuccessToast(true);
-        navigate("/user-manager");
+        navigate("/edit");
     } catch (error) {
         console.error("Error occurred during user update:", error.message);
         alert("Update user failed. " + error.message);
@@ -101,7 +103,7 @@ async function handleEdit(e) {
 				delay={6000}
 			>
 				<Toast.Body className="edit-toast-body-success">
-					Successful registration!
+					Successful User Update!
 				</Toast.Body>
 			</Toast>
 			<Toast
@@ -112,13 +114,13 @@ async function handleEdit(e) {
 				delay={6000}
 			>
 				<Toast.Body className="toast-body-error">
-					Invalid update attempt
+					Invalid Update Attempt
 				</Toast.Body>
 			</Toast>
 			<div className="edit-card-container">
 				<Card>
 					<Card.Body>
-						<h1 className="edit-card-header">Update User Info</h1>
+						<h1 className="edit-card-header">Update User Information</h1>
 						<form onSubmit={handleEdit}>
 							<div className="edit-input-container">
 								<div className="edit-input-column">

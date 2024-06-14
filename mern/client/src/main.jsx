@@ -97,7 +97,7 @@ const router = createBrowserRouter([
 		],
 	},
 	{
-		path: "network",
+		path: "/network",
 		element: <App />,
 		children: [
 			{
@@ -107,7 +107,7 @@ const router = createBrowserRouter([
 		],
 	},
 	{
-		path: "admin",
+		path: "/admin",
 		element: <App />,
 		children: [
 			{
