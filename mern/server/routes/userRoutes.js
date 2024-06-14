@@ -165,22 +165,19 @@ router.get('/', authenticate, async (req, res) => {
 });
 
 // Delete user (protected route)
-router.delete('/:id', authenticate, async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id);
-        if (!user) {
-            return res.status(404).send('User not found');
-        }
-
-        await user.remove();
-        res.status(200).send('User deleted successfully');
-    } catch (error) {
-        console.error("Error deleting user:", error);
-        return res.status(500).send('Server error: ' + error.message);
-    }
-}
-
-);
+router.delete("/:id", authenticate, async (req, res) => {
+	try {
+		const user = await User.findById(req.params.id);
+		if (!user) {
+			return res.status(404).send("User not found");
+		}
+		await user.deleteOne();
+		res.status(200).send("User deleted successfully");
+	} catch (error) {
+		console.error("Error deleting user:", error);
+		return res.status(500).send("Server error: " + error.message);
+	}
+});
 
 
 

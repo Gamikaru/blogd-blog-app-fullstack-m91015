@@ -24,6 +24,7 @@ import ContentManager from "./components/contentManager";
 import "./contentManager.css";
 import EditUser from "./components/editUser";
 import "./EditUser.css";
+import EditComments from "./components/editPost";
 
 const router = createBrowserRouter([
 	{
@@ -62,26 +63,6 @@ const router = createBrowserRouter([
 		children: [
 			{
 				path: "/bloggs",
-				element: <Bloggs />,
-			},
-		],
-	},
-	{
-		path: "/edit",
-		element: <App />,
-		children: [
-			{
-				path: "/edit",
-				element: <EditUser />,
-			},
-		],
-	},
-	{
-		path: "/create",
-		element: <App />,
-		children: [
-			{
-				path: "/create",
 				element: <Bloggs />,
 			},
 		],
@@ -126,6 +107,16 @@ const router = createBrowserRouter([
 			},
 		],
 	},
+	 {
+		path: "/edit-user",
+		element: <App />,
+		children: [
+			{
+				path: "/edit-user",
+				element: <EditUser />,
+			},
+		],
+	},
 	{
 		path: "/content-manager",
 		element: <App />,
@@ -133,6 +124,16 @@ const router = createBrowserRouter([
 			{
 				path: "/content-manager",
 				element: <ContentManager />,
+			},
+		],
+	},
+	{
+		path: "/edit-posts",
+		element: <App />,
+		children: [
+			{
+				path: "/edit-posts",
+				element: <EditComments />,
 			},
 		],
 	},

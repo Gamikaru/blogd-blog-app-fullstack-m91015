@@ -57,7 +57,7 @@ const fetchUsers = async () => {
 	const handleEdit = async (userId) => {
   	const token = cookie.PassBloggs;
   if (!token) {
-    navigate("/user/${userId");
+    navigate("/");
     return;
   }
 
@@ -72,19 +72,19 @@ const fetchUsers = async () => {
       throw new Error("Failed to fetch user");
 	}
     const userData = await response.json();
-    navigate(`/edit`);
+    navigate(`/edit-user`);
   } catch (error) {
     console.error("Error updating user:", error);
   }
 };
 
     const handleDelete = async (userId) => {
+        console.log(`Deleting user: ${userId}`);
         const token = cookie.PassBloggs;
         if (!token) {
             navigate("/login");
             return;
         }
-
         try {
             const response = await fetch(`http://localhost:5050/user/${userId.toString()}`, {
                 method: "DELETE",
@@ -92,12 +92,12 @@ const fetchUsers = async () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
+            console.log(`Response: ${response.status} ${response.statusText}`);
             if (!response.ok) {
-                throw new Error("Failed to delete user");
+                throw new Error(`Failed to delete user: ${response.status} ${response.statusText}`);
             }
-            setUsers(users.filter((user) => user._id !== userId));
         } catch (error) {
-            console.error("Error deleting user:", error);
+            console.error(`Error deleting user: ${error}`);
         }
     };
 

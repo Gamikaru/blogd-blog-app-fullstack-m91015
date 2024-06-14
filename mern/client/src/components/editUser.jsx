@@ -85,14 +85,14 @@ export default function EditUser() {
             status: "",
         });
         setShowSuccessToast(true);
-        navigate("/edit");
+        navigate("/edit-user");
     } catch (error) {
         console.error("Error occurred during user update:", error.message);
         alert("Update user failed. " + error.message);
         setShowErrorToast(true);
     }
 }
-	// Render the Edit form
+	
 	return (
 		<div className="edit-container">
 			<Toast
@@ -120,7 +120,7 @@ export default function EditUser() {
 			<div className="edit-card-container">
 				<Card>
 					<Card.Body>
-						<h1 className="edit-card-header">Update User Information</h1>
+						<h1 className="edit-card-header">Manage User Information</h1>
 						<form onSubmit={handleEdit}>
 							<div className="edit-input-container">
 								<div className="edit-input-column">
