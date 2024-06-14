@@ -71,16 +71,6 @@ router.post('/', authenticate, async (req, res) => {
     }
 });
 
-// Get all comments
-router.get('/', authenticate, async (req, res) => {
-    try {
-        const comments = await Comment.find().sort({ time_stamp: -1 });
-        console.log('Comments retrieved successfully');
-        return res.status(200).json(comments);
-    } catch (error) {
-        sendError(res, error, 'Server error retrieving comments');
-    }
-});
 
 // Get a single comment
 router.get('/:id', authenticate, async (req, res) => {
