@@ -1,0 +1,103 @@
+/* edit form container */
+.edit-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+/* edit container */
+.edit-card-container {
+    width: 800px;
+    height: 700px;
+    background-color: #9B30FF;
+    border: 5px solid #0f0404;
+    border-radius: 40px; 
+    padding: 20px;
+    position: fixed;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+/* Centered edit form header */
+.edit-card-header {
+    margin-bottom: 5px;
+    font-size: 50px;
+    text-align: center;
+}
+/* Input field container with space between columns */
+.edit-input-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+/* Input field column width */
+.edit-input-column {
+    width: 55%; 
+}
+/* Input field container div margin */
+.edit-input-container > div {
+    margin-bottom: 30px;
+}
+/* Input field styling */
+.edit-input-container input {
+    width: calc(100% - 40px);
+    padding: 30px;
+    border: 3px solid #000000;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+}
+/* Input field placeholder styling */
+.edit-input-container input::placeholder {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #000000;
+    font-size: 25px;
+}
+/* Form group container for update button */
+.edit-form-group {
+    margin-top: 5px;
+    display: flex;
+    justify-content: center;
+}
+/* update button styling */
+.edit-form-group input[type="submit"] {
+    background-color: #F8F8FF;
+    color: #000000; 
+    border: 3px solid #000000; 
+    border-radius: 39px; 
+    font-weight: bold;
+    font-size: 30px;
+    width: 50%;
+    padding: 15px;
+}
+/* Success Toast styling */
+.edit-success-toast {
+  position: fixed;
+  top: 15%; 
+  left: 50%; 
+  transform: translateX(-50%);
+  border-radius: 10px;
+}
+.edit-toast-body-success {
+  background-color: #28a745; 
+  color: #ffffff; 
+  border-radius: 10px;
+  border: 3px solid #000000; 
+}
+/* Error Toast styling */
+.edit-error-toast {
+  position: fixed;
+  top: 14%; 
+  left: 40%; 
+  width: fit-content;
+  border-radius: 10px;
+}
+.edit-toast-body-error {
+  background-color: #dc3545;
+  color: #ffffff; 
+  border-radius: 10%;
+  width: fit-content;
+  border-radius: 10px;
+  border: 2px solid #000000; 
+}
