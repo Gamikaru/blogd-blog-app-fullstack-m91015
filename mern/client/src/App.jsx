@@ -8,18 +8,18 @@ const App = () => {
 	const [cookie, setCookie, removeCookie] = useCookies();
 	const location = useLocation();
 	const [hasToken, setHasToken] = useState(false);
-  useEffect(() => {
-    const token = cookie.PassBloggs;
-    if (token) {
-      setHasToken(true);
-    } else {
-      setHasToken(false);
-    }
-  }, [location.pathname]);
+  // useEffect(() => {
+  //   const token = cookie.PassBloggs;
+  //   if (token) {
+  //     setHasToken(true);
+  //   } else {
+  //     setHasToken(false);
+  //   }
+  // }, [location.pathname]);
 
-  if (!hasToken && location.pathname!== "/login") {
-    return <Navigate to="/login" replace />;
-  }
+  // if (!hasToken && location.pathname!== "/login") {
+  //   return <Navigate to="/login" replace />;
+  // }
 	return (
 		<div className="w-full p-6">
 			<Navbar />

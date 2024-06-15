@@ -1,9 +1,9 @@
 .user-manager-container {
     position: fixed;
     width: 1500px;
-    height: fit-content;
+    height: 820px;
     margin: 140px auto;
-    padding: 20px;
+    padding: 15px;
     background-color: #fff;
     border-radius: 8px;
     margin-left: 15%;
@@ -79,21 +79,42 @@
 }
 
 .table .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: #9b30ff;
+    border-color: #9b30ff;
 }
 
 .table .btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #004085;
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
 }
 
 .table .btn-danger {
-    background-color: #dc3545;
-    border-color: #dc3545;
+    background-color: #9b30ff;
+    border-color: #9b30ff;
 }
 
 .table .btn-danger:hover {
-    background-color: #c82333;
-    border-color: #bd2130;
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
+}
+
+.user-next-bttn{
+    border: 1px solid #f8f9fa;
+    border-radius: 35%;
+    margin-left: 10%;
+    background-color: #000080;
+    color: #f8f9fa;
+}
+
+.user-back-bttn{
+    border: 1px solid #f8f9fa;
+    border-radius: 35%;
+    margin-left: -100px; 
+    margin-right: 20px;
+    background-color: #000080;
+    color: #f8f9fa;
+}
+
+.table th:first-child {
+  padding-left: 40px;
 }

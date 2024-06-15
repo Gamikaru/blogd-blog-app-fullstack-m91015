@@ -87,7 +87,6 @@ export default function Navbar() {
 	const handleLogout = () => {
 		removeCookie("PassBloggs", { path: "/" });
 		removeCookie("userID", { path: "/" });
-		window.location.href = "/login";
 		navigate("/login");
 	};
 
