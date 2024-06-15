@@ -7,14 +7,14 @@ export default function UserManager() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [cookie, setCookie, removeCookie] = useCookies();
+  const [cookie] = useCookies();
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage, setUsersPerPage] = useState(10);
 
   useEffect(() => {
     fetchUsers();
-  }, [searchQuery]); 
+  }, [searchQuery]);
 
   const fetchUsers = async () => {
     const token = cookie.PassBloggs;
@@ -40,7 +40,9 @@ export default function UserManager() {
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to fetch users: ${response.status} ${response.statusText}`);
+        throw new Error(
+          `Failed to fetch users: ${response.status} ${response.statusText}`
+        );
       }
 
       const data = await response.json();
@@ -56,28 +58,8 @@ export default function UserManager() {
     setSearchQuery(event.target.value);
   };
 
-  const handleEdit = async (userId) => {
-    const token = cookie.PassBloggs;
-    if (!token) {
-      navigate("/");
-      return;
-    }
-
-    try {
-      const response = await fetch(`http://localhost:5050/user/${userId.toString()}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (!response.ok) {
-        throw new Error("Failed to fetch user");
-      }
-      const userData = await response.json();
-      navigate(`/edit-user`);
-    } catch (error) {
-      console.error("Error updating user:", error);
-    }
+  const handleEdit = (userId) => {
+    navigate(`/edit-user/${userId}`); // Navigate to EditUser with userId as route param
   };
 
   const handleDelete = async (userId) => {
@@ -96,8 +78,11 @@ export default function UserManager() {
       });
       console.log(`Response: ${response.status} ${response.statusText}`);
       if (!response.ok) {
-        throw new Error(`Failed to delete user: ${response.status} ${response.statusText}`);
+        throw new Error(
+          `Failed to delete user: ${response.status} ${response.statusText}`
+        );
       }
+      // Remove the deleted user from state or refetch users
     } catch (error) {
       console.error(`Error deleting user: ${error}`);
     }
@@ -136,7 +121,12 @@ export default function UserManager() {
             <thead>
               <tr>
                 <th>
-                  <Button className="user-back-bttn" variant="secondary" onClick={prevPage} disabled={currentPage === 1}>
+                  <Button
+                    className="user-back-bttn"
+                    variant="secondary"
+                    onClick={prevPage}
+                    disabled={currentPage === 1}
+                  >
                     Previous
                   </Button>
                   First Name
@@ -145,7 +135,12 @@ export default function UserManager() {
                 <th>Edit</th>
                 <th>
                   Delete
-                  <Button className="user-next-bttn" variant="secondary" onClick={nextPage} disabled={indexOfLastUser >= users.length}>
+                  <Button
+                    className="user-next-bttn"
+                    variant="secondary"
+                    onClick={nextPage}
+                    disabled={indexOfLastUser >= users.length}
+                  >
                     Next
                   </Button>
                 </th>
@@ -157,12 +152,18 @@ export default function UserManager() {
                   <td>{user.first_name}</td>
                   <td>{user.last_name}</td>
                   <td>
-                    <Button variant="primary" onClick={() => handleEdit(user._id)}>
+                    <Button
+                      variant="primary"
+                      onClick={() => handleEdit(user._id)} // Pass userId to handleEdit
+                    >
                       Edit
                     </Button>
                   </td>
                   <td>
-                    <Button variant="danger" onClick={() => handleDelete(user._id)}>
+                    <Button
+                      variant="danger"
+                      onClick={() => handleDelete(user._id)}
+                    >
                       Delete
                     </Button>
                   </td>

@@ -108,11 +108,11 @@ const router = createBrowserRouter([
 		],
 	},
 	 {
-		path: "/edit-user",
+		path: "/edit-user/:userId",
 		element: <App />,
 		children: [
 			{
-				path: "/edit-user",
+				path: "/edit-user/:userId",
 				element: <EditUser />,
 			},
 		],
