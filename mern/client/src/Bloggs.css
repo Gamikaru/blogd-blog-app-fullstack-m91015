@@ -1,112 +1,73 @@
 /* blogg-container */
 .blogg-container {
   position: fixed;
-  margin: 5% auto; /* Center the container with margin */
+  margin: 5% auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 1000% !important; /* Adjust the width as needed */
-  height: 790px !important; /* Set a maximum width */
+  width: 2000px !important;
+  height: 850px !important;
+  overflow-y: auto;
   background-color: #9b30ff;
-  border: 3px solid #000000;
-  border-radius: 35px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 2px solid #000000;
   padding: 40px;;
   left: 280px;
-  bottom: -80px;
+  bottom: -104px;
 }
-
-/* bloggs-heading */
-.bloggs-heading {
-  font-size: 30px;
-  font-weight: bold;
-  margin-bottom: 30px;
-  text-align: center;
+.blog-posts-wrapper {
+  flex-grow: 1;
+  overflow-y: auto;
 }
-
-/* blog-posts */
 .blog-posts {
   display: flex;
-  flex-direction: column; /* Stack posts vertically */
-  gap: 20px; /* Space between posts */
-  width: 100%; /* Make sure posts take full width of container */
-  margin-bottom: 30px;
+  flex-direction: column; 
+  gap: 20px; 
+  width: 100%; 
+  margin-top: 400px;
 }
-
-/* Card styles */
-.post-section {
+.bloggs-post-section {
   border: 3px solid #000000;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 30px;
   overflow: hidden;
 }
-
 .bloggs-body {
   padding: 20px;
   background-color: #f8f8ff;
 }
-
-.card-title {
-  position: relative; 
-  overflow: hidden; 
-}
-
-.card-title::before {
-  content: attr(data-initials);
-  position: absolute; 
-  top: 50%; 
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 24px;
-  font-weight: bolder; 
+.bloggs-card-title {
+  display: inline-block; 
+  width: 50px; 
+  height: 50px; 
+  line-height: 40px; 
+  text-align: center;
+  font-size: 15px;
+  font-weight: bold; 
   color: #ffffff; 
+  border-radius: 50%;
+  border: 2px solid #000000;
+  background-color: #000080;
+  padding: 5px; 
+  box-sizing: border-box;
+  margin-right: 30px;
 }
-
-.card-text {
+.bloggs-card-text {
+  display: inline-block;
+  flex: 1;
   font-size: 16px;
   color: #000000;
-}
 
-.card-footer {
+}
+.bloggs-card-footer {
   background-color: #000080;
   border-top: 1px solid #000000;
-  padding: 10px;
+  padding: 5px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  align-items: center;
 }
-
-.blog-author,
-.blog-date {
-  font-size: 14px;
-  color: #f8f8ff;
-}
-
-/* Comments section */
-.comments-section {
-  margin-top: 30px;
-  padding: 10px;
-  background-color: #f8f8ff;
-  border: 3px solid #000000;
-  border-radius: 10px;
-}
-
-/* Comment styles */
-.comment {
-  margin-bottom: 20px;
-  padding: 10px;
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
-  border-radius: 5px;
-}
-
-.comment-user {
-  font-weight: bold;
-  color: #0b0505;
-}
-
-.comment-text {
-  margin-top: 5px;
-  color: #666666;
+.bloggs-likes{
+  /* margin-right: 90%; */
+  color: #ffffff;
 }
 
 /* Like button */
@@ -116,15 +77,49 @@
   padding: 5px 10px;
   border: none;
   border-radius: 5px;
-  background-color: #cccccc;
   color: #ffffff;
   transition: background-color 0.3s ease;
+  margin-left: 30px; 
 }
-
+.like-button::before {
+  content: '👍';
+  font-size: 24px; 
+  margin-right: 5px;
+}
 .like-button:hover {
   background-color: #009900;
 }
+.blog-author,
+.blog-date {
+  font-size: 14px;
+  color: #f8f8ff;
+  margin-left: 1050%;
+}
 
+/* Comments section */
+.bloggs-comments{
+  margin-top: 0px;
+  padding: 5px;
+  background-color: #f8f8ff;
+}
+.bloggs-comment-form {
+  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 25px;
+}
+.bloggs-form-control{
+  width: 100%;
+}
+.bloggs-submit-bttn{
+    background-color: #9b30ff;
+    color: #000000; 
+    border: 2px solid #000000; 
+    border-radius: 25px; 
+    font-weight: bold;
+    font-size: 15px;
+    width: 5%;
+    margin-left: 45%;
+}
 /* No blog posts available */
 .no-blog-posts {
   font-size: 16px;

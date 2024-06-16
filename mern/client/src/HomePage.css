@@ -21,10 +21,9 @@ body {
 .user-card {
   border: 3px solid #000000;
   border-radius: 30px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 400px;
   height: 500px;
-  background-color: #f8f8ff;
+  background-color: #9b30ff;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -41,7 +40,6 @@ body {
   height: 80px;
   border: 3px solid #000000;
   border-radius: 50%;
-  background-color: #9B30;
   text-align: center;
   padding: 18px;
   position: absolute;
@@ -49,23 +47,32 @@ body {
   left: 49%;
   transform: translateX(-50%);
 }
+.initials-title {
+  background-color: #f8f8ff;
+}
 /* Style for the list items */
-.user-card .card-text ul {
+.user-card .home-card-text ul {
   list-style-type: none;
   padding: 0;
 }
-.user-card .card-text ul li {
+.user-card .home-card-text ul li {
   margin-bottom: 10px;
 }
-.user-card .card-text ul li span {
+.user-card .home-card-text ul li span {
   font-weight: bold;
 }
-.card-text input[type="text"] {
-  width: 30%;
+.home-user-status {
+  width: 45%;
+  height: 40%;
   padding: 5px;
   margin-right: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border: 1px solid #f8f8ff;
+  border-radius: 20px;
+  background-color: #9b30ff;
+  color: #000000;
+}
+.user-card .home-card-text input::placeholder {
+  color: #f8f8ff;
 }
 .edit-button {
   margin-left: 10px;
@@ -75,25 +82,24 @@ body {
   background-color: #9b30ff;
   font: bold;
 }
-.card-text li {
+.home-card-text li {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
 }
-/* Post CSS */
 
+/* Post CSS */
 /* Container for post card */
-.post-card-container {
+.home-post-card-container {
   display: flex;
   justify-content: center;
   align-items: flex-start;
 }
 /* Post card */
-.posts-card {
-  background-color: #f8f8ff;
+.home-posts-card {
+  background-color: #9b30ff;
   border: 3px solid #000000;
   border-radius: 30px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 500px;
   height: 300px;
   display: flex;
@@ -108,31 +114,20 @@ body {
   align-items: center;
   height: 100%;
 }
-.posts-card .card-text {
-  text-align: center;
+.home-post-title{
+  font: bolder;
+  font-size: 150%;
+  top: 37%;
+  justify-content: center;
+  margin-left: 25%;
 }
-/* Comments section */
-.posts-card .comments-section {
-  margin-top: 15px;
-  color: #000000;
-}
-/* Comments section title */
-.posts-card .comments-section h6 {
-  font-size: 1rem;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-/* Comments list */
-.posts-card .comments-section ul {
-  list-style-type: none;
-  padding-left: 0;
-}
-/* Individual comment */
-.posts-card .comments-section ul li {
-  background-color: #9b30ff;
-  border: 1px solid #090404;
-  border-radius: 10px;
+.home-post-content{
+  background-color: #f8f8ff;
+  border: 2px solid #000000;
+  width: 450px;
+  height: 80px;
+  border-radius: 30px;
+  text-align:center;
   padding: 10px;
-  margin-bottom: 5px;
-  color: #000000;
 }
+

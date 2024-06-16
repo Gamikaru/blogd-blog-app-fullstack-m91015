@@ -1,35 +1,49 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import { useCookies } from "react-cookie";
 
 export default function PostModal({ show, handleClose }) {
+	const [cookie, setCookie, removeCookie] = useCookies();
 	const [content, setContent] = useState("");
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
+	const handleCreatePost = async (post) => {
+		const token = cookie.PassBloggs;
 		try {
-			// Send a POST request to create a new post
-			const response = await fetch("http://localhost:5050/posts", {
+			const response = await fetch(`http://localhost:5050/post/`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
 				},
-				body: JSON.stringify({ content }),
+				body: JSON.stringify(post),
 			});
 			if (!response.ok) {
-				throw new Error("Failed to create post");
+				throw new Error(`Failed to save post: ${response.statusText}`);
 			}
-			// Reset content and close modal on success
-			setContent("");
+			console.log("Post created successfully");
 			handleClose();
 		} catch (error) {
 			console.error("Error creating post:", error);
-		}
-	};
-
+		}};
+	
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		try {
+			const newPost = {
+				content,
+				postDate: new Date().toLocaleString(),
+				likes: 0,
+			};
+			await handleCreatePost(newPost);
+			setContent("");
+		} catch (error) {
+			console.error("Error creating post:", error);
+		}};
+	
 	const handleChange = (e) => {
-		setContent(e.target.value);
+	setContent(e.target.value);
 	};
-
+	
 	return (
 		<Modal show={show} onHide={handleClose} centered>
 			<Modal.Header closeButton>

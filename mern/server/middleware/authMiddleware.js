@@ -1,10 +1,8 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
-// Load environment variables from .env file
 dotenv.config();
 
-// Middleware to authenticate token in authMiddleware.js
 export const authenticate = (req, res, next) => {
     const { authorization } = req.headers;
     if (!authorization) {
@@ -25,8 +23,10 @@ export const authenticate = (req, res, next) => {
         }
 
         console.log('Decoded token:', decodedToken);
-        if (!decodedToken._id && decodedToken.id) {  // Handle cases where _id might not exist but id does
-            decodedToken._id = decodedToken.id;
+
+        if (!decodedToken._id) {
+            console.log('Token does not contain _id');
+            return res.status(400).send('Invalid token payload');
         }
 
         req.user = {
@@ -35,6 +35,9 @@ export const authenticate = (req, res, next) => {
             auth_level: decodedToken.auth_level
         };
 
+        console.log('req.user set to:', req.user);
+
         next();
     });
 };
+

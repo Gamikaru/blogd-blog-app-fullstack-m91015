@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const { Schema, model } = mongoose;
 
-const comment = new Schema({
+const commentSchema = new Schema({
     content: {
         type: String,
         required: true
@@ -11,17 +11,17 @@ const comment = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Post',
         required: true,
-        index: true // Adding an index for better query performance
+        index: true 
     },
     user_id: {
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true,
-        index: true // Adding an index for better query performance
+        index: true 
     },
     likes: {
         type: Number,
-        default: 0 // Setting a default value for likes
+        default: 0
     },
     time_stamp: {
         type: Date,
@@ -29,4 +29,4 @@ const comment = new Schema({
     }
 });
 
-export default model('Comment', comment);
+export default model('Comment', commentSchema);

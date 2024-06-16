@@ -34,12 +34,10 @@ export default function RegisterPage() {
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(registerForm),
 			});
-
 			if (!response.ok) {
-				setShowErrorToast(true); // Corrected from setShowToast
+				setShowErrorToast(true);
 				return;
 			}
-
 			// If the response is successful, reset the form fields
 			setRegisterForm({
 				first_name: "",
@@ -55,12 +53,10 @@ export default function RegisterPage() {
 			setShowSuccessToast(true);
 			navigate("/login");
 		} catch (error) {
-			// Handle fetch error (e.g., network error, etc.)
 			console.error("Error occurred during registration:", error.message);
 			alert("Registration failed. " + error.message);
 		}
 	}
-
 	// Render the registration form
 	return (
 		<div className="register-container">

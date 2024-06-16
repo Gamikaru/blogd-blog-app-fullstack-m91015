@@ -2,23 +2,20 @@ import express from 'express';
 import Session from '../models/sessionSchema.js';
 import { authenticate } from '../middleware/authMiddleware.js';
 import { v4 as uuidv4 } from 'uuid';
-
+import User from '../models/userSchema.js';
 
 const router = express.Router();
 
-// Create a new session
-router.post('/start', authenticate, async (req, res) => {
-    if (!req.user) {
-        console.log('User not authenticated');
-        return res.status(401).send('User not authenticated');
-    }
+// Create a new session for the given user - should be just /:user_id
+router.post('/:id', authenticate, async (req, res) => {
+    const userId = req.params.id;
 
-    console.log('Creating session for user:', req.user);  // Log before creating a session
+    console.log('Creating session for user ID:', userId);  // Log before creating a session
 
     try {
         const newSession = new Session({
             sessionId: uuidv4(),
-            user: req.user._id
+            user: userId
         });
 
         await newSession.save();
@@ -31,8 +28,19 @@ router.post('/start', authenticate, async (req, res) => {
     }
 });
 
-
-
+// Validate session token and return information about the associated user
+router.get('/validate_token', authenticate, async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        console.error('Error validating token:', error);
+        res.status(500).send('Error validating token');
+    }
+});
 
 // End a session
 router.post('/end', authenticate, async (req, res) => {
@@ -44,7 +52,6 @@ router.post('/end', authenticate, async (req, res) => {
         console.error('Error ending session:', error);
         res.status(500).send('Error ending session');
     }
-}
-);
+});
 
 export default router;
