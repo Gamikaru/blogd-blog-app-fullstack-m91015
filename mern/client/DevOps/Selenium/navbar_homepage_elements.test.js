@@ -16,8 +16,8 @@ const ensureDirectoryExistence = (filePath) => {
 };
 
 // Helper function to capture screenshots on failure
-const captureScreenshot = async (label) => {
-    const filePath = path.resolve(`mern/client/DevOps/screenshots/${label}.png`);
+const captureScreenshot = async (driver, label) => {
+    const filePath = path.resolve(`DevOps/screenshots/${label}.png`);
     ensureDirectoryExistence(filePath); // Ensure directory exists
     const screenshot = await driver.takeScreenshot();
     fs.writeFileSync(filePath, screenshot, 'base64');
@@ -108,7 +108,7 @@ describe('Navbar and Homepage Elements Test', function () {
                                 expect(await dropdownButton.isDisplayed()).to.be.true;
                             }
                         } catch (error) {
-                            await captureScreenshot(`navbar-elements-${size.label}`);
+                            await captureScreenshot(driver, `navbar-elements-${size.label}`);
                             throw error;
                         }
                     });
@@ -143,7 +143,7 @@ describe('Navbar and Homepage Elements Test', function () {
                             await dropdownButton.click(); // Close dropdown
                             console.log(`Dropdown closed for ${size.label}`);
                         } catch (error) {
-                            await captureScreenshot(`dropdown-menu-${size.label}`);
+                            await captureScreenshot(driver, `dropdown-menu-${size.label}`);
                             throw error;
                         }
                     });
@@ -157,7 +157,7 @@ describe('Navbar and Homepage Elements Test', function () {
                             const windowWidth = await driver.executeScript("return window.innerWidth;");
                             expect(postButtonRect.right <= windowWidth).to.be.true;
                         } catch (error) {
-                            await captureScreenshot(`post-button-overflow-${size.label}`);
+                            await captureScreenshot(driver, `post-button-overflow-${size.label}`);
                             throw error;
                         }
                     });
@@ -175,7 +175,7 @@ describe('Navbar and Homepage Elements Test', function () {
                             const isDropdownVisible = await dropdownMenu.isDisplayed();
                             expect(isDropdownVisible).to.be.false;
                         } catch (error) {
-                            await captureScreenshot(`dropdown-close-outside-${size.label}`);
+                            await captureScreenshot(driver, `dropdown-close-outside-${size.label}`);
                             throw error;
                         }
                     });
