@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useCookies } from "react-cookie";
 
@@ -9,8 +9,8 @@ export default function Comments({ postId, handleLike }) {
 
 	useEffect(() => {
 		fetchComments();
-  }, []);
-  
+	}, []);
+
 	const fetchComments = async () => {
 		const token = cookie.PassBloggs;
 		try {
@@ -28,7 +28,8 @@ export default function Comments({ postId, handleLike }) {
 			setComments(data);
 		} catch (error) {
 			console.error("Error fetching comments:", error);
-		}};
+		}
+	};
 	const handleLikeClick = () => {
 		setLiked(!liked);
 		handleLike();

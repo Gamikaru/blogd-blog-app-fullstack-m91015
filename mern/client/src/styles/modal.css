@@ -15,7 +15,8 @@
 
 /* Modal */
 .modal {
-    background-color: #FFFFFF; /* White */
+    background-color: #FFFFFF;
+    /* White */
     border-radius: 0.75rem;
     max-width: 600px;
     width: 100%;
@@ -26,21 +27,26 @@
 
 /* Modal Header */
 .modal-header {
-    background-color: #9C59B6; /* Violet Purple */
-    color: #FFFFFF; /* White */
+    background-color: #9C59B6;
+    /* Violet Purple */
+    color: #FFFFFF;
+    /* White */
     padding: 1rem;
     font-size: 1.25rem;
     font-weight: bold;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #ced4da; /* Light Gray */
+    border-bottom: 1px solid #ced4da;
+    /* Light Gray */
 }
 
 /* Close Button */
 .modal-header .close-button {
-    background-color: #4B0082; /* Deep Indigo */
-    color: #FFFFFF; /* White */
+    background-color: #4B0082;
+    /* Deep Indigo */
+    color: #FFFFFF;
+    /* White */
     border: none;
     border-radius: 50%;
     padding: 0.5rem;
@@ -49,13 +55,16 @@
 }
 
 .modal-header .close-button:hover {
-    background-color: #7FFFD4; /* Mint Green */
+    background-color: #7FFFD4;
+    /* Mint Green */
 }
 
 /* Modal Body */
 .modal-body {
-    background-color: #FFFFFF; /* White */
-    color: #333333; /* Dark Gray */
+    background-color: #FFFFFF;
+    /* White */
+    color: #333333;
+    /* Dark Gray */
     padding: 1.5rem;
     font-size: 1rem;
     line-height: 1.6;
@@ -63,12 +72,14 @@
 
 /* Modal Footer */
 .modal-footer {
-    background-color: #F0F0F5; /* Light Gray */
+    background-color: #F0F0F5;
+    /* Light Gray */
     padding: 1rem;
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
-    border-top: 1px solid #ced4da; /* Light Gray */
+    border-top: 1px solid #ced4da;
+    /* Light Gray */
 }
 
 /* Modal Button Group */
@@ -83,22 +94,28 @@
 
 /* Close Button inside Modal Footer */
 .modal-footer .modal-close-button {
-    background-color: #4B0082; /* Deep Indigo */
-    color: #FFFFFF; /* White */
+    background-color: #4B0082;
+    /* Deep Indigo */
+    color: #FFFFFF;
+    /* White */
 }
 
 .modal-footer .modal-close-button:hover {
-    background-color: #7FFFD4; /* Mint Green */
+    background-color: #7FFFD4;
+    /* Mint Green */
 }
 
 /* Success Button */
 .modal-footer .modal-success-button {
-    background-color: #9C59B6; /* Violet Purple */
-    color: #FFFFFF; /* White */
+    background-color: #9C59B6;
+    /* Violet Purple */
+    color: #FFFFFF;
+    /* White */
 }
 
 .modal-footer .modal-success-button:hover {
-    background-color: #4B0082; /* Deep Indigo */
+    background-color: #4B0082;
+    /* Deep Indigo */
 }
 
 /* Responsive Modal */
@@ -108,7 +125,8 @@
         margin: 1rem;
     }
 
-    .modal-header, .modal-footer {
+    .modal-header,
+    .modal-footer {
         flex-direction: column;
         text-align: center;
     }

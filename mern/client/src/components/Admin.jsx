@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Button, Card, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 // Import the relevant CSS for Admin styling
-import "../styles/main_content.css"; // Assuming you have a styles folder with MainContent.css
 import "../styles/admin_page.css"; // Assuming you have a styles folder with Admin.css
 
 export default function Admin() {
