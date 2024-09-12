@@ -1,0 +1,63 @@
+/* Pagination Container */
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1.5rem;
+}
+
+/* Pagination Item */
+.pagination-item {
+    background-color: #F0F0F5;
+    /* Light Gray */
+    color: #333333;
+    /* Dark Gray */
+    border: 1px solid #ced4da;
+    /* Light Gray border */
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover State for Pagination Item */
+.pagination-item:hover {
+    background-color: #9C59B6;
+    /* Violet Purple */
+    color: #FFFFFF;
+    /* White */
+    box-shadow: 0 0.25rem 0.75rem rgba(156, 89, 182, 0.2);
+    /* Soft purple shadow */
+}
+
+/* Active Pagination Item */
+.pagination-item.active {
+    background-color: #4B0082;
+    /* Deep Indigo */
+    color: #FFFFFF;
+    /* White */
+    border-color: #4B0082;
+    /* Deep Indigo border */
+    box-shadow: 0 0.25rem 0.75rem rgba(75, 0, 130, 0.3);
+    /* Indigo shadow */
+}
+
+/* Disabled Pagination Item */
+.pagination-item.disabled {
+    background-color: #ced4da;
+    /* Light Gray */
+    color: #aaa;
+    /* Disabled Gray */
+    cursor: not-allowed;
+}
+
+/* Responsive Pagination */
+@media (max-width: 768px) {
+    .pagination-item {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.9rem;
+    }
+}

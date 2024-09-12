@@ -1,0 +1,155 @@
+/* Homepage Container */
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20vh 5vw;
+    /* Relative padding for responsiveness */
+    background-color: #f3f6f9;
+    /* Light background for better contrast */
+    min-height: 100vh;
+    margin-left: 250px;
+}
+
+/* Grid layout for the homepage */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* Two columns for larger screens */
+    gap: 2rem;
+    /* Space between the two main cards */
+    max-width: 90vw;
+    /* Responsive width */
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .grid-container {
+        grid-template-columns: 1fr;
+        /* Stack cards on smaller screens */
+    }
+
+    .main-container {
+        margin-left: 0;
+        /* Remove sidebar space on smaller screens */
+        padding: 5vh 2vw;
+    }
+}
+
+/* User Card */
+.user-card-container {
+    margin-bottom: 2rem;
+}
+
+.user-card {
+    background-color: #FFFFFF;
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    /* Softer shadow */
+    padding: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.user-card:hover {
+    transform: translateY(-5px);
+    /* Card moves up slightly on hover */
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.2);
+}
+
+.initials-title {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #a29bfe;
+    /* Accent color */
+    margin-bottom: 1rem;
+    text-align: center;
+    /* Centered for better visual impact */
+}
+
+.home-card-text ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+.home-card-text li {
+    padding: 0.75rem 0;
+    font-size: 1rem;
+    color: #2c3e50;
+}
+
+input.home-user-status {
+    padding: 0.5rem;
+    border: 1px solid #dfe6e9;
+    border-radius: 0.5rem;
+    width: 100%;
+    transition: box-shadow 0.3s ease;
+}
+
+input.home-user-status:focus {
+    box-shadow: 0 0.5rem 1rem rgba(52, 152, 219, 0.2);
+    /* Soft shadow on focus */
+}
+
+/* Post Card with Speech Bubble Effect */
+.home-posts-card {
+    background-color: #FFFFFF;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    position: relative;
+    /* To position the tail */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Tail of the Speech Bubble */
+.home-posts-card::after {
+    content: '';
+    position: absolute;
+    bottom: -1.5rem;
+    left: 2rem;
+    width: 0;
+    height: 0;
+    border: 1.5rem solid transparent;
+    border-top-color: #FFFFFF;
+    /* The same color as the post card */
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    /* Shadow effect for the tail */
+    z-index: 1;
+    /* Ensures the tail appears on top */
+}
+
+.home-posts-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.2);
+}
+
+.home-post-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #a29bfe;
+    margin-bottom: 1.5rem;
+}
+
+.home-post-content {
+    font-size: 1.05rem;
+    color: #34495e;
+    margin-bottom: 1rem;
+}
+
+.home-post-likes {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+}
+
+.home-post-likes::before {
+    content: "❤️ ";
+    /* Adds a heart icon before the Likes count */
+}
+
+
+/* Adding a hover effect on interactive elements */
+.home-posts-card:hover .home-post-title,
+.user-card:hover .initials-title {
+    color: #3498db;
+    /* Subtle darkening effect on hover */
+}

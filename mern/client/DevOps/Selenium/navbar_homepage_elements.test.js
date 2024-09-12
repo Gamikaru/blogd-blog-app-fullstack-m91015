@@ -24,6 +24,52 @@ const captureScreenshot = async (driver, label) => {
     console.log(`Screenshot captured: ${label}.png`);
 };
 
+// Helper function to log in before running tests
+const login = async (driver) => {
+    try {
+        // Step 1: Open the homepage
+        await driver.get("http://localhost:5173/");
+        console.log("Opened homepage");
+
+        // Step 2: Handle existing session (if logged in, logout first)
+        try {
+            const dropdown = await driver.findElement(By.id('dropdown'));
+            await driver.wait(until.elementIsVisible(dropdown), 10000);
+            await dropdown.click();
+            console.log("Clicked dropdown");
+
+            const logoutLink = await driver.findElement(By.linkText('Logout'));
+            await driver.wait(until.elementIsVisible(logoutLink), 10000);
+            await logoutLink.click();
+            console.log("User logged out successfully.");
+        } catch (error) {
+            console.log("User is not logged in. Proceeding to login.");
+        }
+
+        // Step 3: Wait for the login page to load
+        const loginEmailField = await driver.wait(until.elementLocated(By.id("login_email")), 15000);
+        await driver.wait(until.elementIsVisible(loginEmailField), 15000);
+        console.log("Login page loaded.");
+
+        // Step 4: Fill in login details and submit
+        await driver.findElement(By.id("login_email")).sendKeys("test@test.test");
+        await driver.findElement(By.id("login_password")).sendKeys("test");
+
+        // Step 5: Submit the login form
+        const loginButton = await driver.wait(until.elementLocated(By.css(".btn.btn-primary")), 10000);
+        await driver.wait(until.elementIsVisible(loginButton), 10000);
+        await loginButton.click();
+
+        // Step 6: Verify user is logged in by checking if the user's email is displayed on the homepage
+        const userEmail = await driver.wait(until.elementLocated(By.xpath("//*[contains(text(), 'Email')]")), 20000);
+        expect(await userEmail.isDisplayed()).to.be.true;
+        console.log("User is successfully logged in.");
+    } catch (error) {
+        console.error("Failed to log in:", error);
+        throw error;
+    }
+};
+
 describe('Navbar and Homepage Elements Test', function () {
     this.timeout(80000); // Increased timeout to 80 seconds for each test
     let driver;
@@ -57,6 +103,9 @@ describe('Navbar and Homepage Elements Test', function () {
                     width: screenDimensions.width,
                     height: screenDimensions.height
                 });
+
+                // Log in before running any tests
+                await login(driver);
             });
 
             after(async function () {

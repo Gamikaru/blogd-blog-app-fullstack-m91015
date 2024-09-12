@@ -1,12 +1,13 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { Card, Dropdown, Button, Modal } from "react-bootstrap";
-import PostModal from "./PostModal";
+import React, { useEffect, useRef, useState } from "react";
+import { Button, Dropdown, Modal } from "react-bootstrap";
 import { useCookies } from "react-cookie";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import "../styles/navbar.css";
+import "../styles/sidebar";
+import PostModal from "./PostModal";
 
 export default function Navbar() {
-	const [cookie, setCookie, removeCookie] = useCookies();
+	const [cookie, removeCookie] = useCookies();
 	const location = useLocation();
 	const navigate = useNavigate();
 	const [showModal, setShowModal] = useState(false);
@@ -17,12 +18,7 @@ export default function Navbar() {
 	const [user, setUser] = useState({
 		first_name: "",
 		last_name: "",
-		status: "",
-		email: "",
-		birthdate: "",
-		occupation: "",
-		location: "",
-		auth_level: "", // Add auth_level to the user state
+		auth_level: "",
 	});
 
 	useEffect(() => {
@@ -48,7 +44,6 @@ export default function Navbar() {
 				throw new Error(`Failed to fetch user data: ${response.statusText}`);
 			}
 			const data = await response.json();
-			console.log(data);
 			setUser(data);
 		} catch (error) {
 			console.error("Error fetching user data:", error);
@@ -80,91 +75,98 @@ export default function Navbar() {
 		setShowDropdown(!showDropdown);
 	};
 
-	const handlePostSubmit = (content) => {
-		console.log("Post submitted:", content);
-	};
-
 	const handleLogout = () => {
 		removeCookie("PassBloggs", { path: "/" });
 		removeCookie("userID", { path: "/" });
 		navigate("/login");
 	};
 
-	// Don't render the navbar on the login and registration pages
+	// Prevent rendering on the login and registration pages
 	if (location.pathname === "/login" || location.pathname === "/register") {
 		return null;
 	}
 
-	// Combine first name and last name to form the full name
 	const userName = `${user.first_name} ${user.last_name}`;
 
 	return (
 		<>
 			<div className="nav-header">
 				<nav className="navbar">
-					<a href="/">
-						<img
-							alt="CodeBloggs logo"
-							className="nav-logo-image"
-							src="/CodeBloggs logo.png"
-						/>
-					</a>
-					<Button className="post-button" onClick={handleModal}>
-						Post
-					</Button>
-					<div className="dropdown-container" ref={dropdownRef}>
-						<Dropdown
-							show={showDropdown}
-							onClose={() => setShowDropdown(false)}
-						>
-							<Dropdown.Toggle id="dropdown" onClick={handleDropdown}>
-								{userName}
-							</Dropdown.Toggle>
-							<Dropdown.Menu>
-								<Dropdown.Item onClick={handleAccountModal}>
-									Account Settings
-								</Dropdown.Item>
-								<Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
-							</Dropdown.Menu>
-						</Dropdown>
+					{/* Align logo on the left */}
+					<div className="navbar-logo">
+						<Link to="/">
+							<img
+								alt="CodeBloggs logo"
+								className="nav-logo-image"
+								src="../../public/assets/images/CodeBloggsLogo.png"
+							/>
+						</Link>
+					</div>
+
+					{/* Align buttons on the right */}
+					<div className="navbar-buttons">
+						<Button className="post-button" onClick={handleModal}>
+							Post
+						</Button>
+						<div className="dropdown-container" ref={dropdownRef}>
+							<Dropdown
+								show={showDropdown}
+								onClose={() => setShowDropdown(false)}
+							>
+								<Dropdown.Toggle id="dropdown" onClick={handleDropdown}>
+									{"Account"}
+								</Dropdown.Toggle>
+								<Dropdown.Menu>
+									<Dropdown.Item onClick={handleAccountModal}>
+										Account Settings
+									</Dropdown.Item>
+									<Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
+								</Dropdown.Menu>
+							</Dropdown>
+						</div>
 					</div>
 				</nav>
 			</div>
+
+			{/* Sidebar Navigation */}
 			<div className="nav-container">
 				<div className="nav">
-					<Card>
-						<ul>
+					<ul>
+						<li>
+							<Link to="/" className={location.pathname === "/" ? "active" : ""}>
+								Home
+							</Link>
+						</li>
+						<li>
+							<Link
+								to="/bloggs"
+								className={location.pathname === "/bloggs" ? "active" : ""}
+							>
+								Bloggs
+							</Link>
+						</li>
+						<li>
+							<Link
+								to="/network"
+								className={location.pathname === "/network" ? "active" : ""}
+							>
+								Network
+							</Link>
+						</li>
+						{user.auth_level === "admin" && (
 							<li>
-								<a href="/" className="active">
-									Home
-								</a>
+								<Link
+									to="/admin"
+									className={location.pathname === "/admin" ? "active" : ""}
+								>
+									Admin
+								</Link>
 							</li>
-							<li>
-								<a href="/bloggs" className="active">
-									Bloggs
-								</a>
-							</li>
-							<li>
-								<a href="/network" className="active">
-									Network
-								</a>
-							</li>
-							{user.auth_level === "admin" && ( // Conditionally render the Admin link
-								<li>
-									<a href="/admin" className="active">
-										Admin
-									</a>
-								</li>
-							)}
-						</ul>
-					</Card>
+						)}
+					</ul>
 				</div>
 			</div>
-			<PostModal
-				show={showModal}
-				handleClose={handleModal}
-				onSubmit={handlePostSubmit}
-			/>
+			<PostModal show={showModal} handleClose={handleModal} />
 			<Modal
 				className="nav-toast-container"
 				show={showAccountModal}
@@ -173,7 +175,7 @@ export default function Navbar() {
 			>
 				<Modal.Title className="nav-toast-title">Account Settings</Modal.Title>
 				<Modal.Body className="nav-toast-mssg">
-					<p>Go to Account Setting.</p>
+					<p>Go to Account Settings.</p>
 				</Modal.Body>
 				<Modal.Footer>
 					<Button className="nav-toast-button" onClick={handleAccountModal}>

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Container, Card, Form, Button } from "react-bootstrap";
+import { Button, Card, Container, Form } from "react-bootstrap";
 import { useCookies } from "react-cookie";
+// Import the relevant CSS for Blog Posts
+import "../styles/bloggs_page.css"; // Assuming you have a styles folder with Bloggs.css
 
 export default function BloggsPosts() {
     const [cookie] = useCookies(); // assuming you only read cookies here

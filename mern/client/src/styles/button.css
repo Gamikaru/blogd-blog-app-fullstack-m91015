@@ -1,0 +1,82 @@
+/* Button Base Styling */
+.button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    font-family: 'JetBrains Mono', Arial, sans-serif;
+}
+
+/* Primary Button */
+.button-primary {
+    background-color: #9C59B6; /* Violet Purple */
+    color: #FFFFFF; /* White */
+}
+
+.button-primary:hover {
+    background-color: #4B0082; /* Deep Indigo */
+    box-shadow: 0 0.5rem 1rem rgba(75, 0, 130, 0.2); /* Soft shadow */
+}
+
+/* Secondary Button */
+.button-secondary {
+    background-color: #F0F0F5; /* Light Gray */
+    color: #333333; /* Dark Gray */
+}
+
+.button-secondary:hover {
+    background-color: #9C59B6; /* Violet Purple */
+    color: #FFFFFF; /* White */
+    box-shadow: 0 0.5rem 1rem rgba(156, 89, 182, 0.2); /* Violet Purple shadow */
+}
+
+/* Success Button */
+.button-success {
+    background-color: #7FFFD4; /* Mint Green */
+    color: #333333; /* Dark Gray */
+}
+
+.button-success:hover {
+    background-color: #5DE3B2; /* Darker Mint */
+    box-shadow: 0 0.5rem 1rem rgba(95, 227, 178, 0.2); /* Mint shadow */
+}
+
+/* Danger Button */
+.button-danger {
+    background-color: #DC3545; /* Crimson Red */
+    color: #FFFFFF; /* White */
+}
+
+.button-danger:hover {
+    background-color: #B52A3D; /* Darker Red */
+    box-shadow: 0 0.5rem 1rem rgba(181, 42, 61, 0.2); /* Red shadow */
+}
+
+/* Disabled State */
+.button:disabled {
+    background-color: #ced4da; /* Light Gray */
+    color: #aaa; /* Gray */
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Button with Icon */
+.button-icon {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.button-icon i {
+    font-size: 1.2rem;
+}
+
+/* Responsive Button */
+@media (max-width: 768px) {
+    .button {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}

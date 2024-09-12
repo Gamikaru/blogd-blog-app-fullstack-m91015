@@ -1,0 +1,81 @@
+/* Table Container */
+.table-container {
+    width: 100%;
+    margin: 2rem 0;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+/* Basic Table Styling */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'JetBrains Mono', Arial, sans-serif;
+    background-color: #FFFFFF;
+}
+
+/* Table Header */
+.table th {
+    background-color: #4B0082;
+    /* Deep Indigo */
+    color: #FFFFFF;
+    /* White */
+    padding: 1rem;
+    font-size: 1.1rem;
+    text-align: left;
+    border-bottom: 0.15rem solid #ced4da;
+    /* Light Gray */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Body */
+.table td {
+    padding: 1rem;
+    font-size: 1rem;
+    color: #333333;
+    /* Dark Gray */
+    border-bottom: 0.1rem solid #ced4da;
+    /* Light Gray */
+}
+
+/* Striped Rows */
+.table tr:nth-child(odd) {
+    background-color: #F0F0F5;
+    /* Light Gray */
+}
+
+.table tr:nth-child(even) {
+    background-color: #FFFFFF;
+    /* White */
+}
+
+/* Hover Effect */
+.table tr:hover {
+    background-color: rgba(156, 89, 182, 0.15);
+    /* Violet Purple with light opacity */
+    box-shadow: 0px 4px 8px rgba(113, 113, 186, 0.4);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Bordered Table */
+.table-bordered {
+    border: 0.2rem solid #ced4da;
+    /* Light Gray */
+}
+
+.table-bordered th,
+.table-bordered td {
+    border: 0.1rem solid #ced4da;
+    /* Light Gray */
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+
+    .table th,
+    .table td {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+}

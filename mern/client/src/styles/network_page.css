@@ -1,0 +1,61 @@
+/* Network Container */
+.network-container {
+    padding: 30px 40px;
+    /* Adjusted padding for better spacing */
+    background-color: #FFFFFF;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.network-card {
+    background-color: #F5F5F5;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 350px;
+    /* Adjusted for better UI */
+    padding: 20px;
+}
+
+.network-card-body {
+    padding: 15px;
+}
+
+.top-section {
+    display: flex;
+    align-items: center;
+}
+
+.initials {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-right: 15px;
+}
+
+.user-info h5 {
+    font-size: 18px;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.user-info p {
+    font-size: 14px;
+    color: #34495e;
+    margin: 2px 0;
+}
+
+.user-status {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #2c3e50;
+}
+
+.recent-post h6 {
+    font-size: 16px;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}

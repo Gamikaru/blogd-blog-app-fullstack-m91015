@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { useCookies } from "react-cookie";
+import "../styles/network_page.css";
 
 export default function Network() {
 	const [cookie] = useCookies(["PassBloggs"]);

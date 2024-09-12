@@ -1,0 +1,175 @@
+/* Global font settings for the navbar */
+.nav-header,
+.navbar,
+.post-button,
+.dropdown-container .dropdown-toggle,
+.dropdown-menu {
+  font-family: 'JetBrains Mono', Arial, sans-serif;
+}
+
+/* Navbar */
+.nav-header {
+  background-color: #eaedf0fd;
+  /* Navbar Background */
+  padding: 1rem;
+  /* Use rem for relative padding */
+  position: fixed;
+  /* Keep navbar at the top */
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 7vh;
+  /* Relative to viewport height */
+  z-index: 1000;
+  /* Ensure navbar is above everything */
+  display: flex;
+  align-items: center;
+  /* Align content vertically */
+  box-shadow: 0 4px 8px #7171ba66;
+  /* Subtle shadow */
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  /* Ensure full width */
+}
+
+.navbar-logo img {
+  height: 40vh;
+  /* Adjusted logo size for responsiveness */
+  width: auto;
+  /* Keep width proportional */
+}
+
+.navbar-buttons {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  /* Increased space between buttons */
+  margin-right: 3rem;
+  /* Shift the buttons slightly to the left */
+}
+
+/* Silverish Buttons with Teal Shadow */
+.post-button,
+.dropdown-container .dropdown-toggle {
+  background-color: #e2e8ec;
+  /* Silverish background */
+  color: #2c3e50;
+  /* Dark text */
+  border: none;
+  padding: 0.6rem 2rem;
+  /* Padding for buttons */
+  border-radius: 0.5rem;
+  /* Rounded corners */
+  font-size: 1rem;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 8px #7171ba66;
+  /* Teal shadow */
+}
+
+.post-button:hover,
+.dropdown-container .dropdown-toggle:hover {
+  background-color: #e5ecef;
+  /* Darker silver on hover */
+  box-shadow: 0px 6px 12px #7171ba66;
+  /* More intense teal shadow on hover */
+}
+
+/* Dropdown Container */
+.dropdown-container {
+  position: relative;
+  /* Ensure dropdown aligns properly below toggle */
+}
+
+/* Dropdown Styling Consistent with Buttons */
+.dropdown-menu {
+  background-color: #e2e8ec;
+  /* Consistent with button background */
+  color: #2c3e50;
+  /* Dark text, consistent with button text */
+  border-radius: 0.5rem;
+  /* Match button rounded corners */
+  padding: 0.3rem 0.7rem;
+  /* Reduced horizontal padding */
+  box-shadow: 0px 4px 8px #7171ba66;
+  /* Consistent teal shadow */
+  width: auto;
+  /* Match button width */
+  min-width: 100%;
+  /* Set width to match button */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  /* Slightly smaller vertical shift */
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+  position: absolute;
+  /* Position dropdown relative to button */
+  top: 100%;
+  /* Align dropdown right below its parent button */
+  left: 0;
+  z-index: 999;
+  /* Ensure dropdown is above other elements */
+  display: flex;
+  flex-direction: column;
+  /* Stack items vertically */
+}
+
+/* Show dropdown directly under its parent button */
+.dropdown.show .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  /* Smooth slide-in effect */
+}
+
+/* Dropdown Items */
+.dropdown-menu .dropdown-item {
+  color: #2c3e50;
+  /* Dark text, consistent with buttons */
+  padding: 0.4rem 0.9rem;
+  /* Reduced padding for a more compact look */
+  font-size: 1rem;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+  /* Add text-shadow transition */
+  border-radius: 0.5rem;
+  /* Rounded corners */
+  box-sizing: border-box;
+  width: 100%;
+  /* Ensure the items match the dropdown width */
+}
+
+/* Neon Glow Effect on Hover */
+.dropdown-menu .dropdown-item:hover {
+  color: #f6f5f8;
+  /* Light purple text on hover */
+  text-shadow: 0 0 8px #a29bfe, 0 0 16px #a29bfe;
+  /* Neon purple glow effect */
+  background-color: transparent;
+  /* No background change */
+  font-weight: bold;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .navbar-logo img {
+    height: 8vh;
+    /* Adjust logo size for smaller screens */
+  }
+
+  .post-button,
+  .dropdown-container .dropdown-toggle {
+    padding: 0.4rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .dropdown-menu {
+    width: auto;
+    /* Ensure dropdown width adjusts with button */
+    min-width: 10rem;
+    /* Adjust dropdown width for smaller screens */
+  }
+}

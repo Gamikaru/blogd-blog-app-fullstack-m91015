@@ -1,0 +1,85 @@
+/* Form Container */
+.form-container {
+    width: 100%;
+    margin: 2rem 0;
+    font-family: 'JetBrains Mono', Arial, sans-serif;
+}
+
+/* Form Label */
+.form-label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333333; /* Dark Gray */
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+/* Input Fields */
+.form-input {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ced4da; /* Light Gray */
+    border-radius: 0.5rem;
+    background-color: #FFFFFF; /* White */
+    color: #333333; /* Dark Gray */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Focus State for Input Fields */
+.form-input:focus {
+    border-color: #9C59B6; /* Violet Purple */
+    box-shadow: 0 0 5px rgba(156, 89, 182, 0.5); /* Violet Purple glow */
+    outline: none;
+}
+
+/* Placeholder Text */
+.form-input::placeholder {
+    color: #aaa; /* Light Gray */
+    opacity: 1;
+}
+
+/* Disabled Input Fields */
+.form-input:disabled {
+    background-color: #F0F0F5; /* Light Gray */
+    color: #aaa; /* Lighter text */
+    border-color: #ced4da; /* Light Gray */
+}
+
+/* Error State */
+.form-input.error {
+    border-color: #DC3545; /* Crimson Red */
+    box-shadow: 0 0 5px rgba(220, 53, 69, 0.5); /* Crimson Red glow */
+}
+
+/* Checkbox and Radio Buttons */
+.form-checkbox, .form-radio {
+    margin-right: 0.5rem;
+}
+
+/* Checkbox/Radio Labels */
+.checkbox-label, .radio-label {
+    font-size: 1rem;
+    color: #333333; /* Dark Gray */
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+/* Checked State */
+.form-checkbox:checked, .form-radio:checked {
+    background-color: #9C59B6; /* Violet Purple */
+    border-color: #9C59B6; /* Violet Purple */
+}
+
+/* Unchecked State */
+.form-checkbox:not(:checked), .form-radio:not(:checked) {
+    background-color: #FFFFFF; /* White */
+    border: 1px solid #ced4da; /* Light Gray */
+}
+
+/* Button Spacing in Forms */
+.form-button-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
