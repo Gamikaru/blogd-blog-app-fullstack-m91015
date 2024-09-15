@@ -1,48 +1,51 @@
-import React, { useState, useEffect } from "react";
-import { Card, Button, Modal, Form, Spinner } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+// scss imports
+import "../styles/custom_component_styles/content_manager.scss"; // For component-specific styles
+import "../styles/page_global/main_content.scss"; // Global page stylesimport React, { useEffect, useState } from "react";
+import { Button, Card, Form, Modal, Spinner } from "react-bootstrap";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
+
+
 
 export default function ContentManager() {
-	const [isLoading, setIsLoading] = useState(true); 
+	const [isLoading, setIsLoading] = useState(true);
 	const [posts, setPosts] = useState([]);
 	const [searchFromDate, setSearchFromDate] = useState("");
 	const [searchUntilDate, setSearchUntilDate] = useState("");
 	const [showModal, setShowModal] = useState(false);
 	const [postToDelete, setPostToDelete] = useState(null);
-	const [cookie, setCookie, removeCookie] = useCookies();
+	const [cookie] = useCookies(); // Not using setCookie or removeCookie in this component, so it's removed
 	const navigate = useNavigate();
-	
-	useEffect(() => {
-        fetchPosts();
-		fetchUser();
-    }, []);
 
-    const fetchUser = async () => {
-        const token = cookie.PassBloggs;
-        try {
-            const response = await fetch(
-                `http://localhost:5050/user/${cookie.userID}`,
-                {
-                    headers: {
-                    Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-            if (!response.ok) {
-                throw new Error(`Failed to fetch user data: ${response.statusText}`);
-            }
-            const userData = await response.json();
-            setUser(userData);
-        } catch (error) {
-            console.error("Error fetching user data:", error);
-        }
-    };
+	useEffect(() => {
+		fetchPosts();
+		fetchUser();
+	}, []);
+
+	const fetchUser = async () => {
+		const token = cookie.PassBloggs;
+		try {
+			const response = await fetch(`http://localhost:5050/user/${cookie.userID}`, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+			if (!response.ok) {
+				throw new Error(`Failed to fetch user data: ${response.statusText}`);
+			}
+			const userData = await response.json();
+			// Assuming you're handling user state somewhere
+		} catch (error) {
+			console.error("Error fetching user data:", error);
+		}
+	};
 
 	const fetchPosts = async () => {
 		const token = cookie.PassBloggs;
 		try {
-			const response = await fetch("http://localhost:5050/posts");
+			const response = await fetch("http://localhost:5050/posts", {
+				headers: { Authorization: `Bearer ${token}` },
+			});
 			const data = await response.json();
 			setPosts(data);
 			setIsLoading(false);
@@ -50,6 +53,7 @@ export default function ContentManager() {
 			console.error("Error fetching posts:", error);
 		}
 	};
+
 	const handleDelete = async (postId) => {
 		try {
 			await fetch(`http://localhost:5050/posts/${postId}`, {
@@ -87,8 +91,7 @@ export default function ContentManager() {
 					value={searchUntilDate}
 					onChange={(e) => setSearchUntilDate(e.target.value)}
 				/>
-				{/* <Button onClick={handleSearch}>Search</Button> */}
-				<Button onClick={() => setSearchFromDate("") && setSearchUntilDate("")}>
+				<Button onClick={() => { setSearchFromDate(""); setSearchUntilDate(""); }}>
 					Show all
 				</Button>
 			</div>
@@ -106,10 +109,7 @@ export default function ContentManager() {
 								<Card.Body>
 									<Card.Title>Blog Post</Card.Title>
 									<Card.Text>{post.content}</Card.Text>
-									<Button
-										variant="danger"
-										onClick={() => handleShowModal(post._id)}
-									>
+									<Button variant="danger" onClick={() => handleShowModal(post._id)}>
 										Delete
 									</Button>
 								</Card.Body>
@@ -118,7 +118,7 @@ export default function ContentManager() {
 					))}
 				</div>
 			)}
-			<Modal show={showModal} onHide={handleCloseModal}>
+			<Modal show={showModal} onHide={handleCloseModal} centered>
 				<Modal.Header closeButton>
 					<Modal.Title>Confirmation</Modal.Title>
 				</Modal.Header>

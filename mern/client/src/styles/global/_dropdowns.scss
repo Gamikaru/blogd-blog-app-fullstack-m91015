@@ -1,0 +1,90 @@
+//dropdowns.scss
+
+@import "colors";
+
+/* Mixin for Dropdown Styling with Custom Transition Option */
+@mixin dropdown-menu-base($bg-color, $text-color, $hover-bg, $shadow-color, $transition-time: 0.3s) {
+    background-color: $bg-color;
+    color: $text-color;
+    border-radius: 0.5rem;
+    padding: 0.3rem 0.7rem;
+    box-shadow: 0px 4px 8px $shadow-color;
+    min-width: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition:
+        opacity $transition-time ease,
+        transform $transition-time ease,
+        visibility $transition-time ease;
+}
+
+/* Dropdown Container */
+.dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Toggle Button */
+.dropdown-toggle {
+    background-color: $light-mint;
+    color: $charcoal;
+    padding: 0.6rem 2rem;
+    border-radius: 0.5rem;
+    transition:
+        background-color 0.3s ease,
+        box-shadow 0.3s ease;
+    box-shadow: 0px 4px 8px rgba($electric-violet-light, 0.4);
+
+    &:hover,
+    &:focus {
+        background-color: rgba($electric-violet, 0.1);
+        box-shadow: 0px 6px 12px rgba($electric-violet-light, 0.6);
+        outline: none;
+
+        // Apply neon glow effect to text on hover
+        color: $mint-green;
+        text-shadow:
+            0 0 10px $mint-green,
+            0 0 20px $mint-green,
+            0 0 30px $mint-green;
+    }
+
+    &:focus {
+        box-shadow: none; /* Remove focus state box-shadow */
+    }
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    @include dropdown-menu-base($white, $charcoal, rgba($electric-violet, 0.1), rgba($electric-violet-light, 0.4));
+
+    &.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    &:hover {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0); /* Keep dropdown open while hovered */
+    }
+}
+
+/* Dropdown Items */
+.dropdown-item {
+    color: $charcoal;
+    padding: 0.4rem 0.9rem;
+    border-radius: 0.5rem;
+    transition:
+        color 0.3s ease,
+        background-color 0.3s ease,
+        box-shadow 0.3s ease;
+
+    &:hover {
+        background-color: rgba($electric-violet, 0.1);
+        color: $white;
+        box-shadow: 0px 6px 12px rgba($electric-violet, 0.6);
+    }
+}

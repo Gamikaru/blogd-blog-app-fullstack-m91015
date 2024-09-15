@@ -1,0 +1,88 @@
+
+
+/* --------------------------------------------------------------------------
+Custom Modal Styles for RegisterModal
+-------------------------------------------------------------------------- */
+.register-modal-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1050;
+}
+
+.register-modal {
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+    margin: auto; // Center the modal horizontally
+    display: flex;
+    flex-direction: column;
+    transform: translateY(0);
+}
+
+.register-modal-header {
+    background-color: #9c59b6;
+    color: #ffffff;
+    font-size: 1.5rem;
+    padding: 1rem;
+    text-align: center; // Center the modal title
+    width: 100%;
+    position: relative;
+}
+
+.register-modal-header .close-button {
+    background-color: #4b0082;
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.register-modal-body {
+    background-color: #ffffff;
+    color: #333333;
+    padding: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.register-modal-footer {
+    background-color: #f0f0f5;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    border-top: 1px solid #ced4da;
+}
+
+/* Responsive Modal */
+@media (max-width: 768px) {
+    .register-modal {
+        max-width: 90%;
+        margin: 1rem;
+    }
+
+    .register-modal-header,
+    .register-modal-footer {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .register-modal-footer {
+        gap: 0.5rem;
+    }
+}

@@ -1,0 +1,78 @@
+//_buttons.scss
+
+@import "colors";
+
+/* Button Base Mixin with size option */
+@mixin button-base($bg-color, $text-color, $hover-bg, $hover-color, $size: normal) {
+    background-color: rgba(lighten($light-silver, 40%), 0.9);
+    color: $text-color;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition:
+        background-color 0.3s ease,
+        box-shadow 0.3s ease;
+    white-space: nowrap; // Prevent button text from wrapping
+    text-shadow: $mint-green 0 0 5px; // Text shadow on button
+
+    @if $size == small {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    } @else if $size == large {
+        padding: 1rem 2rem;
+        font-size: 1.25rem;
+    } @else {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    &:hover {
+        background-color: $hover-bg;
+        box-shadow: 0 0.5rem 1rem rgba($hover-color, 0.2);
+        color: $white; // Change text to white on hover
+        text-shadow:
+            0 0 10px rgba($hover-color, 0.6),
+            0 0 30px rgba($hover-color, 0.6), // Text shadow on hover
+            0 0 60px rgba($hover-color, 0.6); // Text shadow on hover
+    }
+
+    &:focus {
+        outline: none; // Remove focus border entirely
+    }
+
+    &:disabled {
+        background-color: $light-silver;
+        color: $disabled-gray;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+}
+
+/* Button Variations */
+.button-primary {
+    @include button-base($primary-purple, $white, darken($primary-purple, 10%), $electric-violet);
+}
+
+.button-secondary {
+    @include button-base($mint-green, $charcoal, darken($mint-green, 10%), $sunset-orange);
+}
+
+.button-danger {
+    @include button-base($bright-red, $white, darken($bright-red, 10%), $bright-red);
+}
+
+/* Icon Button */
+.button-icon {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Responsive Buttons */
+@media (max-width: 768px) {
+    .button {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        white-space: nowrap; // Ensure button text does not wrap
+    }
+}

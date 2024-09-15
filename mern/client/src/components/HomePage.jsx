@@ -1,41 +1,59 @@
 import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { useCookies } from "react-cookie";
+import { FaBirthdayCake, FaBriefcase, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
+
 import PostModal from "./PostModal";
 
-const UserCard = ({ userInitials, user, updateUserStatus }) => (
-    <div className="user-card-container">
-        <Card className="user-card">
-            <Card.Title className="initials-title">{userInitials}</Card.Title>
-            <div className="home-card-text">
-                <ul>
-                    <li>
-                        <span>Status: </span>
-                        <input
-                            className="home-user-status"
-                            type="text"
-                            value={user.status}
-                            onChange={(e) => updateUserStatus(e.target.value)}
-                            placeholder="Update Status"
-                        />
-                    </li>
-                    <li>
-                        <span>Email: </span> {user.email}
-                    </li>
-                    <li>
-                        <span>Birthdate: </span> {user.birthdate}
-                    </li>
-                    <li>
-                        <span>Occupation: </span> {user.occupation}
-                    </li>
-                    <li>
-                        <span>Location: </span> {user.location}
-                    </li>
-                </ul>
-            </div>
-        </Card>
-    </div>
-);
+// import "../styles/global/_layout.scss";
+import "../styles/custom_component_styles/home_page.scss";
+
+
+const UserCard = ({ userInitials, user, updateUserStatus }) => {
+    // Format birthdate for a more user-friendly display
+    const formattedBirthdate = new Date(user.birthdate).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+
+    return (
+        <div className="user-card-container">
+            <Card className="user-card">
+                <div className="user-card-header">
+                    <div className="initials-title">{userInitials}</div>
+                    <input
+                        className="home-user-status"
+                        type="text"
+                        value={user.status}
+                        onChange={(e) => updateUserStatus(e.target.value)}
+                        placeholder="Update Status"
+                    />
+                </div>
+                <Card.Body>
+                    <div className="user-details">
+                        <div className="detail-item">
+                            <FaEnvelope className="detail-icon" />
+                            <span className="detail-text">{user.email}</span>
+                        </div>
+                        <div className="detail-item">
+                            <FaBirthdayCake className="detail-icon" />
+                            <span className="detail-text">{formattedBirthdate}</span>
+                        </div>
+                        <div className="detail-item">
+                            <FaBriefcase className="detail-icon" />
+                            <span className="detail-text">{user.occupation}</span>
+                        </div>
+                        <div className="detail-item">
+                            <FaMapMarkerAlt className="detail-icon" />
+                            <span className="detail-text">{user.location}</span>
+                        </div>
+                    </div>
+                </Card.Body>
+            </Card>
+        </div>
+    );
+};
 
 const PostsCard = ({ userPosts, handleLike }) => (
     <div className="home-post-card-container">
@@ -46,8 +64,11 @@ const PostsCard = ({ userPosts, handleLike }) => (
                     userPosts.map((post, index) => (
                         <div key={index}>
                             <p className="home-post-content">{post.content}</p>
-                            <p>{post.postDate}</p>
+                            <p>{new Date(post.postDate).toLocaleDateString()}</p>
                             <p className="home-post-likes">Likes: {post.likes}</p>
+                            <button className="like-button" onClick={() => handleLike(index)}>
+                                Like
+                            </button>
                         </div>
                     ))
                 ) : (
@@ -80,18 +101,14 @@ export default function HomePage() {
     const fetchUser = async () => {
         const token = cookie.PassBloggs;
         if (!token) {
-            console.error("Token not found in localStorage");
+            console.error("Token not found");
             return;
         }
         try {
             const response = await fetch(`http://localhost:5050/user/${cookie.userID}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+                headers: { Authorization: `Bearer ${token}` },
             });
-            if (!response.ok) {
-                throw new Error(`Failed to fetch user data: ${response.statusText}`);
-            }
+            if (!response.ok) throw new Error(`Failed to fetch user data: ${response.statusText}`);
             const data = await response.json();
             setUser(data);
         } catch (error) {
@@ -102,25 +119,18 @@ export default function HomePage() {
     const fetchPost = async () => {
         const token = cookie.PassBloggs;
         if (!token) {
-            console.error("Token not found in localStorage");
+            console.error("Token not found");
             return;
         }
         try {
-            const response = await fetch(
-                `http://localhost:5050/post/${cookie.userID}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-            if (!response.ok) {
-                throw new Error(`Failed to fetch user data: ${response.statusText}`);
-            }
+            const response = await fetch(`http://localhost:5050/post/${cookie.userID}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            if (!response.ok) throw new Error(`Failed to fetch posts: ${response.statusText}`);
             const data = await response.json();
             setUserPosts(data);
         } catch (error) {
-            console.error("Error fetching user posts:", error);
+            console.error("Error fetching posts:", error);
         }
     };
 
@@ -144,41 +154,33 @@ export default function HomePage() {
         try {
             const token = cookie.PassBloggs;
             if (!token) {
-                console.error("Token not found in localStorage");
+                console.error("Token not found");
                 return;
             }
-            const response = await fetch(
-                `http://localhost:5050/user/${cookie.userID}`,
-                {
-                    method: "PUT",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ status: newStatus }),
-                }
-            );
-            if (!response.ok) {
-                throw new Error(`Failed to update user status: ${response.statusText}`);
-            }
+            const response = await fetch(`http://localhost:5050/user/${cookie.userID}`, {
+                method: "PUT",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ status: newStatus }),
+            });
+            if (!response.ok) throw new Error(`Failed to update status: ${response.statusText}`);
             setUser((prevUser) => ({ ...prevUser, status: newStatus }));
         } catch (error) {
-            console.error("Error updating user status:", error);
+            console.error("Error updating status:", error);
         }
     };
 
     return (
-        <div className="main-container">
+        <div className="page-container">
             <div className="grid-container">
                 <UserCard
                     userInitials={userInitials}
                     user={user}
                     updateUserStatus={updateUserStatus}
                 />
-                <PostsCard
-                    userPosts={userPosts}
-                    handleLike={handleLike}
-                />
+                <PostsCard userPosts={userPosts} handleLike={handleLike} />
             </div>
             <PostModal show={showModal} handleClose={() => setShowModal(false)} />
         </div>

@@ -1,5 +1,4 @@
 // src/App.js
-import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AppLayout from './AppLayout';
@@ -10,9 +9,6 @@ import LoginPage from './components/LoginPage';
 import Network from './components/Network';
 import RegisterModal from './components/RegisterModal';
 import PrivateRoute from './PrivateRoute';
-
-
-
 
 const App = () => {
   return (
@@ -36,8 +32,6 @@ const App = () => {
           <Route path="/admin" element={<Admin />} />
           <Route path="*" element={<h1>Not Found</h1>} />
           <Route path="/network" element={<Network />} />
-
-
         </Route>
       </Routes>
     </BrowserRouter>

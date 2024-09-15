@@ -1,3 +1,5 @@
+// Import scss for styling
+import "../styles/custom_component_styles/login_page.scss";
 import React, { useState } from "react";
 import Card from "react-bootstrap/Card";
 import Toast from "react-bootstrap/Toast";
@@ -6,8 +8,7 @@ import { useNavigate } from "react-router";
 import RegisterModal from "./RegisterModal"; // Import the modal component
 
 
-// Import CSS for styling
-import "../styles/login_page.css";
+
 
 // Export the LoginPage component
 export default function LoginPage() {

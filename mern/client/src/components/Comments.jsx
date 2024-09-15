@@ -30,20 +30,23 @@ export default function Comments({ postId, handleLike }) {
 			console.error("Error fetching comments:", error);
 		}
 	};
+
 	const handleLikeClick = () => {
 		setLiked(!liked);
 		handleLike();
 	};
+
 	return (
-		<div>
+		<div className="comments-container">
 			{comments.map((comment, index) => (
-				<div key={index}>
-					<p>{comment.content}</p>
+				<div key={index} className="comment-card">
+					<p className="comment-text">{comment.content}</p>
 					<Button
+						className="like-button"
 						variant={liked ? "success" : "secondary"}
 						onClick={handleLikeClick}
 					>
-						Like
+						{liked ? "Liked" : "Like"}
 					</Button>
 				</div>
 			))}

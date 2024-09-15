@@ -1,21 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import Card from 'react-bootstrap/Card';
-import Toast from 'react-bootstrap/Toast';
-import { useCookies } from 'react-cookie';
+import "../styles/custom_component_styles/edit_user.scss"; // Custom scss for EditUser
 
-function EditUser() {
-  const { userId } = useParams(); // Retrieve userId from URL params
+import React, { useEffect, useState } from "react";
+import { Button, Card, Form, Toast } from "react-bootstrap";
+import { useCookies } from "react-cookie";
+import { useNavigate, useParams } from "react-router-dom";
+
+export default function EditUser() {
+  const { userId } = useParams();
   const [cookie] = useCookies();
   const [editForm, setEditForm] = useState({
-    first_name: '',
-    last_name: '',
-    email: '',
-    password: '',
-    birthdate: '',
-    occupation: '',
-    location: '',
-    status: '',
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+    birthdate: "",
+    occupation: "",
+    location: "",
+    status: "",
   });
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
@@ -23,17 +24,17 @@ function EditUser() {
 
   useEffect(() => {
     if (userId) {
-      fetchUser(userId); // Fetch user details when component mounts
+      fetchUser(userId); // Fetch user data on component mount
     }
   }, [userId]);
 
   const fetchUser = async (id) => {
+    const token = cookie.PassBloggs;
+    if (!token) {
+      console.error("Token not found");
+      return;
+    }
     try {
-      const token = cookie.PassBloggs;
-      if (!token) {
-        console.error('Token not found in localStorage');
-        return;
-      }
       const response = await fetch(`http://localhost:5050/user/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -43,190 +44,179 @@ function EditUser() {
         throw new Error(`Failed to fetch user data: ${response.statusText}`);
       }
       const data = await response.json();
-      setEditForm(data); // Update form fields with fetched user data
+      setEditForm(data); // Populate form with user data
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      console.error("Error fetching user data:", error);
     }
   };
 
-  function updateEditForm(value) {
+  const updateEditForm = (value) => {
     setEditForm((prev) => ({ ...prev, ...value }));
-  }
+  };
 
-  async function handleEdit(e) {
+  const handleEdit = async (e) => {
     e.preventDefault();
     const token = cookie.PassBloggs;
     if (!token) {
-      console.error('Token not found in localStorage');
+      console.error("Token not found");
       return;
     }
     try {
-      const response = await fetch(`http://localhost:5050/user/${userId.toString()}`, {
-        method: 'PATCH',
+      const response = await fetch(`http://localhost:5050/user/${userId}`, {
+        method: "PATCH",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(editForm),
       });
       if (!response.ok) {
-        const errorMessage = await response.text();
-        throw new Error(`Failed to update user data: ${response.status} - ${errorMessage}`);
+        throw new Error(`Failed to update user: ${response.statusText}`);
       }
       setShowSuccessToast(true);
-      navigate(`/user-manager`); 
+      setTimeout(() => {
+        navigate("/user-manager"); // Redirect after success
+      }, 3000);
     } catch (error) {
-      console.error('Error occurred during user update:', error.message);
       setShowErrorToast(true);
-      alert('Update user failed. ' + error.message);
     }
-  }
+  };
 
   return (
-    <div className="edit-container">
+    <div className="edit-user-container">
       <Toast
         show={showSuccessToast}
         onClose={() => setShowSuccessToast(false)}
-        className="edit-success-toast"
+        className="edit-toast-success"
         autohide
         delay={6000}
       >
-        <Toast.Body className="edit-toast-body-success">
-          Successful User Update!
-        </Toast.Body>
+        <Toast.Body>Successful User Update!</Toast.Body>
       </Toast>
+
       <Toast
         show={showErrorToast}
         onClose={() => setShowErrorToast(false)}
-        className="edit-error-toast"
+        className="edit-toast-error"
         autohide
         delay={6000}
       >
-        <Toast.Body className="toast-body-error">
-          Invalid Update Attempt
-        </Toast.Body>
+        <Toast.Body>Failed to update user!</Toast.Body>
       </Toast>
-      <div className="edit-card-container">
-        <Card>
-          <Card.Body>
-            <h1 className="edit-card-header">Manage User Information</h1>
-            <form onSubmit={handleEdit}>
-              <div className="edit-input-container">
-                <div className="edit-input-column">
-                  <div className="edit-input-container">
-                    <label htmlFor="edit_first_name"></label>
-                    <input
-                      type="text"
-                      id="edit_first_name"
-                      value={editForm.first_name}
-                      onChange={(e) =>
-                        updateEditForm({ first_name: e.target.value })
-                      }
-                      required
-                    />
-                  </div>
-                  <div className="edit-input-container">
-                    <label htmlFor="edit_email"></label>
-                    <input
-                      type="email"
-                      id="edit_email"
-                      value={editForm.email}
-                      onChange={(e) =>
-                        updateEditForm({ email: e.target.value })
-                      }
-                      required
-                    />
-                  </div>
-                  <div className="edit-input-container">
-                    <label htmlFor="edit_password"></label>
-                    <input
-                      type="password"
-                      id="edit_password"
-                      value={editForm.password}
-                      onChange={(e) =>
-                        updateEditForm({ password: e.target.value })
-                      }
-                      required
-                    />
-                  </div>
-                  <div className="edit-input-container">
-                    <label htmlFor="edit_location"></label>
-                    <input
-                      type="text"
-                      id="edit_location"
-                      value={editForm.location}
-                      onChange={(e) =>
-                        updateEditForm({ location: e.target.value })
-                      }
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="edit-input-column">
-                  <div className="edit-input-container">
-                    <label htmlFor="edit_last_name"></label>
-                    <input
-                      type="text"
-                      id="edit_last_name"
-                      value={editForm.last_name}
-                      onChange={(e) =>
-                        updateEditForm({ last_name: e.target.value })
-                      }
-                      required
-                    />
-                  </div>
-                  <div className="edit-input-container">
-                    <label htmlFor="edit_birthdate"></label>
-                    <input
-                      type="text"
-                      id="edit_birthdate"
-                      value={editForm.birthdate}
-                      onChange={(e) =>
-                        updateEditForm({ birthdate: e.target.value })
-                      }
-                      placeholder="yyyy-MM-dd"
-                      required
-                    />
-                  </div>
-                  <div className="edit-input-container">
-                    <label htmlFor="edit_occupation"></label>
-                    <input
-                      type="text"
-                      id="edit_occupation"
-                      value={editForm.occupation}
-                      onChange={(e) =>
-                        updateEditForm({ occupation: e.target.value })
-                      }
-                      required
-                    />
-                  </div>
-                  <div className="edit-input-container">
-                    <label htmlFor="edit_status"></label>
-                    <input
-                      type="text"
-                      id="edit_status"
-                      value={editForm.status}
-                      onChange={(e) =>
-                        updateEditForm({ status: e.target.value })
-                      }
-                      required
-                    />
-                  </div>
-                </div>
+
+      <Card className="edit-user-card">
+        <Card.Body>
+          <h1 className="edit-user-header">Manage User Information</h1>
+          <Form onSubmit={handleEdit} className="edit-user-form">
+            <div className="edit-form-columns">
+              <div className="edit-form-column">
+                <Form.Group controlId="editFirstName" className="mb-3">
+                  <Form.Label>First Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={editForm.first_name}
+                    onChange={(e) =>
+                      updateEditForm({ first_name: e.target.value })
+                    }
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="editEmail" className="mb-3">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    type="email"
+                    value={editForm.email}
+                    onChange={(e) => updateEditForm({ email: e.target.value })}
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="editPassword" className="mb-3">
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    value={editForm.password}
+                    onChange={(e) =>
+                      updateEditForm({ password: e.target.value })
+                    }
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="editLocation" className="mb-3">
+                  <Form.Label>Location</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={editForm.location}
+                    onChange={(e) =>
+                      updateEditForm({ location: e.target.value })
+                    }
+                    required
+                  />
+                </Form.Group>
               </div>
-              <div className="edit-form-group">
-                <input
-                  type="submit"
-                  value="UPDATE"
-                  className="btn btn-primary"
-                />
+
+              <div className="edit-form-column">
+                <Form.Group controlId="editLastName" className="mb-3">
+                  <Form.Label>Last Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={editForm.last_name}
+                    onChange={(e) =>
+                      updateEditForm({ last_name: e.target.value })
+                    }
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="editBirthdate" className="mb-3">
+                  <Form.Label>Birthdate</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={editForm.birthdate}
+                    onChange={(e) =>
+                      updateEditForm({ birthdate: e.target.value })
+                    }
+                    placeholder="yyyy-MM-dd"
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="editOccupation" className="mb-3">
+                  <Form.Label>Occupation</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={editForm.occupation}
+                    onChange={(e) =>
+                      updateEditForm({ occupation: e.target.value })
+                    }
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="editStatus" className="mb-3">
+                  <Form.Label>Status</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={editForm.status}
+                    onChange={(e) =>
+                      updateEditForm({ status: e.target.value })
+                    }
+                    required
+                  />
+                </Form.Group>
               </div>
-            </form>
-          </Card.Body>
-        </Card>
-      </div>
+            </div>
+
+            <div className="edit-form-group">
+              <Button type="submit" className="btn-primary w-100">
+                Update
+              </Button>
+            </div>
+          </Form>
+        </Card.Body>
+      </Card>
     </div>
   );
 }
-
-export default EditUser;

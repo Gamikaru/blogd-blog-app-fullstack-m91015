@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Table, Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Button, Table } from "react-bootstrap";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
+
 
 export default function UserManager() {
   const [users, setUsers] = useState([]);

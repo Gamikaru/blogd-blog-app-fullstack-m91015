@@ -1,0 +1,118 @@
+@import "../global/colors";
+
+/* --------------------------------------------------------------------------
+Blog Posts Grid Layout
+-------------------------------------------------------------------------- */
+.blog-posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); // More flexible grid layout
+    gap: 1.5rem;
+    margin-top: 2rem;
+    padding: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+Single Blog Post Styling
+-------------------------------------------------------------------------- */
+.bloggs-post-section {
+    background-color: $white;
+    border-radius: 0.75rem; // Consistent rounded corners
+    padding: 1.5rem;
+    box-shadow: 0 0.5rem 1rem rgba($charcoal, 0.05); // Softer shadow for a cleaner look
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+
+    &:hover {
+        transform: translateY(-5px); // Hover effect for better interaction
+        box-shadow: 0 0.75rem 1.5rem rgba($charcoal, 0.1); // Subtle depth on hover
+    }
+
+    .bloggs-card-title {
+        font-size: clamp(1.4rem, 2vw, 1.6rem); // Responsive typography
+        font-weight: bold;
+        color: $primary-purple;
+        margin-bottom: 1rem;
+    }
+
+    .bloggs-card-text {
+        font-size: 1rem;
+        color: $charcoal;
+        margin-bottom: 1.5rem; // Extra spacing for readability
+    }
+
+    .bloggs-card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 1rem;
+        border-top: 1px solid $light-gray;
+        color: $disabled-gray;
+
+        .bloggs-likes {
+            font-size: 1rem;
+            color: $primary-purple;
+        }
+    }
+
+    // Like Button Styling
+    .like-button {
+        background-color: $primary-purple-light;
+        color: $white;
+        padding: 0.5rem 1.5rem; // More padding for tap-friendliness
+        border-radius: 0.5rem;
+        transition:
+            background-color 0.3s ease,
+            box-shadow 0.3s ease;
+
+        &:hover {
+            background-color: darken($primary-purple-light, 10%);
+            box-shadow: 0 0.25rem 0.5rem rgba($charcoal, 0.1); // Subtle hover feedback
+        }
+    }
+
+    // Comment Form
+    .bloggs-comment-form {
+        margin-top: 1rem;
+
+        .form-input {
+            border-radius: 0.5rem;
+            border: 1px solid $light-gray;
+            padding: 0.75rem;
+            transition:
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+
+            &:focus {
+                outline: none;
+                border-color: $primary-purple;
+                box-shadow: 0 0 5px rgba($primary-purple, 0.5); // Focus effect for better UX
+            }
+        }
+
+        .bloggs-submit-bttn {
+            background-color: $primary-purple;
+            color: $white;
+            padding: 0.5rem 1.5rem;
+            margin-top: 0.5rem;
+            border-radius: 0.5rem;
+            transition:
+                background-color 0.3s ease,
+                box-shadow 0.3s ease;
+
+            &:hover {
+                background-color: darken($primary-purple, 10%);
+                box-shadow: 0 0.25rem 0.5rem rgba($charcoal, 0.1); // Hover effect for button
+            }
+        }
+    }
+}
+
+/* --------------------------------------------------------------------------
+No Blog Posts Message
+-------------------------------------------------------------------------- */
+.no-blog-posts {
+    font-size: 1.2rem;
+    color: $primary-purple;
+    text-align: center;
+}

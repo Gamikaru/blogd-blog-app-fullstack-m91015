@@ -2,7 +2,7 @@
 // import { useNavigate } from "react-router";
 // import Card from "react-bootstrap/Card";
 // import Toast from "react-bootstrap/Toast";
-// import "../styles/RegisterPage.css"; // Assuming you create RegisterPage.css
+// import "../styles/custom_component_styles/RegisterPage.scss"; // Assuming you create RegisterPage.scss
 
 // export default function RegisterPage() {
 // 	const [registerForm, setRegisterForm] = useState({

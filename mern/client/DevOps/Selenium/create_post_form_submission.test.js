@@ -63,14 +63,14 @@ describe('create_post_form_submission', function () {
         await loginEmailField.sendKeys("test@test.test");
         await driver.findElement(By.id("login_password")).sendKeys("test");
 
-        const loginButton = await driver.wait(until.elementLocated(By.css(".btn.btn-primary")), 10000);
+        const loginButton = await driver.wait(until.elementLocated(By.scss(".btn.btn-primary")), 10000);
         await driver.wait(until.elementIsVisible(loginButton), 10000);
         await loginButton.click();
         console.log("Logged in successfully.");
 
         // Step 6: Verify login by checking if the email input in UserCard appears
         try {
-            const emailField = await driver.wait(until.elementLocated(By.css('.home-user-status')), 20000);
+            const emailField = await driver.wait(until.elementLocated(By.scss('.home-user-status')), 20000);
             const emailValue = await emailField.getAttribute('value');
             assert.strictEqual(emailValue, 'test@test.test', "Email should match the logged-in user.");
             console.log("Verified user is logged in.");
@@ -80,13 +80,13 @@ describe('create_post_form_submission', function () {
         }
 
         // Step 7: Now proceed with the post creation test
-        const postButton = await driver.wait(until.elementLocated(By.css(".post-button")), 10000);
+        const postButton = await driver.wait(until.elementLocated(By.scss(".post-button")), 10000);
         await driver.wait(until.elementIsVisible(postButton), 10000);
         await postButton.click();
         console.log("Clicked post button");
 
         // Step 8: Wait for the modal to be fully loaded
-        const modalVisible = await driver.wait(until.elementLocated(By.css(".modal-body")), 10000);
+        const modalVisible = await driver.wait(until.elementLocated(By.scss(".modal-body")), 10000);
         await driver.wait(until.elementIsVisible(modalVisible), 10000);
         console.log("Modal is fully loaded and visible");
 
@@ -105,7 +105,7 @@ describe('create_post_form_submission', function () {
         console.log(`Entered post content: ${postContent}`);
 
         // Step 12: Submit the post
-        const submitButton = await driver.wait(until.elementLocated(By.css(".submit-button")), 10000);
+        const submitButton = await driver.wait(until.elementLocated(By.scss(".submit-button")), 10000);
         await driver.wait(until.elementIsVisible(submitButton), 10000);
         await submitButton.click();
         console.log("Submitted the post");

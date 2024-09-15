@@ -4,8 +4,8 @@ import Card from "react-bootstrap/Card";
 import Modal from "react-bootstrap/Modal";
 import Toast from "react-bootstrap/Toast";
 import { useNavigate } from "react-router";
-import "../styles/RegisterModal.css";
-// import "../styles/modal.css";  // Include generic modal styles globally
+
+import "../styles/custom_component_styles/register_modal.scss";
 
 export default function RegisterModal({ show, handleClose }) {
     const [registerForm, setRegisterForm] = useState({
@@ -40,6 +40,7 @@ export default function RegisterModal({ show, handleClose }) {
                 setShowErrorToast(true);
                 return;
             }
+
             // Reset form and show success toast
             setRegisterForm({
                 first_name: "",
@@ -62,15 +63,15 @@ export default function RegisterModal({ show, handleClose }) {
 
     return (
         <>
-            <Modal show={show} onHide={handleClose} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>REGISTER</Modal.Title>
+            <Modal show={show} onHide={handleClose} centered className="register-modal-container">
+                <Modal.Header closeButton className="register-modal-header">
+                    <Modal.Title>Register</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="register-modal-body">
                     <Toast
                         show={showSuccessToast}
                         onClose={() => setShowSuccessToast(false)}
-                        className="reg-success-toast"
+                        className="toast toast-success"
                         autohide
                         delay={6000}
                     >
@@ -81,7 +82,7 @@ export default function RegisterModal({ show, handleClose }) {
                     <Toast
                         show={showErrorToast}
                         onClose={() => setShowErrorToast(false)}
-                        className="reg-error-toast"
+                        className="toast toast-error"
                         autohide
                         delay={6000}
                     >
@@ -89,6 +90,7 @@ export default function RegisterModal({ show, handleClose }) {
                             Invalid registration attempt or user already exists.
                         </Toast.Body>
                     </Toast>
+
                     <Card className="register-card">
                         <Card.Body>
                             <form onSubmit={handleRegister}>
@@ -105,7 +107,7 @@ export default function RegisterModal({ show, handleClose }) {
                                                 })
                                             }
                                             required
-                                            className="form-control"
+                                            className="form-input"
                                         />
                                     </div>
                                     <div className="col-md-6 mb-3">
@@ -120,7 +122,7 @@ export default function RegisterModal({ show, handleClose }) {
                                                 })
                                             }
                                             required
-                                            className="form-control"
+                                            className="form-input"
                                         />
                                     </div>
                                 </div>
@@ -137,7 +139,7 @@ export default function RegisterModal({ show, handleClose }) {
                                                 })
                                             }
                                             required
-                                            className="form-control"
+                                            className="form-input"
                                         />
                                     </div>
                                     <div className="col-md-6 mb-3">
@@ -152,7 +154,7 @@ export default function RegisterModal({ show, handleClose }) {
                                                 })
                                             }
                                             required
-                                            className="form-control"
+                                            className="form-input"
                                         />
                                     </div>
                                 </div>
@@ -160,7 +162,6 @@ export default function RegisterModal({ show, handleClose }) {
                                     <div className="col-md-6 mb-3">
                                         <input
                                             type="date"
-                                            placeholder="Birthdate"
                                             id="register_birthdate"
                                             value={registerForm.birthdate}
                                             onChange={(e) =>
@@ -169,7 +170,7 @@ export default function RegisterModal({ show, handleClose }) {
                                                 })
                                             }
                                             required
-                                            className="form-control"
+                                            className="form-input"
                                         />
                                     </div>
                                     <div className="col-md-6 mb-3">
@@ -184,7 +185,7 @@ export default function RegisterModal({ show, handleClose }) {
                                                 })
                                             }
                                             required
-                                            className="form-control"
+                                            className="form-input"
                                         />
                                     </div>
                                 </div>
@@ -201,7 +202,7 @@ export default function RegisterModal({ show, handleClose }) {
                                                 })
                                             }
                                             required
-                                            className="form-control"
+                                            className="form-input"
                                         />
                                     </div>
                                     <div className="col-md-6 mb-3">
@@ -216,12 +217,12 @@ export default function RegisterModal({ show, handleClose }) {
                                                 })
                                             }
                                             required
-                                            className="form-control"
+                                            className="form-input"
                                         />
                                     </div>
                                 </div>
-                                <Button type="submit" className="btn btn-primary w-100">
-                                    SUBMIT
+                                <Button type="submit" className="button button-primary w-100">
+                                    Submit
                                 </Button>
                             </form>
                         </Card.Body>
@@ -230,4 +231,5 @@ export default function RegisterModal({ show, handleClose }) {
             </Modal>
         </>
     );
+
 }

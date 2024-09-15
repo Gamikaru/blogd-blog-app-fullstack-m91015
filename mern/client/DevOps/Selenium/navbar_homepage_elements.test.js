@@ -56,7 +56,7 @@ const login = async (driver) => {
         await driver.findElement(By.id("login_password")).sendKeys("test");
 
         // Step 5: Submit the login form
-        const loginButton = await driver.wait(until.elementLocated(By.css(".btn.btn-primary")), 10000);
+        const loginButton = await driver.wait(until.elementLocated(By.scss(".btn.btn-primary")), 10000);
         await driver.wait(until.elementIsVisible(loginButton), 10000);
         await loginButton.click();
 
@@ -135,25 +135,25 @@ describe('Navbar and Homepage Elements Test', function () {
                     it(`should display the navbar and its elements in ${size.label}`, async function () {
                         try {
                             console.log(`Checking navbar visibility for ${size.label}`);
-                            const navbarElement = await driver.wait(until.elementLocated(By.css(".nav-header")), 10000);
+                            const navbarElement = await driver.wait(until.elementLocated(By.scss(".nav-header")), 10000);
                             const isNavbarVisible = await navbarElement.isDisplayed();
                             expect(isNavbarVisible).to.be.true;
 
                             console.log(`Checking logo visibility for ${size.label}`);
-                            const logoElement = await driver.wait(until.elementLocated(By.css(".nav-logo-image")), 10000);
+                            const logoElement = await driver.wait(until.elementLocated(By.scss(".nav-logo-image")), 10000);
                             expect(await logoElement.isDisplayed()).to.be.true;
 
                             console.log(`Checking post button visibility for ${size.label}`);
-                            const postButton = await driver.wait(until.elementLocated(By.css(".post-button")), 10000);
+                            const postButton = await driver.wait(until.elementLocated(By.scss(".post-button")), 10000);
                             expect(await postButton.isDisplayed()).to.be.true;
 
                             if (size.width <= 768) { // Mobile-specific test
                                 console.log('Testing mobile-specific elements like hamburger menu');
-                                const hamburgerMenu = await driver.wait(until.elementLocated(By.css(".hamburger-menu")), 8000);
+                                const hamburgerMenu = await driver.wait(until.elementLocated(By.scss(".hamburger-menu")), 8000);
                                 expect(await hamburgerMenu.isDisplayed()).to.be.true;
                             } else {
                                 console.log(`Checking dropdown visibility for ${size.label}`);
-                                const dropdownButton = await driver.wait(until.elementLocated(By.css("#dropdown")), 10000);
+                                const dropdownButton = await driver.wait(until.elementLocated(By.scss("#dropdown")), 10000);
                                 expect(await dropdownButton.isDisplayed()).to.be.true;
                             }
                         } catch (error) {
@@ -166,7 +166,7 @@ describe('Navbar and Homepage Elements Test', function () {
                     it(`should interact with and display the dropdown menu in ${size.label}`, async function () {
                         try {
                             console.log(`Testing dropdown interaction for ${size.label}`);
-                            const dropdownButton = await driver.wait(until.elementLocated(By.css("#dropdown")), 10000);
+                            const dropdownButton = await driver.wait(until.elementLocated(By.scss("#dropdown")), 10000);
                             await driver.executeScript("arguments[0].scrollIntoView({block: 'center'});", dropdownButton);
 
                             expect(await dropdownButton.isDisplayed()).to.be.true;
@@ -201,7 +201,7 @@ describe('Navbar and Homepage Elements Test', function () {
                     it(`should ensure no element overflows or is cut off in ${size.label}`, async function () {
                         try {
                             console.log(`Checking for element overflow in ${size.label}`);
-                            const postButton = await driver.findElement(By.css(".post-button"));
+                            const postButton = await driver.findElement(By.scss(".post-button"));
                             const postButtonRect = await driver.executeScript("return arguments[0].getBoundingClientRect();", postButton);
                             const windowWidth = await driver.executeScript("return window.innerWidth;");
                             expect(postButtonRect.right <= windowWidth).to.be.true;
@@ -215,12 +215,12 @@ describe('Navbar and Homepage Elements Test', function () {
                     it(`should close dropdown when clicked outside in ${size.label}`, async function () {
                         try {
                             console.log(`Testing dropdown close on outside click for ${size.label}`);
-                            const dropdownButton = await driver.findElement(By.css("#dropdown"));
+                            const dropdownButton = await driver.findElement(By.scss("#dropdown"));
                             await dropdownButton.click();
-                            const bodyElement = await driver.findElement(By.css('body'));
+                            const bodyElement = await driver.findElement(By.scss('body'));
                             await bodyElement.click();
 
-                            const dropdownMenu = await driver.findElement(By.css(".dropdown-menu"));
+                            const dropdownMenu = await driver.findElement(By.scss(".dropdown-menu"));
                             const isDropdownVisible = await dropdownMenu.isDisplayed();
                             expect(isDropdownVisible).to.be.false;
                         } catch (error) {

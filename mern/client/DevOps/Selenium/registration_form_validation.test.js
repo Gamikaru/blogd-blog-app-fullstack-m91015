@@ -38,19 +38,19 @@ describe('registration_form_validation', function () {
         }
 
         // Step 4: Navigate to the registration page by clicking the "Register Now" link
-        const registerLink = await driver.wait(until.elementLocated(By.css('.register-link')), 10000);
+        const registerLink = await driver.wait(until.elementLocated(By.scss('.register-link')), 10000);
         await driver.wait(until.elementIsVisible(registerLink), 10000);
         await registerLink.click();
         console.log("Navigated to registration page");
 
         // Step 5: Submit the registration form with empty fields to test validation
-        const submitButton = await driver.wait(until.elementLocated(By.css(".btn.btn-primary")), 10000);
+        const submitButton = await driver.wait(until.elementLocated(By.scss(".btn.btn-primary")), 10000);
         await driver.wait(until.elementIsVisible(submitButton), 10000);
         await submitButton.click();
         console.log("Clicked submit with empty fields");
 
         // Step 6: Check for validation error toast
-        const errorToast = await driver.wait(until.elementLocated(By.css('.reg-error-toast')), 10000);
+        const errorToast = await driver.wait(until.elementLocated(By.scss('.reg-error-toast')), 10000);
         await driver.wait(until.elementIsVisible(errorToast), 5000);
         const errorToastDisplayed = await errorToast.isDisplayed();
         assert.strictEqual(errorToastDisplayed, true, "Error toast should be displayed for invalid registration attempt.");
@@ -66,12 +66,12 @@ describe('registration_form_validation', function () {
         await driver.findElement(By.id("register_location")).sendKeys("USA");
         await driver.findElement(By.id("register_status")).sendKeys("Active");
 
-        const submitButtonAfterFill = await driver.wait(until.elementLocated(By.css(".btn.btn-primary")), 10000);
+        const submitButtonAfterFill = await driver.wait(until.elementLocated(By.scss(".btn.btn-primary")), 10000);
         await submitButtonAfterFill.click();
         console.log("Clicked submit with invalid email");
 
         // Step 8: Check for validation error toast again for invalid email
-        const invalidEmailErrorToast = await driver.wait(until.elementLocated(By.css('.reg-error-toast')), 10000);
+        const invalidEmailErrorToast = await driver.wait(until.elementLocated(By.scss('.reg-error-toast')), 10000);
         await driver.wait(until.elementIsVisible(invalidEmailErrorToast), 5000);
         const invalidEmailErrorDisplayed = await invalidEmailErrorToast.isDisplayed();
         assert.strictEqual(invalidEmailErrorDisplayed, true, "Error toast should be displayed for invalid email.");
@@ -82,7 +82,7 @@ describe('registration_form_validation', function () {
         const validEmail = `testuser${Date.now()}@example.com`;
         await driver.findElement(By.id("register_email")).sendKeys(validEmail);
 
-        const submitButtonAfterEmail = await driver.wait(until.elementLocated(By.css(".btn.btn-primary")), 10000);
+        const submitButtonAfterEmail = await driver.wait(until.elementLocated(By.scss(".btn.btn-primary")), 10000);
         await submitButtonAfterEmail.click();
         console.log(`Resubmitted with valid email: ${validEmail}`);
 
@@ -93,7 +93,7 @@ describe('registration_form_validation', function () {
         console.log("Login page loaded successfully after registration.");
 
         // Step 11: Click the "Register Now" button again to return to the registration page
-        const registerLinkAfterSubmit = await driver.wait(until.elementLocated(By.css('.register-link')), 10000);
+        const registerLinkAfterSubmit = await driver.wait(until.elementLocated(By.scss('.register-link')), 10000);
         await driver.wait(until.elementIsVisible(registerLinkAfterSubmit), 10000);
         await registerLinkAfterSubmit.click();
         console.log("Navigated to registration page again for pre-existing email test");
@@ -114,12 +114,12 @@ describe('registration_form_validation', function () {
         await driver.findElement(By.id("register_location")).sendKeys("USA");
         await driver.findElement(By.id("register_status")).sendKeys("Active");
 
-        const submitPreExisting = await driver.wait(until.elementLocated(By.css(".btn.btn-primary")), 10000);
+        const submitPreExisting = await driver.wait(until.elementLocated(By.scss(".btn.btn-primary")), 10000);
         await submitPreExisting.click();
         console.log("Clicked submit with pre-existing email");
 
         // Step 13: Check for validation error toast for existing user
-        const existingUserErrorToast = await driver.wait(until.elementLocated(By.css('.reg-error-toast')), 10000);
+        const existingUserErrorToast = await driver.wait(until.elementLocated(By.scss('.reg-error-toast')), 10000);
         await driver.wait(until.elementIsVisible(existingUserErrorToast), 5000);
         const existingUserErrorDisplayed = await existingUserErrorToast.isDisplayed();
         assert.strictEqual(existingUserErrorDisplayed, true, "Error toast should be displayed for existing user.");

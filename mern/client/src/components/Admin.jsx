@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Button, Card, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
-// Import the relevant CSS for Admin styling
-import "../styles/admin_page.css"; // Assuming you have a styles folder with Admin.css
+
+// custom scss imports
+import "../styles/custom_component_styles/admin_page.scss"; // scss file for Admin-specific styles
 
 export default function Admin() {
 	const [showModal, setShowModal] = useState(false);
@@ -36,16 +37,18 @@ export default function Admin() {
 
 			{/* Modal for Confirmation */}
 			<Modal
-				className="admin-toast-container"
+				className="admin-modal-container"
 				show={showModal}
 				onHide={handleCloseModal}
 				centered
 			>
-				<Modal.Title className="admin-toast-title">Confirmation</Modal.Title>
-				<Modal.Body className="admin-toast-message">{modalMessage}</Modal.Body>
+				<Modal.Header closeButton>
+					<Modal.Title className="admin-modal-title">Confirmation</Modal.Title>
+				</Modal.Header>
+				<Modal.Body className="admin-modal-message">{modalMessage}</Modal.Body>
 				<Modal.Footer>
 					<Button
-						className="admin-toast-button"
+						className="admin-modal-button"
 						variant="primary"
 						onClick={handleCloseModal}
 					>

@@ -1,0 +1,84 @@
+// Comments Section Container
+.comments-container {
+    padding: 2rem;
+    background-color: #f9f9fb;
+    border-radius: 0.75rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    transition: box-shadow 0.3s ease;
+
+    @media (max-width: 768px) {
+        padding: 1rem;
+    }
+}
+
+// Individual Comment Card
+.comment-card {
+    background-color: #ffffff;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
+        padding: 1rem;
+    }
+}
+
+// Comment Text
+.comment-text {
+    font-size: 1rem;
+    color: #333333;
+    margin-bottom: 1rem;
+    font-family: "JetBrains Mono", Arial, sans-serif;
+}
+
+// Like Button
+.like-button {
+    padding: 0.6rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    background-color: #f0f0f5;
+    color: #333333;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease,
+        box-shadow 0.3s ease;
+    box-shadow: 0px 4px 8px rgba(113, 113, 186, 0.4);
+
+    &:hover {
+        background-color: rgba(156, 89, 182, 0.2);
+        box-shadow: 0px 6px 12px rgba(113, 113, 186, 0.6);
+    }
+
+    &.btn-success {
+        background-color: #7fffd4;
+        color: #333333;
+    }
+
+    &.btn-secondary {
+        background-color: #f0f0f5;
+        color: #333333;
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 5px rgba(156, 89, 182, 0.5);
+    }
+}
+
+// Responsive Design Adjustments
+@media (max-width: 768px) {
+    .like-button {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}

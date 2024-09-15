@@ -1,7 +1,8 @@
+import "../styles/custom_component_styles/network_page.scss";
 import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { useCookies } from "react-cookie";
-import "../styles/network_page.css";
+
 
 export default function Network() {
 	const [cookie] = useCookies(["PassBloggs"]);
@@ -27,24 +28,23 @@ export default function Network() {
 			}
 			const data = await response.json();
 			setUsers(data);
-			// Fetch posts for each user after fetching users
 			data.forEach((user) => fetchUserPost(user._id, token));
 		} catch (error) {
 			console.error("Error fetching users:", error);
-		}};
-	
+		}
+	};
+
 	const fetchUserPost = async (userId, token) => {
 		try {
 			const response = await fetch(`http://localhost:5050/post/${userId}`, {
 				headers: {
-				Authorization: `Bearer ${token}`,
+					Authorization: `Bearer ${token}`,
 				},
 			});
 			if (!response.ok) {
 				throw new Error(`Failed to fetch user posts: ${response.statusText}`);
 			}
 			const data = await response.json();
-			// Assuming data is an array of posts, get the latest post
 			const latestPost = data.length > 0 ? data[data.length - 1] : null;
 			setUserPosts((prevState) => ({
 				...prevState,
@@ -52,8 +52,9 @@ export default function Network() {
 			}));
 		} catch (error) {
 			console.error(`Error fetching posts for user ${userId}:`, error);
-		}};
-	
+		}
+	};
+
 	const getInitials = (first_name, last_name) => {
 		if (first_name && last_name) {
 			return `${first_name.charAt(0)}${last_name.charAt(0)}`;
@@ -62,35 +63,35 @@ export default function Network() {
 	};
 
 	return (
-		<div className="network-container">
-			{users.map((user) => (
-				<Card key={user._id} className="network-card">
-					<Card.Body className="network-card-body">
-						<div className="top-section">
-							<div className="initials">
-								{getInitials(user.first_name, user.last_name)}
+		<div className="page-container">
+			<div className="grid-container">
+				{users.map((user) => (
+					<Card key={user._id} className="card-container network-card">
+						<Card.Body className="network-card-body">
+							<div className="top-section">
+								<div className="initials-circle">{getInitials(user.first_name, user.last_name)}</div>
+								<div className="user-info">
+									<h5 className="card-title">{`${user.first_name} ${user.last_name}`}</h5>
+									<p>Email: {user.email}</p>
+									<p>Occupation: {user.occupation}</p>
+									<p>Location: {user.location}</p>
+								</div>
 							</div>
-							<div className="user-info">
-								<h5>{`${user.first_name} ${user.last_name}`}</h5>
-								<p>Email: {user.email}</p>
-								<p>Occupation: {user.occupation}</p>
-								<p>Location: {user.location}</p>
+							<div className="user-status">
+								<p>Status: {user.status}</p>
 							</div>
-						</div>
-						<div className="user-status">
-							<p>Status: {user.status}</p>
-						</div>
-						<div className="recent-post">
-							<h6>Latest Post:</h6>
-							{userPosts[user._id] ? (
-								<p>{userPosts[user._id].content}</p>
-							) : (
-								<p>No posts yet</p>
-							)}
-						</div>
-					</Card.Body>
-				</Card>
-			))}
+							<div className="recent-post">
+								<h6>Latest Post:</h6>
+								{userPosts[user._id] ? (
+									<p>{userPosts[user._id].content}</p>
+								) : (
+									<p>No posts yet</p>
+								)}
+							</div>
+						</Card.Body>
+					</Card>
+				))}
+			</div>
 		</div>
 	);
 }

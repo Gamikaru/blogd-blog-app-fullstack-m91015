@@ -2,9 +2,93 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button, Dropdown, Modal } from "react-bootstrap";
 import { useCookies } from "react-cookie";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import "../styles/navbar.css";
-import "../styles/sidebar";
+import "../styles/custom_component_styles/navbar.scss";
 import PostModal from "./PostModal";
+
+const Logo = () => (
+	<div className="navbar-logo">
+		<Link to="/">
+			<img
+				alt="CodeBloggs Logo"
+				aria-label="CodeBloggs Logo"
+				className="nav-logo-image"
+				src="/assets/images/CodeBloggsLogo.png"
+				loading="lazy"
+			/>
+		</Link>
+	</div>
+);
+
+const UserDropdown = ({ handleAccountModal, handleLogout }) => {
+	const [showDropdown, setShowDropdown] = useState(false);
+	const dropdownRef = useRef(null);
+
+	const handleDropdown = () => setShowDropdown(!showDropdown);
+
+	useEffect(() => {
+		const handleClickOutside = (event) => {
+			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+				setShowDropdown(false);
+			}
+		};
+
+		const handleEscKey = (event) => {
+			if (event.key === "Escape") {
+				setShowDropdown(false);
+			}
+		};
+
+		document.addEventListener("mousedown", handleClickOutside);
+		document.addEventListener("keydown", handleEscKey);
+
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+			document.removeEventListener("keydown", handleEscKey);
+		};
+	}, []);
+
+	return (
+		<div
+			className="dropdown-container"
+			ref={dropdownRef}
+			onMouseLeave={() => setTimeout(() => setShowDropdown(false), 300)}
+		>
+			<Dropdown show={showDropdown} onToggle={handleDropdown}>
+				<Dropdown.Toggle
+					id="dropdown"
+					onClick={handleDropdown}
+					aria-expanded={showDropdown}
+					aria-controls="dropdown-menu"
+				>
+					{"ACCOUNT"}
+				</Dropdown.Toggle>
+				<Dropdown.Menu
+					id="dropdown-menu"
+					className={`dropdown-menu ${showDropdown ? "show" : ""}`}
+				>
+					<Dropdown.Item onClick={handleAccountModal}>
+						ACCOUNT SETTINGS
+					</Dropdown.Item>
+					<Dropdown.Item onClick={handleLogout}>LOGOUT</Dropdown.Item>
+				</Dropdown.Menu>
+			</Dropdown>
+		</div>
+	);
+};
+
+const NavbarButtons = ({ handleModal, handleDropdown, showDropdown, handleAccountModal, handleLogout, postButtonText }) => (
+	<div className="navbar-buttons">
+		<Button aria-label="Create Post" className="post-button" onClick={handleModal}>
+			{postButtonText || 'POST'}
+		</Button>
+		<UserDropdown
+			handleDropdown={handleDropdown}
+			showDropdown={showDropdown}
+			handleAccountModal={handleAccountModal}
+			handleLogout={handleLogout}
+		/>
+	</div>
+);
 
 export default function Navbar() {
 	const [cookie, removeCookie] = useCookies();
@@ -13,7 +97,6 @@ export default function Navbar() {
 	const [showModal, setShowModal] = useState(false);
 	const [showAccountModal, setShowAccountModal] = useState(false);
 	const [showDropdown, setShowDropdown] = useState(false);
-	const dropdownRef = useRef(null);
 
 	const [user, setUser] = useState({
 		first_name: "",
@@ -50,30 +133,9 @@ export default function Navbar() {
 		}
 	};
 
-	useEffect(() => {
-		const handleClickOutside = (event) => {
-			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-				setShowDropdown(false);
-			}
-		};
-		document.addEventListener("mousedown", handleClickOutside);
-
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, []);
-
-	const handleModal = () => {
-		setShowModal(!showModal);
-	};
-
-	const handleAccountModal = () => {
-		setShowAccountModal(!showAccountModal);
-	};
-
-	const handleDropdown = () => {
-		setShowDropdown(!showDropdown);
-	};
+	const handleModal = () => setShowModal(!showModal);
+	const handleAccountModal = () => setShowAccountModal(!showAccountModal);
+	const handleDropdown = () => setShowDropdown(!showDropdown);
 
 	const handleLogout = () => {
 		removeCookie("PassBloggs", { path: "/" });
@@ -81,50 +143,30 @@ export default function Navbar() {
 		navigate("/login");
 	};
 
-	// Prevent rendering on the login and registration pages
+	// Prevent rendering on login and registration pages
 	if (location.pathname === "/login" || location.pathname === "/register") {
 		return null;
 	}
 
-	const userName = `${user.first_name} ${user.last_name}`;
+	const navLinks = [
+		{ path: "/", label: "Home" },
+		{ path: "/bloggs", label: "Bloggs" },
+		{ path: "/network", label: "Network" },
+		{ path: "/admin", label: "Admin", condition: user.auth_level === "admin" }
+	];
 
 	return (
 		<>
 			<div className="nav-header">
 				<nav className="navbar">
-					{/* Align logo on the left */}
-					<div className="navbar-logo">
-						<Link to="/">
-							<img
-								alt="CodeBloggs logo"
-								className="nav-logo-image"
-								src="../../public/assets/images/CodeBloggsLogo.png"
-							/>
-						</Link>
-					</div>
-
-					{/* Align buttons on the right */}
-					<div className="navbar-buttons">
-						<Button className="post-button" onClick={handleModal}>
-							Post
-						</Button>
-						<div className="dropdown-container" ref={dropdownRef}>
-							<Dropdown
-								show={showDropdown}
-								onClose={() => setShowDropdown(false)}
-							>
-								<Dropdown.Toggle id="dropdown" onClick={handleDropdown}>
-									{"Account"}
-								</Dropdown.Toggle>
-								<Dropdown.Menu>
-									<Dropdown.Item onClick={handleAccountModal}>
-										Account Settings
-									</Dropdown.Item>
-									<Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
-								</Dropdown.Menu>
-							</Dropdown>
-						</div>
-					</div>
+					<Logo />
+					<NavbarButtons
+						handleModal={handleModal}
+						handleDropdown={handleDropdown}
+						showDropdown={showDropdown}
+						handleAccountModal={handleAccountModal}
+						handleLogout={handleLogout}
+					/>
 				</nav>
 			</div>
 
@@ -132,55 +174,26 @@ export default function Navbar() {
 			<div className="nav-container">
 				<div className="nav">
 					<ul>
-						<li>
-							<Link to="/" className={location.pathname === "/" ? "active" : ""}>
-								Home
-							</Link>
-						</li>
-						<li>
-							<Link
-								to="/bloggs"
-								className={location.pathname === "/bloggs" ? "active" : ""}
-							>
-								Bloggs
-							</Link>
-						</li>
-						<li>
-							<Link
-								to="/network"
-								className={location.pathname === "/network" ? "active" : ""}
-							>
-								Network
-							</Link>
-						</li>
-						{user.auth_level === "admin" && (
-							<li>
-								<Link
-									to="/admin"
-									className={location.pathname === "/admin" ? "active" : ""}
-								>
-									Admin
-								</Link>
-							</li>
-						)}
+						{navLinks.map((link, index) => (
+							link.condition !== false && (
+								<li key={index}>
+									<Link to={link.path} className={location.pathname === link.path ? "active" : ""}>
+										{link.label}
+									</Link>
+								</li>
+							)
+						))}
 					</ul>
 				</div>
 			</div>
 			<PostModal show={showModal} handleClose={handleModal} />
-			<Modal
-				className="nav-toast-container"
-				show={showAccountModal}
-				onHide={handleAccountModal}
-				centered
-			>
+			<Modal className="nav-toast-container" show={showAccountModal} onHide={handleAccountModal} centered>
 				<Modal.Title className="nav-toast-title">Account Settings</Modal.Title>
 				<Modal.Body className="nav-toast-mssg">
 					<p>Go to Account Settings.</p>
 				</Modal.Body>
 				<Modal.Footer>
-					<Button className="nav-toast-button" onClick={handleAccountModal}>
-						Confirm
-					</Button>
+					<Button className="nav-toast-button" onClick={handleAccountModal}>CONFIRM</Button>
 				</Modal.Footer>
 			</Modal>
 		</>
