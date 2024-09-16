@@ -1,26 +1,20 @@
-// Import scss for styling
-import "../styles/custom_component_styles/login_page.scss";
 import React, { useState } from "react";
-import Card from "react-bootstrap/Card";
-import Toast from "react-bootstrap/Toast";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router";
 import RegisterModal from "./RegisterModal"; // Import the modal component
+import { Card, Toast } from "react-bootstrap";
 
-
-
-
-// Export the LoginPage component
 export default function LoginPage() {
 	const [loginForm, setLoginForm] = useState({
 		email: "",
 		password: "",
 	});
 
-	const [cookie, setCookie, removeCookie] = useCookies();
+	const [cookie, setCookie] = useCookies();
 	const navigate = useNavigate();
 	const [showToast, setShowToast] = useState(false);
 	const [showRegisterModal, setShowRegisterModal] = useState(false); // State to manage modal
+	const [isButtonHovered, setIsButtonHovered] = useState(false); // Track button hover state
 
 	function updateLoginForm(value) {
 		return setLoginForm((prev) => {
@@ -63,7 +57,7 @@ export default function LoginPage() {
 				<img
 					alt="CodeBloggs logo"
 					className="logo-image"
-					src="/assets/images/CodeBloggsLogo2.png"
+					src="/assets/images/invertedLogo.png"
 				/>
 				<Toast
 					show={showToast}
@@ -111,7 +105,9 @@ export default function LoginPage() {
 									<input
 										type="submit"
 										value="LOGIN"
-										className="btn btn-primary submit-btn"
+										className="submit-btn"
+										onMouseEnter={() => setIsButtonHovered(true)} // Trigger hover on enter
+										onMouseLeave={() => setIsButtonHovered(false)} // Remove hover on leave
 									/>
 								</div>
 							</form>

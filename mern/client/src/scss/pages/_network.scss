@@ -1,0 +1,105 @@
+@import "../abstracts/variables"; // Import global colors
+
+/* --------------------------------------------------------------------------
+Custom Styling for the Network Page
+-------------------------------------------------------------------------- */
+
+/* Custom Network Card Styling */
+.network-card {
+    background-color: $white;
+    border-radius: 0.75rem; // Consistent border radius
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1); // Replaced shadow variable with actual value
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; // Replaced transition variables with values
+    width: 100%;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.75rem 1.5rem rgba(138, 43, 226, 0.4); // Updated hover shadow
+    }
+
+    .network-card-body {
+        padding: 1.5rem; // Replaced spacing variable with actual value
+        color: $charcoal; // Dark Gray
+
+        /* Top section for user initials and info */
+        .top-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem; // Replaced spacing variable with actual value
+
+            .initials-circle {
+                background-color: $primary-purple;
+                color: $white;
+                font-size: 1.5rem; // Replaced font size variable with actual value
+                font-weight: 700; // Hardcoded bold weight
+                border-radius: 50%;
+                width: 3rem;
+                height: 3rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .user-info {
+                flex-grow: 1;
+
+                h5 {
+                    color: $electric-violet; // Electric Violet
+                    font-family: $font-primary;
+                }
+
+                p {
+                    margin: 0.5rem 0; // Replaced spacing variable with actual value
+                    font-size: 0.875rem; // Replaced font size variable with actual value
+                    color: $charcoal; // Dark Gray
+                    font-family: $font-secondary;
+                }
+            }
+        }
+
+        /* Status styling */
+        .user-status {
+            margin-top: 1rem; // Replaced spacing variable with actual value
+            background-color: $light-gray;
+            padding: 0.75rem; // Replaced spacing variable with actual value
+            border-radius: 0.5rem; // Replaced border radius variable with actual value
+            font-size: 0.875rem; // Replaced font size variable with actual value
+        }
+
+        /* Recent post section */
+        .recent-post {
+            margin-top: 1.75rem; // Replaced spacing variable with actual value
+
+            h6 {
+                font-size: 1rem; // Replaced font size variable with actual value
+                color: $electric-violet; // Electric Violet
+                font-family: $font-secondary;
+            }
+
+            p {
+                font-size: 0.875rem; // Replaced font size variable with actual value
+                color: $charcoal;
+                font-family: $font-secondary;
+            }
+        }
+    }
+}
+
+/* --------------------------------------------------------------------------
+Responsive Design for the Network Page
+-------------------------------------------------------------------------- */
+@media (max-width: 768px) { // Replaced mobile breakpoint variable with actual value
+    .network-card {
+        max-width: 100%;
+    }
+
+    .initials-circle {
+        width: 2.5rem;
+        height: 2.5rem;
+        font-size: 1.25rem; // Replaced font size variable with actual value
+    }
+
+    .user-info h5 {
+        font-size: 1rem; // Replaced font size variable with actual value
+    }
+}

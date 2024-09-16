@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, Container, Form } from "react-bootstrap";
 import { useCookies } from "react-cookie";
-import "../styles/custom_component_styles/bloggs_page.scss";
 
 export default function BloggsPosts() {
     const [cookie] = useCookies();
@@ -63,7 +62,7 @@ export default function BloggsPosts() {
                 ? `http://localhost:5050/post/unlike/${postId}`
                 : `http://localhost:5050/post/like/${postId}`;
 
-            const response = await fetch(url, {
+            await fetch(url, {
                 method: "PUT",
                 headers: { Authorization: `Bearer ${cookie.PassBloggs}` },
             });
@@ -136,7 +135,7 @@ export default function BloggsPosts() {
     };
 
     return (
-        <Container className="page-container">
+        <Container className="bloggs-page-container"> {/* Updated class name */}
             <div className="blog-posts-grid">
                 {blogPosts.length > 0 ? (
                     blogPosts.map((post) => (

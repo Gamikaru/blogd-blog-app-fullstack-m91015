@@ -7,7 +7,6 @@ const AppLayout = () => {
     return (
         <div className="app-layout">
             <Navbar />
-            {/* Outlet is where the nested routes (e.g., HomePage, Bloggs) will render */}
             <Outlet />
         </div>
     );

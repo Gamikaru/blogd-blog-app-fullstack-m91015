@@ -8,7 +8,7 @@ export default defineConfig({
       scss: {
         // Add global SCSS imports here
         additionalData: `
-          @import "src/styles/global/main.scss";
+          @import "src/scss/main.scss";
         `,
       },
     },

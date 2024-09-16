@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button, Dropdown, Modal } from "react-bootstrap";
 import { useCookies } from "react-cookie";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import "../styles/custom_component_styles/navbar.scss";
 import PostModal from "./PostModal";
 
 const Logo = () => (
@@ -67,9 +66,9 @@ const UserDropdown = ({ handleAccountModal, handleLogout }) => {
 					className={`dropdown-menu ${showDropdown ? "show" : ""}`}
 				>
 					<Dropdown.Item onClick={handleAccountModal}>
-						ACCOUNT SETTINGS
+						Account Settings
 					</Dropdown.Item>
-					<Dropdown.Item onClick={handleLogout}>LOGOUT</Dropdown.Item>
+					<Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
 				</Dropdown.Menu>
 			</Dropdown>
 		</div>

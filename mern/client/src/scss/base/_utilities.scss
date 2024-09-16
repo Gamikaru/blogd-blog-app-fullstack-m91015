@@ -1,0 +1,93 @@
+// @import "../abstracts/variables";
+
+// // Margin utilities
+// .m-1 {
+//     margin: 1rem;
+// }
+// .m-2 {
+//     margin: 2rem;
+// }
+// .mt-1 {
+//     margin-top: 1rem;
+// }
+// .mb-1 {
+//     margin-bottom: 1rem;
+// }
+
+// // Responsive margin utilities
+// @media (max-width: 768px) {
+//     .m-1 {
+//         margin: 0.5rem;
+//     }
+
+//     .m-2 {
+//         margin: 1rem;
+//     }
+// }
+
+// // Padding utilities
+// .p-1 {
+//     padding: 1rem;
+// }
+// .p-2 {
+//     padding: 2rem;
+// }
+// .pt-1 {
+//     padding-top: 1rem;
+// }
+// .pb-1 {
+//     padding-bottom: 1rem;
+// }
+
+// // Flexbox utilities
+// .flex {
+//     display: flex;
+// }
+// .flex-center {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+// }
+// .flex-space-between {
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: center;
+// }
+// .flex-column {
+//     display: flex;
+//     flex-direction: column;
+// }
+
+// // Prevent flex-wrap
+// .flex-nowrap {
+//     display: flex;
+//     flex-wrap: nowrap; // Prevent wrapping of flex items
+// }
+
+// // Text utilities
+// .text-center {
+//     text-align: center;
+// }
+// .text-left {
+//     text-align: left;
+// }
+
+// // Visibility utilities
+// .d-none {
+//     display: none;
+// }
+// .d-md-block {
+//     display: block;
+
+//     @media (max-width: 768px) {
+//         display: none;
+//     }
+// }
+
+// .d-lg-none {
+//     display: none;
+
+//     @media (min-width: 1200px) {
+//         display: block;
+//     }
+// }

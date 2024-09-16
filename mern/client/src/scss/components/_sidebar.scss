@@ -1,0 +1,143 @@
+@import "../abstracts/variables"; // Assuming you have a lilac purple variable in your palette
+@import "../abstracts/mixins";
+
+// Sidebar container
+.nav-container {
+    display: flex;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+// Sidebar styling
+// Sidebar styling
+.nav {
+    background-color: #333333; // Charcoal background
+    width: 15vw;
+    padding: 1rem;
+    height: calc(100vh - 10vh);
+    position: fixed;
+    top: 10vh;
+    left: 0;
+    z-index: 900;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1); // Subtle outer glow effect
+    transition:
+        transform 0.3s ease,
+        width 0.3s ease;
+
+    ul {
+        list-style: none;
+        padding-top: 5rem;
+
+        li {
+            margin-bottom: 1.5rem;
+
+            a {
+                text-decoration: none;
+                color: #ffffff;
+                font-family: "Monoton", cursive;
+                text-transform: uppercase;
+                font-size: 1.6rem;
+                display: block;
+                position: relative;
+                padding-bottom: 5px;
+                transition:
+                    color 0.3s ease,
+                    text-shadow 0.3s ease;
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 0;
+                    height: 2px;
+                    background-color: $primary-purple;
+                    transition: width 0.3s ease;
+                }
+
+                &:hover:not(.active)::before {
+                    width: 100%; // Underline grows dynamically on hover
+                }
+
+                &:hover:not(.active) {
+                    text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7); // White glow
+                    animation: subtleFlicker 2s infinite; // Random flicker effect
+                }
+
+                &:focus::before,
+                &.active::before {
+                    width: 100%;
+                }
+
+                &:focus,
+                &.active {
+                    color: $primary-purple;
+                    text-shadow:
+                        0px 0px 15px rgba(156, 89, 182, 0.8),
+                        0px 0px 25px rgba(156, 89, 182, 0.6);
+                    animation: none; // Disable flicker effect
+                }
+            }
+        }
+    }
+
+    @media (max-width: 768px) {
+        width: 20vw; // Reduce the sidebar width slightly for better content spacing
+    }
+
+    @media (max-width: 576px) {
+        width: 80vw; // Reduce the sidebar to 80% of the screen width
+        position: fixed;
+        z-index: 1000;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+
+        // Ensure the sidebar still works as intended with the 'open' class toggle
+        &.open {
+            transform: translateX(0); // Slide the sidebar into view when the 'open' class is added
+        }
+    }
+}
+
+// Subtle, random flicker animation
+@keyframes subtleFlicker {
+    0% {
+        opacity: 1;
+    }
+    5% {
+        opacity: 0.8;
+    }
+    10% {
+        opacity: 0.9;
+    }
+    15% {
+        opacity: 0.7;
+    }
+    20% {
+        opacity: 0.85;
+    }
+    30% {
+        opacity: 0.95;
+    }
+    40% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 0.9;
+    }
+    60% {
+        opacity: 0.7;
+    }
+    70% {
+        opacity: 0.85;
+    }
+    80% {
+        opacity: 0.95;
+    }
+    90% {
+        opacity: 0.9;
+    }
+    100% {
+        opacity: 1;
+    }
+}

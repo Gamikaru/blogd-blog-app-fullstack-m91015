@@ -1,0 +1,27 @@
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+
+// Form Fields
+.form-input,
+.input-field,
+.date-selector {
+    @include form-field-base();
+}
+
+.input-field.error {
+    @include form-error();
+}
+
+.input-field.success {
+    @include form-success();
+}
+
+// Responsive Form Fields
+@media (max-width: 768px) {
+    .form-input,
+    .input-field,
+    .date-selector {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+}

@@ -1,0 +1,17 @@
+// Button Types
+.primary-btn {
+    @include button-base($primary-purple, $white, $electric-violet, $electric-violet-light, medium);
+}
+
+.secondary-btn {
+    @include button-base($charcoal, $white, $primary-purple-dark, $primary-purple-light);
+}
+
+.success-btn {
+    @include button-base($success-green, $white, $success-light, $success-green);
+}
+
+.danger-btn {
+    @include button-base($bright-red, $white, $error-dark, $bright-red);
+}
+

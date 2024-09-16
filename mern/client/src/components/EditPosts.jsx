@@ -1,4 +1,3 @@
-import "../styles/custom_component_styles/edit_posts.scss"; // Assuming this scss file will handle component-specific styles
 import React, { useState } from "react";
 import { Button, Container, Form, Toast } from "react-bootstrap";
 import { useCookies } from "react-cookie";

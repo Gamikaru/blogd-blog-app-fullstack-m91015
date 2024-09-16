@@ -3,7 +3,6 @@ import { Button, Card, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 // custom scss imports
-import "../styles/custom_component_styles/admin_page.scss"; // scss file for Admin-specific styles
 
 export default function Admin() {
 	const [showModal, setShowModal] = useState(false);

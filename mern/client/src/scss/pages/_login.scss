@@ -1,0 +1,236 @@
+@import "../abstracts/_variables"; // Import global colors
+@import "../abstracts/_mixins"; // Import mixins
+@import "../components/_forms"; // Form-specific styles
+@import "../components/_buttons"; // Button styles
+
+/* --------------------------------------------------------------------------
+Overall Container for Centering the Login Content
+-------------------------------------------------------------------------- */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 0 1rem;
+    text-align: center;
+    background-color: $charcoal; // Dark background color
+}
+
+/* --------------------------------------------------------------------------
+Styling for the Logo
+-------------------------------------------------------------------------- */
+.logo-image {
+    width: 30rem;
+    transition: transform 0.3s ease;
+    margin-bottom: -12rem; // Adjust margin to center logo
+
+    &:hover {
+        transform: scale(1.05);
+    }
+
+    @media (max-width: 1024px) {
+        width: 20rem;
+    }
+
+    @media (max-width: 768px) {
+        width: 15rem;
+        margin-bottom: 0.75rem; // Adjust space between logo and card on smaller screens
+    }
+}
+
+/* --------------------------------------------------------------------------
+Login Card Container - Horizontal Centering
+-------------------------------------------------------------------------- */
+.login-card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 26rem; // Ensure max-width for readability
+    margin-bottom: 15rem;
+    margin-top: 0rem; // Space between logo and card
+}
+
+/* --------------------------------------------------------------------------
+Login Card Styling (No glow effect on the card itself)
+-------------------------------------------------------------------------- */
+.login-card {
+    background-color: $charcoal; // Dark background color
+    border-radius: 0.75rem; // Rounded corners
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); // Subtle shadow
+    padding: 2rem;
+
+    transition: transform 0.3s ease;
+
+    &:hover {
+        transform: translateY(-5px); // Slight lift on hover
+    }
+
+    .login-card-header {
+        @include font-default();
+        font-size: 2.25rem; // Large font size
+        font-weight: 500;
+        color: $charcoal;
+        margin-bottom: 1.5rem; // Space after heading
+    }
+}
+
+/* --------------------------------------------------------------------------
+Input Container and Fields (with lilac glow on focus)
+-------------------------------------------------------------------------- */
+.login-input-container {
+    margin-bottom: 1.5rem;
+    position: relative;
+    text-align: center;
+    width: 100%;
+    padding: 0 1rem;
+}
+
+.login-input-field {
+    @include form-field-base();
+    width: calc(100% - 2rem);
+    padding: 0.8rem; // Slightly larger padding
+    font-size: 1rem;
+    background-color: $white; // White background for inputs
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Regular shadow
+
+    &:focus {
+        box-shadow: 0 0 15px rgba($primary-purple, 0.6); // Lilac glow on focus
+        outline: none;
+        border-color: transparent; // No border on focus, just glow
+    }
+}
+
+/* --------------------------------------------------------------------------
+Submit Button Styling (with flicker effect on text hover)
+-------------------------------------------------------------------------- */
+.login-container .submit-btn {
+    background-color: $charcoal; // Button background remains charcoal
+    color: $white; // Initial white text
+    padding: 1rem 2rem; // Padding for button
+    font-family: "Monoton", sans-serif;
+    font-size: large;
+    font-weight: 300;
+    border: none;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    cursor: pointer;
+
+    transition:
+        color 0.3s ease,
+        text-shadow 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.3s ease;
+
+    box-shadow:
+        0 0 10px rgba($primary-purple, 0.3),
+        0 0 20px rgba($primary-purple, 0.2); // Initial soft glow
+
+    &:hover {
+        color: rgba(rgb(199, 213, 255), 1); // Purple glow for text
+        text-shadow:
+            0 0 8px rgba($primary-purple, 0.8),
+            0 0 16px rgba($primary-purple, 0.6),
+            0 0 30px rgba($primary-purple, 1); // Stronger purple glow around text
+
+        box-shadow:
+            0 0 20px rgba($primary-purple, 0.7),
+            0 0 40px rgba($primary-purple, 0.9); // Purple glow around the button itself
+
+        animation: flicker-effect 0.2s infinite alternate; // Neon flicker effect
+    }
+
+    &:active {
+        transform: scale(0.98); // Click feedback
+        box-shadow: none; // No glow when active
+    }
+}
+
+/* Flicker Keyframe Animation for Neon Text Effect */
+@keyframes flicker-effect {
+    0% {
+        text-shadow: 0 0 5px rgba($primary-purple-light, 0.6); // Dim glow
+    }
+    50% {
+        text-shadow:
+            0 0 10px rgba($white, 1),
+            0 0 20px rgba($primary-purple, 0.8); // Stronger glow
+    }
+    100% {
+        text-shadow:
+            0 0 8px rgba($primary-purple-light, 0.8),
+            0 0 16px rgba($primary-purple, 0.6); // Consistent glow
+    }
+}
+
+/* --------------------------------------------------------------------------
+Register Link Styling (with cursor change)
+-------------------------------------------------------------------------- */
+.register-link {
+    margin-top: 1.5rem;
+    display: block;
+    text-align: center;
+    font-size: 1.1rem;
+    font-family: "JetBrains Mono-Light", monospace;
+    color: $charcoal;
+    font-weight: 200;
+    cursor: pointer; // Ensure pointer (click) cursor on hover
+
+    span {
+        font-weight: bold; // Bold for emphasis
+    }
+
+    position: relative;
+    text-decoration: none;
+    transition:
+        color 0.3s ease,
+        text-shadow 0.3s ease;
+
+    &:hover {
+        color: rgba($white, 0.8);
+        text-shadow:
+            0px 0px 5px rgba(rgba($primary-purple, 0.8), 0.6),
+            0px 0px 10px rgba(rgba($primary-purple, 0.6), 0.8); // Neon glow on hover
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        bottom: -5px;
+        left: 0;
+        background-color: rgba($primary-purple, 0.6); // Neon underline
+        visibility: hidden;
+        transform: scaleX(0);
+        transition: all 0.3s ease-in-out;
+        box-shadow:
+            0px 0px 5px rgba(rgba($primary-purple, 0.7), 0.6),
+            0px 0px 10px rgba(rgba($primary-purple, 0.7), 0.8);
+    }
+
+    &:hover::after {
+        visibility: visible;
+        transform: scaleX(1);
+        background-color: $white; // White underline on hover
+        box-shadow:
+            0px 0px 5px rgba(rgba($primary-purple, 0.8), 0.6),
+            0px 0px 10px rgba(rgba($primary-purple, 1), 0.8); // Neon glow on hover
+    }
+}
+
+/* --------------------------------------------------------------------------
+Responsive Design Adjustments
+-------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+    .login-card {
+        width: 90%; // Adjust width for smaller screens
+    }
+
+    .submit-btn {
+        width: 80%; // Adjust button width for smaller screens
+        font-size: 1rem; // Slightly smaller font size for submit button
+    }
+}

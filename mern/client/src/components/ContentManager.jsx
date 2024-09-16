@@ -1,6 +1,4 @@
 // scss imports
-import "../styles/custom_component_styles/content_manager.scss"; // For component-specific styles
-import "../styles/page_global/main_content.scss"; // Global page stylesimport React, { useEffect, useState } from "react";
 import { Button, Card, Form, Modal, Spinner } from "react-bootstrap";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";

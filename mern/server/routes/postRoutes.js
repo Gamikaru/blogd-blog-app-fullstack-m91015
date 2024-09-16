@@ -154,7 +154,7 @@ router.put('/like/:id', authenticate, async (req, res) => {
         await post.save();
 
         console.log('Post liked successfully');
-        res.status(200).send('Post liked successfully');
+        res.status(200).json(post);  // Send the updated post back to the frontend
     } catch (error) {
         console.error('Error liking post:', error);
         return res.status(500).send('Server error: ' + error.message);

@@ -1,4 +1,3 @@
-import "../styles/custom_component_styles/network_page.scss";
 import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { useCookies } from "react-cookie";

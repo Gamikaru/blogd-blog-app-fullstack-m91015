@@ -1,4 +1,3 @@
-import "../styles/custom_component_styles/edit_user.scss"; // Custom scss for EditUser
 
 import React, { useEffect, useState } from "react";
 import { Button, Card, Form, Toast } from "react-bootstrap";
