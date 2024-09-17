@@ -1,18 +1,39 @@
+// HomePage.jsx
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Button, Card, Spinner } from "react-bootstrap";
-import { useCookies } from "react-cookie";
-import { FaBirthdayCake, FaBriefcase, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
+import {
+    FaBirthdayCake,
+    FaBriefcase,
+    FaEnvelope,
+    FaMapMarkerAlt,
+} from "react-icons/fa";
 import PostModal from "./PostModal";
+import { useUser } from "../UserContext"; // Import useUser hook
+import ApiClient from "../ApiClient"; // Import ApiClient
 
+const UserCard = ({ userInitials, user, updateUserStatus, status, setStatus }) => {
+    const formattedBirthdate = new Date(user.birthdate).toLocaleDateString(
+        "en-US",
+        {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        }
+    );
 
-const UserCard = ({ userInitials, user, updateUserStatus }) => {
-    const formattedBirthdate = new Date(user.birthdate).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
+    // Create a reference to the input element
+    const inputRef = useRef(null);
+
+    // Handle the Enter key event to trigger status update and unfocus the input
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault(); // Prevent form submission or other default actions
+            updateUserStatus(status); // Call the function to update the status
+            inputRef.current.blur(); // Unfocus the input element
+        }
+    };
 
     return (
         <div className="user-card-container">
@@ -20,31 +41,32 @@ const UserCard = ({ userInitials, user, updateUserStatus }) => {
                 <div className="user-card-header">
                     <div className="initials-title">{userInitials}</div>
                     <input
+                        ref={inputRef} // Attach the ref to the input element
                         className="home-user-status"
                         type="text"
-                        value={user.status}
-                        onChange={(e) => updateUserStatus(e.target.value)}
+                        value={status}
+                        onChange={(e) => setStatus(e.target.value)}
+                        onBlur={() => updateUserStatus(status)}
+                        onKeyDown={handleKeyDown} // Call function on key press
                         placeholder="Update Status"
                     />
                 </div>
-                <Card.Body>
-                    <div className="user-details">
-                        <div className="detail-item">
-                            <FaEnvelope className="detail-icon" />
-                            <span className="detail-text">{user.email}</span>
-                        </div>
-                        <div className="detail-item">
-                            <FaBirthdayCake className="detail-icon" />
-                            <span className="detail-text">{formattedBirthdate}</span>
-                        </div>
-                        <div className="detail-item">
-                            <FaBriefcase className="detail-icon" />
-                            <span className="detail-text">{user.occupation}</span>
-                        </div>
-                        <div className="detail-item">
-                            <FaMapMarkerAlt className="detail-icon" />
-                            <span className="detail-text">{user.location}</span>
-                        </div>
+                <Card.Body className="user-details">
+                    <div className="detail-item">
+                        <FaEnvelope className="detail-icon" />
+                        <span className="detail-text">{user.email}</span>
+                    </div>
+                    <div className="detail-item">
+                        <FaBirthdayCake className="detail-icon" />
+                        <span className="detail-text">{formattedBirthdate}</span>
+                    </div>
+                    <div className="detail-item">
+                        <FaBriefcase className="detail-icon" />
+                        <span className="detail-text">{user.occupation}</span>
+                    </div>
+                    <div className="detail-item">
+                        <FaMapMarkerAlt className="detail-icon" />
+                        <span className="detail-text">{user.location}</span>
                     </div>
                 </Card.Body>
             </Card>
@@ -52,14 +74,13 @@ const UserCard = ({ userInitials, user, updateUserStatus }) => {
     );
 };
 
-
 const PostsCard = ({ userPosts, handleLike, likeStatus }) => (
     <div className="home-post-card-container">
         <Card className="home-posts-card">
             <Card.Body>
                 <Card.Title className="home-post-title">Your Recent Posts!</Card.Title>
                 {userPosts.length > 0 ? (
-                    <div className="posts-scroll-container"> {/* Added scroll container here */}
+                    <div className="posts-scroll-container">
                         {userPosts.map((post, index) => (
                             <div key={index} className="post-container">
                                 <div className="speech-bubble">
@@ -95,47 +116,23 @@ const PostsCard = ({ userPosts, handleLike, likeStatus }) => (
 );
 
 export default function HomePage() {
-    const [cookie] = useCookies();
-    const [user, setUser] = useState(null);
+    const { user, setUser } = useUser(); // Use user and setUser from UserContext
     const [userPosts, setUserPosts] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [likeStatus, setLikeStatus] = useState([]); // Track like button status
+    const [status, setStatus] = useState(""); // Track status input
 
     useEffect(() => {
-        fetchUser();
-        fetchPost();
-    }, []);
-
-    const fetchUser = async () => {
-        const token = cookie.PassBloggs;
-        if (!token) {
-            console.error("Token not found");
-            return;
+        if (user && user._id) {
+            fetchPost();
+            setStatus(user.status); // Initialize status input with user's current status
         }
-        try {
-            const response = await fetch(`http://localhost:5050/user/${cookie.userID}`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            if (!response.ok) throw new Error(`Failed to fetch user data: ${response.statusText}`);
-            const data = await response.json();
-            setUser(data);
-        } catch (error) {
-            console.error("Error fetching user data:", error);
-        }
-    };
+    }, [user]);
 
     const fetchPost = async () => {
-        const token = cookie.PassBloggs;
-        if (!token) {
-            console.error("Token not found");
-            return;
-        }
         try {
-            const response = await fetch(`http://localhost:5050/post/${cookie.userID}`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            if (!response.ok) throw new Error(`Failed to fetch posts: ${response.statusText}`);
-            const data = await response.json();
+            const response = await ApiClient.get(`/post/${user._id}`);
+            const data = response.data;
             setUserPosts(data);
             setLikeStatus(new Array(data.length).fill(false)); // Initialize likeStatus
         } catch (error) {
@@ -152,71 +149,33 @@ export default function HomePage() {
     const userInitials = user ? getInitials(user.first_name, user.last_name) : "";
 
     const handleLike = async (index) => {
-        const postId = userPosts[index]._id;  // Assuming each post has an _id from the backend
+        const postId = userPosts[index]._id;
 
         try {
-            // Optimistically update the frontend to reflect the new like count immediately
-            setUserPosts((prevPosts) => {
-                const updatedPosts = [...prevPosts];
-                updatedPosts[index].likes += 1; // Optimistically increase the like count
-                return updatedPosts;
-            });
+            await ApiClient.put(`/post/like/${postId}`);
 
-            // Call the backend to increment the like count
-            const response = await fetch(`http://localhost:5050/post/like/${postId}`, {
-                method: 'PUT',
-                headers: {
-                    Authorization: `Bearer ${cookie.PassBloggs}`,
-                },
-            });
+            // Re-fetch posts to get the updated like count from the server
+            await fetchPost();
 
-            if (!response.ok) {
-                throw new Error('Failed to like post');
-            }
-
-            // After the like operation succeeds, re-fetch the posts to get the latest data
-            await fetchPost();  // This will ensure that the UI has the most up-to-date like count
-
-            // Optionally, you can disable the like button after a successful like
             const updatedLikeStatus = [...likeStatus];
             updatedLikeStatus[index] = true;
             setLikeStatus(updatedLikeStatus);
-
         } catch (error) {
             console.error("Error liking post:", error);
-
-            // Rollback optimistic UI update if there was an error
-            setUserPosts((prevPosts) => {
-                const updatedPosts = [...prevPosts];
-                updatedPosts[index].likes -= 1; // Revert the like count if there was an error
-                return updatedPosts;
-            });
         }
     };
-
-
 
     const updateUserStatus = async (newStatus) => {
         try {
-            const token = cookie.PassBloggs;
-            if (!token) {
-                console.error("Token not found");
-                return;
-            }
-            const response = await fetch(`http://localhost:5050/user/${cookie.userID}`, {
-                method: "PUT",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ status: newStatus }),
-            });
-            if (!response.ok) throw new Error(`Failed to update status: ${response.statusText}`);
+            await ApiClient.put(`/user/${user._id}/status`, { status: newStatus });
             setUser((prevUser) => ({ ...prevUser, status: newStatus }));
+            console.log("Status updated successfully!");
         } catch (error) {
             console.error("Error updating status:", error);
         }
+
     };
+
 
     if (!user) {
         return <Spinner animation="border" />;
@@ -229,8 +188,14 @@ export default function HomePage() {
                     userInitials={userInitials}
                     user={user}
                     updateUserStatus={updateUserStatus}
+                    status={status}
+                    setStatus={setStatus}
                 />
-                <PostsCard userPosts={userPosts} handleLike={handleLike} likeStatus={likeStatus} />
+                <PostsCard
+                    userPosts={userPosts}
+                    handleLike={handleLike}
+                    likeStatus={likeStatus}
+                />
             </div>
             <PostModal show={showModal} handleClose={() => setShowModal(false)} />
         </div>

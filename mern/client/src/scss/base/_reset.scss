@@ -1,57 +1,5 @@
-/* Global Body Style */
-body {
-    @include font-content(); /* Use Inter for body text */
+body, html {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-size: 1rem; /* Use REM for better scaling */
-    line-height: 1.6;
-    min-width: 320px; /* Ensure minimum readability on small screens */
-}
-
-/* Global Scrollbar Styling */
-html {
-    /* For Firefox */
-    scrollbar-width: none; /* Completely hide scrollbar in Firefox until scrolling */
-
-    // Custom scrollbar for WebKit browsers (Chrome, Safari, Edge)
-    &::-webkit-scrollbar {
-        width: 4px; /* Thin scrollbar */
-        height: 0; /* Ensure the horizontal scrollbar doesn't appear */
-        background: transparent; /* No visible background for the scrollbar */
-    }
-
-    &::-webkit-scrollbar-track {
-        background: transparent; /* Hide the track entirely */
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background-color: $primary-purple; /* Minimal purple scrollbar thumb */
-        border-radius: 10px; /* Rounded scrollbar */
-        visibility: hidden; /* Hide the thumb until scrolling */
-    }
-
-    &::-webkit-scrollbar-thumb:hover {
-        background-color: lighten($primary-purple, 10%); /* Slightly lighter on hover */
-    }
-
-    /* Optional: Hides the default scrollbar arrows (up/down buttons) */
-    &::-webkit-scrollbar-button {
-        display: none; /* No arrows */
-    }
-
-    /* Show scrollbar only when scrolling */
-    &::-webkit-scrollbar-thumb {
-        visibility: hidden; /* Hidden by default */
-    }
-
-    &:hover::-webkit-scrollbar-thumb {
-        visibility: visible; /* Visible when scrolling or hovering */
-    }
-}
-
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
+    overflow-x: hidden; /* Prevent horizontal scroll */
 }

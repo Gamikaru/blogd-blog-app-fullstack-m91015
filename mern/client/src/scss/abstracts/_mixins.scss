@@ -1,21 +1,38 @@
 @import "../abstracts/variables"; // Import global colors and fonts
 
 /* Font Mixins */
-@mixin font-default {
-    font-family: $font-primary; // Use font-primary variable
+@mixin font-default($font-family: $font-primary) {
+    font-family: $font-family;
 }
 
-@mixin font-content {
-    font-family: $font-tertiary; // Use font-tertiary variable
+@mixin font-content($font-family: $font-tertiary) {
+    font-family: $font-family;
 }
 
-@mixin font-bold {
-    font-weight: bold;
+@mixin font-bold($font-weight: bold) {
+    font-weight: $font-weight;
 }
 
-@mixin font-light {
-    font-family: $font-secondary; // Use font-secondary variable
-    font-weight: 300;
+@mixin font-light($font-family: $font-secondary, $font-weight: 300) {
+    font-family: $font-family;
+    font-weight: $font-weight;
+}
+
+/* Flexbox Utility Mixins */
+@mixin flex-container($justify: flex-start, $align: flex-start, $direction: row, $wrap: nowrap) {
+    display: flex;
+    justify-content: $justify;
+    align-items: $align;
+    flex-direction: $direction;
+    flex-wrap: $wrap;
+}
+
+@mixin flex-center($direction: row, $wrap: nowrap) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: $direction;
+    flex-wrap: $wrap;
 }
 
 /* Utility Mixins */
@@ -31,60 +48,194 @@
     padding: $top $right $bottom $left;
 }
 
+@mixin margin($top, $right, $bottom, $left) {
+    margin: $top $right $bottom $left;
+}
+
+@mixin page-container-mixin {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    background-color: rgba($charcoal-extra-light, 0.1);
+    min-height: 100vh;
+    margin-left: 0;
+    margin-top: 7vh;
+    box-sizing: border-box;
+    width: 100%;
+    overflow-x: hidden;
+    transition:
+        margin-left 0.3s ease,
+        width 0.3s ease;
+
+    &.sidebar-open {
+        margin-left: 15vw;
+        width: calc(100% - 15vw);
+    }
+
+    @media (max-width: 1200px) {
+        &.sidebar-open {
+            margin-left: 12vw;
+            width: calc(100% - 12vw);
+        }
+    }
+
+    @media (max-width: 768px) {
+        margin-left: 0;
+        padding: 10vh 2vw;
+        width: 100%;
+    }
+}
+
 /* Button Mixins */
-@mixin button-base($bg-color, $text-color, $hover-bg-color, $hover-border-color, $size: medium) {
+@mixin button-base(
+    $bg-color,
+    $text-color,
+    $hover-bg-color,
+    $hover-border-color,
+    $size: medium,
+    $border-radius: 6px,
+    $font-family: $font-primary,
+    $font-weight: 400,
+    $padding: 0.6rem 1.2rem,
+    $font-size: 1rem,
+    $text-transform: uppercase,
+    $letter-spacing: 2px
+) {
+    @extend .btn; // Extend Bootstrap's base .btn class
     display: inline-block;
-    padding: if($size == large, 0.8rem 2rem, if($size == small, 0.4rem 1.2rem, 0.6rem 1.5rem));
-    font-family: $font-primary;
-    font-weight: 400;
-    font-size: if($size == small, 0.875rem, if($size == large, 1.125rem, 1rem));
+    padding: $padding;
+    font-family: $font-family;
+    font-weight: $font-weight;
+    font-size: $font-size;
     color: $text-color;
     background-color: $bg-color;
-    border-radius: 6px;
+    border: none;
+    border-radius: $border-radius;
     text-align: center;
-    text-transform: uppercase;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-transform: $text-transform;
+    letter-spacing: $letter-spacing;
+    box-shadow: none;
     transition:
         background-color 0.3s ease,
         box-shadow 0.3s ease,
-        transform 0.3s ease;
+        transform 0.1s ease;
     cursor: pointer;
 
     &:hover {
         background-color: $hover-bg-color;
-        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-        transform: translateY(-2px);
+        box-shadow: 0 0 10px rgba($hover-bg-color, 0.4);
+    }
+
+    &:active {
+        transform: scale(0.98);
+        box-shadow: 0 0 6px rgba($hover-bg-color, 0.2);
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: none;
     }
 }
 
 /* Card Base Mixin */
-@mixin card-base($bg-color, $border-color, $shadow, $size: normal) {
+@mixin card-base($bg-color, $border-color, $shadow, $size: normal, $border-radius: 0.75rem, $padding: 1.5rem) {
+    @extend .card; // Extend Bootstrap's base .card class
     background-color: $bg-color;
     border: 1px solid $border-color;
-    border-radius: 0.75rem;
+    border-radius: $border-radius;
     box-shadow: $shadow;
-    padding: if($size == large, 2rem, 1.5rem); // Adjust padding based on size
+    padding: if($size == large, 2rem, $padding); // Adjust padding based on size
+
     transition:
         transform 0.3s ease,
         box-shadow 0.3s ease;
 
     &:hover {
         transform: translateY(-5px);
-        box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.2); // Subtle hover shadow
+        box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.2);
+    }
+}
+
+/* Base Form Field Mixin */
+@mixin form-field-base(
+    $width: 100%,
+    $padding: 0.75rem,
+    $font-size: 1rem,
+    $border-color: $light-silver,
+    $border-radius: 0.5rem,
+    $bg-color: $white,
+    $text-color: $charcoal,
+    $focus-border-color: $primary-purple
+) {
+    @extend .form-control; // Extend Bootstrap's .form-control
+    width: $width;
+    padding: $padding;
+    font-size: $font-size;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    background-color: $bg-color;
+    color: $text-color;
+
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+
+    &:focus {
+        border-color: $focus-border-color;
+        box-shadow: 0 0 5px rgba($focus-border-color, 0.5);
+        outline: none;
+    }
+}
+
+/* Base Modal Mixin */
+@mixin modal-base(
+    $bg-color: $white,
+    $padding: 2rem,
+    $border-radius: 0.75rem,
+    $box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15),
+    $focus-box-shadow: rgba($primary-purple, 0.5)
+) {
+    @extend .modal; // Extend Bootstrap's .modal
+    background-color: $bg-color;
+    padding: $padding;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 5px $focus-box-shadow;
     }
 }
 
 /* Dropdown Menu Base Mixin */
-@mixin dropdown-menu-base($bg-color, $text-color, $hover-bg, $shadow-color, $transition-time: 0.3s) {
+@mixin dropdown-menu-base(
+    $bg-color,
+    $text-color,
+    $hover-bg,
+    $shadow-color,
+    $border-radius: 0.5rem,
+    $padding: 0.3rem 0.7rem,
+    $min-width: 100%,
+    $opacity: 0,
+    $visibility: hidden,
+    $transform: translateY(8px),
+    $transition-time: 0.3s
+) {
+    @extend .dropdown-menu; // Extend Bootstrap's .dropdown-menu
     background-color: $bg-color;
     color: $text-color;
-    border-radius: 0.5rem;
-    padding: 0.3rem 0.7rem;
+    border-radius: $border-radius;
+    padding: $padding;
     box-shadow: 0px 4px 8px $shadow-color;
-    min-width: 100%;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(8px);
+    min-width: $min-width;
+    opacity: $opacity;
+    visibility: $visibility;
+    transform: $transform;
+
     transition:
         opacity $transition-time ease,
         transform $transition-time ease,
@@ -92,38 +243,6 @@
 
     &:hover {
         background-color: $hover-bg;
-        box-shadow: 0px 6px 12px $shadow-color; // Stronger shadow on hover
+        box-shadow: 0px 6px 12px $shadow-color;
     }
-}
-
-/* Base Form Field Mixin */
-@mixin form-field-base {
-    width: 100%;
-    padding: 0.75rem;
-    font-size: 1rem;
-    border: 1px solid $light-silver;
-    border-radius: 0.5rem;
-    background-color: $white;
-    color: $charcoal;
-    transition:
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
-
-    &:focus {
-        border-color: $primary-purple;
-        box-shadow: 0 0 5px rgba($primary-purple, 0.5); // Subtle glow for consistent focus state
-        outline: none;
-    }
-}
-
-/* Error State Mixin */
-@mixin form-error {
-    border-color: $bright-red;
-    box-shadow: 0 0 5px rgba($bright-red, 0.5);
-}
-
-/* Success State Mixin */
-@mixin form-success {
-    border-color: $mint-green;
-    box-shadow: 0 0 5px rgba($mint-green, 0.5);
 }

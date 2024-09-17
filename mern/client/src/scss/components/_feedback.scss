@@ -1,7 +1,9 @@
 @import "../abstracts/variables";
+@import "../abstracts/mixins"; // Ensure mixins are imported for consistent form styles
 
 /* Alerts */
 .alert {
+    @extend .alert; // Extend Bootstrap's alert class
     padding: 1rem 1.5rem;
     border-radius: 0.5rem;
     font-size: 1rem;
@@ -16,18 +18,21 @@
 }
 
 .alert--success {
+    @extend .alert-success; // Apply Bootstrap's success alert styles
     background-color: $success-green;
     color: $white;
     border-color: darken($success-green, 10%);
 }
 
 .alert--error {
+    @extend .alert-danger; // Apply Bootstrap's error alert styles
     background-color: $bright-red;
     color: $white;
     border-color: darken($bright-red, 10%);
 }
 
 .alert--warning {
+    @extend .alert-warning; // Apply Bootstrap's warning alert styles
     background-color: $sunset-orange;
     color: $white;
     border-color: darken($sunset-orange, 10%);
@@ -35,6 +40,7 @@
 
 /* Toasts */
 .toast {
+    @extend .toast; // Extend Bootstrap's toast class
     position: fixed;
     bottom: 1.5rem;
     right: 1.5rem;
@@ -58,11 +64,13 @@
 }
 
 .toast--success {
+    @extend .toast-success !optional;
     background-color: $success-green;
     color: $charcoal;
 }
 
 .toast--error {
+    @extend .toast-danger !optional; // Extend Bootstrap's toast error styles
     background-color: $bright-red;
     color: $white;
 }
@@ -70,6 +78,7 @@
 /* Close Button for Alerts and Toasts */
 .toast-close,
 .alert-close {
+    @extend .close !optional; // Extend Bootstrap's close button style
     background: transparent;
     border: none;
     color: $white;

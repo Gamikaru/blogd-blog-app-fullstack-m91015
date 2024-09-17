@@ -1,172 +1,138 @@
 @import "../abstracts/variables";
 @import "../abstracts/mixins";
 
-// Nav Header
+// Navbar Header
 .nav-header {
-    background-color: $charcoal-extreme-light;
-    padding: 1rem;
+    background: rgba($charcoal-light, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 0rem 2rem;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    height: 12vh;
+    height: 80px;
     z-index: 1000;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 4px 8px rgba($electric-violet-light, 0.4);
-    flex-wrap: nowrap;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transition:
         background-color 0.3s ease,
         box-shadow 0.3s ease;
 }
 
-// Navbar container
+// Navbar Container
 .navbar {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding: 0 2rem;
 
-    // Logo section
-    .navbar-logo img {
-        width: clamp(234px, 19.5vw, 455px); // Increased logo width by ~30%
-        height: auto;
-        min-height: 104px; // Increased min-height by 30%
-        object-fit: contain;
-        transition:
-            width 0.3s ease,
-            height 0.3s ease;
-
-        @media (max-width: 1200px) {
-            width: clamp(195px, 20.8vw, 390px); // Adjusted for medium screens
-        }
-
-        @media (max-width: 768px) {
-            width: clamp(169px, 26vw, 325px); // Adjusted for tablets
-        }
-
-        @media (max-width: 576px) {
-            width: clamp(130px, 28.6vw, 260px); // Adjusted for mobile devices
-            min-height: 78px; // Slightly increased min-height on mobile
-        }
-    }
-
-    // Navbar buttons section
-    .navbar-buttons {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        flex-grow: 0;
-        white-space: nowrap;
-        flex-wrap: nowrap;
-        justify-content: flex-end;
-
-        @media (max-width: 768px) {
-            gap: 0.5rem;
-        }
-    }
-
-    // Buttons
-    .post-button,
-    .dropdown-container .dropdown-toggle {
-        padding: 0.6rem 1.5rem;
-        font-size: 1rem;
-        font-family: "JetBrains Mono", monospace; // Monospace font for a modern look
-        font-weight: 700;
-        letter-spacing: 0.08em; // Slightly more character spacing
-        color: $white; // Keep text white for clarity
-        background-color: lighten($charcoal-extra-light, 10%); // Lighter grey background
+    // Hamburger menu on the far left
+    .sidebar-toggle {
+        order: 1;
+        background: none;
         border: none;
-        border-radius: 6px;
-        box-shadow: none; // Keep flat button design
+        color: $white;
+        font-size: 2rem;
+        cursor: pointer;
+        display: block;
+        margin-right: 1rem;
 
-        transition:
-            background-color 0.3s ease,
-            color 0.3s ease,
-            box-shadow 0.3s ease,
-            transform 0.3s ease;
+        @media (max-width: 768px) {
+            display: block;
+        }
 
         &:hover {
-            color: $white; // Keep white text on hover for readability
-            background-color: darken($charcoal-extra-light, 8%); // Subtle darken effect on hover
-            text-shadow: 0 0 8px rgba($white, 0.8); // Subtle white text glow
-            box-shadow:
-                0 0 5px rgba($primary-purple, 0.3),
-                0 0 10px rgba($primary-purple, 0.5); // Softer purple glow
+            color: lighten($primary-purple, 10%);
         }
 
         &:focus {
-            background-color: darken($charcoal-extra-light, 10%); // Slight darkening on focus
-            box-shadow:
-                0 0 8px rgba($primary-purple, 0.4),
-                0 0 15px rgba($primary-purple, 0.6); // Subtle purple glow
-            text-shadow: 0 0 10px rgba($white, 1); // White glow on text
-        }
-
-        &:active {
-            background-color: darken($charcoal-extra-light, 15%); // Darken more on press
-            box-shadow: none; // Remove shadow on press
-            transform: scale(0.98); // Simulate button press
-        }
-
-        @media (max-width: 768px) {
-            padding: 0.5rem 1rem;
-            font-size: 0.85rem;
-        }
-
-        @media (max-width: 576px) {
-            padding: 0.4rem 0.8rem;
-            font-size: 0.75rem;
+            outline: none;
         }
     }
 
-    // Dropdown Menu
-    .dropdown-menu {
-        background-color: lighten($light-gray, 5%); // Lighter grey background for dropdown
-        border: none;
-        box-shadow: 0 4px 8px rgba($primary-purple, 0.3); // Subtle purple shadow
+    // Centering the Logo
+    .navbar-logo {
+        order: 2;
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        padding-top: 2rem;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
 
-        .dropdown-item {
-            color: $charcoal; // Darker text for clear visibility
-            padding: 0.75rem 1.5rem;
-            font-family: "JetBrains Mono", monospace; // Monospace font for a modern look
-            font-size: 1.1rem; // Slightly larger font size for dropdown items
-            letter-spacing: 0.05em; // Slight character spacing for a modern look
-            font-weight: 600; // Slightly bold for dropdown items
-            transition:
-                color 0.3s ease,
-                text-shadow 0.3s ease; // Smooth transition for hover effects
+    // Post button and Account dropdown on the far right
+    .navbar-buttons {
+        order: 3;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-left: auto;
 
-            &:hover {
-                color: $white; // Maintain white text
-                text-shadow:
-                    0 0 8px rgba($white, 0.8),
-                    0 0 15px rgba($primary-purple, 0.6); // Subtle purple glow on hover
-                background-color: $charcoal-extra-light; // Keep the same background color, no box hover effect
-                border-radius: 0.5rem; // Slightly rounded corners for hover effect
-            }
-
-            &:focus {
-                background-color: $charcoal-light; // Darken slightly on focus for interaction
-                text-shadow:
-                    0 0 10px rgba($white, 1),
-                    0 0 20px rgba($primary-purple, 0.8); // Stronger purple glow around text
-                color: $white; // Keep text white for clarity
-            }
-
-            &:active {
-                background-color: darken($charcoal-extra-light, 10%); // Darken on click for feedback
-                text-shadow: none; // Remove glow on active state
-            }
+        @media (max-width: 768px) {
+            gap: 1rem;
         }
+    }
+}
 
-        // Remove dropdown divider (optional) or keep for subtle separation
-        .dropdown-divider {
-            height: 1px;
-            margin: 0.5rem 0;
-            background-color: lighten($charcoal, 20%); // Light divider to match the calm aesthetic
+// Logo Section
+.navbar-logo img {
+    width: 60%;
+    height: auto;
+    max-height: 80%;
+    transition: transform 0.3s ease;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+}
+
+// Post Button and Dropdown
+.post-button,
+.dropdown-toggle {
+    @include button-base(
+        $primary-purple,
+        $white,
+        darken($primary-purple, 5%),
+        $primary-purple-dark,
+        medium,
+        12px,
+        "Anton",
+        400,
+        0.6rem 1.2rem,
+        1rem,
+        uppercase,
+        2px
+    );
+
+    @media (max-width: 768px) {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+}
+
+// Dropdown Menu
+.dropdown-menu {
+    background-color: $charcoal-extreme-light;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+    .dropdown-item {
+        color: $charcoal;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 1rem;
+        padding: 0.75rem 1.5rem;
+        transition:
+            background-color 0.3s ease,
+            color 0.3s ease;
+
+        &:hover {
+            background-color: $primary-purple;
+            color: $white;
         }
     }
 }

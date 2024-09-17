@@ -1,14 +1,14 @@
 @import "../abstracts/variables"; // Import global variables
 
-/* Font Faces with improved performance */
+/* Font Faces */
 @font-face {
     font-family: "JetBrains Mono";
     src:
         url("/assets/fonts/webfonts/JetBrainsMono-Regular.woff2") format("woff2"),
         url("/assets/fonts/webfonts/JetBrainsMono-Regular.woff") format("woff");
-    font-weight: normal, bold;
+    font-weight: 400 700; // Support normal and bold
     font-style: normal;
-    font-display: swap; // Ensures content is shown immediately while font loads
+    font-display: swap;
 }
 
 @font-face {
@@ -21,14 +21,14 @@
     font-display: swap;
 }
 
-/* Headings with responsive font sizes and optimized line-height for readability */
+/* Headings */
 .heading-large {
-    @include font-default; // Use global font variable
-    font-size: clamp(2.5rem, 5vw, 3rem); /* Responsive sizing */
+    @include font-default;
+    font-size: clamp(2.5rem, 5vw, 3rem);
     @include font-bold;
     color: $charcoal;
-    line-height: 1.2; /* Slightly increased line-height for better readability */
-    margin-bottom: 2rem; /* Adequate spacing after headings */
+    line-height: 1.2;
+    margin-bottom: 2rem;
 }
 
 .heading-medium {
@@ -49,10 +49,10 @@
     margin-bottom: 1.5rem;
 }
 
-/* Paragraph styling with responsive adjustments */
+/* Paragraphs */
 .paragraph {
-    @include font-content; // Use global font variable
-    font-size: clamp(1rem, 2vw, 1rem); /* Responsive paragraph size */
-    line-height: 1.6; /* Increased line height for better readability in paragraphs */
+    @include font-content;
+    font-size: clamp(1rem, 2vw, 1rem);
+    line-height: 1.6;
     margin-bottom: 1.75rem;
 }

@@ -34,6 +34,12 @@ $disabled-gray: #7f8c8d;
 
 // Fonts
 $font-primary: "JetBrains Mono-Bold", monospace;
-$font-secondary: "JetBrains Mono-Light", monospace;
+$font-secondary: "JetBrains Mono-Light", sans-serif;
 $font-tertiary: "Inter", sans-serif;
 $font-quarternary: "Monoton", sans-serif;
+
+// Bootstrap Customization
+$primary: $primary-purple; // Use your primary purple as the Bootstrap primary color
+$danger: $bright-red; // Apply your bright red to Bootstrap's danger alerts/buttons
+$success: $success-green; // Use custom success green for Bootstrap success components
+$warning: $sunset-orange; // Apply sunset orange for Bootstrap warnings

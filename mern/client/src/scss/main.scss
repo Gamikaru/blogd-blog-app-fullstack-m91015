@@ -1,31 +1,35 @@
+// // Import Bootstrap's SCSS
+@import "bootstrap/scss/bootstrap";
 
 // Abstracts
-@import "abstracts/variables";
-@import "abstracts/functions";
+@import "abstracts/variables"; // Import your custom variables first
+// @import "abstracts/functions";
 @import "abstracts/mixins";
-@import "abstracts/placeholders";
+// @import "abstracts/placeholders";
 
-// Vendors
-@import "vendors/bootstrap";
-@import "vendors/jquery-ui";
+// Vendors (Import third-party libraries if needed)
+// @import "vendors/jquery-ui"; // Import other vendors if necessary
+
+
 
 // Base
 @import "base/reset";
 @import "base/typography";
-@import "base/animations";
-@import "base/utilities";
+// @import "base/animations";
+// @import "base/utilities";
 
 // Layout
-@import "layout/navigation";
-@import "layout/header";
-@import "layout/footer";
-@import "layout/sidebar";
-@import "layout/grid";
+// @import "layout/navigation";
+// @import "layout/header";
+// @import "layout/footer";
+// @import "layout/sidebar";
+// @import "layout/grid";
+@import "layout/pagecontainer";
 
 // Components
 @import "components/buttons";
 @import "components/cards";
-@import "components/carousel";
+// @import "components/carousel";
 @import "components/dropdown";
 @import "components/feedback";
 @import "components/forms";
@@ -34,11 +38,9 @@
 @import "components/sidebar";
 @import "components/tables";
 
-
-
 // Themes
-@import "themes/theme";
-@import "themes/admin";
+// @import "themes/theme";
+// @import "themes/admin";
 
 // Pages
 @import "pages/home";

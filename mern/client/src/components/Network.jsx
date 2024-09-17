@@ -1,50 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
-import { useCookies } from "react-cookie";
-
+import { useUser } from "../UserContext";
+import ApiClient from "../ApiClient";
+import { FaEnvelope, FaBriefcase, FaMapMarkerAlt } from "react-icons/fa";
 
 export default function Network() {
-	const [cookie] = useCookies(["PassBloggs"]);
+	const { user } = useUser(); // Access the user from context
 	const [users, setUsers] = useState([]);
 	const [userPosts, setUserPosts] = useState({});
 
 	useEffect(() => {
-		fetchUsers();
-	}, []);
+		if (user) {
+			fetchUsers();
+		}
+	}, [user]);
 
 	const fetchUsers = async () => {
-		const token = cookie.PassBloggs;
 		try {
-			const response = await fetch(`http://localhost:5050/user`, {
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`,
-				},
-			});
-			if (!response.ok) {
-				throw new Error("Network response was not ok");
-			}
-			const data = await response.json();
-			setUsers(data);
-			data.forEach((user) => fetchUserPost(user._id, token));
+			const response = await ApiClient.get(`/user`);
+			setUsers(response.data);
+			response.data.forEach((user) => fetchUserPost(user._id));
 		} catch (error) {
 			console.error("Error fetching users:", error);
 		}
 	};
 
-	const fetchUserPost = async (userId, token) => {
+	const fetchUserPost = async (userId) => {
 		try {
-			const response = await fetch(`http://localhost:5050/post/${userId}`, {
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			});
-			if (!response.ok) {
-				throw new Error(`Failed to fetch user posts: ${response.statusText}`);
-			}
-			const data = await response.json();
-			const latestPost = data.length > 0 ? data[data.length - 1] : null;
+			const response = await ApiClient.get(`/post/${userId}`);
+			const latestPost =
+				response.data.length > 0 ? response.data[response.data.length - 1] : null;
 			setUserPosts((prevState) => ({
 				...prevState,
 				[userId]: latestPost,
@@ -61,28 +46,57 @@ export default function Network() {
 		return "";
 	};
 
+	const truncatePostContent = (content, limit = 20) => {
+		const words = content.split(" ");
+		return words.length > limit ? words.slice(0, limit).join(" ") + "..." : content;
+	};
+
 	return (
 		<div className="page-container">
 			<div className="grid-container">
 				{users.map((user) => (
-					<Card key={user._id} className="card-container network-card">
+					<Card key={user._id} className="network-card">
 						<Card.Body className="network-card-body">
 							<div className="top-section">
-								<div className="initials-circle">{getInitials(user.first_name, user.last_name)}</div>
+								<div
+									className={`initials-circle ${user.status ? "has-status" : ""
+										}`}
+								>
+									{getInitials(user.first_name, user.last_name)}
+									{/* Conditionally render .user-status if user.status is not empty */}
+									{user.status && (
+										<div className="user-status">
+											<div className="status-bubble">
+												<span>{user.status}</span>
+											</div>
+										</div>
+									)}
+								</div>
 								<div className="user-info">
 									<h5 className="card-title">{`${user.first_name} ${user.last_name}`}</h5>
-									<p>Email: {user.email}</p>
-									<p>Occupation: {user.occupation}</p>
-									<p>Location: {user.location}</p>
+									<div className="user-details">
+										<div className="detail-item">
+											<FaEnvelope />
+											<span>{user.email}</span>
+										</div>
+										<div className="detail-item">
+											<FaBriefcase />
+											<span>{user.occupation}</span>
+										</div>
+										<div className="detail-item">
+											<FaMapMarkerAlt />
+											<span>{user.location}</span>
+										</div>
+									</div>
 								</div>
 							</div>
-							<div className="user-status">
-								<p>Status: {user.status}</p>
-							</div>
+							{/* Move the "Latest Post" heading outside the recent-post div */}
+							<h6>Latest Post</h6>
 							<div className="recent-post">
-								<h6>Latest Post:</h6>
 								{userPosts[user._id] ? (
-									<p>{userPosts[user._id].content}</p>
+									<p className="post-content">
+										{truncatePostContent(userPosts[user._id].content)}
+									</p>
 								) : (
 									<p>No posts yet</p>
 								)}

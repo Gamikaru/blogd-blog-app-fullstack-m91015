@@ -1,64 +1,49 @@
 @import "../abstracts/variables";
 @import "../abstracts/mixins";
+@import "../layout/pagecontainer";
 
-// Bloggs Page container
-.bloggs-page-container {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding: 10vh 5vw;
-    background-color: rgba($charcoal-extra-light, 0.1); // Light gray background
-    min-height: 100vh;
-    margin-left: 15vw; // Adjust based on sidebar width
-    margin-top: 7vh;
-    box-sizing: border-box;
-    width: calc(100% - 15vw); // Adjust width based on sidebar
-    overflow-x: hidden;
-
-    @media (max-width: 1200px) {
-        margin-left: 12vw;
-        width: calc(100% - 12vw);
-    }
-
-    @media (max-width: 1024px) {
-        margin-left: 10vw;
-        width: calc(100% - 10vw);
-    }
-
-    @media (max-width: 768px) {
-        flex-direction: column;
-        margin-left: 0;
-        padding: 8vh 2vw; // Reduce padding on smaller screens
-        width: 100%;
-    }
-
-    @media (max-width: 576px) {
-        padding: 5vh 1vw; // Further reduce padding on small screens
-        margin-top: 5vh;
-        overflow-x: hidden;
-    }
-}
-
-// Grid container for blog posts (similar to Home Page grid)
+// Grid container for blog posts
 .blog-posts-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); // Adjust min size for better fit
+    grid-template-columns: repeat(3, 1fr); // Explicitly set 3 columns
     gap: 1.5rem;
-    max-width: 90vw;
+    max-width: 100vw;
     width: 100%;
+    padding-top: 7rem;
+
+    @media (max-width: 992px) {
+        // Adjust breakpoint for 2 cards per row
+        grid-template-columns: repeat(2, 1fr);
+    }
 
     @media (max-width: 768px) {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); // Adjust for smaller screens
-        gap: 1rem;
+        // Adjust breakpoint for 1 card per row
+        grid-template-columns: 1fr;
     }
 
     @media (max-width: 576px) {
-        grid-template-columns: 1fr; // One column on very small screens
-        gap: 0.5rem; // Reduce the gap for very small screens
+        // Adjust breakpoint for 1 card per row
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
     }
 }
 
-// Blog Post Card Styling (identical to User Card and Home Post Card styles)
+// Blog Post Card Styling
+.bloggs-card-title {
+    .username {
+        display: block;
+        font-size: 1rem;
+        font-weight: 300;
+        color: $primary-purple;
+        font-family: $font-tertiary;
+        margin-bottom: 1rem; // Increase vertical space
+        padding: 0.5rem 1rem; // Add padding for visual clarity
+        border-radius: 0.5rem; // Add border radius for rounded corners
+        text-align: center; // Center the text
+    }
+}
+
+// Blog Post Card Styling
 .bloggs-post-section {
     @include card-base($white, $light-gray, 0 0.5rem 1.5rem rgba($primary-purple, 0.1));
     transition:
@@ -71,96 +56,80 @@
     }
 
     .bloggs-card-header {
-        background-color: $white;
-        padding: clamp(1rem, 2vw, 1.5rem);
-        border-radius: 1rem 1rem 0 0;
         text-align: center;
-        color: $primary-purple;
-        font-family: "JetBrains Mono", monospace;
+        color: $charcoal;
         font-weight: bold;
         font-size: 1.5rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+    }
 
-        @media (max-width: 768px) {
-            font-size: 1.3rem; // Scale font for smaller screens
+    .speech-bubble {
+        position: relative;
+        padding: 1rem 2rem;
+        background-color: $charcoal-extreme-light;
+        border-radius: 1rem;
+        margin-bottom: 1rem;
+
+        &::before {
+            content: "";
+            position: absolute;
+            bottom: -12px;
+            left: 30px;
+            width: 20px;
+            height: 15px;
+            background-color: $charcoal-extreme-light;
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
         }
 
-        @media (max-width: 576px) {
-            font-size: 1rem; // Further scaling for small devices
+        .post-text {
+            font-size: 1.05rem;
+            color: $charcoal;
+            font-family: $font-secondary;
+            margin-bottom: 1rem;
         }
     }
 
-    .bloggs-card-body {
-        padding: 1.5rem;
-        font-size: 1.1rem;
-        color: $charcoal;
-        font-family: $font-secondary;
-        border-top: 1px solid $light-gray;
-
-        @media (max-width: 768px) {
-            padding: 1.2rem;
-        }
-
-        @media (max-width: 576px) {
-            padding: 0.75rem; // Adjust padding for smaller screens
-            font-size: 0.875rem; // Adjust font size for small screens
-        }
-    }
-
-    .bloggs-card-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-top: 1rem;
-        border-top: 1px solid $light-gray;
-
-        @media (max-width: 768px) {
-            padding-top: 0.75rem;
-        }
-
-        @media (max-width: 576px) {
-            padding-top: 0.5rem;
-        }
-
-        .like-button {
-            @include button-base($primary-purple, $white, darken($primary-purple, 10%), $electric-violet-light, small);
-            padding: 0.4rem 1.2rem;
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            margin-left: 35px;
-
-            &:hover {
-                background-color: darken($primary-purple, 10%);
-                transform: scale(1.05);
-                box-shadow: 0 0.5rem 1rem rgba($primary-purple, 0.2);
-            }
-
-            @media (max-width: 576px) {
-                padding: 0.3rem 1rem; // Reduce padding for small screens
-                font-size: 0.8rem;
-            }
-        }
-
-        .bloggs-likes {
-            font-size: 1rem;
-            color: $primary-purple;
+    .bloggs-body {
+        .post-interactions {
             display: flex;
             align-items: center;
+            margin-bottom: 1rem;
+            margin-top: 2rem;
 
-            @media (max-width: 576px) {
-                font-size: 0.875rem;
+            .like-section {
+                display: flex;
+                align-items: center;
+                margin-left: 2rem; // Adjust this value to move further right
+
+                .heart-icon {
+                    color: $primary-purple;
+                    font-size: 1.2rem;
+                    margin-right: 5px;
+                }
+
+                .likes-count {
+                    color: $charcoal;
+                    font-size: 1rem;
+                }
             }
-        }
 
-        .bloggs-date {
-            font-size: 0.875rem;
-            color: $charcoal;
+            .like-button {
+                @include button-base(
+                    $primary-purple,
+                    $white,
+                    darken($primary-purple, 10%),
+                    $electric-violet-light,
+                    small
+                );
+                padding: 0.4rem 1.5rem;
+                font-size: 0.875rem;
+                font-family: "Anton", sans-serif;
+                margin-left: 1rem; // Adjust spacing between like button and like count
+            }
 
-            @media (max-width: 576px) {
-                font-size: 0.75rem;
+            .date-section {
+                font-size: 0.875rem;
+                padding-left: 7rem;
+                color: $charcoal;
             }
         }
     }
@@ -169,7 +138,7 @@
 // Blog Comments Section
 .bloggs-comments {
     padding: 1rem;
-    background-color: $charcoal-extra-light;
+    background-color: $charcoal-extreme-light;
     border-radius: 0.5rem;
     box-shadow: 0 0.5rem 1rem rgba($charcoal, 0.05);
     margin-bottom: 1rem;
@@ -233,8 +202,9 @@
         margin-top: 0.5rem;
         border-radius: 0.5rem;
         font-size: 1rem;
-        font-family: "JetBrains Mono", monospace;
-        font-weight: 600;
+        font-family: "Anton", sans-serif;
+        font-weight: 300;
+        letter-spacing: 0.1rem;
         transition:
             background-color 0.3s ease,
             box-shadow 0.3s ease;
@@ -261,7 +231,7 @@
     }
 }
 
-// No Blog Posts message (mimics Home Page "no content" style)
+// No Blog Posts message
 .no-blog-posts {
     font-size: 1.4rem;
     font-family: "JetBrains Mono", monospace;
@@ -277,4 +247,29 @@
         font-size: 1.2rem;
         padding: 1.5rem;
     }
+}
+
+// Loading Spinner
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+// Animation
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.bloggs-post-section {
+    opacity: 0;
+    animation: fadeInUp 0.6s forwards;
 }

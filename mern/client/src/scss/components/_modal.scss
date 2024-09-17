@@ -2,125 +2,147 @@
 @import "../abstracts/_mixins";
 
 // Modal Container
-.register-modal-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed; // Ensure it stays on top of everything
+.register-modal-container,
+.post-modal-container {
+    @include flex-center;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 1050; // High z-index value to make sure it's above other elements
-    background-color: rgba(0, 0, 0, 0.8); // Darker backdrop for the modal
+    z-index: 1050;
+    background-color: rgba($charcoal-extra-light, 0.8);
 }
 
 // Modal
-.register-modal {
-    background-color: $charcoal-light; // Lighter background
-    border-radius: 1rem;
-    padding: 2rem;
-    box-shadow: 0 0 15px rgba($primary-purple, 0.5); // Purple glow effect around the modal
+.register-modal,
+.post-modal {
+    @include modal-base($white, 0, 1rem, 0 0.5rem 1.5rem rgba($primary-purple, 0.5));
+    width: 90%;
+    max-width: 500px;
+    overflow: hidden; // Ensure the header and body are contained within the card
+
+    @media (max-width: 768px) {
+        width: 95%;
+        max-width: 400px;
+    }
+
+    @media (max-width: 576px) {
+        width: 100%;
+        max-width: 350px;
+    }
 }
 
 // Modal Header with Centered Title
-.register-modal-header {
-    background-color: $charcoal; // Dark background for the header
+.register-modal-header,
+.post-modal-header {
+    background-color: $primary-purple;
     color: $white;
     padding: 1.5rem;
-    border-bottom: 1px solid $primary-purple;
     display: flex;
-    justify-content: center; // Center the title
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 
     .modal-title {
-        font-family: "JetBrains Mono", monospace; // JetBrains Mono font for the title
-        font-weight: bold;
+        font-family: "Anton", sans-serif;
+        font-weight: 300;
         font-size: 1.5rem;
-        color: $white; // Ensures the title stands out
+        color: $white;
+        letter-spacing: 0.2rem;
     }
 }
 
-// Form Inputs (Scoped specifically for the register modal)
-.register-modal-input {
+// Modal Body
+.register-modal-body,
+.post-modal-body {
+    padding: 2rem;
+    background-color: $white;
+}
+
+// Form Inputs (Scoped specifically for the register and post modals)
+.register-modal-input,
+.post-modal-input {
     width: 100%;
     padding: 1rem;
     margin-bottom: 1.5rem;
-    background-color: $white; // White background for inputs
-    color: $charcoal; // Dark text
-    border: 1px solid $light-gray; // Subtle border around the input
-    border-radius: 0.5rem;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05); // Soft shadow to lift the inputs from the background
+    background-color: $white;
+    color: $charcoal;
+    border: 1px solid $light-gray;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
 
     &:focus {
-        box-shadow: 0 0 15px rgba($primary-purple, 0.6); // Purple glow on focus
+        border-color: $primary-purple;
+        box-shadow: 0 0 0 0.2rem rgba($primary-purple, 0.25);
         outline: none;
     }
 }
 
-// Submit Button (Scoped specifically for the register modal)
-.register-submit-btn {
-    background-color: $primary-purple; // Primary purple button
-    color: $white;
-    padding: 0.8rem 1.5rem; // Contained button
-    font-weight: bold;
+// Submit Button (Scoped specifically for the register and post modals)
+.register-submit-btn,
+.post-submit-btn {
+    @include button-base($primary-purple, $white, darken($primary-purple, 10%), $electric-violet-light, medium);
+    align-self: flex-end;
+    padding: 0.75rem 1.5rem;
     font-size: 1rem;
-    border: none;
-    border-radius: 0.5rem;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba($primary-purple, 0.6); // Purple glow for the button
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
 
     &:hover {
-        background-color: darken($primary-purple, 10%); // Darken button on hover
-        box-shadow: 0 0 20px rgba($primary-purple, 1); // Stronger glow on hover
-        transform: translateY(-2px); // Slight lift on hover
+        background-color: darken($primary-purple, 10%);
     }
 
     &:focus {
         outline: none;
-        box-shadow: 0 0 20px rgba($primary-purple, 0.8); // Glow when focused
+        box-shadow: 0 0 20px rgba($primary-purple, 0.8);
     }
 
     &:active {
-        background-color: darken($primary-purple, 15%); // Even darker on click
-        transform: scale(0.98); // Slightly scale down on click
+        background-color: darken($primary-purple, 15%);
+        transform: scale(0.98);
     }
 }
 
 // Toast styling (Success and Error)
-.register-toast {
+.register-toast,
+.post-toast {
     position: absolute;
     top: 1rem;
     right: 1rem;
     z-index: 1050;
 }
 
-.register-toast-success {
+.register-toast-success,
+.post-toast-success {
     background-color: $success-green;
     color: $white;
     box-shadow: 0 0 15px rgba($success-green, 0.5);
 }
 
-.register-toast-error {
+.register-toast-error,
+.post-toast-error {
     background-color: $bright-red;
     color: $white;
     box-shadow: 0 0 15px rgba($bright-red, 0.5);
 }
 
-// Card Styling (Scoped to register modal)
-.register-card {
-    background-color: $charcoal-light; // Match card background to modal
+// Card Styling (Scoped to register and post modals)
+.register-card,
+.post-card {
+    background-color: rgba($charcoal-extreme-light, 0.8);
     border-radius: 1rem;
-    box-shadow: 0 8px 30px rgba($primary-purple, 0.8); // Glowing purple shadow around the card
+    box-shadow: 0 8px 30px rgba($primary-purple, 0.8);
 }
 
 // Responsive Modal Adjustments
 @media (max-width: 768px) {
-    .register-modal-container {
+    .register-modal-container,
+    .post-modal-container {
         padding: 1rem;
     }
-    .register-modal {
+    .register-modal,
+    .post-modal {
         width: 100%;
         padding: 1rem;
     }

@@ -9,11 +9,11 @@
 }
 
 .input-field.error {
-    @include form-error();
+    border-color: $danger; // Use your error color
 }
 
 .input-field.success {
-    @include form-success();
+    border-color: $success; // Use your success color
 }
 
 // Responsive Form Fields
