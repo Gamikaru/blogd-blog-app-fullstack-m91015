@@ -46,14 +46,14 @@ describe('no_content_post_submission', function () {
         await loginEmailField.sendKeys("test@test.test");
         await driver.findElement(By.id("login_password")).sendKeys("test");
 
-        const loginButton = await driver.wait(until.elementLocated(By.scss(".btn.btn-primary")), 10000);
+        const loginButton = await driver.wait(until.elementLocated(By.css(".btn.btn-primary")), 10000);
         await driver.wait(until.elementIsVisible(loginButton), 10000);
         await loginButton.click();
         console.log("Logged in successfully.");
 
         // Step 6: Verify login by checking if the email input in UserCard appears
         try {
-            const emailField = await driver.wait(until.elementLocated(By.scss('.home-user-status')), 20000);
+            const emailField = await driver.wait(until.elementLocated(By.css('.home-user-status')), 20000);
             const emailValue = await emailField.getAttribute('value'); // This should give you the logged-in email
             console.assert(emailValue === 'test@test.test', "Email should match the logged-in user.");
             console.log("Verified user is logged in.");
@@ -63,18 +63,18 @@ describe('no_content_post_submission', function () {
         }
 
         // Step 7: Now proceed with the post creation test
-        const postButton = await driver.wait(until.elementLocated(By.scss(".post-button")), 10000);
+        const postButton = await driver.wait(until.elementLocated(By.css(".post-button")), 10000);
         await driver.wait(until.elementIsVisible(postButton), 10000);
         await postButton.click();
         console.log("Clicked post button");
 
         // Step 8: Wait for the modal to be fully loaded
-        const modalVisible = await driver.wait(until.elementLocated(By.scss(".modal-body")), 10000);
+        const modalVisible = await driver.wait(until.elementLocated(By.css(".modal-body")), 10000);
         await driver.wait(until.elementIsVisible(modalVisible), 10000);
         console.log("Modal is fully loaded and visible");
 
         // Step 9: Try submitting the form without entering any content
-        const submitButton = await driver.wait(until.elementLocated(By.scss(".submit-button")), 10000);
+        const submitButton = await driver.wait(until.elementLocated(By.css(".submit-button")), 10000);
         await driver.wait(until.elementIsVisible(submitButton), 10000);
         await submitButton.click();
         console.log("Clicked submit button without entering any content");
@@ -82,7 +82,7 @@ describe('no_content_post_submission', function () {
         // Step 10: Check for an error or failure (depends on app implementation, either error message or form not submitted)
         try {
             // Option 1: Check if an error message appears (if applicable)
-            const errorMessage = await driver.findElement(By.scss(".error-message"));
+            const errorMessage = await driver.findElement(By.css(".error-message"));
             const isDisplayed = await errorMessage.isDisplayed();
             console.assert(isDisplayed, "Error message should appear when submitting without content.");
             console.log("Error message displayed for empty content submission.");

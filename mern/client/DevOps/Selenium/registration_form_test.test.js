@@ -55,7 +55,7 @@ describe('registration_form_test', function () {
 
         // Step 5: Navigate to the registration page by clicking the "Register Now" link
         try {
-            const registerLink = await driver.wait(until.elementLocated(By.scss('.register-link')), 10000);
+            const registerLink = await driver.wait(until.elementLocated(By.css('.register-link')), 10000);
             await driver.wait(until.elementIsVisible(registerLink), 10000);
             await registerLink.click();
             console.log("Navigated to registration page");
@@ -94,14 +94,14 @@ describe('registration_form_test', function () {
         await driver.findElement(By.id("register_status")).sendKeys("Active");
 
         // Step 10: Wait for the submit button to be interactable and click it
-        const submitButton = await driver.wait(until.elementLocated(By.scss(".btn.btn-primary")), 10000);
+        const submitButton = await driver.wait(until.elementLocated(By.css(".btn.btn-primary")), 10000);
         await driver.wait(until.elementIsVisible(submitButton), 10000);
         await submitButton.click();
         console.log("Registration form submitted.");
 
         // Step 11: Wait for possible error toast or success redirect to the login page
         try {
-            const errorToast = await driver.findElement(By.scss('.reg-error-toast'));
+            const errorToast = await driver.findElement(By.css('.reg-error-toast'));
             if (await errorToast.isDisplayed()) {
                 console.error("Registration failed: User may already exist.");
                 return;
@@ -127,7 +127,7 @@ describe('registration_form_test', function () {
         await driver.findElement(By.id("login_password")).sendKeys("test");
 
         // Step 14: Submit the login form
-        const loginButton = await driver.wait(until.elementLocated(By.scss(".btn.btn-primary")), 10000);
+        const loginButton = await driver.wait(until.elementLocated(By.css(".btn.btn-primary")), 10000);
         await driver.wait(until.elementIsVisible(loginButton), 10000);
         await loginButton.click();
 

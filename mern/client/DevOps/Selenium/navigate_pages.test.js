@@ -47,13 +47,13 @@ describe("navigate_pages.side", function () {
         // 9 | type | id=login_password | test
         await driver.findElement(By.id("login_password")).sendKeys("test");
 
-        // 10 | click | scss=.btn
-        await driver.wait(until.elementLocated(By.scss(".btn")), 10000);
-        await driver.findElement(By.scss(".btn")).click();
+        // 10 | click | css=.btn
+        await driver.wait(until.elementLocated(By.css(".btn")), 10000);
+        await driver.findElement(By.css(".btn")).click();
 
-        // 11 | click | scss=.main-container
-        await driver.wait(until.elementLocated(By.scss(".main-container")), 10000);
-        await driver.findElement(By.scss(".main-container")).click();
+        // 11 | click | css=.main-container
+        await driver.wait(until.elementLocated(By.css(".main-container")), 10000);
+        await driver.findElement(By.css(".main-container")).click();
 
         // 12 | click | linkText=Account Settings
         await driver.wait(
@@ -64,9 +64,9 @@ describe("navigate_pages.side", function () {
 
         // Removed mouseOver/mouseOut steps unless they're essential for the test
 
-        // 15 | click | scss=.nav-toast-button
-        await driver.wait(until.elementLocated(By.scss(".nav-toast-button")), 10000);
-        await driver.findElement(By.scss(".nav-toast-button")).click();
+        // 15 | click | css=.nav-toast-button
+        await driver.wait(until.elementLocated(By.css(".nav-toast-button")), 10000);
+        await driver.findElement(By.css(".nav-toast-button")).click();
 
         // 16 | click | linkText=Bloggs
         await driver.wait(until.elementLocated(By.linkText("Bloggs")), 10000);
@@ -80,25 +80,25 @@ describe("navigate_pages.side", function () {
         await driver.wait(until.elementLocated(By.linkText("Admin")), 10000);
         await driver.findElement(By.linkText("Admin")).click();
 
-        // 19 | click | scss=.user-title
-        await driver.wait(until.elementLocated(By.scss(".user-title")), 10000);
-        await driver.findElement(By.scss(".user-title")).click();
+        // 19 | click | css=.user-title
+        await driver.wait(until.elementLocated(By.css(".user-title")), 10000);
+        await driver.findElement(By.css(".user-title")).click();
 
-        // 20 | click | scss=.user-next-bttn
-        await driver.wait(until.elementLocated(By.scss(".user-next-bttn")), 10000);
-        await driver.findElement(By.scss(".user-next-bttn")).click();
+        // 20 | click | css=.user-next-bttn
+        await driver.wait(until.elementLocated(By.css(".user-next-bttn")), 10000);
+        await driver.findElement(By.css(".user-next-bttn")).click();
 
         // 21 | click | linkText=Admin
         await driver.wait(until.elementLocated(By.linkText("Admin")), 10000);
         await driver.findElement(By.linkText("Admin")).click();
 
-        // 22 | click | scss=.content-body
-        await driver.wait(until.elementLocated(By.scss(".content-body")), 10000);
-        await driver.findElement(By.scss(".content-body")).click();
+        // 22 | click | css=.content-body
+        await driver.wait(until.elementLocated(By.css(".content-body")), 10000);
+        await driver.findElement(By.css(".content-body")).click();
 
-        // 23 | click | scss=.navbar > a
-        await driver.wait(until.elementLocated(By.scss(".navbar > a")), 10000);
-        await driver.findElement(By.scss(".navbar > a")).click();
+        // 23 | click | css=.navbar > a
+        await driver.wait(until.elementLocated(By.css(".navbar > a")), 10000);
+        await driver.findElement(By.css(".navbar > a")).click();
 
         // 24 | click | linkText=Home
         await driver.wait(until.elementLocated(By.linkText("Home")), 10000);
@@ -123,23 +123,23 @@ describe("navigate_pages.side", function () {
         );
         await driver.findElement(By.linkText("Account Settings")).click();
 
-        // 33 | click | scss=.nav-toast-button
-        await driver.wait(until.elementLocated(By.scss(".nav-toast-button")), 10000);
-        await driver.findElement(By.scss(".nav-toast-button")).click();
+        // 33 | click | css=.nav-toast-button
+        await driver.wait(until.elementLocated(By.css(".nav-toast-button")), 10000);
+        await driver.findElement(By.css(".nav-toast-button")).click();
 
         // 34 | click | linkText=Logout
         await driver.wait(until.elementLocated(By.linkText("Logout")), 10000);
         await driver.findElement(By.linkText("Logout")).click();
 
-        // 35 | click | scss=p
-        await driver.wait(until.elementLocated(By.scss("p")), 10000);
-        await driver.findElement(By.scss("p")).click();
+        // 35 | click | css=p
+        await driver.wait(until.elementLocated(By.css("p")), 10000);
+        await driver.findElement(By.css("p")).click();
 
-        // 36 | click | scss=.register-container
+        // 36 | click | css=.register-container
         await driver.wait(
-            until.elementLocated(By.scss(".register-container")),
+            until.elementLocated(By.css(".register-container")),
             10000
         );
-        await driver.findElement(By.scss(".register-container")).click();
+        await driver.findElement(By.css(".register-container")).click();
     });
 });
