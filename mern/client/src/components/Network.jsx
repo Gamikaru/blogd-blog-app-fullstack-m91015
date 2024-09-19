@@ -6,104 +6,114 @@ import { FaEnvelope, FaBriefcase, FaMapMarkerAlt } from "react-icons/fa";
 
 export default function Network() {
 	const { user } = useUser(); // Access the user from context
-	const [users, setUsers] = useState([]);
-	const [userPosts, setUserPosts] = useState({});
+	const [users, setUsers] = useState([]); // Store all users
+	const [userPosts, setUserPosts] = useState([]); // Store all posts
+	const [loading, setLoading] = useState(true); // Combined loading state for users and posts
+	const [error, setError] = useState(null); // Error state
 
+	// Refactored useEffect to fetch both users and posts simultaneously
 	useEffect(() => {
-		if (user) {
-			fetchUsers();
-		}
-	}, [user]);
+		console.log("Network component mounted, fetching users and posts...");
+		fetchData();
+	}, []);
 
-	const fetchUsers = async () => {
+	// Function to fetch both users and posts in parallel
+	const fetchData = async () => {
 		try {
-			const response = await ApiClient.get(`/user`);
-			setUsers(response.data);
-			response.data.forEach((user) => fetchUserPost(user._id));
-		} catch (error) {
-			console.error("Error fetching users:", error);
-		}
-	};
+			setLoading(true); // Start loading
+			const [usersResponse, postsResponse] = await Promise.all([
+				ApiClient.get("/user"), // Fetch users
+				ApiClient.get("/post"), // Fetch posts
+			]);
 
-	const fetchUserPost = async (userId) => {
-		try {
-			const response = await ApiClient.get(`/post/${userId}`);
-			const latestPost =
-				response.data.length > 0 ? response.data[response.data.length - 1] : null;
-			setUserPosts((prevState) => ({
-				...prevState,
-				[userId]: latestPost,
-			}));
+			console.log("Users fetched:", usersResponse.data);
+			console.log("Posts fetched:", postsResponse.data);
+
+			setUsers(usersResponse.data); // Set user data
+			setUserPosts(postsResponse.data); // Set post data
 		} catch (error) {
-			console.error(`Error fetching posts for user ${userId}:`, error);
+			console.error("Error fetching data:", error);
+			setError("Failed to fetch users or posts");
+		} finally {
+			setLoading(false); // Stop loading after fetching both users and posts
 		}
 	};
 
 	const getInitials = (first_name, last_name) => {
-		if (first_name && last_name) {
-			return `${first_name.charAt(0)}${last_name.charAt(0)}`;
-		}
-		return "";
+		return `${first_name.charAt(0)}${last_name.charAt(0)}`;
 	};
 
 	const truncatePostContent = (content, limit = 20) => {
+		if (!content) return "No content available";
 		const words = content.split(" ");
 		return words.length > limit ? words.slice(0, limit).join(" ") + "..." : content;
 	};
 
+	// Get latest post for a specific user
+	const getUserLatestPost = (userId) => {
+		return userPosts.find(post => post.userId === userId) || null;
+	};
+
+	if (loading) {
+		return <div>Loading...</div>;
+	}
+
+	if (error) {
+		return <div>Error: {error}</div>;
+	}
+
 	return (
 		<div className="page-container">
 			<div className="grid-container">
-				{users.map((user) => (
-					<Card key={user._id} className="network-card">
-						<Card.Body className="network-card-body">
-							<div className="top-section">
-								<div
-									className={`initials-circle ${user.status ? "has-status" : ""
-										}`}
-								>
-									{getInitials(user.first_name, user.last_name)}
-									{/* Conditionally render .user-status if user.status is not empty */}
-									{user.status && (
-										<div className="user-status">
-											<div className="status-bubble">
-												<span>{user.status}</span>
+				{users.length === 0 ? (
+					<p>No users found.</p>
+				) : (
+					users.map(user => (
+						<Card key={user._id} className="network-card">
+							<Card.Body className="network-card-body">
+								<div className="top-section">
+									<div className={`initials-circle ${user.status ? "has-status" : ""}`}>
+										{getInitials(user.firstName, user.lastName)}
+										{user.status && (
+											<div className="user-status">
+												<div className="status-bubble">
+													<span>{user.status}</span>
+												</div>
 											</div>
-										</div>
-									)}
-								</div>
-								<div className="user-info">
-									<h5 className="card-title">{`${user.first_name} ${user.last_name}`}</h5>
-									<div className="user-details">
-										<div className="detail-item">
-											<FaEnvelope />
-											<span>{user.email}</span>
-										</div>
-										<div className="detail-item">
-											<FaBriefcase />
-											<span>{user.occupation}</span>
-										</div>
-										<div className="detail-item">
-											<FaMapMarkerAlt />
-											<span>{user.location}</span>
+										)}
+									</div>
+									<div className="user-info">
+										<h5 className="card-title">{`${user.firstName} ${user.lastName}`}</h5>
+										<div className="user-details">
+											<div className="detail-item">
+												<FaEnvelope />
+												<span>{user.email}</span>
+											</div>
+											<div className="detail-item">
+												<FaBriefcase />
+												<span>{user.occupation}</span>
+											</div>
+											<div className="detail-item">
+												<FaMapMarkerAlt />
+												<span>{user.location}</span>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-							{/* Move the "Latest Post" heading outside the recent-post div */}
-							<h6>Latest Post</h6>
-							<div className="recent-post">
-								{userPosts[user._id] ? (
-									<p className="post-content">
-										{truncatePostContent(userPosts[user._id].content)}
-									</p>
-								) : (
-									<p>No posts yet</p>
-								)}
-							</div>
-						</Card.Body>
-					</Card>
-				))}
+								<h6>Latest Post</h6>
+								<div className="recent-post">
+									{getUserLatestPost(user._id) ? (
+										<p className="post-content">
+											{truncatePostContent(getUserLatestPost(user._id).content)}
+										</p>
+									) : (
+										<p>No posts yet</p>
+									)}
+								</div>
+							</Card.Body>
+						</Card>
+					))
+				)}
 			</div>
 		</div>
 	);

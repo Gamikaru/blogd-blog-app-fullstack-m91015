@@ -1,70 +1,60 @@
 import React, { useState } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
-import { useCookies } from "react-cookie";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import ApiClient from "../ApiClient"; // Import ApiClient
+import { useUser } from "../UserContext"; // Import useUser hook
 
-export default function PostModal({ show, handleClose }) {
-	const [cookie] = useCookies();
-	const [content, setContent] = useState("");
+export default function PostModal({ show, handleClose, onPostSuccess }) {
+	const [postContent, setPostContent] = useState("");
+	const { user } = useUser(); // Get user from UserContext
 
-	const handleCreatePost = async (post) => {
-		const token = cookie.PassBloggs;
-		try {
-			const response = await fetch(`http://localhost:5050/post/`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`,
-				},
-				body: JSON.stringify(post),
-			});
-			if (!response.ok) {
-				throw new Error(`Failed to save post: ${response.statusText}`);
-			}
-			console.log("Post created successfully");
-			handleClose();
-		} catch (error) {
-			console.error("Error creating post:", error);
-		}
-	};
-
-	const handleSubmit = async (e) => {
+	const handlePostSubmit = async (e) => {
 		e.preventDefault();
-		try {
-			const newPost = {
-				content,
-				postDate: new Date().toLocaleString(),
-				likes: 0,
-			};
-			await handleCreatePost(newPost);
-			setContent("");
-		} catch (error) {
-			console.error("Error creating post:", error);
-		}
-	};
 
-	const handleChange = (e) => {
-		setContent(e.target.value);
+		if (!postContent.trim()) {
+			alert("Post content cannot be empty.");
+			return;
+		}
+
+		const newPost = {
+			content: postContent,
+			userId: user._id,
+		};
+
+		try {
+			const response = await ApiClient.post("/post", newPost);
+			const createdPost = response.data.post;
+
+			setPostContent(""); // Reset form content
+			onPostSuccess(createdPost); // Trigger the post addition to the userPosts list
+			handleClose(); // Close modal
+		} catch (error) {
+			console.error("Error creating post:", error.message);
+			alert("Failed to create post. Please try again.");
+		}
 	};
 
 	return (
 		<Modal show={show} onHide={handleClose} centered className="post-modal-container">
-			<Modal.Header closeButton>
-				<Modal.Title>Create a Post!</Modal.Title>
+			<Modal.Header closeButton className="post-modal-header">
+				<Modal.Title className="modal-title">Create Post</Modal.Title>
 			</Modal.Header>
-			<Modal.Body>
-				<Form onSubmit={handleSubmit}>
+			<Modal.Body className="post-modal-body">
+				<Form onSubmit={handlePostSubmit} className="post-form">
 					<Form.Group controlId="postContent">
+						<Form.Label>Post Content</Form.Label>
 						<Form.Control
-							className="text-form"
 							as="textarea"
-							rows={5}
-							value={content}
-							onChange={handleChange}
-							placeholder="Write your post here..."
+							rows={3}
+							value={postContent}
+							onChange={(e) => setPostContent(e.target.value)}
+							placeholder="What's on your mind?"
+							className="post-modal-input"
 						/>
 					</Form.Group>
-					<Button className="submit-button" type="submit">
-						Post
+					<Button type="submit" className="post-submit-btn w-100 mt-3">
+						Submit
 					</Button>
 				</Form>
 			</Modal.Body>

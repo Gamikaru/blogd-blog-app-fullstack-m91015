@@ -1,37 +1,24 @@
-// HomePage.jsx
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, Spinner } from "react-bootstrap";
-import {
-    FaBirthdayCake,
-    FaBriefcase,
-    FaEnvelope,
-    FaMapMarkerAlt,
-} from "react-icons/fa";
+import { FaBirthdayCake, FaBriefcase, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import ApiClient from "../ApiClient";
+import { useUser } from "../UserContext";
 import PostModal from "./PostModal";
-import { useUser } from "../UserContext"; // Import useUser hook
-import ApiClient from "../ApiClient"; // Import ApiClient
 
+// UserCard Component
 const UserCard = ({ userInitials, user, updateUserStatus, status, setStatus }) => {
-    const formattedBirthdate = new Date(user.birthdate).toLocaleDateString(
-        "en-US",
-        {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-        }
-    );
+    const formattedBirthdate = new Date(user.birthDate).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    });
 
-    // Create a reference to the input element
-    const inputRef = useRef(null);
-
-    // Handle the Enter key event to trigger status update and unfocus the input
     const handleKeyDown = (e) => {
         if (e.key === "Enter") {
-            e.preventDefault(); // Prevent form submission or other default actions
-            updateUserStatus(status); // Call the function to update the status
-            inputRef.current.blur(); // Unfocus the input element
+            e.preventDefault();
+            updateUserStatus(status);
         }
     };
 
@@ -41,13 +28,11 @@ const UserCard = ({ userInitials, user, updateUserStatus, status, setStatus }) =
                 <div className="user-card-header">
                     <div className="initials-title">{userInitials}</div>
                     <input
-                        ref={inputRef} // Attach the ref to the input element
-                        className="home-user-status"
                         type="text"
                         value={status}
                         onChange={(e) => setStatus(e.target.value)}
                         onBlur={() => updateUserStatus(status)}
-                        onKeyDown={handleKeyDown} // Call function on key press
+                        onKeyDown={handleKeyDown}
                         placeholder="Update Status"
                     />
                 </div>
@@ -74,6 +59,7 @@ const UserCard = ({ userInitials, user, updateUserStatus, status, setStatus }) =
     );
 };
 
+// PostsCard Component
 const PostsCard = ({ userPosts, handleLike, likeStatus }) => (
     <div className="home-post-card-container">
         <Card className="home-posts-card">
@@ -81,8 +67,8 @@ const PostsCard = ({ userPosts, handleLike, likeStatus }) => (
                 <Card.Title className="home-post-title">Your Recent Posts!</Card.Title>
                 {userPosts.length > 0 ? (
                     <div className="posts-scroll-container">
-                        {userPosts.map((post, index) => (
-                            <div key={index} className="post-container">
+                        {userPosts.map((post) => (
+                            <div key={post._id} className="post-container">
                                 <div className="speech-bubble">
                                     <p className="post-text">{post.content}</p>
                                     <div className="like-info">
@@ -93,14 +79,14 @@ const PostsCard = ({ userPosts, handleLike, likeStatus }) => (
                                 <div className="post-info">
                                     <Button
                                         className="like-button"
-                                        onClick={() => handleLike(index)}
-                                        disabled={likeStatus[index]}
+                                        onClick={() => handleLike(post._id)}
+                                        disabled={likeStatus[post._id]}
                                     >
                                         Like
                                     </Button>
                                     <span className="post-date">
-                                        {post.time_stamp
-                                            ? new Date(post.time_stamp).toLocaleDateString()
+                                        {post.createdAt
+                                            ? new Date(post.createdAt).toLocaleDateString()
                                             : "Date Unavailable"}
                                     </span>
                                 </div>
@@ -115,89 +101,98 @@ const PostsCard = ({ userPosts, handleLike, likeStatus }) => (
     </div>
 );
 
+// HomePage Component
 export default function HomePage() {
-    const { user, setUser } = useUser(); // Use user and setUser from UserContext
-    const [userPosts, setUserPosts] = useState([]);
-    const [showModal, setShowModal] = useState(false);
-    const [likeStatus, setLikeStatus] = useState([]); // Track like button status
-    const [status, setStatus] = useState(""); // Track status input
+    const { user, loading } = useUser();
+    const [userPosts, setUserPosts] = useState([]); // Local state for user posts
+    const [likeStatus, setLikeStatus] = useState({});
+    const [status, setStatus] = useState("");
+    const [showModal, setShowModal] = useState(false); // Modal visibility state
 
     useEffect(() => {
         if (user && user._id) {
-            fetchPost();
-            setStatus(user.status); // Initialize status input with user's current status
+            setStatus(user.status);
+            fetchPosts(); // Fetch posts when the component mounts
         }
     }, [user]);
 
-    const fetchPost = async () => {
+    // Fetch user's posts
+    const fetchPosts = async () => {
         try {
-            const response = await ApiClient.get(`/post/${user._id}`);
+            const response = await ApiClient.get(`/post/user/${user._id}`);
             const data = response.data;
-            setUserPosts(data);
-            setLikeStatus(new Array(data.length).fill(false)); // Initialize likeStatus
+
+            // Initialize like status for each post
+            const likeStatuses = {};
+            data.forEach((post) => (likeStatuses[post._id] = false));
+
+            setUserPosts(data); // Set posts in state
+            setLikeStatus(likeStatuses); // Set like status for each post
         } catch (error) {
             console.error("Error fetching posts:", error);
         }
     };
 
-    const getInitials = (first_name, last_name) => {
-        const firstInitial = first_name ? first_name.charAt(0).toUpperCase() : "";
-        const lastInitial = last_name ? last_name.charAt(0).toUpperCase() : "";
-        return `${firstInitial}${lastInitial}`;
-    };
-
-    const userInitials = user ? getInitials(user.first_name, user.last_name) : "";
-
-    const handleLike = async (index) => {
-        const postId = userPosts[index]._id;
-
+    // Handle liking a post
+    const handleLike = async (postId) => {
         try {
-            await ApiClient.put(`/post/like/${postId}`);
+            const response = await ApiClient.put(`/post/like/${postId}`);
+            const updatedPost = response.data;
 
-            // Re-fetch posts to get the updated like count from the server
-            await fetchPost();
+            // Update the post with the new like count
+            const updatedPosts = userPosts.map((post) =>
+                post._id === postId ? updatedPost : post
+            );
 
-            const updatedLikeStatus = [...likeStatus];
-            updatedLikeStatus[index] = true;
-            setLikeStatus(updatedLikeStatus);
+            setUserPosts(updatedPosts); // Update the posts state to reflect the new like count
+            setLikeStatus((prev) => ({ ...prev, [postId]: true })); // Mark this post as liked
         } catch (error) {
             console.error("Error liking post:", error);
         }
     };
 
+    // Update user status
     const updateUserStatus = async (newStatus) => {
         try {
             await ApiClient.put(`/user/${user._id}/status`, { status: newStatus });
-            setUser((prevUser) => ({ ...prevUser, status: newStatus }));
-            console.log("Status updated successfully!");
         } catch (error) {
             console.error("Error updating status:", error);
         }
-
     };
 
+    // Handle adding a new post
+    const handleNewPost = (newPost) => {
+        setUserPosts((prevPosts) => [newPost, ...prevPosts]); // Add the new post to the top
+        setLikeStatus((prev) => ({ ...prev, [newPost._id]: false })); // Initialize like status for the new post
+    };
 
-    if (!user) {
+    if (loading) {
         return <Spinner animation="border" />;
     }
 
+    if (!user || !user._id) {
+        return <p>User data not available.</p>;
+    }
+
     return (
-        <div className="page-container">
-            <div className="grid-container">
-                <UserCard
-                    userInitials={userInitials}
-                    user={user}
-                    updateUserStatus={updateUserStatus}
-                    status={status}
-                    setStatus={setStatus}
-                />
-                <PostsCard
-                    userPosts={userPosts}
-                    handleLike={handleLike}
-                    likeStatus={likeStatus}
-                />
+        <div className="home-page-container">
+            <div className="page-container">
+                <div className="grid-container">
+                    <UserCard
+                        userInitials={`${user.firstName.charAt(0)}${user.lastName.charAt(0)}`}
+                        user={user}
+                        updateUserStatus={updateUserStatus}
+                        status={status}
+                        setStatus={setStatus}
+                    />
+                    <PostsCard userPosts={userPosts} handleLike={handleLike} likeStatus={likeStatus} />
+                    <PostModal
+                        show={showModal}
+                        handleClose={() => setShowModal(false)}
+                        onPostSuccess={handleNewPost} // Handle new post after it's created
+                    />
+                </div>
             </div>
-            <PostModal show={showModal} handleClose={() => setShowModal(false)} />
         </div>
     );
 }

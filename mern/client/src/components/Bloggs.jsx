@@ -14,13 +14,16 @@ export default function BloggsPosts() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        console.log("Component mounted, fetching blog posts and users...");
         fetchBlogPosts();
         fetchUsers();
     }, []);
 
     const fetchBlogPosts = async () => {
         try {
+            console.log("Fetching blog posts...");
             const response = await ApiClient.get(`/post`);
+            console.log("Blog posts fetched:", response.data);
             setBlogPosts(response.data);
             setLoading(false);
         } catch (error) {
@@ -31,7 +34,9 @@ export default function BloggsPosts() {
 
     const fetchUsers = async () => {
         try {
+            console.log("Fetching users...");
             const response = await ApiClient.get(`/user`);
+            console.log("Users fetched:", response.data);
             setUsers(response.data);
         } catch (error) {
             console.error("Error fetching users:", error);
@@ -40,12 +45,14 @@ export default function BloggsPosts() {
 
     const handleLike = async (postId) => {
         try {
+            console.log(`Toggling like for post ID: ${postId}`);
             const post = blogPosts.find((post) => post._id === postId);
             const alreadyLiked = post.likesBy?.includes(cookie.userID);
             const url = alreadyLiked
                 ? `/post/unlike/${postId}`
                 : `/post/like/${postId}`;
 
+            console.log(`Sending ${alreadyLiked ? "unlike" : "like"} request to URL: ${url}`);
             await ApiClient.put(url);
 
             const updatedPosts = blogPosts.map((prevPost) =>
@@ -60,6 +67,7 @@ export default function BloggsPosts() {
                     : prevPost
             );
 
+            console.log("Updated blog posts after like/unlike:", updatedPosts);
             setBlogPosts(updatedPosts);
         } catch (error) {
             console.error(`Error toggling like/unlike on post:`, error);
@@ -67,6 +75,7 @@ export default function BloggsPosts() {
     };
 
     const handleCommentChange = (postId, commentText) => {
+        console.log(`Comment text changed for post ID: ${postId}`, commentText);
         setCommentTexts((prevCommentTexts) => ({
             ...prevCommentTexts,
             [postId]: commentText,
@@ -75,6 +84,7 @@ export default function BloggsPosts() {
 
     const handleCommentSubmit = async (postId) => {
         const commentText = commentTexts[postId];
+        console.log(`Submitting comment for post ID: ${postId}`, commentText);
         try {
             const response = await ApiClient.post(`/comment`, {
                 content: commentText,
@@ -84,12 +94,14 @@ export default function BloggsPosts() {
             });
 
             const newComment = response.data;
+            console.log("New comment added:", newComment);
             const updatedPost = blogPosts.map((prevPost) =>
                 prevPost._id === postId
                     ? { ...prevPost, comments: [...prevPost.comments, newComment] }
                     : prevPost
             );
 
+            console.log("Updated blog posts after adding comment:", updatedPost);
             setBlogPosts(updatedPost);
             setCommentTexts((prevCommentTexts) => ({ ...prevCommentTexts, [postId]: "" }));
         } catch (error) {
@@ -99,7 +111,9 @@ export default function BloggsPosts() {
 
     const author = (userId) => {
         const foundUser = users.find((user) => user._id === userId);
-        return foundUser ? `${foundUser.first_name} ${foundUser.last_name}` : "";
+        const authorName = foundUser ? `${foundUser.first_name} ${foundUser.last_name}` : "";
+        console.log(`Author for user ID: ${userId}`, authorName);
+        return authorName;
     };
 
     return (

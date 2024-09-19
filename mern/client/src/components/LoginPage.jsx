@@ -1,9 +1,9 @@
 import React, { useState } from "react";
+import { Card, Toast } from "react-bootstrap";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router";
-import RegisterModal from "./RegisterModal";
-import { Card, Toast } from "react-bootstrap";
 import ApiClient from "../ApiClient"; // Import the ApiClient
+import RegisterModal from "./RegisterModal";
 
 export default function LoginPage() {
 	const [loginForm, setLoginForm] = useState({
@@ -13,62 +13,73 @@ export default function LoginPage() {
 
 	const [cookie, setCookie] = useCookies(["PassBloggs", "userID"]);
 	const navigate = useNavigate();
-	const [showToast, setShowToast] = useState(false);
-	const [toastMessage, setToastMessage] = useState("");
-	const [showRegisterModal, setShowRegisterModal] = useState(false);
-	const [isButtonHovered, setIsButtonHovered] = useState(false);
+	const [showToast, setShowToast] = useState(false); // State for showing toast notifications
+	const [toastMessage, setToastMessage] = useState(""); // Message displayed in the toast
+	const [showRegisterModal, setShowRegisterModal] = useState(false); // State for showing the register modal
+	const [isButtonHovered, setIsButtonHovered] = useState(false); // State to handle button hover effect
 
+	/**
+	 * updateLoginForm: Updates the login form state dynamically based on the input field.
+	 */
 	function updateLoginForm(value) {
+		console.log("Updating login form with value:", value); // Debugging log
 		return setLoginForm((prev) => {
-			return { ...prev, ...value };
+			const updatedForm = { ...prev, ...value };
+			console.log("Updated login form state:", updatedForm); // Debugging log
+			return updatedForm;
 		});
 	}
 
+	/**
+	 * handleLogin: Handles the login process by making a POST request to the API.
+	 * @param {Event} e - Form submission event.
+	 */
 	async function handleLogin(e) {
 		e.preventDefault();
+		console.log("Login form submitted with values:", loginForm); // Debugging log
 
-		// Check if the form is filled properly
+		// Validate the form input
 		if (!loginForm.email || !loginForm.password) {
-			console.log("Login form is incomplete");
+			console.log("Login form is incomplete"); // Debugging log
 			setToastMessage("Please fill in both email and password.");
 			setShowToast(true);
 			return;
 		}
 
 		try {
-			// Use ApiClient for the POST request
+			// Send login request via the ApiClient
+			console.log("Sending login request to API with data:", loginForm); // Debugging log
 			const response = await ApiClient.post("/user/login", loginForm);
 
-			// If login fails (axios will automatically throw an error for non-200 responses)
 			if (!response) {
+				console.log("Login failed, no response received"); // Debugging log
 				setToastMessage("Login failed. Please try again.");
 				setShowToast(true);
 				return;
 			}
 
-			// Log the token
-			console.log("Server response token:", response.data.token);
-
-			// Ensure token and userID are present in the response
-			if (!response.data.token || !response.data.user.id) {
+			// Check if the response contains the required token and user ID
+			if (!response.data.token || !response.data.user._id) {
+				console.log("Invalid server response. Token or user ID missing."); // Debugging log
 				setToastMessage("Invalid server response. Token or user ID missing.");
 				setShowToast(true);
 				return;
 			}
 
 			// Set cookies for token and user ID
+			console.log("Setting cookies for token and user ID"); // Debugging log
 			setCookie("PassBloggs", response.data.token, { path: "/", maxAge: 24 * 60 * 60 });
-			setCookie("userID", response.data.user.id, { path: "/", maxAge: 24 * 60 * 60 });
+			setCookie("userID", response.data.user._id, { path: "/", maxAge: 24 * 60 * 60 });
 
-			// Navigate to the homepage after a successful login
+			// Reload the page to reflect the new login state
 			setTimeout(() => {
-				setLoginForm({ email: "", password: "" });
-				navigate("/");
-			}, 100);
+				console.log("Login successful, reloading page"); // Debugging log
+				window.location.reload();
+			}, 200);
 
 		} catch (error) {
 			// Handle any errors from the API call
-			console.error("Login error:", error);
+			console.error("Login error:", error); // Debugging log
 			setToastMessage("An error occurred during login. Please try again.");
 			setShowToast(true);
 		}
@@ -112,11 +123,10 @@ export default function LoginPage() {
 											id="login_email"
 											placeholder="Email"
 											value={loginForm.email}
-											onChange={(e) =>
-												updateLoginForm({ email: e.target.value })
-											}
+											onChange={(e) => updateLoginForm({ email: e.target.value })}
 											required
 											className="login-input-field form-control"
+											autoComplete="username" // Add autocomplete attribute for better UX
 										/>
 									</div>
 
@@ -127,11 +137,10 @@ export default function LoginPage() {
 											id="login_password"
 											placeholder="Password"
 											value={loginForm.password}
-											onChange={(e) =>
-												updateLoginForm({ password: e.target.value })
-											}
+											onChange={(e) => updateLoginForm({ password: e.target.value })}
 											required
 											className="login-input-field form-control"
+											autoComplete="current-password" // Add autocomplete attribute for better UX
 										/>
 									</div>
 

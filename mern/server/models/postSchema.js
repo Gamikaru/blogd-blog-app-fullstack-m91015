@@ -2,22 +2,25 @@ import mongoose from 'mongoose';
 
 const { Schema, model } = mongoose;
 
-const post = new Schema({
+const postSchema = new Schema({
     content: {
         type: String,
-        required: true
+        required: true,
+        minlength: 1,
+        maxlength: 5000 // Setting a reasonable maximum size for posts
     },
-    user_id: {
+    userId: {
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true,
-        index: true 
+        index: true
     },
     likes: {
         type: Number,
-        default: 0
+        default: 0,
+        min: 0 // Ensure likes can't go negative
     },
-    time_stamp: {
+    timeStamp: {
         type: Date,
         default: Date.now
     },
@@ -25,6 +28,6 @@ const post = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Comment'
     }]
-});
+}, { timestamps: true }); // Adds createdAt and updatedAt timestamps
 
-export default model('Post', post);
+export default model('Post', postSchema);

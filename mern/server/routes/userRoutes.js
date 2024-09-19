@@ -10,42 +10,45 @@ dotenv.config();
 
 const router = express.Router();
 
-// User registration
+/**
+ * @route   POST /register
+ * @desc    Register a new user
+ * @access  Public
+ */
 router.post('/register', async (req, res) => {
-    const { first_name, last_name, birthdate, email, password, location, occupation, auth_level } = req.body;
+    const { firstName, lastName, birthDate, email, password, location, occupation, authLevel } = req.body;
+    console.log('User Registration: Received data:', req.body);
 
-    if (!first_name || !last_name || !birthdate || !email || !password || !location || !occupation) {
+    // Validate required fields
+    if (!firstName || !lastName || !birthDate || !email || !password || !location || !occupation) {
+        console.log('User Registration: Missing required fields.');
         return res.status(400).send('Please fill in all required fields');
     }
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        return res.status(400).send('Please enter a valid email address');
-    }
-
     try {
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-
+        // Check if the email is already registered
         const existingUser = await User.findOne({ email });
         if (existingUser) {
+            console.log('User Registration: Email already registered:', email);
             return res.status(409).send('Email already registered');
         }
 
+        // Create a new user instance
         const newUser = new User({
-            first_name,
-            last_name,
-            birthdate,
+            firstName,
+            lastName,
+            birthDate,
             email,
-            password: hashedPassword,
+            password, // No need to hash, schema pre-save hook handles it
             location,
             occupation,
-            auth_level: auth_level || 'basic', // default to 'basic' if not provided
-            status: '' // default to empty string
+            authLevel: authLevel || 'basic',
+            status: ''
         });
 
+        // Save the user in the database
         await newUser.save();
+        console.log('User Registration: User registered successfully:', newUser);
         res.status(201).send('User registered successfully');
     } catch (error) {
         console.error("Error during registration:", error);
@@ -59,57 +62,73 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// User login
+/**
+ * @route   POST /login
+ * @desc    Authenticate user and get token
+ * @access  Public
+ */
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
+    console.log('User Login: Received credentials:', { email });
 
+    // Validate required fields
     if (!email || !password) {
+        console.log('User Login: Missing email or password.');
         return res.status(400).send('Please fill in all required fields');
     }
 
     try {
+        // Find the user by email
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(404).send('User not found');
+            console.log('User Login: Invalid email or user not found:', email);
+            return res.status(400).send('Invalid email or password');
         }
 
+        // Compare provided password with stored hashed password
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(401).send('Invalid credentials');
+            console.log('User Login: Password does not match.');
+            return res.status(400).send('Invalid email or password');
         }
 
-        console.log('Generating token for user:', user._id);  // Log before generating the token
-
+        // Generate JWT token
         const token = jwt.sign(
-            { _id: user._id, email: user.email, auth_level: user.auth_level }, // Ensure you use _id, not id
+            { _id: user._id, email: user.email, authLevel: user.authLevel },
             process.env.JWT_SECRET,
             { expiresIn: '24h' }
         );
 
+        console.log('User Login: Token generated successfully.');
         res.status(200).json({
             token,
             user: {
-                id: user._id,
+                _id: user._id,
                 email: user.email,
-                auth_level: user.auth_level,
-                first_name: user.first_name,
-                last_name: user.last_name,
+                authLevel: user.authLevel,
+                firstName: user.firstName,
+                lastName: user.lastName,
                 location: user.location,
                 occupation: user.occupation
             },
             message: 'Login successful'
         });
-
     } catch (error) {
         console.error("Error during login:", error);
         return res.status(500).send('Server error: ' + error.message);
     }
 });
 
-// Get user info (protected route)
+/**
+ * @route   GET /:id
+ * @desc    Get user by ID (protected)
+ * @access  Private
+ */
 router.get('/:id', authenticate, async (req, res) => {
+    console.log('Fetching user data for ID:', req.params.id);
     try {
-        const user = await User.findById(req.params.id);
+        // Find user by ID and exclude password
+        const user = await User.findById(req.params.id).select('-password');
         if (!user) {
             return res.status(404).send('User not found');
         }
@@ -120,21 +139,30 @@ router.get('/:id', authenticate, async (req, res) => {
     }
 });
 
-// Update user info (protected route)
+/**
+ * @route   PATCH /:id
+ * @desc    Update user by ID (protected)
+ * @access  Private
+ */
 router.patch('/:id', authenticate, async (req, res) => {
+    console.log('Updating user with ID:', req.params.id);
     try {
         const user = await User.findById(req.params.id);
         if (!user) {
             return res.status(404).send('User not found');
         }
 
-        // Only update the fields that are provided in the request body
+        // Update only allowed fields
         const fieldsToUpdate = req.body;
+        const allowedUpdates = ['firstName', 'lastName', 'birthDate', 'email', 'location', 'occupation', 'authLevel', 'status'];
         Object.keys(fieldsToUpdate).forEach((field) => {
-            user[field] = fieldsToUpdate[field];
+            if (allowedUpdates.includes(field)) {
+                user[field] = fieldsToUpdate[field];
+            }
         });
 
         await user.save();
+        console.log('User updated successfully:', user);
         res.status(200).send('User updated successfully');
     } catch (error) {
         console.error("Error updating user:", error);
@@ -142,8 +170,13 @@ router.patch('/:id', authenticate, async (req, res) => {
     }
 });
 
-// List all users except for the current user (protected route)
+/**
+ * @route   GET /list/:id
+ * @desc    Get all users except the current user (protected)
+ * @access  Private
+ */
 router.get('/list/:id', authenticate, async (req, res) => {
+    console.log('Fetching all users except for user ID:', req.params.id);
     try {
         const users = await User.find({ _id: { $ne: req.params.id } });
         res.status(200).json(users);
@@ -153,8 +186,13 @@ router.get('/list/:id', authenticate, async (req, res) => {
     }
 });
 
-// List of all users (protected route)
+/**
+ * @route   GET /
+ * @desc    Get all users (protected)
+ * @access  Private
+ */
 router.get('/', authenticate, async (req, res) => {
+    console.log('Fetching all users.');
     try {
         const users = await User.find();
         res.status(200).json(users);
@@ -164,38 +202,62 @@ router.get('/', authenticate, async (req, res) => {
     }
 });
 
-// Delete user (protected route)
-router.delete("/:id", authenticate, async (req, res) => {
-	try {
-		const user = await User.findById(req.params.id);
-		if (!user) {
-			return res.status(404).send("User not found");
-		}
-		await user.deleteOne();
-		res.status(200).send("User deleted successfully");
-	} catch (error) {
-		console.error("Error deleting user:", error);
-		return res.status(500).send("Server error: " + error.message);
-	}
+/**
+ * @route   DELETE /:id
+ * @desc    Delete user by ID (protected)
+ * @access  Private
+ */
+router.delete('/:id', authenticate, async (req, res) => {
+    console.log('Deleting user with ID:', req.params.id);
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        await user.deleteOne();
+        res.status(200).send('User deleted successfully');
+    } catch (error) {
+        console.error("Error deleting user:", error);
+        return res.status(500).send('Server error: ' + error.message);
+    }
 });
 
+/**
+ * @route   PUT /:id/status
+ * @desc    Update user status (protected)
+ * @access  Private
+ */
+router.put('/:id/status', authenticate, async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+    console.log('Updating status for user ID:', id, 'with status:', status);
 
+    try {
+        const user = await User.findByIdAndUpdate(id, { status }, { new: true });
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        res.json(user);
+    } catch (error) {
+        console.error('Error updating user status:', error);
+        res.status(500).json({ message: 'Error updating status', error });
+    }
+});
 
-// Logout user endpoint
+/**
+ * @route   POST /logout
+ * @desc    Logout user and delete session (protected)
+ * @access  Private
+ */
 router.post('/logout', authenticate, async (req, res) => {
+    console.log('Logging out user with ID:', req.user._id);
     try {
         const endSession = await Session.findOneAndDelete({ user: req.user._id });
-        console.log('Session ended:', endSession);
         res.status(200).send('Session ended: User logged out');
     } catch (error) {
         console.error('Error ending session:', error);
         res.status(500).send('Error ending session');
     }
 });
-
-
-
-
-
 
 export default router;

@@ -14,9 +14,7 @@ if (!uri.startsWith("mongodb")) {
 async function connectToMongoDB() {
     try {
         await mongoose.connect(uri, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            socketTimeoutMS: 60000, 
+            socketTimeoutMS: 60000,
             serverSelectionTimeoutMS: 50000,
             connectTimeoutMS: 50000,
         });

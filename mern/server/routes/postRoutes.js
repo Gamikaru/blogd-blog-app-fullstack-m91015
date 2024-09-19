@@ -4,38 +4,46 @@ import { authenticate } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// Create a new post
+/**
+ * @route   POST /
+ * @desc    Create a new post
+ * @access  Private (Authentication required)
+ */
 router.post('/', authenticate, async (req, res) => {
     const { content } = req.body;
-    const user_id = req.user._id; // Correct user_id extraction from req.user._id
-    const likes = 0;
-    const comments = [];
-    const time_stamp = Date.now();
+    const userId = req.user._id;
+    console.log('Creating a new post for user:', userId, 'with content:', content);
 
-    if (!content) {
-        console.log('No content provided');
+    // Validate content
+    if (!content || content.length < 1) {
+        console.log('Post creation failed: No content provided.');
         return res.status(400).send('Please enter some content to post');
     }
 
     try {
         const newPost = new Post({
             content,
-            user_id,
-            likes,
-            comments,
-            time_stamp
+            userId,
+            likes: 0,
+            comments: [],
+            // timestamps created automatically by Mongoose
         });
 
+        // Save the post to the database
         await newPost.save();
-        console.log('Post created successfully');
-        // thorough client side response, with post id, etc
+        console.log('Post created successfully:', newPost);
 
+        // Send back all necessary fields
         return res.status(201).json({
             message: 'Post created successfully',
             post: {
-                id: newPost._id,
+                _id: newPost._id,
                 content: newPost.content,
-                createdAt: newPost.time_stamp
+                likes: newPost.likes,
+                userId: newPost.userId,
+                comments: newPost.comments,
+                createdAt: newPost.createdAt,
+                updatedAt: newPost.updatedAt
             }
         });
     } catch (error) {
@@ -44,68 +52,89 @@ router.post('/', authenticate, async (req, res) => {
     }
 });
 
-
-// Get all posts by the current user
+/**
+ * @route   GET /:id
+ * @desc    Get all posts by a specific user
+ * @access  Private (Authentication required)
+ */
 router.get('/:id', authenticate, async (req, res) => {
+    console.log(`Fetching posts for user ${req.params.id}`);
     try {
-        const posts = await Post.find({ user_id: req.params.id });
-        console.log(`Posts by user ${req.params.id}:`, posts);
-        res.send(posts);
+        const posts = await Post.find({ userId: req.params.id });
+        console.log('Posts retrieved successfully:', posts);
+        res.status(200).send(posts);
     } catch (error) {
         console.error('Error getting posts:', error);
         res.status(500).send('Server error: ' + error.message);
     }
 });
 
-// Get all posts
+/**
+ * @route   GET /
+ * @desc    Get all posts (sorted by timestamp)
+ * @access  Private (Authentication required)
+ */
 router.get('/', authenticate, async (req, res) => {
+    console.log('Fetching all posts.');
     try {
-        const posts = await Post.find().sort({ time_stamp: -1 });
-        console.log('Posts retrieved successfully');
-        res.send(posts);
+        const posts = await Post.find().sort({ timeStamp: -1 });
+        console.log('All posts retrieved successfully.');
+        res.status(200).send(posts);
     } catch (error) {
         console.error('Error retrieving posts:', error);
         res.status(500).send('Server error: ' + error.message);
     }
 });
 
-// Get all posts by a specific user
+/**
+ * @route   GET /user/:id
+ * @desc    Get all posts by a specific user
+ * @access  Private (Authentication required)
+ */
 router.get('/user/:id', authenticate, async (req, res) => {
+    console.log(`Fetching all posts for user ${req.params.id}`);
     try {
-        const posts = await Post.find({ user_id: req.params.id });
-        console.log('Posts retrieved successfully.')
+        const posts = await Post.find({ userId: req.params.id });
         console.log(`Posts by user ${req.params.id}:`, posts);
-        res.send(posts);
+        res.status(200).send(posts);
     } catch (error) {
         console.error('Error getting posts:', error);
         res.status(500).send('Server error: ' + error.message);
     }
 });
 
-
-
-// Get a single post
+/**
+ * @route   GET /specific/:id
+ * @desc    Get a single post by ID
+ * @access  Private (Authentication required)
+ */
 router.get('/specific/:id', authenticate, async (req, res) => {
+    console.log('Fetching post with ID:', req.params.id);
     try {
         const post = await Post.findById(req.params.id);
         if (!post) {
-            console.log('Post not found');
+            console.log('Post not found with ID:', req.params.id);
             return res.status(404).send('Post not found');
         }
-        console.log('Post:', post);
-        res.send(post);
+        console.log('Post fetched successfully:', post);
+        res.status(200).send(post);
     } catch (error) {
         console.error('Error getting post:', error);
         res.status(500).send('Server error: ' + error.message);
     }
 });
 
-// Update a post
+/**
+ * @route   PATCH /:id
+ * @desc    Update a post by ID
+ * @access  Private (Authentication required)
+ */
 router.patch('/:id', authenticate, async (req, res) => {
+    console.log('Updating post with ID:', req.params.id);
     try {
         const post = await Post.findById(req.params.id);
         if (!post) {
-            console.log('Post not found');
+            console.log('Post not found:', req.params.id);
             return res.status(404).send('Post not found');
         }
 
@@ -115,7 +144,7 @@ router.patch('/:id', authenticate, async (req, res) => {
         });
 
         await post.save();
-        console.log('Post updated successfully');
+        console.log('Post updated successfully:', post);
         res.status(200).send('Post updated successfully');
     } catch (error) {
         console.error('Error updating post:', error);
@@ -123,17 +152,22 @@ router.patch('/:id', authenticate, async (req, res) => {
     }
 });
 
-// Delete a post
+/**
+ * @route   DELETE /:id
+ * @desc    Delete a post by ID
+ * @access  Private (Authentication required)
+ */
 router.delete('/:id', authenticate, async (req, res) => {
+    console.log('Deleting post with ID:', req.params.id);
     try {
         const post = await Post.findById(req.params.id);
         if (!post) {
-            console.log('Post not found');
+            console.log('Post not found:', req.params.id);
             return res.status(404).send('Post not found');
         }
 
-        await post.deleteOne(); // Correct method to delete the document
-        console.log('Post deleted successfully');
+        await post.deleteOne();
+        console.log('Post deleted successfully:', req.params.id);
         res.status(200).send('Post deleted successfully');
     } catch (error) {
         console.error('Error deleting post:', error);
@@ -141,39 +175,47 @@ router.delete('/:id', authenticate, async (req, res) => {
     }
 });
 
-// Like a post
+/**
+ * @route   PUT /like/:id
+ * @desc    Like a post
+ * @access  Private (Authentication required)
+ */
 router.put('/like/:id', authenticate, async (req, res) => {
+    console.log('Liking post with ID:', req.params.id);
     try {
         const post = await Post.findById(req.params.id);
         if (!post) {
-            console.log('Post not found!');
+            console.log('Post not found:', req.params.id);
             return res.status(404).send('Post not found');
         }
 
         post.likes += 1;
         await post.save();
-
-        console.log('Post liked successfully');
-        res.status(200).json(post);  // Send the updated post back to the frontend
+        console.log('Post liked successfully:', post);
+        res.status(200).json(post);
     } catch (error) {
         console.error('Error liking post:', error);
         return res.status(500).send('Server error: ' + error.message);
     }
 });
 
-// Unlike a post
+/**
+ * @route   PUT /unlike/:id
+ * @desc    Unlike a post
+ * @access  Private (Authentication required)
+ */
 router.put('/unlike/:id', authenticate, async (req, res) => {
+    console.log('Unliking post with ID:', req.params.id);
     try {
         const post = await Post.findById(req.params.id);
         if (!post) {
-            console.log('Post not found');
+            console.log('Post not found:', req.params.id);
             return res.status(404).send('Post not found');
         }
 
-        post.likes -= 1;
+        post.likes = Math.max(0, post.likes - 1); // Ensure likes don't go below 0
         await post.save();
-
-        console.log('Post unliked successfully');
+        console.log('Post unliked successfully:', post);
         res.status(200).send('Post unliked successfully');
     } catch (error) {
         console.error('Error unliking post:', error);

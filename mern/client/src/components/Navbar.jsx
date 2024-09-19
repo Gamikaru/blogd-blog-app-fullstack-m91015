@@ -1,10 +1,19 @@
-import React, { useState } from "react";
-import { Button, Dropdown, Modal } from "react-bootstrap";
+import React, { useState, useRef, useEffect } from "react";
+import { Button, Dropdown, Modal, Toast } from "react-bootstrap";
 import { useCookies } from "react-cookie";
 import { FaBars } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useUser } from "../UserContext";
 import PostModal from "./PostModal";
+
+// Helper function for consistent logging
+const logInfo = (message, data = null) => {
+	if (data) {
+		console.log(`[Navbar] ${message}`, data);
+	} else {
+		console.log(`[Navbar] ${message}`);
+	}
+};
 
 // Logo component for the navigation bar
 const Logo = () => (
@@ -24,21 +33,24 @@ const Logo = () => (
 // UserDropdown component for user account options
 const UserDropdown = ({ handleAccountModal, handleLogout }) => {
 	const [showDropdown, setShowDropdown] = useState(false);
-	const dropdownRef = React.useRef(null);
+	const dropdownRef = useRef(null);
 
-	// Toggle dropdown visibility
-	const handleDropdown = () => setShowDropdown(!showDropdown);
+	const handleDropdown = () => {
+		logInfo("Toggling account dropdown", { showDropdown: !showDropdown });
+		setShowDropdown(!showDropdown);
+	};
 
-	// Close dropdown when clicking outside or pressing Escape
-	React.useEffect(() => {
+	useEffect(() => {
 		const handleClickOutside = (event) => {
 			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+				logInfo("Click outside account dropdown, closing it");
 				setShowDropdown(false);
 			}
 		};
 
 		const handleEscKey = (event) => {
 			if (event.key === "Escape") {
+				logInfo("Escape key pressed, closing account dropdown");
 				setShowDropdown(false);
 			}
 		};
@@ -47,18 +59,32 @@ const UserDropdown = ({ handleAccountModal, handleLogout }) => {
 		document.addEventListener("keydown", handleEscKey);
 
 		return () => {
+			logInfo("Removing account dropdown event listeners");
 			document.removeEventListener("mousedown", handleClickOutside);
 			document.removeEventListener("keydown", handleEscKey);
 		};
 	}, []);
 
 	return (
-		<div className="dropdown-container" ref={dropdownRef} onMouseLeave={() => setTimeout(() => setShowDropdown(false), 300)}>
+		<div
+			className="dropdown-container"
+			ref={dropdownRef}
+			onMouseLeave={() => setTimeout(() => setShowDropdown(false), 300)}
+		>
 			<Dropdown show={showDropdown} onToggle={handleDropdown}>
-				<Dropdown.Toggle id="dropdown" onClick={handleDropdown} aria-expanded={showDropdown} aria-controls="dropdown-menu" className="dropdown-toggle">
+				<Dropdown.Toggle
+					id="dropdown"
+					onClick={handleDropdown}
+					aria-expanded={showDropdown}
+					aria-controls="dropdown-menu"
+					className="dropdown-toggle"
+				>
 					ACCOUNT
 				</Dropdown.Toggle>
-				<Dropdown.Menu id="dropdown-menu" className={`dropdown-menu ${showDropdown ? "show" : ""}`}>
+				<Dropdown.Menu
+					id="dropdown-menu"
+					className={`dropdown-menu ${showDropdown ? "show" : ""}`}
+				>
 					<Dropdown.Item onClick={handleAccountModal}>Account Settings</Dropdown.Item>
 					<Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
 				</Dropdown.Menu>
@@ -78,28 +104,48 @@ const NavbarButtons = ({ handleModal, handleAccountModal, handleLogout }) => (
 );
 
 // Navbar component
-const Navbar = ({ toggleSidebar, hamburgerRef }) => {
+const Navbar = ({ toggleSidebar, hamburgerRef, onNewPost }) => {
 	const [, removeCookie] = useCookies();
 	const location = useLocation();
 	const navigate = useNavigate();
-	const [showModal, setShowModal] = useState(false); // Modal for post creation
-	const [showAccountModal, setShowAccountModal] = useState(false); // Modal for account settings
-	const user = useUser();
+	const [showModal, setShowModal] = useState(false);
+	const [showAccountModal, setShowAccountModal] = useState(false);
+	const [showSuccessToast, setShowSuccessToast] = useState(false);
+	const { user } = useUser();
 
-	// Toggle post modal
-	const handleModal = () => setShowModal(!showModal);
+	// Log the received props to check if `toggleSidebar` and `onNewPost` are correctly passed
+	useEffect(() => {
+		logInfo('Navbar received props:', { toggleSidebar, hamburgerRef, onNewPost });
+	}, [toggleSidebar, hamburgerRef, onNewPost]);
 
-	// Toggle account modal
-	const handleAccountModal = () => setShowAccountModal(!showAccountModal);
+	const handleModal = () => {
+		logInfo("Toggling post modal", { showModal: !showModal });
+		setShowModal(!showModal);
+	};
 
-	// Handle logout
+	const handleAccountModal = () => {
+		logInfo("Toggling account modal", { showAccountModal: !showAccountModal });
+		setShowAccountModal(!showAccountModal);
+	};
+
+	const handlePostSuccess = (newPost) => {
+		logInfo("Post submitted successfully", { newPost });
+		setShowModal(false);
+		setShowSuccessToast(true);
+		setTimeout(() => {
+			setShowSuccessToast(false);
+		}, 3000);
+		onNewPost(newPost); // Trigger the post addition to the app-wide post list
+	};
+
 	const handleLogout = () => {
+		logInfo("Logging out user");
 		removeCookie("PassBloggs", { path: "/" });
 		removeCookie("userID", { path: "/" });
 		navigate("/login");
 	};
 
-	// Prevent Navbar rendering on login and register pages
+	// Hide Navbar on login and register pages
 	if (location.pathname === "/login" || location.pathname === "/register") {
 		return null;
 	}
@@ -108,24 +154,48 @@ const Navbar = ({ toggleSidebar, hamburgerRef }) => {
 		<>
 			<div className="nav-header">
 				<nav className="navbar">
-					{/* Sidebar toggle button */}
-					<button className="sidebar-toggle" onClick={toggleSidebar} ref={hamburgerRef}>
+					<button
+						className="sidebar-toggle"
+						onClick={() => {
+							logInfo("Hamburger clicked, toggling sidebar");
+							toggleSidebar();
+						}}
+						ref={hamburgerRef}
+					>
 						<FaBars />
 					</button>
-
-					{/* Logo */}
 					<Logo />
-
-					{/* Navbar buttons */}
-					<NavbarButtons handleModal={handleModal} handleAccountModal={handleAccountModal} handleLogout={handleLogout} />
+					<NavbarButtons
+						handleModal={handleModal}
+						handleAccountModal={handleAccountModal}
+						handleLogout={handleLogout}
+					/>
 				</nav>
 			</div>
 
-			{/* Post Modal */}
-			<PostModal show={showModal} handleClose={handleModal} />
+			{/* PostModal is only triggered by the POST button */}
+			<PostModal
+				show={showModal}
+				handleClose={handleModal}
+				onPostSuccess={handlePostSuccess} // Use handlePostSuccess to handle the new post
+			/>
 
-			{/* Account Settings Modal */}
-			<Modal className="nav-toast-container" show={showAccountModal} onHide={handleAccountModal} centered>
+			<Toast
+				show={showSuccessToast}
+				onClose={() => setShowSuccessToast(false)}
+				delay={3000}
+				autohide
+				style={{ position: "fixed", bottom: "20px", right: "20px" }}
+			>
+				<Toast.Body>Post submitted successfully!</Toast.Body>
+			</Toast>
+
+			<Modal
+				className="nav-toast-container"
+				show={showAccountModal}
+				onHide={handleAccountModal}
+				centered
+			>
 				<Modal.Title className="nav-toast-title">Account Settings</Modal.Title>
 				<Modal.Body className="nav-toast-mssg">
 					<p>Go to Account Settings.</p>
