@@ -4,146 +4,146 @@
 // Modal Container
 .register-modal-container,
 .post-modal-container {
-    @include flex-center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 1050;
-    background-color: rgba($charcoal-extra-light, 0.8);
+   @include flex-center;
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100vw;
+   height: 100vh;
+   z-index: 1050;
+   background-color: rgba($charcoal-extra-light, 0.8);
 }
 
 // Modal
 .register-modal,
 .post-modal {
-    @include modal-base($white, 0, 1rem, 0 0.5rem 1.5rem rgba($primary-purple, 0.5));
-    width: 90%;
-    max-width: 500px;
-    overflow: hidden; // Ensure the header and body are contained within the card
+   @include modal-base($white, 0, 1rem, 0 0.5rem 1.5rem rgba($primary-purple, 0.5));
+   width: 90%;
+   max-width: 500px;
+   overflow: hidden; // Ensure the header and body are contained within the card
 
-    @media (max-width: 768px) {
-        width: 95%;
-        max-width: 400px;
-    }
+   @media (max-width: 768px) {
+      width: 95%;
+      max-width: 400px;
+   }
 
-    @media (max-width: 576px) {
-        width: 100%;
-        max-width: 350px;
-    }
+   @media (max-width: 576px) {
+      width: 100%;
+      max-width: 350px;
+   }
 }
 
 // Modal Header with Centered Title
 .register-modal-header,
 .post-modal-header {
-    background-color: $primary-purple;
-    color: $white;
-    padding: 1.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+   background-color: $primary-purple;
+   color: $white;
+   padding: 1.5rem;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   text-align: center;
 
-    .modal-title {
-        font-family: "Anton", sans-serif;
-        font-weight: 300;
-        font-size: 1.5rem;
-        color: $white;
-        letter-spacing: 0.2rem;
-    }
+   .modal-title {
+      font-family: "Anton", sans-serif;
+      font-weight: 300;
+      font-size: 1.5rem;
+      color: $white;
+      letter-spacing: 0.2rem;
+   }
 }
 
 // Modal Body
 .register-modal-body,
 .post-modal-body {
-    padding: 2rem;
-    background-color: $white;
+   padding: 2rem;
+   background-color: $white;
 }
 
 // Form Inputs (Scoped specifically for the register and post modals)
 .register-modal-input,
 .post-modal-input {
-    width: 100%;
-    padding: 1rem;
-    margin-bottom: 1.5rem;
-    background-color: $white;
-    color: $charcoal;
-    border: 1px solid $light-gray;
-    border-radius: 10px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+   width: 100%;
+   padding: 1rem;
+   margin-bottom: 1.5rem;
+   background-color: $white;
+   color: $charcoal;
+   border: 1px solid $light-gray;
+   border-radius: 10px;
+   box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
 
-    &:focus {
-        border-color: $primary-purple;
-        box-shadow: 0 0 0 0.2rem rgba($primary-purple, 0.25);
-        outline: none;
-    }
+   &:focus {
+      border-color: $primary-purple;
+      box-shadow: 0 0 0 0.2rem rgba($primary-purple, 0.25);
+      outline: none;
+   }
 }
 
 // Submit Button (Scoped specifically for the register and post modals)
 .register-submit-btn,
 .post-submit-btn {
-    @include button-base($primary-purple, $white, darken($primary-purple, 10%), $electric-violet-light, medium);
-    align-self: flex-end;
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    border-radius: 10px;
-    transition: background-color 0.3s ease;
+   @include button-base($primary-purple, $white, darken($primary-purple, 10%), $electric-violet-light, medium);
+   align-self: flex-end;
+   padding: 0.75rem 1.5rem;
+   font-size: 1rem;
+   border-radius: 10px;
+   transition: background-color 0.3s ease;
 
-    &:hover {
-        background-color: darken($primary-purple, 10%);
-    }
+   &:hover {
+      background-color: darken($primary-purple, 10%);
+   }
 
-    &:focus {
-        outline: none;
-        box-shadow: 0 0 20px rgba($primary-purple, 0.8);
-    }
+   &:focus {
+      outline: none;
+      box-shadow: 0 0 20px rgba($primary-purple, 0.8);
+   }
 
-    &:active {
-        background-color: darken($primary-purple, 15%);
-        transform: scale(0.98);
-    }
+   &:active {
+      background-color: darken($primary-purple, 15%);
+      transform: scale(0.98);
+   }
 }
 
 // Toast styling (Success and Error)
 .register-toast,
 .post-toast {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    z-index: 1050;
+   position: absolute;
+   top: 1rem;
+   right: 1rem;
+   z-index: 1050;
 }
 
 .register-toast-success,
 .post-toast-success {
-    background-color: $success-green;
-    color: $white;
-    box-shadow: 0 0 15px rgba($success-green, 0.5);
+   background-color: $success-green;
+   color: $white;
+   box-shadow: 0 0 15px rgba($success-green, 0.5);
 }
 
 .register-toast-error,
 .post-toast-error {
-    background-color: $bright-red;
-    color: $white;
-    box-shadow: 0 0 15px rgba($bright-red, 0.5);
+   background-color: $bright-red;
+   color: $white;
+   box-shadow: 0 0 15px rgba($bright-red, 0.5);
 }
 
 // Card Styling (Scoped to register and post modals)
 .register-card,
 .post-card {
-    background-color: rgba($charcoal-extreme-light, 0.8);
-    border-radius: 1rem;
-    box-shadow: 0 8px 30px rgba($primary-purple, 0.8);
+   background-color: rgba($charcoal-extreme-light, 0.8);
+   border-radius: 1rem;
+   box-shadow: 0 8px 30px rgba($primary-purple, 0.8);
 }
 
 // Responsive Modal Adjustments
 @media (max-width: 768px) {
-    .register-modal-container,
-    .post-modal-container {
-        padding: 1rem;
-    }
-    .register-modal,
-    .post-modal {
-        width: 100%;
-        padding: 1rem;
-    }
+   .register-modal-container,
+   .post-modal-container {
+      padding: 1rem;
+   }
+   .register-modal,
+   .post-modal {
+      width: 100%;
+      padding: 1rem;
+   }
 }

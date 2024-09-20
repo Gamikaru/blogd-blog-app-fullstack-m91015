@@ -3,136 +3,136 @@
 
 // Navbar Header
 .nav-header {
-    background: rgba($charcoal-light, 0.8);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    padding: 0rem 2rem;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 80px;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition:
-        background-color 0.3s ease,
-        box-shadow 0.3s ease;
+   background: rgba($charcoal-light, 0.8);
+   backdrop-filter: blur(10px);
+   -webkit-backdrop-filter: blur(10px);
+   padding: 0rem 2rem;
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   height: 80px;
+   z-index: 1000;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+   transition:
+      background-color 0.3s ease,
+      box-shadow 0.3s ease;
 }
 
 // Navbar Container
 .navbar {
-    display: flex;
-    align-items: center;
-    width: 100%;
+   display: flex;
+   align-items: center;
+   width: 100%;
 
-    // Hamburger menu on the far left
-    .sidebar-toggle {
-        order: 1;
-        background: none;
-        border: none;
-        color: $white;
-        font-size: 2rem;
-        cursor: pointer;
-        display: block;
-        margin-right: 1rem;
+   // Hamburger menu on the far left
+   .sidebar-toggle {
+      order: 1;
+      background: none;
+      border: none;
+      color: $white;
+      font-size: 2rem;
+      cursor: pointer;
+      display: block;
+      margin-right: 1rem;
 
-        @media (max-width: 768px) {
-            display: block;
-        }
+      @media (max-width: 768px) {
+         display: block;
+      }
 
-        &:hover {
-            color: lighten($primary-purple, 10%);
-        }
+      &:hover {
+         color: lighten($primary-purple, 10%);
+      }
 
-        &:focus {
-            outline: none;
-        }
-    }
+      &:focus {
+         outline: none;
+      }
+   }
 
-    // Centering the Logo
-    .navbar-logo {
-        order: 2;
-        flex: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        padding-top: 2rem;
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-    }
+   // Centering the Logo
+   .navbar-logo {
+      order: 2;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      padding-top: 2rem;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+   }
 
-    // Post button and Account dropdown on the far right
-    .navbar-buttons {
-        order: 3;
-        display: flex;
-        align-items: center;
-        gap: 1.5rem;
-        margin-left: auto;
+   // Post button and Account dropdown on the far right
+   .navbar-buttons {
+      order: 3;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-left: auto;
 
-        @media (max-width: 768px) {
-            gap: 1rem;
-        }
-    }
+      @media (max-width: 768px) {
+         gap: 1rem;
+      }
+   }
 }
 
 // Logo Section
 .navbar-logo img {
-    width: 60%;
-    height: auto;
-    max-height: 80%;
-    transition: transform 0.3s ease;
+   width: 60%;
+   height: auto;
+   max-height: 80%;
+   transition: transform 0.3s ease;
 
-    &:hover {
-        transform: scale(1.05);
-    }
+   &:hover {
+      transform: scale(1.05);
+   }
 }
 
 // Post Button and Dropdown
 .post-button,
 .dropdown-toggle {
-    @include button-base(
-        $primary-purple,
-        $white,
-        darken($primary-purple, 5%),
-        $primary-purple-dark,
-        medium,
-        12px,
-        "Anton",
-        400,
-        0.6rem 1.2rem,
-        1rem,
-        uppercase,
-        2px
-    );
+   @include button-base(
+      $primary-purple,
+      $white,
+      darken($primary-purple, 5%),
+      $primary-purple-dark,
+      medium,
+      12px,
+      "Anton",
+      400,
+      0.6rem 1.2rem,
+      1rem,
+      uppercase,
+      2px
+   );
 
-    @media (max-width: 768px) {
-        font-size: 0.9rem;
-        padding: 0.5rem 1rem;
-    }
+   @media (max-width: 768px) {
+      font-size: 0.9rem;
+      padding: 0.5rem 1rem;
+   }
 }
 
 // Dropdown Menu
 .dropdown-menu {
-    background-color: $charcoal-extreme-light;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+   background-color: $charcoal-extreme-light;
+   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
-    .dropdown-item {
-        color: $charcoal;
-        font-family: "JetBrains Mono", monospace;
-        font-size: 1rem;
-        padding: 0.75rem 1.5rem;
-        transition:
-            background-color 0.3s ease,
-            color 0.3s ease;
+   .dropdown-item {
+      color: $charcoal;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 1rem;
+      padding: 0.75rem 1.5rem;
+      transition:
+         background-color 0.3s ease,
+         color 0.3s ease;
 
-        &:hover {
-            background-color: $primary-purple;
-            color: $white;
-        }
-    }
+      &:hover {
+         background-color: $primary-purple;
+         color: $white;
+      }
+   }
 }

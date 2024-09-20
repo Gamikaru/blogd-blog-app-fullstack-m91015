@@ -16,6 +16,7 @@ const router = express.Router();
  * @access  Public
  */
 router.post('/register', async (req, res) => {
+
     const { firstName, lastName, birthDate, email, password, location, occupation, authLevel } = req.body;
     console.log('User Registration: Received data:', req.body);
 

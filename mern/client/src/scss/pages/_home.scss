@@ -4,220 +4,221 @@
 
 /* Home Page container */
 .home-page-container {
-    @include page-container-mixin; // Use the mixin instead of @extend
+   @include page-container-mixin; // Use the mixin instead of @extend
 }
 
 /* Grid container for cards */
 .grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    max-width: 90vw;
-    width: 100%;
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+   gap: 2rem;
+   max-width: 90vw;
+   width: 100%;
 
-    @media (max-width: 768px) {
-        grid-template-columns: 1fr;
-    }
+   @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+   }
 }
 /* User Card Styling */
 .user-card {
-    @include card-base($white, $light-gray, 0 0.5rem 1.5rem rgba($primary-purple, 0.1));
+   @include card-base($white, $light-gray, 0 0.5rem 1.5rem rgba($primary-purple, 0.1));
 
-    &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 0.75rem 1.5rem rgba($primary-purple, 0.2);
-    }
+   &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0.75rem 1.5rem rgba($primary-purple, 0.2);
+   }
 
-    .user-card-header {
-        background-color: $white;
-        padding: clamp(1rem, 2vw, 1.5rem);
-        border-radius: 1rem 1rem 0 0;
-        text-align: center;
-        color: $primary-purple;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+   .user-card-header {
+      background-color: $white;
+      padding: clamp(1rem, 2vw, 1.5rem);
+      border-radius: 1rem 1rem 0 0;
+      text-align: center;
+      color: $primary-purple;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
 
-        .initials-title {
-            width: 100px;
-            height: 100px;
-            background-color: $white;
-            border: 3px solid $primary-purple;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+      .initials-title {
+         width: 100px;
+         height: 100px;
+         background-color: $white;
+         border: 3px solid $primary-purple;
+         border-radius: 50%;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         color: $primary-purple;
+         font-size: 2rem;
+         font-family: "Monoton", sans-serif;
+         margin-bottom: 1rem;
+      }
+
+      .home-user-status {
+         @include form-field-base();
+         margin-top: 0.5rem;
+         font-size: 1rem;
+         text-align: center;
+      }
+   }
+
+   .user-details {
+      padding: clamp(1rem, 2vw, 1.5rem);
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(1rem, 2vw, 1.5rem);
+      border-top: 1px solid $light-gray;
+
+      .detail-item {
+         display: flex;
+         align-items: center;
+         padding: 0.5rem 0;
+         border-bottom: 1px solid $light-gray;
+
+         &:last-child {
+            border-bottom: none;
+         }
+
+         .detail-icon {
+            font-size: 1.2rem;
             color: $primary-purple;
-            font-size: 2rem;
-            font-family: "Monoton", sans-serif;
-            margin-bottom: 1rem;
-        }
+            margin-right: 0.75rem;
+         }
 
-        .home-user-status {
-            @include form-field-base();
-            margin-top: 0.5rem;
+         .detail-text {
             font-size: 1rem;
-            text-align: center;
-        }
-    }
-
-    .user-details {
-        padding: clamp(1rem, 2vw, 1.5rem);
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: clamp(1rem, 2vw, 1.5rem);
-        border-top: 1px solid $light-gray;
-
-        .detail-item {
-            display: flex;
-            align-items: center;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid $light-gray;
-
-            &:last-child {
-                border-bottom: none;
-            }
-
-            .detail-icon {
-                font-size: 1.2rem;
-                color: $primary-purple;
-                margin-right: 0.75rem;
-            }
-
-            .detail-text {
-                font-size: 1rem;
-                color: $charcoal;
-            }
-        }
-    }
+            color: $charcoal;
+         }
+      }
+   }
 }
 
 /* Posts Card Styling */
 .home-posts-card {
-    @include card-base($white, $light-gray, 0 0.5rem 1rem rgba($primary-purple, 0.1));
+   @include card-base($white, $light-gray, 0 0.5rem 1rem rgba($primary-purple, 0.1));
 
-    &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 0.75rem 1.5rem rgba($primary-purple, 0.2);
-    }
+   &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0.75rem 1.5rem rgba($primary-purple, 0.2);
+   }
 
-    .home-post-title {
-        font-size: 1.5rem;
-        font-family: $font-primary;
-        font-weight: bold;
-        color: $primary-purple;
-        margin-bottom: 1.5rem;
-    }
+   .home-post-title {
+      font-size: 1.5rem;
+      font-family: $font-primary;
+      font-weight: bold;
+      color: $primary-purple;
+      margin-bottom: 1.5rem;
+   }
 
-    .posts-scroll-container {
-        max-height: 400px;
-        overflow-y: auto;
-        padding-right: 1rem;
+   .posts-scroll-container {
+      max-height: 400px;
+      overflow-y: auto;
+      padding-right: 1rem;
 
-        &::-webkit-scrollbar {
-            width: 8px;
-        }
+      &::-webkit-scrollbar {
+         width: 8px;
+      }
 
-        &::-webkit-scrollbar-track {
-            background: lighten($charcoal-extreme-light, 10%);
-            border-radius: 10px;
-        }
+      &::-webkit-scrollbar-track {
+         background: lighten($charcoal-extreme-light, 10%);
+         border-radius: 10px;
+      }
 
-        &::-webkit-scrollbar-thumb {
-            background-color: $primary-purple;
-            border-radius: 10px;
-            border: 2px solid $white;
-        }
+      &::-webkit-scrollbar-thumb {
+         background-color: $primary-purple;
+         border-radius: 10px;
+         border: 2px solid $white;
+      }
 
-        &::-webkit-scrollbar-thumb:hover {
-            background-color: darken($primary-purple, 10%);
-        }
-    }
+      &::-webkit-scrollbar-thumb:hover {
+         background-color: darken($primary-purple, 10%);
+      }
+   }
 
-    .speech-bubble {
-        position: relative;
-        padding: 1rem 2rem;
-        background-color: $charcoal-extreme-light;
-        border-radius: 1rem;
-        margin-bottom: 0.5rem;
+   .speech-bubble {
+      position: relative;
+      padding: 1rem 2rem;
+      background-color: $charcoal-extreme-light;
+      border-radius: 1rem;
+      margin-bottom: 0.5rem;
 
-        &::before {
-            content: "";
-            position: absolute;
-            bottom: -12px;
-            left: 30px;
-            width: 20px;
-            height: 15px;
-            background-color: $charcoal-extreme-light;
-            clip-path: polygon(0 0, 100% 0, 50% 100%);
-        }
+      &::before {
+         content: "";
+         position: absolute;
+         bottom: -12px;
+         left: 30px;
+         width: 20px;
+         height: 15px;
+         background-color: $charcoal-extreme-light;
+         clip-path: polygon(0 0, 100% 0, 50% 100%);
+      }
 
-        .post-text {
-            font-size: 1.05rem;
-            color: $charcoal;
-        }
+      .post-text {
+         font-size: 1.05rem;
+         color: $charcoal;
+      }
 
-        .like-info {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            position: absolute;
-            bottom: 10px;
-            right: 15px;
+      .like-info {
+         display: flex;
+         align-items: center;
+         gap: 0.25rem;
+         position: absolute;
+         bottom: 10px;
+         right: 15px;
 
-            .like-icon {
-                color: $primary-purple;
-                font-size: 1rem;
-            }
-
-            .like-count {
-                font-size: 0.875rem;
-                color: $charcoal;
-            }
-        }
-    }
-
-    .post-info {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 0rem;
-
-        .like-button {
-            @include button-base($primary-purple, $white, darken($primary-purple, 10%), $electric-violet-light, small);
-            margin-left: 4rem; // Remove the left margin entirely
-            margin-top: 0rem; // Ensure no top margin to prevent extra spacing
-            display: inline-block; // Make sure the button stays inline
-            position: relative;
-            margin-bottom: 4rem;
-        }
-
-        .post-date {
-            font-size: 0.875rem;
+         .like-icon {
             color: $primary-purple;
-            margin-top: 0rem; // Remove extra margin above the date
-            text-align: right;
-            position: relative; // Ensure it is aligned properly below the post
-            margin-bottom: 4rem;
-        }
-    }
+            font-size: 1rem;
+         }
+
+         .like-count {
+            font-size: 0.875rem;
+            color: $charcoal;
+         }
+      }
+   }
+
+   .post-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0rem;
+
+      .like-button {
+         @include button-base($primary-purple, $white, darken($primary-purple, 10%), $electric-violet-light, small);
+         margin-left: 4rem; // Remove the left margin entirely
+         margin-top: 0rem; // Ensure no top margin to prevent extra spacing
+         font-family:'Anton', sans-serif;
+         display: inline-block; // Make sure the button stays inline
+         position: relative;
+         margin-bottom: 4rem;
+      }
+
+      .post-date {
+         font-size: 0.875rem;
+         color: $primary-purple;
+         margin-top: 0rem; // Remove extra margin above the date
+         text-align: right;
+         position: relative; // Ensure it is aligned properly below the post
+         margin-bottom: 4rem;
+      }
+   }
 }
 
 /* Animation */
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+   from {
+      opacity: 0;
+      transform: translateY(20px);
+   }
+   to {
+      opacity: 1;
+      transform: translateY(0);
+   }
 }
 
 .user-card,
 .home-posts-card {
-    opacity: 0;
-    animation: fadeInUp 0.6s forwards;
+   opacity: 0;
+   animation: fadeInUp 0.6s forwards;
 }

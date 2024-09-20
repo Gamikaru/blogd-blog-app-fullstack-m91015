@@ -4,272 +4,266 @@
 
 // Grid container for blog posts
 .blog-posts-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); // Explicitly set 3 columns
-    gap: 1.5rem;
-    max-width: 100vw;
-    width: 100%;
-    padding-top: 7rem;
+   display: grid;
+   grid-template-columns: repeat(3, 1fr); // Explicitly set 3 columns
+   gap: 1.5rem;
+   max-width: 100vw;
+   width: 100%;
+   padding-top: 7rem;
 
-    @media (max-width: 992px) {
-        // Adjust breakpoint for 2 cards per row
-        grid-template-columns: repeat(2, 1fr);
-    }
+   @media (max-width: 992px) {
+      // Adjust breakpoint for 2 cards per row
+      grid-template-columns: repeat(2, 1fr);
+   }
 
-    @media (max-width: 768px) {
-        // Adjust breakpoint for 1 card per row
-        grid-template-columns: 1fr;
-    }
+   @media (max-width: 768px) {
+      // Adjust breakpoint for 1 card per row
+      grid-template-columns: 1fr;
+   }
 
-    @media (max-width: 576px) {
-        // Adjust breakpoint for 1 card per row
-        grid-template-columns: 1fr;
-        gap: 0.5rem;
-    }
+   @media (max-width: 576px) {
+      // Adjust breakpoint for 1 card per row
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+   }
 }
 
 // Blog Post Card Styling
 .bloggs-card-title {
-    .username {
-        display: block;
-        font-size: 1rem;
-        font-weight: 300;
-        color: $primary-purple;
-        font-family: $font-tertiary;
-        margin-bottom: 1rem; // Increase vertical space
-        padding: 0.5rem 1rem; // Add padding for visual clarity
-        border-radius: 0.5rem; // Add border radius for rounded corners
-        text-align: center; // Center the text
-    }
+   .username {
+      display: block;
+      font-size: 1rem;
+      font-weight: 300;
+      color: $primary-purple;
+      font-family: $font-tertiary;
+      margin-bottom: 1rem; // Increase vertical space
+      padding: 0.5rem 1rem; // Add padding for visual clarity
+      border-radius: 0.5rem; // Add border radius for rounded corners
+      text-align: center; // Center the text
+   }
 }
 
 // Blog Post Card Styling
 .bloggs-post-section {
-    @include card-base($white, $light-gray, 0 0.5rem 1.5rem rgba($primary-purple, 0.1));
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
+   @include card-base($white, $light-gray, 0 0.5rem 1.5rem rgba($primary-purple, 0.1));
+   transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
 
-    &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 0.75rem 1.5rem rgba($primary-purple, 0.2);
-    }
+   &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0.75rem 1.5rem rgba($primary-purple, 0.2);
+   }
 
-    .bloggs-card-header {
-        text-align: center;
-        color: $charcoal;
-        font-weight: bold;
-        font-size: 1.5rem;
-    }
+   .bloggs-card-header {
+      text-align: center;
+      color: $charcoal;
+      font-weight: bold;
+      font-size: 1.5rem;
+   }
 
-    .speech-bubble {
-        position: relative;
-        padding: 1rem 2rem;
-        background-color: $charcoal-extreme-light;
-        border-radius: 1rem;
-        margin-bottom: 1rem;
+   .speech-bubble {
+      position: relative;
+      padding: 1rem 2rem;
+      background-color: $charcoal-extreme-light;
+      border-radius: 1rem;
+      margin-bottom: 1rem;
 
-        &::before {
-            content: "";
-            position: absolute;
-            bottom: -12px;
-            left: 30px;
-            width: 20px;
-            height: 15px;
-            background-color: $charcoal-extreme-light;
-            clip-path: polygon(0 0, 100% 0, 50% 100%);
-        }
+      &::before {
+         content: "";
+         position: absolute;
+         bottom: -12px;
+         left: 30px;
+         width: 20px;
+         height: 15px;
+         background-color: $charcoal-extreme-light;
+         clip-path: polygon(0 0, 100% 0, 50% 100%);
+      }
 
-        .post-text {
-            font-size: 1.05rem;
-            color: $charcoal;
-            font-family: $font-secondary;
-            margin-bottom: 1rem;
-        }
-    }
+      .post-text {
+         font-size: 1.05rem;
+         color: $charcoal;
+         font-family: $font-secondary;
+         margin-bottom: 1rem;
+      }
+   }
 
-    .bloggs-body {
-        .post-interactions {
+   .bloggs-body {
+      .post-interactions {
+         display: flex;
+         align-items: center;
+         margin-bottom: 1rem;
+         margin-top: 2rem;
+
+         .like-section {
             display: flex;
             align-items: center;
-            margin-bottom: 1rem;
-            margin-top: 2rem;
+            margin-left: 2rem; // Adjust this value to move further right
 
-            .like-section {
-                display: flex;
-                align-items: center;
-                margin-left: 2rem; // Adjust this value to move further right
-
-                .heart-icon {
-                    color: $primary-purple;
-                    font-size: 1.2rem;
-                    margin-right: 5px;
-                }
-
-                .likes-count {
-                    color: $charcoal;
-                    font-size: 1rem;
-                }
+            .heart-icon {
+               color: $primary-purple;
+               font-size: 1.2rem;
+               margin-right: 5px;
             }
 
-            .like-button {
-                @include button-base(
-                    $primary-purple,
-                    $white,
-                    darken($primary-purple, 10%),
-                    $electric-violet-light,
-                    small
-                );
-                padding: 0.4rem 1.5rem;
-                font-size: 0.875rem;
-                font-family: "Anton", sans-serif;
-                margin-left: 1rem; // Adjust spacing between like button and like count
+            .likes-count {
+               color: $charcoal;
+               font-size: 1rem;
             }
+         }
 
-            .date-section {
-                font-size: 0.875rem;
-                padding-left: 7rem;
-                color: $charcoal;
-            }
-        }
-    }
+         .like-button {
+            @include button-base($primary-purple, $white, darken($primary-purple, 10%), $electric-violet-light, small);
+            padding: 0.4rem 1.5rem;
+            font-size: 0.875rem;
+            font-family: "Anton", sans-serif;
+            margin-left: 1rem; // Adjust spacing between like button and like count
+         }
+
+         .date-section {
+            font-size: 0.875rem;
+            padding-left: 7rem;
+            color: $charcoal;
+         }
+      }
+   }
 }
 
 // Blog Comments Section
 .bloggs-comments {
-    padding: 1rem;
-    background-color: $charcoal-extreme-light;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.5rem 1rem rgba($charcoal, 0.05);
-    margin-bottom: 1rem;
+   padding: 1rem;
+   background-color: $charcoal-extreme-light;
+   border-radius: 0.5rem;
+   box-shadow: 0 0.5rem 1rem rgba($charcoal, 0.05);
+   margin-bottom: 1rem;
 
-    .comment-author {
-        font-size: 1rem;
-        font-weight: 700;
-        color: $primary-purple;
-        font-family: "JetBrains Mono", monospace;
-        margin-bottom: 0.5rem;
+   .comment-author {
+      font-size: 1rem;
+      font-weight: 700;
+      color: $primary-purple;
+      font-family: "JetBrains Mono", monospace;
+      margin-bottom: 0.5rem;
 
-        @media (max-width: 576px) {
-            font-size: 0.875rem;
-        }
-    }
+      @media (max-width: 576px) {
+         font-size: 0.875rem;
+      }
+   }
 
-    .comment-text {
-        font-size: 1rem;
-        color: $charcoal;
-        font-family: $font-secondary;
-        margin-bottom: 1rem;
+   .comment-text {
+      font-size: 1rem;
+      color: $charcoal;
+      font-family: $font-secondary;
+      margin-bottom: 1rem;
 
-        @media (max-width: 576px) {
-            font-size: 0.875rem;
-        }
-    }
+      @media (max-width: 576px) {
+         font-size: 0.875rem;
+      }
+   }
 }
 
 // Comment Form
 .bloggs-comment-form {
-    margin-top: 1rem;
+   margin-top: 1rem;
 
-    .form-input {
-        border-radius: 0.5rem;
-        border: 1px solid $light-gray;
-        padding: 0.75rem;
-        font-family: $font-secondary;
-        font-size: 1rem;
-        color: $charcoal;
-        background-color: $white;
-        transition:
-            border-color 0.3s ease,
-            box-shadow 0.3s ease;
+   .form-input {
+      border-radius: 0.5rem;
+      border: 1px solid $light-gray;
+      padding: 0.75rem;
+      font-family: $font-secondary;
+      font-size: 1rem;
+      color: $charcoal;
+      background-color: $white;
+      transition:
+         border-color 0.3s ease,
+         box-shadow 0.3s ease;
 
-        &:focus {
-            outline: none;
-            border-color: $primary-purple;
-            box-shadow: 0 0 5px rgba($primary-purple, 0.5);
-        }
+      &:focus {
+         outline: none;
+         border-color: $primary-purple;
+         box-shadow: 0 0 5px rgba($primary-purple, 0.5);
+      }
 
-        @media (max-width: 576px) {
-            padding: 0.5rem;
-            font-size: 0.875rem;
-        }
-    }
+      @media (max-width: 576px) {
+         padding: 0.5rem;
+         font-size: 0.875rem;
+      }
+   }
 
-    .bloggs-submit-bttn {
-        background-color: $primary-purple;
-        color: $white;
-        padding: 0.5rem 1.5rem;
-        margin-top: 0.5rem;
-        border-radius: 0.5rem;
-        font-size: 1rem;
-        font-family: "Anton", sans-serif;
-        font-weight: 300;
-        letter-spacing: 0.1rem;
-        transition:
-            background-color 0.3s ease,
-            box-shadow 0.3s ease;
+   .bloggs-submit-bttn {
+      background-color: $primary-purple;
+      color: $white;
+      padding: 0.5rem 1.5rem;
+      margin-top: 0.5rem;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-family: "Anton", sans-serif;
+      font-weight: 300;
+      letter-spacing: 0.1rem;
+      transition:
+         background-color 0.3s ease,
+         box-shadow 0.3s ease;
 
-        &:hover {
-            background-color: darken($primary-purple, 10%);
-            box-shadow: 0 0.25rem 0.5rem rgba($charcoal, 0.1);
-        }
+      &:hover {
+         background-color: darken($primary-purple, 10%);
+         box-shadow: 0 0.25rem 0.5rem rgba($charcoal, 0.1);
+      }
 
-        &:focus {
-            background-color: darken($primary-purple, 12%);
-            box-shadow: 0 0 8px rgba($primary-purple, 0.6);
-            outline: none;
-        }
+      &:focus {
+         background-color: darken($primary-purple, 12%);
+         box-shadow: 0 0 8px rgba($primary-purple, 0.6);
+         outline: none;
+      }
 
-        &:active {
-            transform: scale(0.95);
-        }
+      &:active {
+         transform: scale(0.95);
+      }
 
-        @media (max-width: 576px) {
-            padding: 0.4rem 1.2rem;
-            font-size: 0.875rem;
-        }
-    }
+      @media (max-width: 576px) {
+         padding: 0.4rem 1.2rem;
+         font-size: 0.875rem;
+      }
+   }
 }
 
 // No Blog Posts message
 .no-blog-posts {
-    font-size: 1.4rem;
-    font-family: "JetBrains Mono", monospace;
-    color: $primary-purple;
-    text-align: center;
-    padding: 2rem;
-    background-color: $charcoal-extra-light;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.5rem 1rem rgba($charcoal, 0.05);
-    margin-top: 2rem;
+   font-size: 1.4rem;
+   font-family: "JetBrains Mono", monospace;
+   color: $primary-purple;
+   text-align: center;
+   padding: 2rem;
+   background-color: $charcoal-extra-light;
+   border-radius: 0.5rem;
+   box-shadow: 0 0.5rem 1rem rgba($charcoal, 0.05);
+   margin-top: 2rem;
 
-    @media (max-width: 576px) {
-        font-size: 1.2rem;
-        padding: 1.5rem;
-    }
+   @media (max-width: 576px) {
+      font-size: 1.2rem;
+      padding: 1.5rem;
+   }
 }
 
 // Loading Spinner
 .loading-spinner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   height: 100vh;
 }
 
 // Animation
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+   from {
+      opacity: 0;
+      transform: translateY(20px);
+   }
+   to {
+      opacity: 1;
+      transform: translateY(0);
+   }
 }
 
 .bloggs-post-section {
-    opacity: 0;
-    animation: fadeInUp 0.6s forwards;
+   opacity: 0;
+   animation: fadeInUp 0.6s forwards;
 }

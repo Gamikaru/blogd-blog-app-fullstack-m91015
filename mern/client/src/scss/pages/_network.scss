@@ -4,283 +4,283 @@
 
 /* Network Page container */
 .network-page-container {
-    @include page-container-mixin; // Use the mixin instead of @extend
+   @include page-container-mixin; // Use the mixin instead of @extend
 }
 
 /* Grid container for cards */
 .grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    max-width: 90vw;
-    width: 100%;
-    overflow: visible;
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+   gap: 2rem;
+   max-width: 90vw;
+   width: 100%;
+   overflow: visible;
 
-    @media (max-width: 768px) {
-        grid-template-columns: 1fr;
-    }
+   @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+   }
 }
 
 /* Network Card Styling */
 .network-card {
-    @include card-base($white, $light-gray, 0 0.5rem 1.5rem rgba($charcoal-light, 0.1));
-    border-radius: 15px;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
-    background: linear-gradient(145deg, $white, lighten($light-gray, 5%));
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
-    position: relative;
-    z-index: 0;
+   @include card-base($white, $light-gray, 0 0.5rem 1.5rem rgba($charcoal-light, 0.1));
+   border-radius: 15px;
+   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
+   background: linear-gradient(145deg, $white, lighten($light-gray, 5%));
+   transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+   position: relative;
+   z-index: 0;
 
-    &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 0 20px rgba($primary-purple, 0.2);
-        z-index: 10;
+   &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px rgba($primary-purple, 0.2);
+      z-index: 10;
 
-        // Show the status bubble and thought bubbles on hover
-        .network-card-body {
-            .top-section {
-                .initials-circle {
-                    &.has-status {
-                        &::before,
-                        &::after {
-                            opacity: 1;
-                            transform: translateY(-0.5rem); /* Move up smoothly */
-                        }
-                        .user-status {
-                            .status-bubble {
-                                opacity: 1;
-                                visibility: visible;
-                                transform: translateY(-1rem); /* Move up smoothly */
-                            }
-                        }
-                    }
-                }
+      // Show the status bubble and thought bubbles on hover
+      .network-card-body {
+         .top-section {
+            .initials-circle {
+               &.has-status {
+                  &::before,
+                  &::after {
+                     opacity: 1;
+                     transform: translateY(-0.5rem); /* Move up smoothly */
+                  }
+                  .user-status {
+                     .status-bubble {
+                        opacity: 1;
+                        visibility: visible;
+                        transform: translateY(-1rem); /* Move up smoothly */
+                     }
+                  }
+               }
             }
-        }
-    }
+         }
+      }
+   }
 
-    .network-card-body {
-        padding: 1.5rem;
-        font-size: 1rem;
-        color: $charcoal;
-        max-width: 100%;
-        margin: 0 auto;
-        position: relative;
+   .network-card-body {
+      padding: 1.5rem;
+      font-size: 1rem;
+      color: $charcoal;
+      max-width: 100%;
+      margin: 0 auto;
+      position: relative;
 
-        .top-section {
+      .top-section {
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         gap: 1rem;
+
+         .initials-circle {
+            background-color: $white;
+            border: 3px solid $primary-purple;
+            color: $primary-purple;
+            font-size: 2.5rem;
+            font-family: "Monoton", sans-serif;
+            border-radius: 50%;
+            width: 6rem;
+            height: 6rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 1;
+            position: relative;
+
+            // Add small bubbles for thought bubble only if .has-status is present
+            &.has-status {
+               &::before,
+               &::after {
+                  content: "";
+                  position: absolute;
+                  background-color: $primary-purple;
+                  border-radius: 50%;
+                  opacity: 0;
+                  transform: translateY(0);
+                  transition:
+                     opacity 0.3s ease,
+                     transform 0.3s ease;
+               }
+
+               // Smaller bubble (closest to initials)
+               &::before {
+                  width: 0.6rem;
+                  height: 0.6rem;
+                  top: 30%;
+                  left: 120%;
+                  transform: translate(-50%, -50%) translateY(0);
+               }
+
+               // Slightly larger bubble (between initials and status bubble)
+               &::after {
+                  width: 0.9rem;
+                  height: 0.9rem;
+                  top: 20%;
+                  left: 140%;
+                  transform: translate(-50%, -50%) translateY(0);
+               }
+            }
+
+            .user-status {
+               position: absolute;
+               top: -10px; /* Adjust as needed */
+               left: 160%; /* Adjust as needed */
+               z-index: 1000;
+
+               .status-bubble {
+                  position: relative;
+                  background-color: $primary-purple;
+                  color: $white;
+                  padding: 1rem 1.5rem;
+                  border-radius: 1.4rem;
+                  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                  opacity: 0;
+                  visibility: hidden;
+                  transform: translateY(0); /* Initial position */
+                  transition:
+                     opacity 0.3s ease,
+                     visibility 0.3s ease,
+                     transform 0.3s ease;
+                  z-index: 1001;
+                  font-family: "JetBrains Mono", monospace;
+                  font-size: 0.8rem;
+                  line-height: 1.2;
+                  white-space: normal;
+                  word-break: normal;
+                  overflow-wrap: normal;
+                  hyphens: none;
+                  max-width: 150px;
+
+                  // Thought bubble tail (optional)
+                  &::after {
+                     content: "";
+                     position: absolute;
+                     bottom: -10px;
+                     left: 20%;
+                     width: 0;
+                     height: 0;
+                     border: 10px solid transparent;
+                     border-top-color: $primary-purple;
+                  }
+               }
+            }
+         }
+      }
+
+      .user-info {
+         width: 100%;
+         text-align: center;
+
+         h5 {
+            color: rgba($charcoal-extra-light, 0.8);
+            font-family: "Anton", sans-serif;
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.2rem;
+         }
+
+         .user-details {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-
-            .initials-circle {
-                background-color: $white;
-                border: 3px solid $primary-purple;
-                color: $primary-purple;
-                font-size: 2.5rem;
-                font-family: "Monoton", sans-serif;
-                border-radius: 50%;
-                width: 6rem;
-                height: 6rem;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                line-height: 1;
-                position: relative;
-
-                // Add small bubbles for thought bubble only if .has-status is present
-                &.has-status {
-                    &::before,
-                    &::after {
-                        content: "";
-                        position: absolute;
-                        background-color: $primary-purple;
-                        border-radius: 50%;
-                        opacity: 0;
-                        transform: translateY(0);
-                        transition:
-                            opacity 0.3s ease,
-                            transform 0.3s ease;
-                    }
-
-                    // Smaller bubble (closest to initials)
-                    &::before {
-                        width: 0.6rem;
-                        height: 0.6rem;
-                        top: 30%;
-                        left: 120%;
-                        transform: translate(-50%, -50%) translateY(0);
-                    }
-
-                    // Slightly larger bubble (between initials and status bubble)
-                    &::after {
-                        width: 0.9rem;
-                        height: 0.9rem;
-                        top: 20%;
-                        left: 140%;
-                        transform: translate(-50%, -50%) translateY(0);
-                    }
-                }
-
-                .user-status {
-                    position: absolute;
-                    top: -10px; /* Adjust as needed */
-                    left: 160%; /* Adjust as needed */
-                    z-index: 1000;
-
-                    .status-bubble {
-                        position: relative;
-                        background-color: $primary-purple;
-                        color: $white;
-                        padding: 1rem 1.5rem;
-                        border-radius: 1.4rem;
-                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                        opacity: 0;
-                        visibility: hidden;
-                        transform: translateY(0); /* Initial position */
-                        transition:
-                            opacity 0.3s ease,
-                            visibility 0.3s ease,
-                            transform 0.3s ease;
-                        z-index: 1001;
-                        font-family: "JetBrains Mono", monospace;
-                        font-size: 0.8rem;
-                        line-height: 1.2;
-                        white-space: normal;
-                        word-break: normal;
-                        overflow-wrap: normal;
-                        hyphens: none;
-                        max-width: 150px;
-
-                        // Thought bubble tail (optional)
-                        &::after {
-                            content: "";
-                            position: absolute;
-                            bottom: -10px;
-                            left: 20%;
-                            width: 0;
-                            height: 0;
-                            border: 10px solid transparent;
-                            border-top-color: $primary-purple;
-                        }
-                    }
-                }
-            }
-        }
-
-        .user-info {
-            width: 100%;
-            text-align: center;
-
-            h5 {
-                color: rgba($charcoal-extra-light, 0.8);
-                font-family: "Anton", sans-serif;
-                font-size: 1.6rem;
-                font-weight: bold;
-                margin-bottom: 0.5rem;
-                letter-spacing: 0.2rem;
-            }
-
-            .user-details {
-                display: flex;
-                flex-direction: column;
-                gap: 0.75rem;
-                font-size: 1rem;
-
-                .detail-item {
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-
-                    svg {
-                        font-size: 1.2rem;
-                        color: $primary-purple;
-                    }
-
-                    span {
-                        font-size: 0.9rem;
-                        font-weight: 400;
-                    }
-                }
-            }
-        }
-
-        h6 {
+            gap: 0.75rem;
             font-size: 1rem;
-            color: $primary-purple;
-            font-family: "Anton", sans-serif;
-            margin-bottom: 0rem;
-            font-weight: normal;
-            padding-top: 2rem;
-            padding-bottom: 0rem;
-            text-align: center;
-        }
 
-        .recent-post {
-            margin-top: 1rem;
-            background: linear-gradient(145deg, lighten($light-gray, 5%), darken($light-gray, 5%));
-            padding: 0.75rem 1.25rem;
-            border-radius: 20px;
-            font-size: 0.5rem;
-            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.05);
+            .detail-item {
+               display: flex;
+               align-items: center;
+               gap: 0.5rem;
 
-            .post-content {
-                font-size: 0.7rem;
-                color: $charcoal;
-                font-family: "Inter", sans-serif;
-                white-space: normal;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                display: -webkit-box;
-                -webkit-line-clamp: 3;
-                line-clamp: 3;
-                -webkit-box-orient: vertical;
+               svg {
+                  font-size: 1.2rem;
+                  color: $primary-purple;
+               }
+
+               span {
+                  font-size: 0.9rem;
+                  font-weight: 400;
+               }
             }
-        }
-    }
+         }
+      }
+
+      h6 {
+         font-size: 1rem;
+         color: $primary-purple;
+         font-family: "Anton", sans-serif;
+         margin-bottom: 0rem;
+         font-weight: normal;
+         padding-top: 2rem;
+         padding-bottom: 0rem;
+         text-align: center;
+      }
+
+      .recent-post {
+         margin-top: 1rem;
+         background: linear-gradient(145deg, lighten($light-gray, 5%), darken($light-gray, 5%));
+         padding: 0.75rem 1.25rem;
+         border-radius: 20px;
+         font-size: 0.5rem;
+         box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.05);
+
+         .post-content {
+            font-size: 0.7rem;
+            color: $charcoal;
+            font-family: "Inter", sans-serif;
+            white-space: normal;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+         }
+      }
+   }
 }
 
 /* Responsive Design for the Network Page */
 @media (max-width: 768px) {
-    .network-card {
-        max-width: 100%;
-        padding: 1rem;
-    }
+   .network-card {
+      max-width: 100%;
+      padding: 1rem;
+   }
 
-    .network-card-body {
-        .top-section {
-            .initials-circle {
-                width: 3rem;
-                height: 3rem;
-                font-size: 1.5rem;
+   .network-card-body {
+      .top-section {
+         .initials-circle {
+            width: 3rem;
+            height: 3rem;
+            font-size: 1.5rem;
 
-                &::before,
-                &::after {
-                    display: none;
-                }
-
-                .user-status {
-                    display: none;
-                }
+            &::before,
+            &::after {
+               display: none;
             }
-        }
 
-        .user-info {
-            h5 {
-                font-size: 1.25rem;
+            .user-status {
+               display: none;
             }
-        }
-    }
+         }
+      }
 
-    .grid-container {
-        transition: grid-template-columns 0.3s ease;
-    }
+      .user-info {
+         h5 {
+            font-size: 1.25rem;
+         }
+      }
+   }
 
-    .network-card {
-        transition:
-            transform 0.3s ease,
-            box-shadow 0.3s ease;
-    }
+   .grid-container {
+      transition: grid-template-columns 0.3s ease;
+   }
+
+   .network-card {
+      transition:
+         transform 0.3s ease,
+         box-shadow 0.3s ease;
+   }
 }

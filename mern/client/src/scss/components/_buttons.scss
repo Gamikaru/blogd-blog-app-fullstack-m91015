@@ -3,33 +3,33 @@
 
 /* Button Types */
 .primary-btn {
-    @include button-base($primary-purple, $white, $electric-violet, $electric-violet-light, medium);
-    @extend .btn; // Ensure Bootstrap button styles are applied
+   @include button-base($primary-purple, $white, $electric-violet, $electric-violet-light, medium);
+   @extend .btn; // Ensure Bootstrap button styles are applied
 }
 
 .secondary-btn {
-    @include button-base($charcoal, $white, $primary-purple-dark, $primary-purple-light);
-    @extend .btn;
+   @include button-base($charcoal, $white, $primary-purple-dark, $primary-purple-light);
+   @extend .btn;
 }
 
 .success-btn {
-    @include button-base($success-green, $white, $success-light, $success-green);
-    @extend .btn-success; // Extending Bootstrap’s btn-success for more consistency
+   @include button-base($success-green, $white, $success-light, $success-green);
+   @extend .btn-success; // Extending Bootstrap’s btn-success for more consistency
 }
 
 .danger-btn {
-    @include button-base($bright-red, $white, $error-dark, $bright-red);
-    @extend .btn-danger;
+   @include button-base($bright-red, $white, $error-dark, $bright-red);
+   @extend .btn-danger;
 }
 
 /* Override Bootstrap defaults to prevent style conflicts */
 .btn {
-    & {
-        border: none; // Remove default Bootstrap border
-        box-shadow: none; // Remove Bootstrap default shadow for clean effect
-    }
-    &:hover,
-    &:focus {
-        text-decoration: none; // Ensure no underline on hover
-    }
+   & {
+      border: none; // Remove default Bootstrap border
+      box-shadow: none; // Remove Bootstrap default shadow for clean effect
+   }
+   &:hover,
+   &:focus {
+      text-decoration: none; // Ensure no underline on hover
+   }
 }

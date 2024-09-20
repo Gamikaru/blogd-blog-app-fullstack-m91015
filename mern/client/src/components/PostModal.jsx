@@ -26,8 +26,10 @@ export default function PostModal({ show, handleClose, onPostSuccess }) {
 			const response = await ApiClient.post("/post", newPost);
 			const createdPost = response.data.post;
 
+			console.log("New post created:", createdPost); // Log the created post to the console for debugging purposes
+
 			setPostContent(""); // Reset form content
-			onPostSuccess(createdPost); // Trigger the post addition to the userPosts list
+			onPostSuccess(createdPost); // Trigger the post addition to the global list
 			handleClose(); // Close modal
 		} catch (error) {
 			console.error("Error creating post:", error.message);

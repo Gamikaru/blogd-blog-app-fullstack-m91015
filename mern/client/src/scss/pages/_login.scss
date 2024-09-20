@@ -7,222 +7,221 @@
 Overall Container for Centering the Login Content
 -------------------------------------------------------------------------- */
 
-
 .login-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center; /* Vertically center the content */
-    background-color: rgba($charcoal-extra-light, 0.8);
-    height: 100vh; /* Full viewport height */
-    padding: 2rem; /* Better spacing on small screens */
-    overflow: hidden; /* Prevent scrolling */
-    margin: 0; /* Remove default margin */
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center; /* Vertically center the content */
+   background-color: rgba($charcoal-extra-light, 0.8);
+   height: 100vh; /* Full viewport height */
+   padding: 2rem; /* Better spacing on small screens */
+   overflow: hidden; /* Prevent scrolling */
+   margin: 0; /* Remove default margin */
 }
 
 .login-container {
-    width: 100%;
-    max-width: 1200px; /* Ensure content doesn't stretch too far on large screens */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%; /* Ensure the container takes full height */
+   width: 100%;
+   max-width: 1200px; /* Ensure content doesn't stretch too far on large screens */
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   height: 100%; /* Ensure the container takes full height */
 }
 
 .login-content {
-    width: 100%;
-    max-width: 800px; /* Limit the width of the content */
-    margin: 0 auto;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 0;
+   width: 100%;
+   max-width: 800px; /* Limit the width of the content */
+   margin: 0 auto;
+   text-align: center;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   margin-top: 0;
 }
 
 /* Adjust the logo to ensure it doesn't overlap the form */
 .logo-image {
-    width: 90%;
-    max-width: 400px;
-    transition: transform 0.3s ease;
-    position: relative;
-    z-index: 1; /* Keep the logo behind the login card and inputs */
-    bottom: 6rem;
+   width: 90%;
+   max-width: 400px;
+   transition: transform 0.3s ease;
+   position: relative;
+   z-index: 1; /* Keep the logo behind the login card and inputs */
+   bottom: 6rem;
 
-    &:hover {
-        transform: scale(1.05);
-    }
+   &:hover {
+      transform: scale(1.05);
+   }
 
-    @media (max-width: 1024px) {
-        width: 70%;
-        bottom: 10rem;
-    }
+   @media (max-width: 1024px) {
+      width: 70%;
+      bottom: 10rem;
+   }
 
-    @media (max-width: 768px) {
-        width: 60%;
-        bottom: 7rem;
-    }
+   @media (max-width: 768px) {
+      width: 60%;
+      bottom: 7rem;
+   }
 
-    @media (max-width: 480px) {
-        width: 50%;
-        bottom: 1.5rem;
-    }
+   @media (max-width: 480px) {
+      width: 50%;
+      bottom: 1.5rem;
+   }
 }
 
 .login-card-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: -8rem; /* Adjusted for better overlap */
+   width: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   margin-top: -8rem; /* Adjusted for better overlap */
 
-    @media (max-width: 768px) {
-        margin-top: -2rem; /* Reduce gap between card and logo */
-    }
+   @media (max-width: 768px) {
+      margin-top: -2rem; /* Reduce gap between card and logo */
+   }
 
-    @media (max-width: 480px) {
-        margin-top: -1rem;
-    }
+   @media (max-width: 480px) {
+      margin-top: -1rem;
+   }
 }
 
 .login-card {
-    background-color: $charcoal-extreme-light;
-    border-radius: 0.75rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    padding: 2rem;
-    width: 35%; /* Make card narrower */
-    max-width: 450px;
-    min-width: 280px;
-    position: relative;
-    z-index: 2; /* Ensure it's above the logo and other elements */
-    top: -8rem;
-    transition: transform 0.3s ease;
-    text-align: center;
+   background-color: $charcoal-extreme-light;
+   border-radius: 0.75rem;
+   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+   padding: 2rem;
+   width: 35%; /* Make card narrower */
+   max-width: 450px;
+   min-width: 280px;
+   position: relative;
+   z-index: 2; /* Ensure it's above the logo and other elements */
+   top: -8rem;
+   transition: transform 0.3s ease;
+   text-align: center;
 
-    &:hover {
-        transform: translateY(-5px);
-    }
+   &:hover {
+      transform: translateY(-5px);
+   }
 
-    @media (max-width: 1024px) {
-        width: 50%;
-        padding: 1.5rem;
-        top: -12rem;
-    }
+   @media (max-width: 1024px) {
+      width: 50%;
+      padding: 1.5rem;
+      top: -12rem;
+   }
 
-    @media (max-width: 768px) {
-        width: 65%;
-        padding: 1.5rem;
-        top: -14rem;
-    }
+   @media (max-width: 768px) {
+      width: 65%;
+      padding: 1.5rem;
+      top: -14rem;
+   }
 
-    @media (max-width: 480px) {
-        width: 80%;
-        padding: 1.2rem;
-        top: -4rem;
-    }
+   @media (max-width: 480px) {
+      width: 80%;
+      padding: 1.2rem;
+      top: -4rem;
+   }
 }
 
 /* --------------------------------------------------------------------------
 Input Container and Fields (with lilac glow on focus)
 -------------------------------------------------------------------------- */
 .login-input-container {
-    margin-bottom: 2rem;
-    margin-top: 2rem;
-    text-align: center;
-    width: 100%;
-    padding: 0 1rem;
+   margin-bottom: 2rem;
+   margin-top: 2rem;
+   text-align: center;
+   width: 100%;
+   padding: 0 1rem;
 }
 
 /* Ensure the inputs are clickable and not covered by other elements */
 .login-input-field {
-    width: 100%;
-    padding: 0.8rem;
-    font-size: 1rem;
-    background-color: $white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    position: relative;
-    z-index: 3; /* Ensure it's above other elements */
+   width: 100%;
+   padding: 0.8rem;
+   font-size: 1rem;
+   background-color: $white;
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   position: relative;
+   z-index: 3; /* Ensure it's above other elements */
 
-    &:focus {
-        box-shadow: 0 0 15px rgba($primary-purple, 0.6);
-        outline: none;
-        border-color: transparent;
-    }
+   &:focus {
+      box-shadow: 0 0 15px rgba($primary-purple, 0.6);
+      outline: none;
+      border-color: transparent;
+   }
 
-    @media (max-width: 480px) {
-        font-size: 0.9rem;
-        padding: 0.7rem;
-    }
+   @media (max-width: 480px) {
+      font-size: 0.9rem;
+      padding: 0.7rem;
+   }
 }
 
 /* --------------------------------------------------------------------------
 Submit Button Styling (with flicker effect on text hover)
 -------------------------------------------------------------------------- */
 .submit-btn {
-    background-color: $charcoal;
-    color: $white;
-    padding: 0.5rem 1rem;
-    font-family: "Anton", sans-serif;
-    font-size: x-large;
-    font-weight: 300;
-    border: none;
-    border-radius: 12px;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    cursor: pointer;
-    width: 50%;
-    transition:
-        color 0.3s ease,
-        text-shadow 0.3s ease,
-        box-shadow 0.3s ease,
-        transform 0.3s ease;
-    box-shadow:
-        0 0 10px rgba($primary-purple, 0.3),
-        0 0 20px rgba($primary-purple, 0.2);
+   background-color: $charcoal;
+   color: $white;
+   padding: 0.5rem 1rem;
+   font-family: "Anton", sans-serif;
+   font-size: x-large;
+   font-weight: 300;
+   border: none;
+   border-radius: 12px;
+   text-transform: uppercase;
+   letter-spacing: 3px;
+   cursor: pointer;
+   width: 50%;
+   transition:
+      color 0.3s ease,
+      text-shadow 0.3s ease,
+      box-shadow 0.3s ease,
+      transform 0.3s ease;
+   box-shadow:
+      0 0 10px rgba($primary-purple, 0.3),
+      0 0 20px rgba($primary-purple, 0.2);
 
-    &:hover {
-        color: rgba(rgb(199, 213, 255), 1);
-        text-shadow:
-            0 0 8px rgba($primary-purple, 0.8),
-            0 0 16px rgba($primary-purple, 0.6),
-            0 0 30px rgba($primary-purple, 1);
-        box-shadow:
-            0 0 20px rgba($primary-purple, 0.7),
-            0 0 40px rgba($primary-purple, 0.9);
-        animation: flicker-effect 0.2s infinite alternate;
-    }
+   &:hover {
+      color: rgba(rgb(199, 213, 255), 1);
+      text-shadow:
+         0 0 8px rgba($primary-purple, 0.8),
+         0 0 16px rgba($primary-purple, 0.6),
+         0 0 30px rgba($primary-purple, 1);
+      box-shadow:
+         0 0 20px rgba($primary-purple, 0.7),
+         0 0 40px rgba($primary-purple, 0.9);
+      animation: flicker-effect 0.2s infinite alternate;
+   }
 
-    &:active {
-        transform: scale(0.98);
-        box-shadow: none;
-    }
+   &:active {
+      transform: scale(0.98);
+      box-shadow: none;
+   }
 
-    @media (max-width: 768px) {
-        font-size: 1rem;
-    }
+   @media (max-width: 768px) {
+      font-size: 1rem;
+   }
 
-    @media (max-width: 480px) {
-        font-size: 0.9rem;
-        padding: 0.8rem 1.5rem; /* Adjust padding for smaller screens */
-    }
+   @media (max-width: 480px) {
+      font-size: 0.9rem;
+      padding: 0.8rem 1.5rem; /* Adjust padding for smaller screens */
+   }
 }
 
 /* Flicker Keyframe Animation for Neon Text Effect */
 @keyframes flicker-effect {
-    0% {
-        text-shadow: 0 0 5px rgba($primary-purple-light, 0.6);
-    }
-    50% {
-        text-shadow:
-            0 0 10px rgba($white, 1),
-            0 0 20px rgba($primary-purple, 0.8);
-    }
-    100% {
-        text-shadow:
-            0 0 8px rgba($primary-purple-light, 0.8),
-            0 0 16px rgba($primary-purple, 0.6);
-    }
+   0% {
+      text-shadow: 0 0 5px rgba($primary-purple-light, 0.6);
+   }
+   50% {
+      text-shadow:
+         0 0 10px rgba($white, 1),
+         0 0 20px rgba($primary-purple, 0.8);
+   }
+   100% {
+      text-shadow:
+         0 0 8px rgba($primary-purple-light, 0.8),
+         0 0 16px rgba($primary-purple, 0.6);
+   }
 }
 
 /* --------------------------------------------------------------------------
@@ -230,85 +229,85 @@ Register Link Styling (with cursor change)
 -------------------------------------------------------------------------- */
 /* Styling for the register-link container (no hover effect here) */
 .register-link {
-    margin-top: 1.5rem;
-    display: inline-block;
-    text-align: center;
-    font-size: 1.1rem;
-    font-family: "JetBrains Mono-Light", monospace;
-    color: $charcoal;
-    font-weight: 200;
-    cursor: pointer;
-    position: relative;
-    text-decoration: none;
+   margin-top: 1.5rem;
+   display: inline-block;
+   text-align: center;
+   font-size: 1.1rem;
+   font-family: "JetBrains Mono-Light", monospace;
+   color: $charcoal;
+   font-weight: 200;
+   cursor: pointer;
+   position: relative;
+   text-decoration: none;
 
-    /* No hover effect for the static "Not a member?" text */
+   /* No hover effect for the static "Not a member?" text */
 }
 
 /* Hover effect specifically for the "Register Now!" part */
 .register-link span {
-    font-weight: bold;
-    color: $charcoal;
-    position: relative;
-    cursor: pointer;
+   font-weight: bold;
+   color: $charcoal;
+   position: relative;
+   cursor: pointer;
 
-    &:hover {
-        color: rgba($white, 0.8);
-        text-shadow:
-            0px 0px 5px rgba($primary-purple, 0.8),
-            0px 0px 10px rgba($primary-purple, 0.6);
-    }
+   &:hover {
+      color: rgba($white, 0.8);
+      text-shadow:
+         0px 0px 5px rgba($primary-purple, 0.8),
+         0px 0px 10px rgba($primary-purple, 0.6);
+   }
 
-    &::after {
-        content: "";
-        position: absolute;
-        width: 100%;
-        height: 2px;
-        bottom: -5px;
-        left: 0;
-        background-color: rgba($primary-purple, 0.6);
-        visibility: hidden;
-        transform: scaleX(0);
-        transition: all 0.3s ease-in-out;
-        box-shadow:
-            0px 0px 5px rgba($primary-purple, 0.7),
-            0px 0px 10px rgba($primary-purple, 0.7);
-    }
+   &::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: rgba($primary-purple, 0.6);
+      visibility: hidden;
+      transform: scaleX(0);
+      transition: all 0.3s ease-in-out;
+      box-shadow:
+         0px 0px 5px rgba($primary-purple, 0.7),
+         0px 0px 10px rgba($primary-purple, 0.7);
+   }
 
-    &:hover::after {
-        visibility: visible;
-        transform: scaleX(1);
-        background-color: $white;
-        box-shadow:
-            0px 0px 5px rgba($primary-purple, 0.8),
-            0px 0px 10px rgba($primary-purple, 0.8);
-    }
+   &:hover::after {
+      visibility: visible;
+      transform: scaleX(1);
+      background-color: $white;
+      box-shadow:
+         0px 0px 5px rgba($primary-purple, 0.8),
+         0px 0px 10px rgba($primary-purple, 0.8);
+   }
 }
 
 @media (max-width: 480px) {
-    .register-link {
-        font-size: 1rem;
-    }
+   .register-link {
+      font-size: 1rem;
+   }
 }
 
 /* --------------------------------------------------------------------------
 Responsive Design Adjustments
 -------------------------------------------------------------------------- */
 @media (max-width: 768px) {
-    .login-content {
-        max-width: 85%;
-    }
+   .login-content {
+      max-width: 85%;
+   }
 
-    .login-card {
-        padding: 1.5rem;
-    }
+   .login-card {
+      padding: 1.5rem;
+   }
 }
 
 @media (max-width: 480px) {
-    .login-content {
-        max-width: 95%;
-    }
+   .login-content {
+      max-width: 95%;
+   }
 
-    .login-card {
-        padding: 1.2rem;
-    }
+   .login-card {
+      padding: 1.2rem;
+   }
 }
