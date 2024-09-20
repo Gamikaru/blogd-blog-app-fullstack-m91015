@@ -1,3 +1,5 @@
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Button, Card, Spinner } from "react-bootstrap";
 import {
@@ -6,12 +8,8 @@ import {
    FaEnvelope,
    FaMapMarkerAlt,
 } from "react-icons/fa";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import ApiClient from "../ApiClient";
-import { useUser } from "../UserContext";
-import PostModal from "./PostModal";
-import { usePostContext } from '../AppLayout'; // Import PostContext
+import Logger from "../../utils/Logger"; // Import Logger from utils barrel
+import { usePostContext, useUser } from "../../contexts"; // Import PostContext and UserContext from contexts barrel
 
 // UserCard Component
 const UserCard = ({
@@ -75,77 +73,65 @@ const UserCard = ({
 };
 
 // PostsCard Component
-const PostsCard = ({ userPosts, handleLike, likeStatus }) => (
-   <div className="home-post-card-container">
-      <Card className="home-posts-card">
-         <Card.Body>
-            <Card.Title className="home-post-title">Your Recent Posts!</Card.Title>
-            {userPosts.length > 0 ? (
-               <div className="posts-scroll-container">
-                  {userPosts.map((post) => (
-                     <div key={post._id} className="post-container">
-                        <div className="speech-bubble">
-                           <p className="post-text">{post.content}</p>
-                           <div className="like-info">
-                              <FontAwesomeIcon icon={faHeart} className="like-icon" />
-                              <span className="like-count">{post.likes}</span>
+const PostsCard = ({ userPosts, handleLike, likeStatus }) => {
+   // Sort posts by 'createdAt' date in descending order (newest first)
+   const sortedPosts = [...userPosts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+   return (
+      <div className="home-post-card-container">
+         <Card className="home-posts-card">
+            <Card.Body>
+               <Card.Title className="home-post-title">Your Recent Posts!</Card.Title>
+               {sortedPosts.length > 0 ? (
+                  <div className="posts-scroll-container">
+                     {sortedPosts.map((post) => (
+                        <div key={post._id} className="post-container">
+                           <div className="speech-bubble">
+                              <p className="post-text">{post.content}</p>
+                              <div className="like-info">
+                                 <FontAwesomeIcon icon={faHeart} className="like-icon" />
+                                 <span className="like-count">{post.likes}</span>
+                              </div>
+                           </div>
+                           <div className="post-info">
+                              <Button
+                                 className="like-button"
+                                 onClick={() => handleLike(post._id)}
+                                 disabled={likeStatus[post._id]}
+                              >
+                                 Like
+                              </Button>
+                              <span className="post-date">
+                                 {post.createdAt
+                                    ? new Date(post.createdAt).toLocaleDateString()
+                                    : "Date Unavailable"}
+                              </span>
                            </div>
                         </div>
-                        <div className="post-info">
-                           <Button
-                              className="like-button"
-                              onClick={() => handleLike(post._id)}
-                              disabled={likeStatus[post._id]}
-                           >
-                              Like
-                           </Button>
-                           <span className="post-date">
-                              {post.createdAt
-                                 ? new Date(post.createdAt).toLocaleDateString()
-                                 : "Date Unavailable"}
-                           </span>
-                        </div>
-                     </div>
-                  ))}
-               </div>
-            ) : (
-               <p>No posts available.</p>
-            )}
-         </Card.Body>
-      </Card>
-   </div>
-);
+                     ))}
+                  </div>
+               ) : (
+                  <p>No posts available.</p>
+               )}
+            </Card.Body>
+         </Card>
+      </div>
+   );
+};
 
 // HomePage Component
 export default function HomePage() {
    const { user, loading } = useUser();
-   const { userPosts, handleNewPost } = usePostContext(); // Access posts and handler from PostContext
+   const { userPosts, fetchPosts } = usePostContext(); // Access posts from PostContext
    const [likeStatus, setLikeStatus] = useState({});
    const [status, setStatus] = useState("");
-   const [showModal, setShowModal] = useState(false); // Modal visibility state
 
    useEffect(() => {
       if (user && user._id) {
          setStatus(user.status);
-         fetchPosts(); // Fetch posts when the component mounts
+         fetchPosts(user._id); // Fetch posts using PostContext when the component mounts
       }
-   }, [user]);
-
-   // Fetch user's posts
-   const fetchPosts = async () => {
-      try {
-         const response = await ApiClient.get(`/post/user/${user._id}`);
-         const data = response.data;
-
-         // Initialize like status for each post
-         const likeStatuses = {};
-         data.forEach((post) => (likeStatuses[post._id] = false));
-
-         setLikeStatus(likeStatuses); // Set like status for each post
-      } catch (error) {
-         console.error("Error fetching posts:", error);
-      }
-   };
+   }, [user, fetchPosts]);
 
    // Handle liking a post
    const handleLike = async (postId) => {
@@ -154,13 +140,9 @@ export default function HomePage() {
          const updatedPost = response.data;
 
          // Update the post with the new like count
-         const updatedPosts = userPosts.map((post) =>
-            post._id === postId ? updatedPost : post
-         );
-
          setLikeStatus((prev) => ({ ...prev, [postId]: true })); // Mark this post as liked
       } catch (error) {
-         console.error("Error liking post:", error);
+         Logger.error("Error liking post:", error);
       }
    };
 
@@ -169,7 +151,7 @@ export default function HomePage() {
       try {
          await ApiClient.put(`/user/${user._id}/status`, { status: newStatus });
       } catch (error) {
-         console.error("Error updating status:", error);
+         Logger.error("Error updating status:", error);
       }
    };
 
@@ -186,9 +168,7 @@ export default function HomePage() {
          <div className="page-container">
             <div className="grid-container">
                <UserCard
-                  userInitials={`${user.firstName.charAt(0)}${user.lastName.charAt(
-                     0
-                  )}`}
+                  userInitials={`${user.firstName.charAt(0)}${user.lastName.charAt(0)}`}
                   user={user}
                   updateUserStatus={updateUserStatus}
                   status={status}
@@ -198,11 +178,6 @@ export default function HomePage() {
                   userPosts={userPosts} // Use posts from PostContext
                   handleLike={handleLike}
                   likeStatus={likeStatus}
-               />
-               <PostModal
-                  show={showModal}
-                  handleClose={() => setShowModal(false)}
-                  onPostSuccess={handleNewPost} // Use handleNewPost from PostContext
                />
             </div>
          </div>

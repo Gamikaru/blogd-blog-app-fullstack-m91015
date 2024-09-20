@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
-import { useUser } from "../UserContext";
-import ApiClient from "../ApiClient";
+import { useUser } from "../../contexts"; // Import useUser from contexts barrel
+import ApiClient from "../../services/api/ApiClient";
 import { FaEnvelope, FaBriefcase, FaMapMarkerAlt } from "react-icons/fa";
+import Logger from "../../utils/Logger";
 
 export default function Network() {
 	const { user } = useUser(); // Access the user from context
@@ -13,7 +14,7 @@ export default function Network() {
 
 	// Refactored useEffect to fetch both users and posts simultaneously
 	useEffect(() => {
-		console.log("Network component mounted, fetching users and posts...");
+		Logger.info("Network component mounted, fetching users and posts...");
 		fetchData();
 	}, []);
 
@@ -26,13 +27,13 @@ export default function Network() {
 				ApiClient.get("/post"), // Fetch posts
 			]);
 
-			console.log("Users fetched:", usersResponse.data);
-			console.log("Posts fetched:", postsResponse.data);
+			Logger.info("Users fetched:", usersResponse.data);
+			Logger.info("Posts fetched:", postsResponse.data);
 
 			setUsers(usersResponse.data); // Set user data
 			setUserPosts(postsResponse.data); // Set post data
 		} catch (error) {
-			console.error("Error fetching data:", error);
+			Logger.error("Error fetching data:", error);
 			setError("Failed to fetch users or posts");
 		} finally {
 			setLoading(false); // Stop loading after fetching both users and posts

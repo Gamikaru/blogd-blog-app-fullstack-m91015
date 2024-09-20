@@ -8,7 +8,7 @@ import './scss/main.scss'; // Import your global SCSS file
  * main.jsx: The entry point of the application where React renders the App component.
  */
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <React.Fragment>
-        <App />
-    </React.Fragment>
+   <React.Fragment>
+      <App />
+   </React.Fragment>
 );
