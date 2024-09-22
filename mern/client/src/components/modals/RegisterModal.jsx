@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import Card from "react-bootstrap/Card";
-import Modal from "react-bootstrap/Modal";
-import Toast from "react-bootstrap/Toast";
+import { Modal, Card, Toast } from "react-bootstrap"; // Import Modal, Card, and Toast components from react-bootstrap
 import ApiClient from "../../services/api/ApiClient";
-import { useUserUpdate } from "../../contexts"; // Get useUserUpdate from UserContext
+import { useUserUpdate, usePublicModalContext } from "../../contexts"; // Import useUserUpdate and useModalContext hooks
 import { useCookies } from "react-cookie"; // Import for managing cookies
+import Logger from "../../utils/Logger"; // Import Logger utility
 
-export default function RegisterModal({ show, handleClose, onRegisterSuccess }) {
+
+export default function RegisterModal() {
    const [registerForm, setRegisterForm] = useState({
       firstName: "",
       lastName: "",
@@ -26,9 +26,14 @@ export default function RegisterModal({ show, handleClose, onRegisterSuccess }) 
    const [errors, setErrors] = useState({}); // Error state for form validation
    const setUser = useUserUpdate(); // Get setUser from UserContext
    const [cookies, setCookie] = useCookies(["PassBloggs", "userID"]); // Use cookies for token management
+   const { showModal, togglePublicModal } = usePublicModalContext(); // Use public modal context
+
+   // Add a console log to debug modal visibility and type
+   Logger.info("RegisterModal - showModal:", showModal, "modalType:", modalType);
 
    // Function to update the registration form state
    function updateRegisterForm(value) {
+      Logger.info("Updating register form", value);
       setRegisterForm((prev) => ({ ...prev, ...value }));
    }
 
@@ -48,16 +53,19 @@ export default function RegisterModal({ show, handleClose, onRegisterSuccess }) 
       if (!registerForm.occupation) newErrors.occupation = "Occupation is required";
       if (!registerForm.location) newErrors.location = "Location is required";
       setErrors(newErrors);
+      Logger.info("Form validation errors", newErrors);
       return Object.keys(newErrors).length === 0;
    }
 
    // Function to handle form submission
    async function handleRegister(e) {
       e.preventDefault();
+      Logger.info("Form submitted", registerForm);
 
       if (!validateForm()) {
          setToastMessage("Please fill out all required fields.");
          setShowErrorToast(true);
+         Logger.warn("Form validation failed");
          return;
       }
 
@@ -71,14 +79,16 @@ export default function RegisterModal({ show, handleClose, onRegisterSuccess }) 
       };
 
       setLoading(true); // Set loading state
+      Logger.info("Sending registration data to API", capitalizedForm);
 
       try {
-         console.log("Sending registration request to API...");
-         const response = await ApiClient.post("/user/register", capitalizedForm); // Using camelCase keys in registerForm
+         const response = await ApiClient.post("/user/register", capitalizedForm);
+         Logger.info("API response received", response);
 
          if (response.status !== 201) {
             setToastMessage("Registration failed. Please try again.");
             setShowErrorToast(true);
+            Logger.error("Registration failed with status", response.status);
             return;
          }
 
@@ -88,13 +98,13 @@ export default function RegisterModal({ show, handleClose, onRegisterSuccess }) 
             setCookie("PassBloggs", response.data.token, { path: "/", maxAge: 24 * 60 * 60 });
             setCookie("userID", userData._id, { path: "/", maxAge: 24 * 60 * 60 });
 
-            setUser(userData); // Set user context
-            console.log('Registration successful and user set in context');
-
-            // Trigger success callback to close modal and show success toast
-            onRegisterSuccess();
+            setUser(userData); // Set user in UserContext
             setToastMessage("Registration successful!");
             setShowSuccessToast(true);
+            Logger.info("Registration successful, user data set", userData);
+
+            // Close the modal after successful registration
+            togglePublicModal();
          }
 
          // Reset form after successful registration
@@ -110,17 +120,18 @@ export default function RegisterModal({ show, handleClose, onRegisterSuccess }) 
             authLevel: "basic",
          });
       } catch (error) {
-         console.error("Error during registration:", error.message);
          setToastMessage("Registration failed. Please try again.");
          setShowErrorToast(true);
+         Logger.error("Registration failed with error", error);
       } finally {
          setLoading(false); // Reset loading state
+         Logger.info("Loading state reset");
       }
    }
 
-   // List of capital cities
    const capitalCities = [
-      "Washington, D.C.", "Ottawa", "Mexico City", "London", "Paris", "Berlin", "Rome", "Madrid", "Tokyo", "Beijing", "Canberra", "Brasília", "Moscow", "New Delhi", "Cairo", "Buenos Aires", "Ankara", "Seoul", "Bangkok", "Jakarta"
+      "Washington, D.C.", "Ottawa", "Mexico City", "London", "Paris", "Berlin", "Rome", "Madrid", "Tokyo", "Beijing",
+      "Canberra", "Brasília", "Moscow", "New Delhi", "Cairo", "Buenos Aires", "Ankara", "Seoul", "Bangkok", "Jakarta"
    ];
 
    return (
@@ -151,7 +162,14 @@ export default function RegisterModal({ show, handleClose, onRegisterSuccess }) 
             </Toast.Body>
          </Toast>
 
-         <Modal show={show} onHide={handleClose} centered className="register-modal-container">
+         {/* Modal */}
+         <Modal
+            show={showModal}
+            onHide={togglePublicModal}
+            centered
+            className="register-modal-container"
+            style={{ visibility: 'visible', display: 'block', zIndex: 3000 }}
+         >
             <Modal.Header closeButton className="register-modal-header">
                <Modal.Title className="modal-title">Register</Modal.Title>
             </Modal.Header>
@@ -166,9 +184,7 @@ export default function RegisterModal({ show, handleClose, onRegisterSuccess }) 
                                  placeholder="First Name"
                                  id="register_first_name"
                                  value={registerForm.firstName}
-                                 onChange={(e) =>
-                                    updateRegisterForm({ firstName: e.target.value })
-                                 }
+                                 onChange={(e) => updateRegisterForm({ firstName: e.target.value })}
                                  required
                                  className={`register-modal-input ${errors.firstName ? 'is-invalid' : ''}`}
                               />
@@ -180,15 +196,14 @@ export default function RegisterModal({ show, handleClose, onRegisterSuccess }) 
                                  placeholder="Last Name"
                                  id="register_last_name"
                                  value={registerForm.lastName}
-                                 onChange={(e) =>
-                                    updateRegisterForm({ lastName: e.target.value })
-                                 }
+                                 onChange={(e) => updateRegisterForm({ lastName: e.target.value })}
                                  required
                                  className={`register-modal-input ${errors.lastName ? 'is-invalid' : ''}`}
                               />
                               {errors.lastName && <div className="invalid-feedback">{errors.lastName}</div>}
                            </div>
                         </div>
+
                         <div className="row">
                            <div className="col-md-6 mb-3">
                               <input
@@ -196,9 +211,7 @@ export default function RegisterModal({ show, handleClose, onRegisterSuccess }) 
                                  placeholder="Email"
                                  id="register_email"
                                  value={registerForm.email}
-                                 onChange={(e) =>
-                                    updateRegisterForm({ email: e.target.value })
-                                 }
+                                 onChange={(e) => updateRegisterForm({ email: e.target.value })}
                                  required
                                  className={`register-modal-input ${errors.email ? 'is-invalid' : ''}`}
                               />
@@ -210,9 +223,7 @@ export default function RegisterModal({ show, handleClose, onRegisterSuccess }) 
                                  placeholder="Password"
                                  id="register_password"
                                  value={registerForm.password}
-                                 onChange={(e) =>
-                                    updateRegisterForm({ password: e.target.value })
-                                 }
+                                 onChange={(e) => updateRegisterForm({ password: e.target.value })}
                                  required
                                  className={`register-modal-input ${errors.password ? 'is-invalid' : ''}`}
                                  autoComplete="current-password"
@@ -220,15 +231,14 @@ export default function RegisterModal({ show, handleClose, onRegisterSuccess }) 
                               {errors.password && <div className="invalid-feedback">{errors.password}</div>}
                            </div>
                         </div>
+
                         <div className="row">
                            <div className="col-md-6 mb-3">
                               <input
                                  type="date"
                                  id="register_birthdate"
                                  value={registerForm.birthDate}
-                                 onChange={(e) =>
-                                    updateRegisterForm({ birthDate: e.target.value })
-                                 }
+                                 onChange={(e) => updateRegisterForm({ birthDate: e.target.value })}
                                  required
                                  className={`register-modal-input ${errors.birthDate ? 'is-invalid' : ''}`}
                               />
@@ -240,23 +250,20 @@ export default function RegisterModal({ show, handleClose, onRegisterSuccess }) 
                                  placeholder="Occupation"
                                  id="register_occupation"
                                  value={registerForm.occupation}
-                                 onChange={(e) =>
-                                    updateRegisterForm({ occupation: e.target.value })
-                                 }
+                                 onChange={(e) => updateRegisterForm({ occupation: e.target.value })}
                                  required
                                  className={`register-modal-input ${errors.occupation ? 'is-invalid' : ''}`}
                               />
                               {errors.occupation && <div className="invalid-feedback">{errors.occupation}</div>}
                            </div>
                         </div>
+
                         <div className="row">
                            <div className="col-md-6 mb-3">
                               <select
                                  id="register_location"
                                  value={registerForm.location}
-                                 onChange={(e) =>
-                                    updateRegisterForm({ location: e.target.value })
-                                 }
+                                 onChange={(e) => updateRegisterForm({ location: e.target.value })}
                                  required
                                  className={`register-modal-input ${errors.location ? 'is-invalid' : ''}`}
                               >
@@ -275,13 +282,12 @@ export default function RegisterModal({ show, handleClose, onRegisterSuccess }) 
                                  placeholder="Status"
                                  id="register_status"
                                  value={registerForm.status}
-                                 onChange={(e) =>
-                                    updateRegisterForm({ status: e.target.value })
-                                 }
-                                 className="register-modal-input" // Optional field
+                                 onChange={(e) => updateRegisterForm({ status: e.target.value })}
+                                 className="register-modal-input"
                               />
                            </div>
                         </div>
+
                         <button type="submit" className="register-submit-btn w-100" disabled={loading}>
                            {loading ? "Submitting..." : "Submit"}
                         </button>

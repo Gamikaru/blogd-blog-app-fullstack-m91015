@@ -2,15 +2,16 @@ import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { useUser, useModalContext, usePostContext } from "../../contexts"; // Import UserContext, ModalContext, and PostContext
+import { useUser, usePrivateModalContext, usePostContext } from "../../contexts"; // Import UserContext, ModalContext, and PostContext
 import Logger from "../../utils/Logger"; // Import Logger
 
 export default function PostModal() {
-   const [postContent, setPostContent] = useState("");
+   const [postContent, setPostContent] = useState(""); // State to hold post content
    const { user } = useUser(); // Get user from UserContext
-   const { handleNewPost } = usePostContext(); // Use handleNewPost from PostContext
-   const { showModal, toggleModal } = useModalContext(); // Use the modal state from ModalContext
+   const { handleNewPost } = usePostContext(); // Get handleNewPost from PostContext
+   const { showModal, togglePrivateModal, modalType } = usePrivateModalContext(); // Get showModal, togglePrivateModal, and modalType from ModalContext
 
+   // Handle the post submission
    const handlePostSubmit = (e) => {
       e.preventDefault();
 
@@ -19,17 +20,22 @@ export default function PostModal() {
          return;
       }
 
-      // Call handleNewPost with only content (userId will be handled by the backend)
+      // Call handleNewPost with only content (userId is handled by backend)
       handleNewPost(postContent);
-      setPostContent(""); // Reset form content
-      toggleModal(); // Close modal using ModalContext
+      setPostContent(""); // Reset form content after submission
+      togglePrivateModal(); // Close modal using ModalContext
       Logger.info("Post submitted", { user, postContent });
    };
 
    return (
-      <Modal show={showModal} onHide={toggleModal} centered className="post-modal-container">
+      <Modal
+         show={showModal && modalType === 'post'} // Only show if modalType is 'post'
+         onHide={() => togglePrivateModal()} // Close modal on hide
+         centered
+         className="post-modal-container"
+      >
          <Modal.Header closeButton className="post-modal-header">
-            <Modal.Title className="modal-title">Create Post</Modal.Title>
+            <Modal.Title>Create Post</Modal.Title>
          </Modal.Header>
          <Modal.Body className="post-modal-body">
             <Form onSubmit={handlePostSubmit} className="post-form">

@@ -1,55 +1,55 @@
-// scss/themes/_dark.scss
+// // scss/themes/_dark.scss
 
-@import "../abstracts/variables";
-@import "../abstracts/mixins";
-@import "../abstracts/functions";
+// @import "../abstracts/variables";
+// @import "../abstracts/mixins";
+// @import "../abstracts/functions";
 
-body {
-   background-color: $dark-background;
-   color: $dark-text;
-}
+// body {
+//    background-color: $dark-background;
+//    color: $dark-text;
+// }
 
-.navbar,
-.sidebar {
-   background-color: darken($dark-background, 5%);
-   color: $dark-text;
+// .navbar,
+// .sidebar {
+//    background-color: darken($dark-background, 5%);
+//    color: $dark-text;
 
-   .nav-link,
-   .sidebar-link {
-      color: $dark-text;
-      transition: color 0.3s ease;
+//    .nav-link,
+//    .sidebar-link {
+//       color: $dark-text;
+//       transition: color 0.3s ease;
 
-      &:hover {
-         color: lighten($primary-purple, 10%);
-      }
-   }
-}
+//       &:hover {
+//          color: lighten($primary-purple, 10%);
+//       }
+//    }
+// }
 
-button,
-input,
-textarea {
-   background-color: $dark-background;
-   color: $dark-text;
-   border-color: $electric-violet;
+// button,
+// input,
+// textarea {
+//    background-color: $dark-background;
+//    color: $dark-text;
+//    border-color: $electric-violet;
 
-   &:focus {
-      border-color: lighten($electric-violet, 10%);
-   }
-}
+//    &:focus {
+//       border-color: lighten($electric-violet, 10%);
+//    }
+// }
 
-.card {
-   background-color: $charcoal;
-   color: $dark-text;
-   border-color: darken($charcoal, 20%);
-   box-shadow: $box-shadow-heavy;
-   border-radius: $border-radius;
+// .card {
+//    background-color: $charcoal;
+//    color: $dark-text;
+//    border-color: darken($charcoal, 20%);
+//    box-shadow: $box-shadow-heavy;
+//    border-radius: $border-radius;
 
-   &:hover {
-      box-shadow: $box-shadow-light;
-   }
-}
+//    &:hover {
+//       box-shadow: $box-shadow-light;
+//    }
+// }
 
-.footer {
-   background-color: darken($dark-background, 10%);
-   color: $dark-text;
-}
+// .footer {
+//    background-color: darken($dark-background, 10%);
+//    color: $dark-text;
+// }

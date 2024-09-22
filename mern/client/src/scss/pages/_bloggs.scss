@@ -25,9 +25,13 @@
    transition: transform 0.3s ease;
    margin-top: $spacing-extra-large;
    box-shadow: $box-shadow-light;
+   background-color: $white;
+   border-radius: 1rem;
+   padding: $spacing-medium;
 
    &:hover {
       transform: translateY(-5px);
+      box-shadow: $box-shadow-heavy;
    }
 
    @media (max-width: $breakpoint-md) {
@@ -53,6 +57,7 @@
    transition: transform 0.3s ease;
    width: 100%;
    height: 100%;
+   border-radius: 1rem;
 
    &:hover {
       @include shadow-heavy;
@@ -106,6 +111,8 @@
          @include button-base($primary-purple, $white, darken($primary-purple, 10%), $primary-purple-light);
          margin-right: $spacing-small;
          font-family: "Anton", sans-serif;
+         padding: 0.5rem 1.5rem;
+         border-radius: 0.5rem;
       }
 
       // Like section containing heart icon and like count
@@ -144,6 +151,7 @@
 
    .comment-author {
       color: $primary-purple;
+      font-weight: bold;
       margin-bottom: $spacing-small;
    }
 

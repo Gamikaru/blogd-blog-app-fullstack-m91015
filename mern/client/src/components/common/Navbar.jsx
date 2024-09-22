@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { FaBars } from "react-icons/fa";
 import { useCookies } from "react-cookie";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useUser, useModalContext, useNotificationContext } from "../../contexts"; // Import contexts
+import { useUser, useNotificationContext } from "../../contexts"; // Import contexts
 import Logger from "../../utils/Logger"; // Import Logger
 import Logo from "../common/Logo"; // Import the separate Logo component
 import NavbarButtons from "../common/NavbarButtons"; // Import the separate NavbarButtons component

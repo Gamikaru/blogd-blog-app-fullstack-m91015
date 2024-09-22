@@ -1,11 +1,13 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
-import { AppLayout, PrivateRoute } from './components/layout'; // Import AppLayout and PrivateRoute from layout barrel
-import { Bloggs, HomePage, Network, Admin } from './components/features'; // Import all features from features barrel
-import { UserProvider, useUser, PostProvider, ModalProvider, NotificationProvider } from './contexts'; // Import all contexts from contexts barrel
-import  Logger  from './utils/Logger'; // Import Logger utility
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import LoginPage from './components/auth/LoginPage'; // Import LoginPage component
-import { RegisterModal } from './components/modals'; // Import RegisterModal component
+import { Admin, Bloggs, HomePage, Network } from './components/features'; // Import all features from features barrel
+import { AppLayout, PrivateRoute } from './components/layout'; // Import AppLayout and PrivateRoute from layout barrel
+import PostModal from './components/modals/PostModal';
+import RegisterModal from './components/modals/RegisterModal';
+import { NotificationProvider, PostProvider, UserProvider, PublicModalProvider, PrivateModalProvider, usePublicModalContext, usePrivateModalContext } from './contexts'; // Import context providers and hooks
+import Logger from './utils/Logger'; // Import Logger utility
+import { useUser } from './contexts/UserContext'; // Import user context
 
 /**
  * RedirectIfLoggedIn: Component to redirect users if they are already logged in.
@@ -15,11 +17,31 @@ const RedirectIfLoggedIn = ({ children }) => {
    Logger.info(`RedirectIfLoggedIn: User is ${user ? 'logged in' : 'not logged in'}`); // Debugging log
 
    if (loading) {
+      Logger.info('RedirectIfLoggedIn: Loading user data...');
       return <div>Loading...</div>;  // Wait until loading is complete
    }
 
    // Redirect to home if the user is logged in
+   Logger.info(`RedirectIfLoggedIn: ${user ? 'Redirecting to home' : 'Rendering children'}`);
    return user ? <Navigate to="/" /> : children;
+};
+
+/**
+ * ModalManager: Handles rendering of modals based on context values.
+ */
+const ModalManager = () => {
+   const { modalType: publicModalType, showModal: showPublicModal } = usePublicModalContext();
+   const { modalType: privateModalType, showModal: showPrivateModal } = usePrivateModalContext();
+
+   return (
+      <>
+         {/* Conditionally render public modals */}
+         {showPublicModal && publicModalType === 'register' && <RegisterModal />}
+
+         {/* Conditionally render private modals */}
+         {showPrivateModal && privateModalType === 'post' && <PostModal />}
+      </>
+   );
 };
 
 /**
@@ -29,37 +51,41 @@ const App = () => {
    Logger.info('App component rendered'); // Debugging log
 
    return (
-      <UserProvider>
-         <PostProvider> {/* Wrap the app with PostProvider */}
-            <ModalProvider> {/* Wrap the app with ModalProvider for modal handling */}
-               <NotificationProvider> {/* Wrap the app with NotificationProvider */}
-                  <BrowserRouter>
-                     <Routes>
-                        {/* Public Routes */}
-                        <Route path="/login" element={<RedirectIfLoggedIn><LoginPage /></RedirectIfLoggedIn>} />
-                        <Route path="/register" element={<RedirectIfLoggedIn><RegisterModal /></RedirectIfLoggedIn>} />
+      <PublicModalProvider> {/* Wrap the app with PublicModalProvider for public modals */}
+         <UserProvider>
+            <PostProvider> {/* Wrap the app with PostProvider */}
+               <PrivateModalProvider> {/* Wrap the app with PrivateModalProvider for private modals */}
+                  <NotificationProvider> {/* Wrap the app with NotificationProvider */}
+                     <BrowserRouter>
+                        <Routes>
+                           {/* Public Routes */}
+                           <Route path="/login" element={<RedirectIfLoggedIn><LoginPage /></RedirectIfLoggedIn>} />
 
-                        {/* Private Routes */}
-                        <Route
-                           path="/"
-                           element={
-                              <PrivateRoute>
-                                 <AppLayout />
-                              </PrivateRoute>
-                           }
-                        >
-                           <Route path="/" element={<HomePage />} />
-                           <Route path="/bloggs" element={<Bloggs />} />
-                           <Route path="/admin" element={<Admin />} />
-                           <Route path="/network" element={<Network />} />
-                           <Route path="*" element={<h1>Page Not Found</h1>} /> {/* Simple fallback */}
-                        </Route>
-                     </Routes>
-                  </BrowserRouter>
-               </NotificationProvider>
-            </ModalProvider>
-         </PostProvider>
-      </UserProvider>
+                           {/* Private Routes */}
+                           <Route
+                              path="/"
+                              element={
+                                 <PrivateRoute>
+                                    <AppLayout />
+                                 </PrivateRoute>
+                              }
+                           >
+                              <Route path="/" element={<HomePage />} />
+                              <Route path="/bloggs" element={<Bloggs />} />
+                              <Route path="/admin" element={<Admin />} />
+                              <Route path="/network" element={<Network />} />
+                              <Route path="*" element={<h1>Page Not Found</h1>} /> {/* Simple fallback */}
+                           </Route>
+                        </Routes>
+
+                        {/* Modal Manager handles rendering modals based on context */}
+                        <ModalManager />
+                     </BrowserRouter>
+                  </NotificationProvider>
+               </PrivateModalProvider>
+            </PostProvider>
+         </UserProvider>
+      </PublicModalProvider>
    );
 };
 

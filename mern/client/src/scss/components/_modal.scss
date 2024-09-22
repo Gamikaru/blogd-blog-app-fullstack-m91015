@@ -4,23 +4,27 @@
 // Modal Container
 .register-modal-container,
 .post-modal-container {
-   @include flex-center;
+   display: flex !important; // Make sure it's displayed
+   visibility: visible !important;
+   justify-content: center;
+   align-items: center;
    position: fixed;
    top: 0;
    left: 0;
    width: 100vw;
    height: 100vh;
-   z-index: 1050;
-   background-color: rgba($charcoal-extra-light, 0.8); // Centralized charcoal extra light
+   z-index: 3000;
+   background-color: rgba($charcoal-extra-light, 0.8);
 }
 
 // Modal
 .register-modal,
 .post-modal {
-   @include modal-base(); // Use modal mixin for styling
    width: 90%;
    max-width: 500px;
    overflow: hidden;
+   z-index: 3001; // Ensure modal content is on top of the background
+   position: relative;
 
    @media (max-width: $breakpoint-md) {
       width: 95%;

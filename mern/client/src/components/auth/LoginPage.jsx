@@ -3,85 +3,61 @@ import { Card, Toast } from "react-bootstrap";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router";
 import ApiClient from "../../services/api/ApiClient";
-import RegisterModal from "../modals/RegisterModal";
+import { usePublicModalContext } from "../../contexts/PublicModalContext"; // Import PublicModalContext
+import Logger from "../../utils/Logger"; // Import Logger utility
 
 export default function LoginPage() {
    const [loginForm, setLoginForm] = useState({
       email: "",
       password: "",
    });
-
    const [cookie, setCookie] = useCookies(["PassBloggs", "userID"]);
    const navigate = useNavigate();
    const [showToast, setShowToast] = useState(false); // State for showing toast notifications
    const [toastMessage, setToastMessage] = useState(""); // Message displayed in the toast
-   const [showRegisterModal, setShowRegisterModal] = useState(false); // State for showing the register modal
-   const [isButtonHovered, setIsButtonHovered] = useState(false); // State to handle button hover effect
+   const { togglePrivateModal } = usePublicModalContext(); // Use ModalContext to manage modals
 
-   /**
-    * updateLoginForm: Updates the login form state dynamically based on the input field.
-    */
+   // Function to update the login form
    function updateLoginForm(value) {
-      console.log("Updating login form with value:", value); // Debugging log
-      return setLoginForm((prev) => {
-         const updatedForm = { ...prev, ...value };
-         console.log("Updated login form state:", updatedForm); // Debugging log
-         return updatedForm;
-      });
+      Logger.info("Updating login form", value);
+      setLoginForm((prev) => ({ ...prev, ...value }));
    }
 
-   /**
-    * handleLogin: Handles the login process by making a POST request to the API.
-    * @param {Event} e - Form submission event.
-    */
+   // Function to handle login form submission
    async function handleLogin(e) {
       e.preventDefault();
-      console.log("Login form submitted with values:", loginForm); // Debugging log
+      Logger.info("Login form submitted", loginForm);
 
-      // Validate the form input
       if (!loginForm.email || !loginForm.password) {
-         console.log("Login form is incomplete"); // Debugging log
          setToastMessage("Please fill in both email and password.");
          setShowToast(true);
+         Logger.warn("Login form validation failed: missing email or password");
          return;
       }
 
       try {
-         // Send login request via the ApiClient
-         console.log("Sending login request to API with data:", loginForm); // Debugging log
          const response = await ApiClient.post("/user/login", loginForm);
+         Logger.info("API response received", response);
 
-         if (!response) {
-            console.log("Login failed, no response received"); // Debugging log
+         if (!response || !response.data.token || !response.data.user._id) {
             setToastMessage("Login failed. Please try again.");
             setShowToast(true);
+            Logger.error("Login failed: invalid response data", response);
             return;
          }
 
-         // Check if the response contains the required token and user ID
-         if (!response.data.token || !response.data.user._id) {
-            console.log("Invalid server response. Token or user ID missing."); // Debugging log
-            setToastMessage("Invalid server response. Token or user ID missing.");
-            setShowToast(true);
-            return;
-         }
-
-         // Set cookies for token and user ID
-         console.log("Setting cookies for token and user ID"); // Debugging log
          setCookie("PassBloggs", response.data.token, { path: "/", maxAge: 24 * 60 * 60 });
          setCookie("userID", response.data.user._id, { path: "/", maxAge: 24 * 60 * 60 });
+         Logger.info("Cookies set", { token: response.data.token, userID: response.data.user._id });
 
-         // Reload the page to reflect the new login state
          setTimeout(() => {
-            console.log("Login successful, reloading page"); // Debugging log
+            Logger.info("Reloading page after login");
             window.location.reload();
          }, 200);
-
       } catch (error) {
-         // Handle any errors from the API call
-         console.error("Login error:", error); // Debugging log
          setToastMessage("An error occurred during login. Please try again.");
          setShowToast(true);
+         Logger.error("Login error", error);
       }
    }
 
@@ -89,34 +65,19 @@ export default function LoginPage() {
       <>
          <div className="login-page">
             <div className="login-container d-flex flex-column justify-content-center align-items-center">
-               {/* Logo Image */}
-               <img
-                  alt="CodeBloggs logo"
-                  className="logo-image"
-                  src="/assets/images/invertedLogo.png"
-               />
+               <img alt="CodeBloggs logo" className="logo-image" src="/assets/images/invertedLogo.png" />
 
-               {/* Toast for failed login attempt */}
                {showToast && (
-                  <Toast
-                     onClose={() => setShowToast(false)}
-                     className="login-toast-container"
-                     autohide
-                     delay={6000}
-                  >
-                     <Toast.Body className="login-toast-body">
-                        {toastMessage}
-                     </Toast.Body>
+                  <Toast onClose={() => setShowToast(false)} className="login-toast-container" autohide delay={6000}>
+                     <Toast.Body className="login-toast-body">{toastMessage}</Toast.Body>
                   </Toast>
                )}
 
-               {/* Login Card */}
                <div className="login-card-container w-100 d-flex justify-content-center">
                   <Card className="login-card">
                      <Card.Body>
                         <h1 className="login-card-header">Welcome</h1>
                         <form onSubmit={handleLogin}>
-                           {/* Email Input */}
                            <div className="login-input-container">
                               <input
                                  type="email"
@@ -126,11 +87,9 @@ export default function LoginPage() {
                                  onChange={(e) => updateLoginForm({ email: e.target.value })}
                                  required
                                  className="login-input-field form-control"
-                                 autoComplete="username" // Add autocomplete attribute for better UX
                               />
                            </div>
 
-                           {/* Password Input */}
                            <div className="login-input-container">
                               <input
                                  type="password"
@@ -140,19 +99,11 @@ export default function LoginPage() {
                                  onChange={(e) => updateLoginForm({ password: e.target.value })}
                                  required
                                  className="login-input-field form-control"
-                                 autoComplete="current-password" // Add autocomplete attribute for better UX
                               />
                            </div>
 
-                           {/* Submit Button */}
                            <div className="login-submit-container">
-                              <input
-                                 type="submit"
-                                 value="LOGIN"
-                                 className="submit-btn"
-                                 onMouseEnter={() => setIsButtonHovered(true)}
-                                 onMouseLeave={() => setIsButtonHovered(false)}
-                              />
+                              <input type="submit" value="LOGIN" className="submit-btn" />
                            </div>
                         </form>
 
@@ -160,7 +111,7 @@ export default function LoginPage() {
                         <div className="text-center">
                            <span
                               className="register-link"
-                              onClick={() => setShowRegisterModal(true)}
+                              onClick={() => togglePublicModal('register')} // Trigger register modal
                            >
                               Not a member? <span>Register Now!</span>
                            </span>
@@ -170,12 +121,6 @@ export default function LoginPage() {
                </div>
             </div>
          </div>
-
-         {/* Register Modal */}
-         <RegisterModal
-            show={showRegisterModal}
-            handleClose={() => setShowRegisterModal(false)}
-         />
       </>
    );
 }

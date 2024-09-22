@@ -1,55 +1,55 @@
-// scss/themes/_light.scss
+// // scss/themes/_light.scss
 
-@import "../abstracts/variables";
-@import "../abstracts/mixins";
-@import "../abstracts/functions";
+// @import "../abstracts/variables";
+// @import "../abstracts/mixins";
+// @import "../abstracts/functions";
 
-body {
-   background-color: $light-background;
-   color: $light-text;
-}
+// body {
+//    background-color: $light-background;
+//    color: $light-text;
+// }
 
-.navbar,
-.sidebar {
-   background-color: lighten($light-background, 5%);
-   color: $light-text;
+// .navbar,
+// .sidebar {
+//    background-color: lighten($light-background, 5%);
+//    color: $light-text;
 
-   .nav-link,
-   .sidebar-link {
-      color: $light-text;
-      transition: color 0.3s ease;
+//    .nav-link,
+//    .sidebar-link {
+//       color: $light-text;
+//       transition: color 0.3s ease;
 
-      &:hover {
-         color: $primary-purple;
-      }
-   }
-}
+//       &:hover {
+//          color: $primary-purple;
+//       }
+//    }
+// }
 
-button,
-input,
-textarea {
-   background-color: $white;
-   color: $light-text;
-   border-color: $primary-purple;
+// button,
+// input,
+// textarea {
+//    background-color: $white;
+//    color: $light-text;
+//    border-color: $primary-purple;
 
-   &:focus {
-      border-color: darken($primary-purple, 10%);
-   }
-}
+//    &:focus {
+//       border-color: darken($primary-purple, 10%);
+//    }
+// }
 
-.card {
-   background-color: $white;
-   color: $light-text;
-   border-color: $light-gray;
-   box-shadow: $box-shadow-light;
-   border-radius: $border-radius;
+// .card {
+//    background-color: $white;
+//    color: $light-text;
+//    border-color: $light-gray;
+//    box-shadow: $box-shadow-light;
+//    border-radius: $border-radius;
 
-   &:hover {
-      box-shadow: $box-shadow-heavy;
-   }
-}
+//    &:hover {
+//       box-shadow: $box-shadow-heavy;
+//    }
+// }
 
-.footer {
-   background-color: lighten($light-background, 10%);
-   color: $charcoal;
-}
+// .footer {
+//    background-color: lighten($light-background, 10%);
+//    color: $charcoal;
+// }

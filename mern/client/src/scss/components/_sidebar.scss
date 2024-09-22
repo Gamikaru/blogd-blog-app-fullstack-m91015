@@ -1,42 +1,42 @@
 @import "../abstracts/variables"; // Import global variables
 @import "../abstracts/mixins"; // Import centralized mixins
 
-// Sidebar Container
-.nav-container {
-   position: fixed;
-   top: 0;
-   left: 0;
-   width: 0;
-   height: 100vh;
-   z-index: 900;
-   @include transition-all(0.3s, ease);
+// // Sidebar Container
+// .nav-container {
+//    position: fixed;
+//    top: 0;
+//    left: 0;
+//    width: 0;
+//    height: 100vh;
+//    z-index: 900;
+//    @include transition-all(0.3s, ease);
 
-   &.open {
-      width: 15vw; // Sidebar expands to 15% of viewport width
-   }
+//    &.open {
+//       width: 15vw; // Sidebar expands to 15% of viewport width
+//    }
 
-   @media (max-width: $breakpoint-md) {
-      &.open {
-         width: 60vw; // Wider on smaller screens
-      }
-   }
+//    @media (max-width: $breakpoint-md) {
+//       &.open {
+//          width: 60vw; // Wider on smaller screens
+//       }
+//    }
 
-   @media (max-width: $breakpoint-sm) {
-      &.open {
-         width: 80vw; // Almost full width for very small screens
-      }
+//    @media (max-width: $breakpoint-sm) {
+//       &.open {
+//          width: 80vw; // Almost full width for very small screens
+//       }
 
-      @media (min-width: $breakpoint-lg) {
-         .sidebar-open {
-            width: 17vw; // Increase width slightly on larger screens
-         }
-      }
-   }
+//       @media (min-width: $breakpoint-lg) {
+//          .sidebar-open {
+//             width: 17vw; // Increase width slightly on larger screens
+//          }
+//       }
+//    }
 
-   .page-container {
-      @include transition-all(0.3s, ease);
-   }
-}
+//    .page-container {
+//       @include transition-all(0.3s, ease);
+//    }
+// }
 
 // Sidebar Styling
 .nav {
