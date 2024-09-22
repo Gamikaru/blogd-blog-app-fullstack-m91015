@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Card, Container, Form, Spinner } from "react-bootstrap";
 import { useCookies } from "react-cookie";
 import { FaHeart } from "react-icons/fa";
-import ApiClient from "../../services/api/ApiClient"; // Import the ApiClient
+import { fetchAllPosts, likePost, unlikePost } from "../../services/api/PostService"; // Updated service imports
 import { useUser } from "../../contexts"; // Import useUser from contexts
 import Logger from "../../utils/Logger"; // Import Logger
 
@@ -10,22 +10,22 @@ export default function BloggsPosts() {
    const [cookie] = useCookies();
    const { user } = useUser(); // Get the user from the UserContext
    const [blogPosts, setBlogPosts] = useState([]);
-   const [users, setUsers] = useState([]);
    const [commentTexts, setCommentTexts] = useState({});
    const [loading, setLoading] = useState(true);
 
+   // Fetch all blog posts when the component mounts
    useEffect(() => {
-      Logger.info("Component mounted, fetching blog posts and users...");
-      fetchBlogPosts();
-      fetchUsers();
+      Logger.info("Component mounted, fetching all blog posts...");
+      fetchAllBlogPosts(); // Fetch all posts (not just user's posts)
    }, []);
 
-   const fetchBlogPosts = async () => {
+   // Fetch all blog posts
+   const fetchAllBlogPosts = async () => {
       try {
-         Logger.info("Fetching blog posts...");
-         const response = await ApiClient.get(`/post`);
-         Logger.info("Blog posts fetched:", response.data);
-         setBlogPosts(response.data);
+         Logger.info("Fetching all blog posts...");
+         const posts = await fetchAllPosts(); // Use the post service to fetch all posts
+         Logger.info("All blog posts fetched:", posts);
+         setBlogPosts(posts);
          setLoading(false);
       } catch (error) {
          Logger.error("Error fetching blog posts:", error);
@@ -33,30 +33,18 @@ export default function BloggsPosts() {
       }
    };
 
-   const fetchUsers = async () => {
-      try {
-         Logger.info("Fetching users...");
-         const response = await ApiClient.get(`/user`);
-         Logger.info("Users fetched:", response.data);
-         setUsers(response.data);
-      } catch (error) {
-         Logger.error("Error fetching users:", error);
-      }
-   };
-
+   // Handle like/unlike for a post
    const handleLike = async (postId) => {
       try {
          Logger.info(`Toggling like for post ID: ${postId}`);
          const post = blogPosts.find((post) => post._id === postId);
          const alreadyLiked = post.likesBy?.includes(cookie.userID);
-         const url = alreadyLiked
-            ? `/post/unlike/${postId}`
-            : `/post/like/${postId}`;
 
-         Logger.info(
-            `Sending ${alreadyLiked ? "unlike" : "like"} request to URL: ${url}`
-         );
-         await ApiClient.put(url);
+         if (alreadyLiked) {
+            await unlikePost(postId); // Unlike the post
+         } else {
+            await likePost(postId); // Like the post
+         }
 
          const updatedPosts = blogPosts.map((prevPost) =>
             prevPost._id === postId
@@ -77,6 +65,7 @@ export default function BloggsPosts() {
       }
    };
 
+   // Handle comment text changes
    const handleCommentChange = (postId, commentText) => {
       Logger.info(`Comment text changed for post ID: ${postId}`, commentText);
       setCommentTexts((prevCommentTexts) => ({
@@ -85,6 +74,7 @@ export default function BloggsPosts() {
       }));
    };
 
+   // Handle submitting a new comment
    const handleCommentSubmit = async (postId) => {
       const commentText = commentTexts[postId];
       Logger.info(`Submitting comment for post ID: ${postId}`, commentText);
@@ -98,14 +88,14 @@ export default function BloggsPosts() {
 
          const newComment = response.data;
          Logger.info("New comment added:", newComment);
-         const updatedPost = blogPosts.map((prevPost) =>
+         const updatedPosts = blogPosts.map((prevPost) =>
             prevPost._id === postId
                ? { ...prevPost, comments: [...prevPost.comments, newComment] }
                : prevPost
          );
 
-         Logger.info("Updated blog posts after adding comment:", updatedPost);
-         setBlogPosts(updatedPost);
+         Logger.info("Updated blog posts after adding comment:", updatedPosts);
+         setBlogPosts(updatedPosts);
          setCommentTexts((prevCommentTexts) => ({
             ...prevCommentTexts,
             [postId]: "",
@@ -115,13 +105,9 @@ export default function BloggsPosts() {
       }
    };
 
-   const author = (userId) => {
-      const foundUser = users.find((user) => user._id === userId);
-      const authorName = foundUser
-         ? `${foundUser.first_name} ${foundUser.last_name}`
-         : "";
-      Logger.info(`Author for user ID: ${userId}`, authorName);
-      return authorName;
+   // Function to fetch the author from the post data
+   const author = (post) => {
+      return post.userId ? `${post.userId.firstName} ${post.userId.lastName}` : "Unknown Author";
    };
 
    return (
@@ -138,7 +124,7 @@ export default function BloggsPosts() {
                         <Card className="bloggs-post-section">
                            <Card.Body className="bloggs-body">
                               <Card.Title className="bloggs-card-title">
-                                 <span className="username">{author(post.user_id)}</span>
+                                 <span className="username">{author(post)}</span>
                               </Card.Title>
                               <Card.Text className="speech-bubble">
                                  <span className="post-text">{post.content}</span>
@@ -165,7 +151,7 @@ export default function BloggsPosts() {
                                  {post.comments.map((comment) => (
                                     <div key={comment._id}>
                                        <p className="comment-author">{comment.userName}</p>
-                                       <p className="comment-text">{comment.text}</p>
+                                       <p className="comment-text">{comment.content}</p>
                                     </div>
                                  ))}
                                  <Form

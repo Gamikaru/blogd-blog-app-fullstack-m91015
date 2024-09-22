@@ -1,6 +1,6 @@
 // src/PostContext.js
-import { createContext, useState, useContext, useEffect, useCallback } from 'react';
-import { fetchPosts as fetchPostsService, createPost, likePost } from '../services/api/PostService';
+import { createContext, useState, useContext, useCallback } from 'react';
+import { fetchPostsByUser, createPost, likePost, unlikePost } from '../services/api/PostService';
 
 // Create PostContext
 const PostContext = createContext();
@@ -10,21 +10,20 @@ export const usePostContext = () => useContext(PostContext);
 
 // Provider component to wrap parts of the app that need post management
 export const PostProvider = ({ children }) => {
-   const [userPosts, setUserPosts] = useState([]);
-   const [likeStatus, setLikeStatus] = useState({});
+   const [posts, setPosts] = useState([]); // Store posts for the current user
+   const [likeStatus, setLikeStatus] = useState({}); // Track like status for each post
 
-   // Memoize fetchPosts to prevent infinite re-renders
-   const fetchPosts = useCallback(async (userId) => {
+   // Function to fetch posts for a specific user
+   const fetchPostsByUserHandler = useCallback(async (userId) => {
       try {
-         const posts = await fetchPostsService(userId); // Use PostService's fetchPosts
-         setUserPosts(posts);
-
+         const userPosts = await fetchPostsByUser(userId); // Fetch posts for a specific user
+         setPosts(userPosts);
          // Initialize like status for each post
          const likeStatuses = {};
-         posts.forEach(post => (likeStatuses[post._id] = false));
+         userPosts.forEach(post => (likeStatuses[post._id] = post.likesBy || []));
          setLikeStatus(likeStatuses);
       } catch (error) {
-         console.error('Error fetching posts:', error);
+         console.error('Error fetching user posts:', error);
       }
    }, []);
 
@@ -32,32 +31,56 @@ export const PostProvider = ({ children }) => {
    const handleNewPost = async (content) => {
       try {
          const newPost = await createPost(content); // Use PostService's createPost
-
-         // Add the new post to the top of the userPosts
-         setUserPosts((prevPosts) => [newPost, ...prevPosts]);
-         setLikeStatus((prev) => ({ ...prev, [newPost._id]: false }));
+         setPosts((prevPosts) => [newPost, ...prevPosts]); // Add new post at the top of the list
+         setLikeStatus((prev) => ({ ...prev, [newPost._id]: [] })); // Initialize like status for the new post
       } catch (error) {
          console.error('Error creating post:', error);
       }
    };
 
    // Handle liking a post
-   const handleLike = async (postId) => {
+   const handleLike = async (postId, userId) => {
       try {
-         const updatedPost = await likePost(postId); // Use PostService's likePost
-
-         // Update the post with the new like count
-         setUserPosts(prevPosts =>
-            prevPosts.map(post => (post._id === postId ? updatedPost : post))
+         await likePost(postId); // Send the like request
+         const updatedPosts = posts.map(post =>
+            post._id === postId
+               ? { ...post, likes: post.likes + 1, likesBy: [...post.likesBy, userId] }
+               : post
          );
-         setLikeStatus(prev => ({ ...prev, [postId]: true }));
+         setPosts(updatedPosts); // Update the post with the new like count
+         setLikeStatus((prev) => ({ ...prev, [postId]: [...prev[postId], userId] })); // Mark as liked by the user
       } catch (error) {
          console.error('Error liking post:', error);
       }
    };
 
+   // Handle unliking a post
+   const handleUnlike = async (postId, userId) => {
+      try {
+         await unlikePost(postId); // Send the unlike request
+         const updatedPosts = posts.map(post =>
+            post._id === postId
+               ? { ...post, likes: post.likes - 1, likesBy: post.likesBy.filter((id) => id !== userId) }
+               : post
+         );
+         setPosts(updatedPosts); // Update the post with the new like count
+         setLikeStatus((prev) => ({ ...prev, [postId]: prev[postId].filter((id) => id !== userId) })); // Mark as unliked by the user
+      } catch (error) {
+         console.error('Error unliking post:', error);
+      }
+   };
+
    return (
-      <PostContext.Provider value={{ userPosts, likeStatus, fetchPosts, handleNewPost, handleLike }}>
+      <PostContext.Provider
+         value={{
+            posts,
+            likeStatus,
+            fetchPostsByUserHandler,
+            handleNewPost,
+            handleLike,
+            handleUnlike,
+         }}
+      >
          {children}
       </PostContext.Provider>
    );

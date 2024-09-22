@@ -1,7 +1,7 @@
 import React, { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { useNotificationContext, usePostContext, useUser } from "../../../contexts"; // Import contexts
-import { likePost } from "../../../services/api/PostService"; // Import PostService for handling posts
+import { likePost, unlikePost } from "../../../services/api/PostService"; // Import PostService for handling posts
 import UserService from "../../../services/api/UserService"; // Import UserService for user-related API calls
 import Logger from "../../../utils/Logger"; // Import Logger from utils barrel
 
@@ -11,34 +11,42 @@ const PostCard = lazy(() => import("./PostCard"));
 
 const HomePage = () => {
    const { user, loading } = useUser();
-   const { userPosts, fetchPosts } = usePostContext();
+   const { posts, fetchPostsByUserHandler, handleLike, handleUnlike, likeStatus } = usePostContext(); // Use fetchPostsByUserHandler for fetching user's posts
    const { showNotification } = useNotificationContext();
-   const [likeStatus, setLikeStatus] = useState({});
    const [status, setStatus] = useState("");
    const [error, setError] = useState(null); // Add error state
 
    useEffect(() => {
       if (user && user._id) {
          setStatus(user.status);
-         fetchPosts(user._id).catch((err) => {
-            setError("Error fetching posts.");
-            Logger.error("Error fetching posts:", err);
-         }); // Handle errors gracefully
+         fetchPostsByUserHandler(user._id).catch((err) => {
+            setError("Error fetching user posts.");
+            Logger.error("Error fetching user posts:", err);
+         }); // Fetch user posts only
       }
-   }, [user, fetchPosts]);
+   }, [user, fetchPostsByUserHandler]);
 
    // Handle liking a post with useCallback to prevent unnecessary re-renders
    const handleLikePost = useCallback(async (postId) => {
       try {
-         setLikeStatus((prev) => ({ ...prev, [postId]: true })); // Optimistic update
-         await likePost(postId); // Use PostService to like the post
+         await handleLike(postId, user._id); // Like the post using PostContext
          showNotification("Post liked successfully!", "success");
       } catch (error) {
-         setLikeStatus((prev) => ({ ...prev, [postId]: false })); // Rollback on error
          Logger.error("Error liking post:", error);
          showNotification("Error liking post. Please try again.", "error");
       }
-   }, [showNotification]);
+   }, [showNotification, handleLike, user._id]);
+
+   // Handle unliking a post with useCallback
+   const handleUnlikePost = useCallback(async (postId) => {
+      try {
+         await handleUnlike(postId, user._id); // Unlike the post using PostContext
+         showNotification("Post unliked successfully!", "success");
+      } catch (error) {
+         Logger.error("Error unliking post:", error);
+         showNotification("Error unliking post. Please try again.", "error");
+      }
+   }, [showNotification, handleUnlike, user._id]);
 
    // Handle updating user status with useCallback
    const updateUserStatus = useCallback(async (newStatus) => {
@@ -80,8 +88,9 @@ const HomePage = () => {
                      setStatus={setStatus}
                   />
                   <PostCard
-                     userPosts={userPosts}
+                     userPosts={posts} // Display the user's posts
                      handleLike={handleLikePost}
+                     handleUnlike={handleUnlikePost}
                      likeStatus={likeStatus}
                   />
                </Suspense>

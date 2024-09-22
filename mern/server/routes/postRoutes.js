@@ -74,10 +74,13 @@ router.get('/:id', authenticate, async (req, res) => {
  * @desc    Get all posts (sorted by timestamp)
  * @access  Private (Authentication required)
  */
+// Fetch all posts with user details (firstName, lastName)
 router.get('/', authenticate, async (req, res) => {
    console.log('Fetching all posts.');
    try {
-      const posts = await Post.find().sort({ timeStamp: -1 });
+      const posts = await Post.find()
+         .populate('userId', 'firstName lastName')  // Populate user details
+         .sort({ timeStamp: -1 });
       console.log('All posts retrieved successfully.');
       res.status(200).send(posts);
    } catch (error) {

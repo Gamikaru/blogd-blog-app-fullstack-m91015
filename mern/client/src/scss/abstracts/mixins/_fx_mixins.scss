@@ -9,9 +9,51 @@
 // Light shadow mixin
 @mixin shadow-light {
    box-shadow: $box-shadow-light; // Matches $box-shadow-light
+   @include transition(all 0.3s ease); // Add transition effect
+
+   // Fade In Animation
+   @keyframes fadeIn {
+      from {
+         opacity: 0;
+      }
+      to {
+         opacity: 1;
+      }
+   }
+
+   // Fade Out Animation
+   @keyframes fadeOut {
+      from {
+         opacity: 1;
+      }
+      to {
+         opacity: 0;
+      }
+   }
 }
 
 // Heavy shadow mixin
 @mixin shadow-heavy {
    box-shadow: $box-shadow-heavy; // Matches $box-shadow-heavy
+   @include transition(all 0.3s ease); // Add transition effect
+
+   // Fade In Animation
+   @keyframes fadeIn {
+      from {
+         opacity: 0;
+      }
+      to {
+         opacity: 1;
+      }
+   }
+
+   // Fade Out Animation
+   @keyframes fadeOut {
+      from {
+         opacity: 1;
+      }
+      to {
+         opacity: 0;
+      }
+   }
 }
