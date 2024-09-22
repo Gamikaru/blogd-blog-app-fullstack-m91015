@@ -1,0 +1,46 @@
+// layout/_grid.scss
+
+@import "../abstracts/variables"; // Importing variables for spacing, colors, etc.
+@import "../abstracts/mixins"; // Mixins for responsive design and flex/grid helpers
+
+// Responsive Grid Container
+.grid-container {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+   gap: $spacing-medium;
+   width: 100%;
+   max-width: 1200px;
+   margin: 0 auto;
+   padding: $spacing-large;
+
+   @media (max-width: $breakpoint-md) {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      padding: $spacing-medium;
+   }
+
+   @media (max-width: $breakpoint-sm) {
+      grid-template-columns: 1fr;
+      padding: $spacing-small;
+   }
+}
+
+// Grid Item
+.grid-item {
+   background-color: $light-gray;
+   border-radius: $border-radius;
+   padding: $spacing-medium;
+   box-shadow: $box-shadow-light;
+   transition: transform 0.3s ease;
+
+   &:hover {
+      transform: scale(1.05);
+   }
+
+   @media (max-width: $breakpoint-md) {
+      padding: $spacing-small;
+   }
+
+   @media (max-width: $breakpoint-sm) {
+      padding: $spacing-small;
+   }
+}

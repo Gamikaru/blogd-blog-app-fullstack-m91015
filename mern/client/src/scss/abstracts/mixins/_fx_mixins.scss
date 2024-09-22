@@ -1,0 +1,17 @@
+@import "../variables"; // Import centralized variables
+@import "../functions"; // Import utility functions
+@import "../placeholders"; // Import placeholder styles
+
+// --------------------
+// Shadow Mixins
+// --------------------
+
+// Light shadow mixin
+@mixin shadow-light {
+   box-shadow: $box-shadow-light; // Matches $box-shadow-light
+}
+
+// Heavy shadow mixin
+@mixin shadow-heavy {
+   box-shadow: $box-shadow-heavy; // Matches $box-shadow-heavy
+}

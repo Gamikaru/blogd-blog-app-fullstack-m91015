@@ -1,18 +1,40 @@
+@import "../abstracts/variables"; // Import global variables
+@import "../abstracts/mixins"; // Import centralized mixins
+
 // Sidebar Container
 .nav-container {
-   display: block;
-   width: 0; // Start with 0 width when sidebar is closed
-   height: 100vh;
    position: fixed;
    top: 0;
    left: 0;
+   width: 0;
+   height: 100vh;
    z-index: 900;
-   pointer-events: none; // Prevent any click events when sidebar is closed
-   overflow: hidden;
+   @include transition-all(0.3s, ease);
 
    &.open {
-      width: 100vw; // When open, cover the entire viewport
-      pointer-events: auto; // Allow clicks to register only when open
+      width: 15vw; // Sidebar expands to 15% of viewport width
+   }
+
+   @media (max-width: $breakpoint-md) {
+      &.open {
+         width: 60vw; // Wider on smaller screens
+      }
+   }
+
+   @media (max-width: $breakpoint-sm) {
+      &.open {
+         width: 80vw; // Almost full width for very small screens
+      }
+
+      @media (min-width: $breakpoint-lg) {
+         .sidebar-open {
+            width: 17vw; // Increase width slightly on larger screens
+         }
+      }
+   }
+
+   .page-container {
+      @include transition-all(0.3s, ease);
    }
 }
 
@@ -22,50 +44,45 @@
    backdrop-filter: blur(10px);
    -webkit-backdrop-filter: blur(10px);
    border-right: 1px solid rgba(255, 255, 255, 0.18);
-   width: 13vw;
+   width: 15vw;
    padding-top: 20vh;
-   padding-left: 1rem;
+   padding-left: $spacing-small;
    height: 100vh;
    position: fixed;
    top: 0;
-   left: -15vw; // Start off-screen when closed
+   left: -15vw;
    z-index: 900;
-   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-   transition:
-      left 0.3s ease,
-      width 0.3s ease; // Smooth transition for width
+   box-shadow: $box-shadow-light;
+   @include transition-all(0.3s, ease);
 
    &.open {
-      left: 0; // Slide the sidebar into view
+      left: 0;
    }
 
+   // Sidebar list styling
    ul {
       list-style: none;
       padding: 0;
-      margin-top: 0;
 
       li {
-         margin-bottom: 2rem;
+         margin-bottom: $spacing-large;
 
          a {
             text-decoration: none;
+            @include font-default($font-size-large, $font-weight-regular, $font-primary);
             color: $charcoal;
-            font-family: "Anton", sans-serif;
             text-transform: uppercase;
-            font-size: 1.5rem;
             display: flex;
             align-items: center;
-            padding: 0.5rem 1rem;
+            padding: $spacing-small $spacing-medium;
             position: relative;
-            transition: color 0.3s ease;
+            @include transition-all(0.3s, ease);
 
             .nav-icon {
-               margin-right: 0.75rem;
+               margin-right: $spacing-small;
                font-size: 1.8rem;
                color: $primary-purple;
-               transition:
-                  transform 0.3s ease,
-                  color 0.3s ease;
+               @include transition-all(0.3s, ease);
             }
 
             &::after {
@@ -76,7 +93,7 @@
                width: 0%;
                height: 2px;
                background-color: $primary-purple;
-               transition: width 0.3s ease;
+               @include transition-all(0.3s, ease);
             }
 
             &:hover {
@@ -88,7 +105,7 @@
 
                .nav-icon {
                   transform: translateX(5px);
-                  color: darken($primary-purple, 10%);
+                  color: $primary-purple-hover;
                }
             }
 
@@ -103,7 +120,8 @@
       }
    }
 
-   @media (max-width: 1024px) {
+   // Responsive Styling
+   @media (max-width: $breakpoint-lg) {
       width: 20vw;
       left: -20vw;
 
@@ -112,7 +130,7 @@
       }
    }
 
-   @media (max-width: 768px) {
+   @media (max-width: $breakpoint-md) {
       width: 60vw;
       left: -60vw;
 
@@ -121,7 +139,7 @@
       }
    }
 
-   @media (max-width: 576px) {
+   @media (max-width: $breakpoint-sm) {
       width: 80vw;
       left: -80vw;
 

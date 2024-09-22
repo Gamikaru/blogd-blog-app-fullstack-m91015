@@ -1,0 +1,47 @@
+// // scss/pages/_about.scss
+
+// @import "../abstracts/variables";
+// @import "../abstracts/mixins";
+
+// .about-page {
+//    padding: $spacing-large;
+//    background-color: $light-background;
+//    color: $charcoal;
+
+//    h1 {
+//       @include responsive-text(1.5rem, 2.5rem);
+//       color: $primary-purple;
+//       margin-bottom: $spacing-medium;
+//    }
+
+//    .about-section {
+//       margin-top: $spacing-medium;
+//       background-color: $white;
+//       @include shadow-light;
+//       padding: $spacing-large;
+//       border-radius: $border-radius;
+
+//       &:hover {
+//          @include shadow-heavy;
+//       }
+//    }
+
+//    .about-content {
+//       font-size: $font-size-base;
+//       line-height: 1.6;
+//       color: $charcoal-light;
+
+//       p {
+//          margin-bottom: $spacing-medium;
+//       }
+
+//       a {
+//          color: $primary-purple;
+//          text-decoration: none;
+
+//          &:hover {
+//             color: darken($primary-purple, 10%);
+//          }
+//       }
+//    }
+// }

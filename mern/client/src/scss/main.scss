@@ -1,49 +1,52 @@
-// // Import Bootstrap's SCSS
+// Import Bootstrap's SCSS
 @import "bootstrap/scss/bootstrap";
 
 // Abstracts
-@import "abstracts/variables"; // Import your custom variables first
-// @import "abstracts/functions";
-@import "abstracts/mixins";
-// @import "abstracts/placeholders";
+@import "abstracts/variables"; // Custom variables first
+@import "abstracts/functions"; // Functions for dynamic calculations
+@import "abstracts/mixins/component_mixins"; // Mixins for reusable styles
+@import "abstracts/mixins/flexbox_mixins"; // Flexbox mixins
+@import "abstracts/mixins/layout_mixins"; // Layout mixins
+@import "abstracts/mixins/fx_mixins"; // Shadow mixins
+@import "abstracts/mixins/typography_mixins"; // Typography mixins
+@import "abstracts/mixins/utility_mixins"; // Utility mixins
 
-// Vendors (Import third-party libraries if needed)
-// @import "vendors/jquery-ui"; // Import other vendors if necessary
 
-
+// Vendors (Third-party libraries, if needed)
+@import "vendors/jquery-ui"; // Example vendor
 
 // Base
-@import "base/reset";
-@import "base/typography";
-// @import "base/animations";
-// @import "base/utilities";
+@import "base/reset"; // CSS resets for consistency
+@import "base/typography"; // Centralized typography styles
+@import "base/animations"; // Reusable animation keyframes
+@import "base/utilities"; // Utility classes like margin, padding, etc.
 
 // Layout
-// @import "layout/navigation";
-// @import "layout/header";
-// @import "layout/footer";
-// @import "layout/sidebar";
-// @import "layout/grid";
-@import "layout/pagecontainer";
+// @import "layout/navigation"; // Navigation styles
+@import "layout/header"; // Header layout styles
+@import "layout/footer"; // Footer layout styles
+@import "layout/grid"; // Grid system styles
 
 // Components
-@import "components/buttons";
-@import "components/cards";
-// @import "components/carousel";
-@import "components/dropdown";
-@import "components/feedback";
-@import "components/forms";
-@import "components/modal";
-@import "components/navbar";
-@import "components/sidebar";
-@import "components/tables";
+@import "components/buttons"; // Button styles using the button-base mixin
+@import "components/cards"; // Card component styles
+@import "components/carousel"; // Carousel component styles
+@import "components/dropdown"; // Dropdown component styles
+@import "components/feedback"; // Feedback component styles
+@import "components/forms"; // Form styling using form-field mixin
+@import "components/modal"; // Modal window styling
+@import "components/navbar"; // Navbar component
+@import "components/sidebar"; // Sidebar component
+@import "components/tables"; // Table styles
 
 // Themes
-// @import "themes/theme";
-// @import "themes/admin";
+@import "themes/_dark"; // Dark theme styles
+@import "themes/_light"; // Light theme styles
 
 // Pages
-@import "pages/home";
-@import "pages/bloggs";
-@import "pages/network";
-@import "pages/login";
+@import "pages/home"; // Home page styles
+@import "pages/bloggs"; // Blog page styles
+@import "pages/network"; // Network page styles
+@import "pages/login"; // Login page styles
+@import "pages/contact"; // Contact page (add styles if needed)
+@import "pages/about"; // About page (add styles if needed)

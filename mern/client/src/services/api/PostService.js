@@ -1,5 +1,3 @@
-// src/PostService.js
-
 import ApiClient from './ApiClient';
 
 // Fetch posts for a given user

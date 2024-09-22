@@ -1,0 +1,185 @@
+@import "../variables"; // Import centralized variables
+@import "../functions"; // Import utility functions
+@import "../placeholders"; // Import placeholder styles
+
+// --------------------
+// Component Mixins
+// --------------------
+
+// Button Mixin
+@mixin button-base(
+   $bg-color: $primary-purple,
+   $text-color: $white,
+   $hover-bg-color: darken($bg-color, 10%),
+   $border-radius: $border-radius,
+   $font-family: $font-secondary,
+   $font-weight: $font-weight-regular,
+   $padding: 0.6rem 1.2rem,
+   $font-size: $font-size-base,
+   $text-transform: uppercase,
+   $letter-spacing: 2px
+) {
+   background-color: $bg-color;
+   color: $text-color;
+   padding: $padding;
+   font-family: $font-family;
+   font-weight: $font-weight;
+   font-size: $font-size;
+   border: none;
+   border-radius: $border-radius;
+   text-transform: $text-transform;
+   letter-spacing: $letter-spacing;
+   cursor: pointer;
+   transition:
+      background-color 0.3s ease,
+      box-shadow 0.3s ease;
+
+   &:hover {
+      background-color: $hover-bg-color;
+   }
+
+   &:disabled {
+      background-color: $disabled-gray;
+      cursor: not-allowed;
+   }
+}
+
+// Card Mixin
+@mixin card-base(
+   $bg-color: $white,
+   $border-color: $light-gray,
+   $box-shadow: $box-shadow-light,
+   $padding: $spacing-small,
+   $border-radius: $border-radius
+) {
+   background-color: $bg-color;
+   border: 1px solid $border-color;
+   box-shadow: $box-shadow;
+   border-radius: $border-radius;
+   padding: $padding;
+   transition: box-shadow 0.3s ease;
+
+   &:hover {
+      box-shadow: $box-shadow-heavy;
+   }
+}
+
+// Dropdown Mixin
+@mixin dropdown-base(
+   $bg-color: $white,
+   $hover-bg-color: $primary-purple-light,
+   $text-color: $charcoal,
+   $hover-text-color: $white,
+   $padding: $spacing-small $spacing-medium
+) {
+   background-color: $bg-color;
+   color: $text-color;
+   padding: $padding;
+   border: 1px solid $light-gray;
+   box-shadow: $box-shadow-light;
+   border-radius: $border-radius;
+
+   .dropdown-item {
+      padding: $padding;
+      transition:
+         background-color 0.3s ease,
+         color 0.3s ease;
+
+      &:hover {
+         background-color: $hover-bg-color;
+         color: $hover-text-color;
+      }
+   }
+}
+
+// Form Field Mixin
+@mixin form-field-base(
+   $bg-color: $white,
+   $border-color: $light-gray,
+   $focus-border-color: $primary-purple,
+   $font-size: $font-size-base,
+   $padding: $spacing-small,
+   $border-radius: $border-radius,
+) {
+   background-color: $bg-color;
+   border: 1px solid $border-color;
+   border-radius: $border-radius;
+   padding: $padding;
+   font-size: $font-size;
+   color: $charcoal;
+   width: 100%;
+   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+   transition:
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
+
+   &:focus {
+      border-color: $focus-border-color;
+      box-shadow: 0 0 5px rgba($focus-border-color, 0.5);
+      outline: none;
+   }
+}
+
+// Table Mixin
+@mixin table-base(
+   $bg-color: $white,
+   $border-color: $light-gray,
+   $header-bg-color: $primary-purple-light,
+   $header-text-color: $charcoal,
+   $padding: $spacing-small
+) {
+   width: 100%;
+   border-collapse: collapse;
+   background-color: $bg-color;
+   border: 1px solid $border-color;
+
+   th,
+   td {
+      padding: $padding;
+      border: 1px solid $border-color;
+   }
+
+   th {
+      background-color: $header-bg-color;
+      color: $header-text-color;
+   }
+
+   tr:nth-child(even) {
+      background-color: lighten($bg-color, 5%);
+   }
+}
+
+// Modal Mixin
+@mixin modal-base(
+   $bg-color: $white,
+   $padding: $spacing-large,
+   $box-shadow: $box-shadow-heavy,
+   $border-radius: $border-radius-large
+) {
+   background-color: $bg-color;
+   padding: $padding;
+   box-shadow: $box-shadow;
+   border-radius: $border-radius;
+   max-width: 600px;
+   margin: auto;
+   z-index: 1000;
+   transition:
+      transform 0.3s ease,
+      opacity 0.3s ease;
+   opacity: 0;
+
+   &.open {
+      opacity: 1;
+      transform: translateY(0);
+   }
+
+   &.close {
+      opacity: 0;
+      transform: translateY(-20px);
+   }
+}
+
+// Table Padding Mixin
+@mixin table-padding($padding) {
+   padding: $padding;
+}

@@ -1,4 +1,7 @@
-@import "../abstracts/variables"; // Import global variables
+// base/_typography.scss
+
+@import "../abstracts/variables"; // Global variables
+@import "../abstracts/mixins"; // Mixins for typography
 
 /* Font Faces */
 @font-face {
@@ -6,53 +9,83 @@
    src:
       url("/assets/fonts/webfonts/JetBrainsMono-Regular.woff2") format("woff2"),
       url("/assets/fonts/webfonts/JetBrainsMono-Regular.woff") format("woff");
-   font-weight: 400 700; // Support normal and bold
+   font-weight: 400 700;
    font-style: normal;
    font-display: swap;
 }
 
 @font-face {
-   font-family: "Inter";
+   font-family: "Anton";
    src:
-      url("/assets/fonts/webfonts/Inter-Regular.woff2") format("woff2"),
-      url("/assets/fonts/webfonts/Inter-Regular.woff") format("woff");
+      url("/assets/fonts/webfonts/Anton-Regular.woff2") format("woff2"),
+      url("/assets/fonts/webfonts/Anton-Regular.woff") format("woff");
    font-weight: 400;
    font-style: normal;
    font-display: swap;
 }
 
+/* General Text Styles */
+body {
+   @include font-default($font-size-base, $font-weight-regular, $font-primary);
+   line-height: 1.6;
+   color: $charcoal;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+   line-height: 1.2;
+   color: $charcoal;
+   margin-bottom: $spacing-small;
+}
+
 /* Headings */
 .heading-large {
-   @include font-default;
-   font-size: clamp(2.5rem, 5vw, 3rem);
-   @include font-bold;
-   color: $charcoal;
-   line-height: 1.2;
-   margin-bottom: 2rem;
+   @include font-default($font-size-large, $font-weight-bold);
+   margin-bottom: $spacing-large;
 }
 
 .heading-medium {
-   @include font-default;
-   font-size: clamp(2rem, 4vw, 2.25rem);
-   @include font-bold;
-   color: $charcoal;
-   line-height: 1.25;
-   margin-bottom: 1.75rem;
+   @include font-default($font-size-medium, $font-weight-bold);
+   margin-bottom: $spacing-medium;
 }
 
 .heading-small {
-   @include font-default;
-   font-size: clamp(1.5rem, 3vw, 1.875rem);
-   @include font-bold;
-   color: $charcoal;
-   line-height: 1.3;
-   margin-bottom: 1.5rem;
+   @include font-default($font-size-small, $font-weight-bold);
+   margin-bottom: $spacing-small;
 }
 
-/* Paragraphs */
+/* Paragraph Styles */
 .paragraph {
-   @include font-content;
-   font-size: clamp(1rem, 2vw, 1rem);
+   @include font-default($font-size-base, $font-weight-regular);
    line-height: 1.6;
-   margin-bottom: 1.75rem;
+   margin-bottom: $spacing-medium;
+}
+
+/* Link Styles */
+a {
+   color: $primary-purple;
+   text-decoration: none;
+   transition: color 0.3s ease;
+
+   &:hover {
+      color: $primary-purple-hover;
+   }
+}
+
+/* List Styles */
+ul,
+ol {
+   margin: 0;
+   padding: 0 0 0 $spacing-large;
+   list-style: disc;
+}
+
+li {
+   margin-bottom: $spacing-small;
+   font-size: $font-size-base;
+   color: $charcoal;
 }

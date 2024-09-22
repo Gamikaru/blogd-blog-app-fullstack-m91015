@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Dropdown } from "react-bootstrap";
 import Logger from "../../utils/Logger";
 
@@ -26,9 +26,11 @@ const UserDropdown = ({ handleAccountModal, handleLogout }) => {
          }
       };
 
+      // Attach listeners for closing the dropdown
       document.addEventListener("mousedown", handleClickOutside);
       document.addEventListener("keydown", handleEscKey);
 
+      // Clean up event listeners
       return () => {
          Logger.info("Removing account dropdown event listeners");
          document.removeEventListener("mousedown", handleClickOutside);
@@ -37,10 +39,7 @@ const UserDropdown = ({ handleAccountModal, handleLogout }) => {
    }, []);
 
    return (
-      <div
-         className="dropdown-container"
-         ref={dropdownRef}
-      >
+      <div className="dropdown-container" ref={dropdownRef}>
          <Dropdown show={showDropdown} onToggle={handleDropdown}>
             <Dropdown.Toggle
                id="dropdown"
@@ -55,15 +54,15 @@ const UserDropdown = ({ handleAccountModal, handleLogout }) => {
             <Dropdown.Menu
                id="dropdown-menu"
                className={`dropdown-menu ${showDropdown ? "show" : ""}`}
-               onMouseEnter={() => clearTimeout(dropdownRef.current?.timeout)} // Stop closing when hovered
-               onMouseLeave={() => {
-                  dropdownRef.current.timeout = setTimeout(() => {
-                     setShowDropdown(false); // Close dropdown when the mouse leaves the menu
-                  }, 300);
-               }}
+               onMouseEnter={() => setShowDropdown(true)} // Prevent closing on hover
+               onMouseLeave={() => setShowDropdown(false)} // Close smoothly on mouse leave
             >
-               <Dropdown.Item key="settings" onClick={handleAccountModal}>Account Settings</Dropdown.Item>
-               <Dropdown.Item key="logout" onClick={handleLogout}>Logout</Dropdown.Item>
+               <Dropdown.Item key="settings" onClick={handleAccountModal}>
+                  Account Settings
+               </Dropdown.Item>
+               <Dropdown.Item key="logout" onClick={handleLogout}>
+                  Logout
+               </Dropdown.Item>
             </Dropdown.Menu>
          </Dropdown>
       </div>

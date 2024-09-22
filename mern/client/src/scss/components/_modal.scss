@@ -1,5 +1,5 @@
-@import "../abstracts/_variables";
-@import "../abstracts/_mixins";
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
 
 // Modal Container
 .register-modal-container,
@@ -11,23 +11,23 @@
    width: 100vw;
    height: 100vh;
    z-index: 1050;
-   background-color: rgba($charcoal-extra-light, 0.8);
+   background-color: rgba($charcoal-extra-light, 0.8); // Centralized charcoal extra light
 }
 
 // Modal
 .register-modal,
 .post-modal {
-   @include modal-base($white, 0, 1rem, 0 0.5rem 1.5rem rgba($primary-purple, 0.5));
+   @include modal-base(); // Use modal mixin for styling
    width: 90%;
    max-width: 500px;
-   overflow: hidden; // Ensure the header and body are contained within the card
+   overflow: hidden;
 
-   @media (max-width: 768px) {
+   @media (max-width: $breakpoint-md) {
       width: 95%;
       max-width: 400px;
    }
 
-   @media (max-width: 576px) {
+   @media (max-width: $breakpoint-sm) {
       width: 100%;
       max-width: 350px;
    }
@@ -36,18 +36,16 @@
 // Modal Header with Centered Title
 .register-modal-header,
 .post-modal-header {
-   background-color: $primary-purple;
+   background-color: $primary-purple; // Use centralized primary color
    color: $white;
-   padding: 1.5rem;
+   padding: $spacing-large;
    display: flex;
    justify-content: center;
    align-items: center;
    text-align: center;
 
    .modal-title {
-      font-family: "Anton", sans-serif;
-      font-weight: 300;
-      font-size: 1.5rem;
+      @include font-default($font-tertiary, 1.5rem, $font-weight-light); // Use centralized font mixin
       color: $white;
       letter-spacing: 0.2rem;
    }
@@ -56,7 +54,7 @@
 // Modal Body
 .register-modal-body,
 .post-modal-body {
-   padding: 2rem;
+   padding: $spacing-large; // Use centralized spacing
    background-color: $white;
 }
 
@@ -64,16 +62,16 @@
 .register-modal-input,
 .post-modal-input {
    width: 100%;
-   padding: 1rem;
-   margin-bottom: 1.5rem;
+   padding: $spacing-medium; // Use centralized spacing
+   margin-bottom: $spacing-large;
    background-color: $white;
    color: $charcoal;
    border: 1px solid $light-gray;
-   border-radius: 10px;
-   box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+   border-radius: $border-radius;
+   @include shadow-light; // Apply light shadow
 
    &:focus {
-      border-color: $primary-purple;
+      border-color: $primary-purple; // Use centralized primary color
       box-shadow: 0 0 0 0.2rem rgba($primary-purple, 0.25);
       outline: none;
    }
@@ -82,11 +80,16 @@
 // Submit Button (Scoped specifically for the register and post modals)
 .register-submit-btn,
 .post-submit-btn {
-   @include button-base($primary-purple, $white, darken($primary-purple, 10%), $electric-violet-light, medium);
+   @include button-base(
+      $primary-purple,
+      $white,
+      darken($primary-purple, 10%),
+      $primary-purple-light
+   ); // Use button mixin and centralized colors
    align-self: flex-end;
    padding: 0.75rem 1.5rem;
    font-size: 1rem;
-   border-radius: 10px;
+   border-radius: $border-radius;
    transition: background-color 0.3s ease;
 
    &:hover {
@@ -101,49 +104,5 @@
    &:active {
       background-color: darken($primary-purple, 15%);
       transform: scale(0.98);
-   }
-}
-
-// Toast styling (Success and Error)
-.register-toast,
-.post-toast {
-   position: absolute;
-   top: 1rem;
-   right: 1rem;
-   z-index: 1050;
-}
-
-.register-toast-success,
-.post-toast-success {
-   background-color: $success-green;
-   color: $white;
-   box-shadow: 0 0 15px rgba($success-green, 0.5);
-}
-
-.register-toast-error,
-.post-toast-error {
-   background-color: $bright-red;
-   color: $white;
-   box-shadow: 0 0 15px rgba($bright-red, 0.5);
-}
-
-// Card Styling (Scoped to register and post modals)
-.register-card,
-.post-card {
-   background-color: rgba($charcoal-extreme-light, 0.8);
-   border-radius: 1rem;
-   box-shadow: 0 8px 30px rgba($primary-purple, 0.8);
-}
-
-// Responsive Modal Adjustments
-@media (max-width: 768px) {
-   .register-modal-container,
-   .post-modal-container {
-      padding: 1rem;
-   }
-   .register-modal,
-   .post-modal {
-      width: 100%;
-      padding: 1rem;
    }
 }

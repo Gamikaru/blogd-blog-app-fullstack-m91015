@@ -1,86 +1,88 @@
-@import "../abstracts/variables";
-@import "../abstracts/mixins";
-@import "../layout/pagecontainer";
+@import "../abstracts/variables"; // Import global variables
+@import "../abstracts/mixins"; // Import centralized mixins
 
-/* Network Page container */
+/* --------------------------------------------------------------------------
+Network Page Container
+-------------------------------------------------------------------------- */
 .network-page-container {
-   @include page-container-mixin; // Use the mixin instead of @extend
+   @include page-container($navbar-height: 80px, $extra-top-padding: 0);
+   @include flex-center; // No negative padding required
 }
 
-/* Grid container for cards */
-.grid-container {
-   display: grid;
-   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-   gap: 2rem;
-   max-width: 90vw;
-   width: 100%;
-   overflow: visible;
-
-   @media (max-width: 768px) {
-      grid-template-columns: 1fr;
-   }
+/* --------------------------------------------------------------------------
+Grid container for Network cards
+-------------------------------------------------------------------------- */
+.network-grid {
+   @include grid-container(
+      $min-width: 300px,
+      $gap: $spacing-large,
+      $padding: $spacing-large,
+      $padding-top: 5rem
+   ); // Regular padding for network
 }
-
-/* Network Card Styling */
+/* --------------------------------------------------------------------------
+Network Card Styling
+-------------------------------------------------------------------------- */
 .network-card {
-   @include card-base($white, $light-gray, 0 0.5rem 1.5rem rgba($charcoal-light, 0.1));
-   border-radius: 15px;
-   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
+   @include card-base($white, $light-gray, $box-shadow-light); // Consistent card styling
+
+   border-radius: $border-radius-large;
    background: linear-gradient(145deg, $white, lighten($light-gray, 5%));
    transition:
       transform 0.3s ease,
       box-shadow 0.3s ease;
    position: relative;
    z-index: 0;
+   padding: $spacing-medium;
+   width: 100%;
+   height: 100%;
+   margin-bottom: $spacing-medium;
 
    &:hover {
       transform: translateY(-5px);
       box-shadow: 0 0 20px rgba($primary-purple, 0.2);
       z-index: 10;
 
-      // Show the status bubble and thought bubbles on hover
       .network-card-body {
+         padding: $spacing-small;
+         .user-details {
+            gap: $spacing-small;
+         }
          .top-section {
-            .initials-circle {
-               &.has-status {
-                  &::before,
-                  &::after {
-                     opacity: 1;
-                     transform: translateY(-0.5rem); /* Move up smoothly */
-                  }
-                  .user-status {
-                     .status-bubble {
-                        opacity: 1;
-                        visibility: visible;
-                        transform: translateY(-1rem); /* Move up smoothly */
-                     }
-                  }
+            .initials-circle.has-status {
+               &::before,
+               &::after {
+                  opacity: 1;
+                  transform: translateY(-0.5rem);
+               }
+               .user-status .status-bubble {
+                  opacity: 1;
+                  visibility: visible;
+                  transform: translateY(-1rem);
                }
             }
          }
       }
    }
+   
 
    .network-card-body {
-      padding: 1.5rem;
-      font-size: 1rem;
+      padding: $spacing-medium;
+      font-size: $font-size-base;
       color: $charcoal;
-      max-width: 100%;
-      margin: 0 auto;
-      position: relative;
 
       .top-section {
          display: flex;
          flex-direction: column;
          align-items: center;
-         gap: 1rem;
+         gap: $spacing-medium;
 
          .initials-circle {
             background-color: $white;
             border: 3px solid $primary-purple;
             color: $primary-purple;
             font-size: 2.5rem;
-            font-family: "Monoton", sans-serif;
+            font-family: $font-tertiary;
             border-radius: 50%;
             width: 6rem;
             height: 6rem;
@@ -90,7 +92,6 @@
             line-height: 1;
             position: relative;
 
-            // Add small bubbles for thought bubble only if .has-status is present
             &.has-status {
                &::before,
                &::after {
@@ -105,56 +106,43 @@
                      transform 0.3s ease;
                }
 
-               // Smaller bubble (closest to initials)
                &::before {
                   width: 0.6rem;
                   height: 0.6rem;
                   top: 30%;
                   left: 120%;
-                  transform: translate(-50%, -50%) translateY(0);
                }
 
-               // Slightly larger bubble (between initials and status bubble)
                &::after {
                   width: 0.9rem;
                   height: 0.9rem;
                   top: 20%;
                   left: 140%;
-                  transform: translate(-50%, -50%) translateY(0);
                }
             }
 
             .user-status {
                position: absolute;
-               top: -10px; /* Adjust as needed */
-               left: 160%; /* Adjust as needed */
-               z-index: 1000;
+               top: -10px;
+               left: 160%;
 
                .status-bubble {
-                  position: relative;
                   background-color: $primary-purple;
                   color: $white;
-                  padding: 1rem 1.5rem;
+                  padding: $spacing-small $spacing-medium;
                   border-radius: 1.4rem;
                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                   opacity: 0;
                   visibility: hidden;
-                  transform: translateY(0); /* Initial position */
+                  transform: translateY(0);
                   transition:
                      opacity 0.3s ease,
                      visibility 0.3s ease,
                      transform 0.3s ease;
-                  z-index: 1001;
-                  font-family: "JetBrains Mono", monospace;
-                  font-size: 0.8rem;
-                  line-height: 1.2;
-                  white-space: normal;
-                  word-break: normal;
-                  overflow-wrap: normal;
-                  hyphens: none;
+                  font-family: $font-primary;
+                  font-size: $font-size-small;
                   max-width: 150px;
 
-                  // Thought bubble tail (optional)
                   &::after {
                      content: "";
                      position: absolute;
@@ -171,7 +159,6 @@
       }
 
       .user-info {
-         width: 100%;
          text-align: center;
 
          h5 {
@@ -179,20 +166,19 @@
             font-family: "Anton", sans-serif;
             font-size: 1.6rem;
             font-weight: bold;
-            margin-bottom: 0.5rem;
+            margin-bottom: $spacing-small;
             letter-spacing: 0.2rem;
          }
 
          .user-details {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
-            font-size: 1rem;
+            gap: $spacing-small;
 
             .detail-item {
                display: flex;
                align-items: center;
-               gap: 0.5rem;
+               gap: $spacing-small;
 
                svg {
                   font-size: 1.2rem;
@@ -200,7 +186,7 @@
                }
 
                span {
-                  font-size: 0.9rem;
+                  font-size: $font-size-small;
                   font-weight: 400;
                }
             }
@@ -208,28 +194,25 @@
       }
 
       h6 {
-         font-size: 1rem;
+         font-size: $font-size-base;
          color: $primary-purple;
          font-family: "Anton", sans-serif;
-         margin-bottom: 0rem;
-         font-weight: normal;
-         padding-top: 2rem;
-         padding-bottom: 0rem;
+         margin-bottom: 0;
+         padding-top: $spacing-large;
          text-align: center;
       }
 
       .recent-post {
-         margin-top: 1rem;
+         margin-top: $spacing-medium;
          background: linear-gradient(145deg, lighten($light-gray, 5%), darken($light-gray, 5%));
-         padding: 0.75rem 1.25rem;
-         border-radius: 20px;
-         font-size: 0.5rem;
+         padding: $spacing-small $spacing-medium;
+         border-radius: $border-radius;
          box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.05);
 
          .post-content {
-            font-size: 0.7rem;
+            font-size: $font-size-small;
             color: $charcoal;
-            font-family: "Inter", sans-serif;
+            font-family: $font-secondary;
             white-space: normal;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -242,11 +225,13 @@
    }
 }
 
-/* Responsive Design for the Network Page */
-@media (max-width: 768px) {
+/* --------------------------------------------------------------------------
+Responsive Design for the Network Page
+-------------------------------------------------------------------------- */
+@media (max-width: $breakpoint-md) {
    .network-card {
       max-width: 100%;
-      padding: 1rem;
+      padding: $spacing-medium;
    }
 
    .network-card-body {
@@ -267,20 +252,8 @@
          }
       }
 
-      .user-info {
-         h5 {
-            font-size: 1.25rem;
-         }
+      .user-info h5 {
+         font-size: 1.25rem;
       }
-   }
-
-   .grid-container {
-      transition: grid-template-columns 0.3s ease;
-   }
-
-   .network-card {
-      transition:
-         transform 0.3s ease,
-         box-shadow 0.3s ease;
    }
 }

@@ -1,49 +1,48 @@
-@import "../abstracts/variables";
-@import "../abstracts/mixins"; // Ensure your mixins are imported for cards
+// // scss/components/_cards.scss
 
-/* Card Component */
-.card {
-   @include card-base($charcoal, $light-gray, 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1));
-   @extend .card; // Apply Bootstrap's card styles
-}
+// @import "../abstracts/variables";
+// @import "../abstracts/mixins";
 
-.card-header {
-   background-color: $primary-purple;
-   color: $white;
-   font-size: 1.2rem;
-   font-weight: bold;
-   padding: 1rem;
-   border-radius: 0.5rem 0.5rem 0 0;
-   @extend .card-header;
-}
+// /* Card Component */
+// .card {
+//    @include card-base($charcoal, $light-gray, $box-shadow-light);
+// }
 
-.card-body {
-   font-size: 1rem;
-   color: $charcoal;
-   line-height: 1.6;
-   @extend .card-body;
-}
+// .card-header {
+//    background-color: $primary-purple;
+//    color: $white;
+//    font-size: $font-size-medium;
+//    @include font-bold;
+//    padding: $spacing-medium;
+//    border-radius: $border-radius $border-radius 0 0;
+// }
 
-.card-footer {
-   background-color: $white;
-   padding: 1rem;
-   border-radius: 0 0 0.75rem 0.75rem;
-   text-align: right;
-   @extend .card-footer;
-}
+// .card-body {
+//    font-size: $font-size-base;
+//    color: $charcoal;
+//    line-height: 1.6;
+//    padding: $spacing-medium;
+// }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-   .card {
-      padding: 1rem;
-   }
-   .card-header {
-      font-size: 1.1rem;
-   }
-   .card-body {
-      font-size: 0.95rem;
-   }
-   .card-footer {
-      font-size: 0.85rem;
-   }
-}
+// .card-footer {
+//    background-color: $white;
+//    padding: $spacing-medium;
+//    border-radius: 0 0 $border-radius $border-radius;
+//    text-align: right;
+// }
+
+// /* Responsive adjustments */
+// @media (max-width: $breakpoint-md) {
+//    .card {
+//       padding: $spacing-small;
+//    }
+//    .card-header {
+//       font-size: $font-size-small;
+//    }
+//    .card-body {
+//       font-size: 0.95rem;
+//    }
+//    .card-footer {
+//       font-size: 0.85rem;
+//    }
+// }

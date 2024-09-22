@@ -1,0 +1,41 @@
+// // scss/pages/_contact.scss
+
+// @import "../abstracts/variables";
+// @import "../abstracts/mixins";
+
+// .contact-page {
+//    padding: $spacing-large;
+//    background-color: $light-background;
+//    color: $charcoal;
+
+//    h1 {
+//       @include responsive-font;
+//       color: $primary-purple;
+//       margin-bottom: $spacing-medium;
+//    }
+
+//    .contact-form {
+//       background-color: $white;
+//       @include shadow-light;
+//       padding: $spacing-large;
+//       border-radius: $border-radius;
+//       max-width: 600px;
+//       margin: 0 auto;
+
+//       input,
+//       textarea {
+//          @include form-field-base;
+//          margin-bottom: $spacing-medium;
+//          width: 100%;
+
+//          &:focus {
+//             box-shadow: 0 0 10px lighten($primary-purple, 20%);
+//          }
+//       }
+
+//       .submit-btn {
+//          @include button-base($primary-purple, $primary-purple-hover);
+//          margin-top: $spacing-medium;
+//       }
+//    }
+// }

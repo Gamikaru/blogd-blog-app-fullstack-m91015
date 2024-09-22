@@ -1,73 +1,80 @@
-@import "../abstracts/variables";
-@import "../abstracts/mixins";
-@import "../layout/pagecontainer";
 
-// Grid container for blog posts
+
+
+// Blog Page Container
+.blog-page-container {
+   @include page-container($navbar-height: 80px);
+
+}
+
 .blog-posts-grid {
-   display: grid;
-   grid-template-columns: repeat(3, 1fr); // Explicitly set 3 columns
-   gap: 1.5rem;
-   max-width: 100vw;
-   width: 100%;
-   padding-top: 7rem;
+   @include grid-container($min-width: 300px, $gap: $spacing-large, $padding: $spacing-small, $padding-top: 4rem, $margin-top: 10rem);
+   max-width: 100%;
+   margin: 0 auto;
+   margin-bottom: 5rem;
 
-   @media (max-width: 992px) {
-      // Adjust breakpoint for 2 cards per row
-      grid-template-columns: repeat(2, 1fr);
-   }
 
-   @media (max-width: 768px) {
-      // Adjust breakpoint for 1 card per row
-      grid-template-columns: 1fr;
-   }
-
-   @media (max-width: 576px) {
-      // Adjust breakpoint for 1 card per row
-      grid-template-columns: 1fr;
-      gap: 0.5rem;
-   }
 }
 
-// Blog Post Card Styling
-.bloggs-card-title {
-   .username {
-      display: block;
-      font-size: 1rem;
-      font-weight: 300;
-      color: $primary-purple;
-      font-family: $font-tertiary;
-      margin-bottom: 1rem; // Increase vertical space
-      padding: 0.5rem 1rem; // Add padding for visual clarity
-      border-radius: 0.5rem; // Add border radius for rounded corners
-      text-align: center; // Center the text
+.bloggs-grid-item {
+   @include flex-container(center, center, column);
+   flex-basis: 100%;
+   margin-bottom: $spacing-medium;
+   transition: transform 0.3s ease;
+   margin-top: $spacing-extra-large;
+   box-shadow: $box-shadow-light;
+
+
+   @media (max-width: $breakpoint-md) {
+      padding: $spacing-small;
+      margin-top: $spacing-extra-large;
    }
+
+   @media (max-width: $breakpoint-sm) {
+      padding: $spacing-small;
+      margin-top: $spacing-extra-large;
+   }
+
+   @media (max-width: $breakpoint-xs) {
+      padding: $spacing-small;
+      margin-top: $spacing-extra-large;
+   }
+
+
 }
 
-// Blog Post Card Styling
+// Blog Post Card Section
 .bloggs-post-section {
-   @include card-base($white, $light-gray, 0 0.5rem 1.5rem rgba($primary-purple, 0.1));
-   transition:
-      transform 0.3s ease,
-      box-shadow 0.3s ease;
+   @include card-base($white, $light-gray, $box-shadow-light);
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+   padding: $spacing-small;
+   transition: transform 0.3s ease;
+   width: 100%;
+   height: 100%;
 
    &:hover {
       transform: translateY(-5px);
-      box-shadow: 0 0.75rem 1.5rem rgba($primary-purple, 0.2);
+      @include shadow-heavy;
    }
 
    .bloggs-card-header {
       text-align: center;
-      color: $charcoal;
+      padding: clamp($spacing-medium, 2vw, $spacing-large);
+      color: $primary-purple;
+      font-family: $font-primary;
+      font-size: $font-size-large;
       font-weight: bold;
-      font-size: 1.5rem;
+      letter-spacing: 0.1rem;
    }
 
    .speech-bubble {
       position: relative;
-      padding: 1rem 2rem;
-      background-color: $charcoal-extreme-light;
+      padding: $spacing-medium $spacing-large;
+      background-color: $charcoal-extra-light;
       border-radius: 1rem;
-      margin-bottom: 1rem;
+      margin-bottom: $spacing-small;
 
       &::before {
          content: "";
@@ -76,136 +83,105 @@
          left: 30px;
          width: 20px;
          height: 15px;
-         background-color: $charcoal-extreme-light;
+         background-color: $charcoal-extra-light;
          clip-path: polygon(0 0, 100% 0, 50% 100%);
       }
 
       .post-text {
-         font-size: 1.05rem;
+         font-size: $font-size-small;
+         font-family: $font-tertiary;
+         font-weight: $font-weight-extra-light;
          color: $charcoal;
-         font-family: $font-secondary;
-         margin-bottom: 1rem;
       }
    }
 
-   .bloggs-body {
-      .post-interactions {
+   .post-interactions {
+      display: flex;
+      align-items: center;
+      margin-top: $spacing-large;
+
+      .like-button {
+         @include button-base($primary-purple, $white, darken($primary-purple, 10%), $primary-purple-light);
+         margin-right: $spacing-small;
+         font-family: "Anton", sans-serif;
+      }
+
+      .like-section {
          display: flex;
          align-items: center;
-         margin-bottom: 1rem;
-         margin-top: 2rem;
 
-         .like-section {
-            display: flex;
-            align-items: center;
-            margin-left: 2rem; // Adjust this value to move further right
-
-            .heart-icon {
-               color: $primary-purple;
-               font-size: 1.2rem;
-               margin-right: 5px;
-            }
-
-            .likes-count {
-               color: $charcoal;
-               font-size: 1rem;
-            }
+         .heart-icon {
+            color: $primary-purple;
+            font-size: 1.2rem;
+            margin-right: 5px;
          }
 
-         .like-button {
-            @include button-base($primary-purple, $white, darken($primary-purple, 10%), $electric-violet-light, small);
-            padding: 0.4rem 1.5rem;
-            font-size: 0.875rem;
-            font-family: "Anton", sans-serif;
-            margin-left: 1rem; // Adjust spacing between like button and like count
-         }
-
-         .date-section {
-            font-size: 0.875rem;
-            padding-left: 7rem;
+         .likes-count {
+            font-size: $font-size-small;
             color: $charcoal;
          }
+      }
+
+      .date-section {
+         margin-left: auto;
+         font-size: 0.875rem;
+         color: $primary-purple;
+         text-align: right;
       }
    }
 }
 
 // Blog Comments Section
 .bloggs-comments {
-   padding: 1rem;
-   background-color: $charcoal-extreme-light;
-   border-radius: 0.5rem;
-   box-shadow: 0 0.5rem 1rem rgba($charcoal, 0.05);
-   margin-bottom: 1rem;
+   padding: clamp($spacing-small, 2vw, $spacing-medium);
+   // background-color: $charcoal-extra-light;
+   border-radius: 1rem;
+   // box-shadow: $box-shadow-light;
+   margin-bottom: $spacing-small;
+   flex-grow: 1;
 
    .comment-author {
-      font-size: 1rem;
-      font-weight: 700;
       color: $primary-purple;
-      font-family: "JetBrains Mono", monospace;
-      margin-bottom: 0.5rem;
-
-      @media (max-width: 576px) {
-         font-size: 0.875rem;
-      }
+      margin-bottom: $spacing-small;
    }
 
    .comment-text {
-      font-size: 1rem;
       color: $charcoal;
-      font-family: $font-secondary;
-      margin-bottom: 1rem;
-
-      @media (max-width: 576px) {
-         font-size: 0.875rem;
-      }
+      margin-bottom: $spacing-small;
+      font-family: $font-tertiary;
    }
 }
 
-// Comment Form
+// Comment Form Styling
 .bloggs-comment-form {
-   margin-top: 1rem;
+   display: flex;
+   flex-direction: column;
+   margin-top: $spacing-small;
 
    .form-input {
-      border-radius: 0.5rem;
-      border: 1px solid $light-gray;
-      padding: 0.75rem;
-      font-family: $font-secondary;
-      font-size: 1rem;
-      color: $charcoal;
-      background-color: $white;
-      transition:
-         border-color 0.3s ease,
-         box-shadow 0.3s ease;
+      @include form-field-base($white, $light-gray, $primary-purple, $font-size-small, $border-radius, $border-color);
+   }
 
-      &:focus {
-         outline: none;
-         border-color: $primary-purple;
-         box-shadow: 0 0 5px rgba($primary-purple, 0.5);
-      }
-
-      @media (max-width: 576px) {
-         padding: 0.5rem;
-         font-size: 0.875rem;
-      }
+   .form-control {
+      margin-bottom: $spacing-small;
+      font-family: $font-tertiary;
+      border: none;
+      width: 100%;
    }
 
    .bloggs-submit-bttn {
-      background-color: $primary-purple;
-      color: $white;
-      padding: 0.5rem 1.5rem;
-      margin-top: 0.5rem;
-      border-radius: 0.5rem;
-      font-size: 1rem;
+      @include button-base($primary-purple, $white, darken($primary-purple, 10%), $primary-purple-light);
+      margin-top: $spacing-small;
+      font-size: $font-size-small;
+      padding: 0.4rem 1.2rem;
       font-family: "Anton", sans-serif;
-      font-weight: 300;
-      letter-spacing: 0.1rem;
-      transition:
-         background-color 0.3s ease,
-         box-shadow 0.3s ease;
+      width: 40%;
+      margin-left: auto;
+      margin-top: -1rem;
 
       &:hover {
          background-color: darken($primary-purple, 10%);
-         box-shadow: 0 0.25rem 0.5rem rgba($charcoal, 0.1);
+         box-shadow: $box-shadow-light;
       }
 
       &:focus {
@@ -217,30 +193,32 @@
       &:active {
          transform: scale(0.95);
       }
+   }
 
-      @media (max-width: 576px) {
-         padding: 0.4rem 1.2rem;
-         font-size: 0.875rem;
-      }
+   .character-counter {
+      font-size: $font-size-small;
+      color: $charcoal;
+      margin-top: $spacing-small;
+      margin-bottom: $spacing-small;
+      font-family: $font-tertiary;
+      margin-left: 0.5rem;
    }
 }
 
-// No Blog Posts message
+// No Blog Posts Message
 .no-blog-posts {
-   font-size: 1.4rem;
-   font-family: "JetBrains Mono", monospace;
-   color: $primary-purple;
    text-align: center;
-   padding: 2rem;
+   padding: clamp($spacing-medium, 2vw, $spacing-large);
    background-color: $charcoal-extra-light;
-   border-radius: 0.5rem;
-   box-shadow: 0 0.5rem 1rem rgba($charcoal, 0.05);
-   margin-top: 2rem;
+   border-radius: 1rem;
+   box-shadow: $box-shadow-light;
+   margin-top: $spacing-large;
 
-   @media (max-width: 576px) {
-      font-size: 1.2rem;
-      padding: 1.5rem;
-   }
+   font-family: $font-primary;
+   font-size: $font-size-large;
+   font-weight: bold;
+   letter-spacing: 0.1rem;
+   color: $primary-purple;
 }
 
 // Loading Spinner
@@ -251,7 +229,7 @@
    height: 100vh;
 }
 
-// Animation
+// Animation for blog post section
 @keyframes fadeInUp {
    from {
       opacity: 0;

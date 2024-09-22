@@ -1,39 +1,39 @@
 @import "../abstracts/variables";
 @import "../abstracts/mixins";
-@import "../layout/pagecontainer";
 
 /* Home Page container */
 .home-page-container {
-   @include page-container-mixin; // Use the mixin instead of @extend
+   @include page-container($navbar-height: 80px, $extra-top-padding: 0);
+   @include flex-center; // No negative padding required
 }
 
-/* Grid container for cards */
 .grid-container {
-   display: grid;
-   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-   gap: 2rem;
-   max-width: 90vw;
-   width: 100%;
-
-   @media (max-width: 768px) {
-      grid-template-columns: 1fr;
-   }
+   @include grid-container(
+      $min-width: 300px,
+      $gap: $spacing-large,
+      $padding: $spacing-large,
+      $padding-top: 4rem // Adjust this based on visual needs
+   );
 }
+
+
 /* User Card Styling */
 .user-card {
-   @include card-base($white, $light-gray, 0 0.5rem 1.5rem rgba($primary-purple, 0.1));
+   @include card-base($white, $light-gray, $box-shadow-light); // Consistent card styling
 
    &:hover {
       transform: translateY(-5px);
-      box-shadow: 0 0.75rem 1.5rem rgba($primary-purple, 0.2);
+      @include shadow-heavy; // Consistent hover shadow
    }
 
    .user-card-header {
+      @include padding(clamp($spacing-medium, 2vw, $spacing-large)); // Responsive padding
+
       background-color: $white;
-      padding: clamp(1rem, 2vw, 1.5rem);
+      padding: clamp($spacing-medium, 2vw, $spacing-large); // Responsive padding
       border-radius: 1rem 1rem 0 0;
       text-align: center;
-      color: $primary-purple;
+      color: $primary-purple; // Use primary color
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -43,7 +43,7 @@
          width: 100px;
          height: 100px;
          background-color: $white;
-         border: 3px solid $primary-purple;
+         border: 3px solid $primary-purple; // Primary color for border
          border-radius: 50%;
          display: flex;
          align-items: center;
@@ -51,22 +51,23 @@
          color: $primary-purple;
          font-size: 2rem;
          font-family: "Monoton", sans-serif;
-         margin-bottom: 1rem;
+         margin-bottom: $spacing-medium; // Centralized spacing
       }
 
       .home-user-status {
-         @include form-field-base();
-         margin-top: 0.5rem;
-         font-size: 1rem;
+         @include form-field-base(); // Consistent form field styling
+         margin-top: $spacing-small;
+         font-size: $font-size-base;
          text-align: center;
+         font-family: $font-tertiary;
       }
    }
 
    .user-details {
-      padding: clamp(1rem, 2vw, 1.5rem);
+      padding: clamp($spacing-medium, 2vw, $spacing-large); // Responsive padding
       display: grid;
       grid-template-columns: 1fr;
-      gap: clamp(1rem, 2vw, 1.5rem);
+      gap: clamp($spacing-medium, 2vw, $spacing-large); // Centralized spacing
       border-top: 1px solid $light-gray;
 
       .detail-item {
@@ -81,13 +82,13 @@
 
          .detail-icon {
             font-size: 1.2rem;
-            color: $primary-purple;
-            margin-right: 0.75rem;
+            color: $primary-purple; // Primary color for icons
+            margin-right: $spacing-small;
          }
 
          .detail-text {
-            font-size: 1rem;
-            color: $charcoal;
+            font-size: $font-size-base;
+            color: $charcoal; // Charcoal color for text
          }
       }
    }
@@ -95,32 +96,33 @@
 
 /* Posts Card Styling */
 .home-posts-card {
-   @include card-base($white, $light-gray, 0 0.5rem 1rem rgba($primary-purple, 0.1));
+   @include card-base($white, $light-gray, $box-shadow-light); // Consistent card styling
 
    &:hover {
       transform: translateY(-5px);
-      box-shadow: 0 0.75rem 1.5rem rgba($primary-purple, 0.2);
+      @include shadow-heavy; // Hover shadow
    }
 
    .home-post-title {
-      font-size: 1.5rem;
+      font-size: $font-size-large;
       font-family: $font-primary;
       font-weight: bold;
+      letter-spacing: 0.1rem; // Custom letter spacing
       color: $primary-purple;
-      margin-bottom: 1.5rem;
+      margin-bottom: $spacing-large;
    }
 
    .posts-scroll-container {
       max-height: 400px;
       overflow-y: auto;
-      padding-right: 1rem;
+      padding-right: $spacing-medium; // Centralized padding
 
       &::-webkit-scrollbar {
          width: 8px;
       }
 
       &::-webkit-scrollbar-track {
-         background: lighten($charcoal-extreme-light, 10%);
+         background: lighten($charcoal-extra-light, 10%);
          border-radius: 10px;
       }
 
@@ -137,10 +139,10 @@
 
    .speech-bubble {
       position: relative;
-      padding: 1rem 2rem;
-      background-color: $charcoal-extreme-light;
+      padding: $spacing-medium $spacing-large; // Centralized spacing
+      background-color: $charcoal-extra-light;
       border-radius: 1rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: $spacing-small;
 
       &::before {
          content: "";
@@ -149,19 +151,22 @@
          left: 30px;
          width: 20px;
          height: 15px;
-         background-color: $charcoal-extreme-light;
+         background-color: $charcoal-extra-light;
          clip-path: polygon(0 0, 100% 0, 50% 100%);
       }
 
       .post-text {
          font-size: 1.05rem;
+         font-family: $font-tertiary;
          color: $charcoal;
+         font-weight: $font-weight-extra-light;
+         font-size: $font-size-small;
       }
 
       .like-info {
          display: flex;
          align-items: center;
-         gap: 0.25rem;
+         gap: $spacing-small;
          position: absolute;
          bottom: 10px;
          right: 15px;
@@ -182,25 +187,24 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 0rem;
 
       .like-button {
-         @include button-base($primary-purple, $white, darken($primary-purple, 10%), $electric-violet-light, small);
-         margin-left: 4rem; // Remove the left margin entirely
-         margin-top: 0rem; // Ensure no top margin to prevent extra spacing
-         font-family:'Anton', sans-serif;
-         display: inline-block; // Make sure the button stays inline
-         position: relative;
-         margin-bottom: 4rem;
+         @include button-base(
+            $primary-purple,
+            $white,
+            darken($primary-purple, 10%),
+            $primary-purple-light,
+            small
+         ); // Centralized button colors and sizes
+         font-family: "Anton", sans-serif;
+         margin-bottom: $spacing-large;
       }
 
       .post-date {
          font-size: 0.875rem;
          color: $primary-purple;
-         margin-top: 0rem; // Remove extra margin above the date
          text-align: right;
-         position: relative; // Ensure it is aligned properly below the post
-         margin-bottom: 4rem;
+         margin-bottom: $spacing-large;
       }
    }
 }

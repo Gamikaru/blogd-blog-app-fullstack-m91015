@@ -1,0 +1,13 @@
+// Padding Helper
+@import "../variables"; // Import centralized variables
+@import "../functions"; // Import utility functions
+@import "../placeholders"; // Import placeholder styles
+
+@mixin padding($padding-size) {
+   padding: $padding-size;
+}
+
+// Margin Helper
+@mixin margin($margin-size) {
+   margin: $margin-size;
+}

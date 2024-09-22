@@ -1,74 +1,68 @@
-@import "../abstracts/variables";
-@import "../abstracts/mixins"; // Ensure your mixins are imported for dropdown customizations
+// @import "../abstracts/variables";
+// @import "../abstracts/mixins"; // Ensure your mixins are imported for dropdown customizations
 
-/* Dropdown Container */
-.dropdown-container {
-   @extend .dropdown; // Apply Bootstrap's dropdown class
-   position: relative;
-   display: inline-block;
-}
+// /* Dropdown Container */
+// .dropdown-container {
+//    position: relative;
+//    display: inline-block;
+// }
 
-/* Toggle Button */
-.dropdown-toggle {
-   @extend .dropdown-toggle; // Extend Bootstrap's .dropdown-toggle class
-   background-color: $white;
-   color: $charcoal;
-   padding: 0.6rem 2rem;
-   border-radius: 0.5rem;
-   transition:
-      background-color 0.3s ease,
-      box-shadow 0.3s ease;
-   box-shadow: 0px 4px 8px rgba($electric-violet-light, 0.4);
+// /* Toggle Button */
+// .dropdown-toggle {
+//    background-color: $white; // White background for toggle button
+//    color: $charcoal; // Charcoal text color
+//    padding: $spacing-small $spacing-large; // Use centralized padding
+//    border-radius: 0.5rem;
+//    @include shadow-light; // Apply light shadow
+//    transition:
+//       background-color 0.3s ease,
+//       box-shadow 0.3s ease;
 
-   &:hover,
-   &:focus {
-      background-color: rgba($electric-violet, 0.1);
-      box-shadow: 0px 6px 12px rgba($electric-violet-light, 0.6);
-      outline: none;
-      color: $white;
-      text-shadow:
-         0 0 10px $white,
-         0 0 20px $white,
-         0 0 30px $white;
-   }
+//    &:hover,
+//    &:focus {
+//       background-color: rgba($primary-purple, 0.1); // Light purple on hover
+//       @include shadow-heavy; // Use heavier shadow on hover
+//       outline: none;
+//       color: $white; // Change text color to white on hover/focus
+//    }
 
-   &:focus {
-      box-shadow: none;
-   }
-}
+//    &:focus {
+//       outline: 2px solid $primary-purple; // Better focus state for accessibility
+//       box-shadow: none; // Remove box-shadow on focus
+//    }
+// }
 
-/* Dropdown Menu */
-.dropdown-menu {
-   @include dropdown-menu-base($white, $charcoal, rgba($electric-violet, 0.1), rgba($electric-violet-light, 0.4));
-   @extend .dropdown-menu; // Apply Bootstrap's dropdown menu styles
+// /* Dropdown Menu */
+// .dropdown-menu {
+//    background-color: $charcoal-extra-light; // Lighter charcoal background
+//    border-radius: $border-radius; // Use global border radius
+//    box-shadow: $box-shadow-light; // Light shadow for the menu
+//    padding: $spacing-small $spacing-medium; // Padding for inside items
+//    transition:
+//       box-shadow 0.3s ease,
+//       background-color 0.3s ease;
 
-   &.show {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-   }
 
-   &:hover {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0); /* Keep dropdown open while hovered */
-   }
-}
+//    .dropdown-item {
+//       color: $charcoal;
+//       padding: $spacing-small $spacing-medium; // Centralized padding for items
+//       transition: background-color 0.3s ease;
 
-/* Dropdown Items */
-.dropdown-item {
-   @extend .dropdown-item; // Apply Bootstrap's dropdown item styles
-   color: $charcoal;
-   padding: 0.4rem 0.9rem;
-   border-radius: 0.5rem;
-   transition:
-      color 0.3s ease,
-      background-color 0.3s ease,
-      box-shadow 0.3s ease;
 
-   &:hover {
-      background-color: rgba($electric-violet, 0.1);
-      color: $white;
-      box-shadow: 0px 6px 12px rgba($electric-violet, 0.6);
-   }
-}
+//       &:hover {
+//          background-color: $primary-purple-light; // Light purple hover effect
+//          color: $white;
+//       }
+//    }
+// }
+
+// /* Enhanced touch interaction for mobile devices */
+// @media (max-width: $breakpoint-md) {
+//    .dropdown-toggle {
+//       padding: $spacing-small $spacing-medium; // Adjust padding for mobile
+//    }
+
+//    .dropdown-menu {
+//       min-width: 100%; // Full width for dropdown on small screens
+//    }
+// }

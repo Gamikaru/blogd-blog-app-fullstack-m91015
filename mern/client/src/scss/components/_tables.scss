@@ -1,79 +1,79 @@
 // @import "../abstracts/variables";
-// @import "../abstracts/mixins";
+// @import "../abstracts/mixins"; // Ensure your mixins are imported for table customizations
 
 // // Table Container Styling
 // .table-container {
-//     width: 100%;
-//     margin: 2rem 0;
-//     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-//     border-radius: 0.75rem;
-//     overflow: hidden;
+//    width: 100%;
+//    margin: $spacing-large 0;
+//    box-shadow: $box-shadow-heavy;
+//    border-radius: $border-radius;
+//    overflow: hidden;
 // }
 
 // // Table Styling
 // .table {
-//     width: 100%;
-//     border-collapse: collapse;
-//     background-color: $white;
-//     font-family: "JetBrains Mono", Arial, sans-serif;
+//    width: 100%;
+//    border-collapse: collapse;
+//    background-color: $white;
+//    font-family: $font-primary;
 // }
 
 // // Table Header with Padding Mixin
 // .table th {
-//     background-color: $electric-violet;
-//     color: $white;
-//     @include table-padding(1rem);
-//     font-size: 1.1rem;
-//     text-align: left;
-//     border-bottom: 0.15rem solid $light-silver;
-//     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+//    background-color: $primary-purple;
+//    color: $white;
+//    @include table-padding($spacing-medium);
+//    font-size: $font-size-medium;
+//    text-align: left;
+//    border-bottom: 0.15rem solid $light-silver;
+//    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 // }
 
 // // Table Data with Padding Mixin
 // .table td {
-//     @include table-padding(1rem);
-//     font-size: 1rem;
-//     color: $charcoal;
-//     border-bottom: 0.1rem solid $light-silver;
+//    @include table-padding($spacing-medium);
+//    font-size: $font-size-base;
+//    color: $charcoal;
+//    border-bottom: 0.1rem solid $light-silver;
 // }
 
 // // Alternating Row Background Colors
 // .table tr:nth-child(odd) {
-//     background-color: $white;
+//    background-color: $white;
 // }
 
 // .table tr:nth-child(even) {
-//     background-color: $white;
+//    background-color: $light-gray;
 // }
 
 // // Hover Effects for Table Rows
 // .table tr:hover {
-//     background-color: rgba(138, 43, 226, 0.15);
-//     box-shadow: 0px 4px 8px rgba(113, 113, 186, 0.4);
-//     transition:
-//         background-color 0.3s ease,
-//         box-shadow 0.3s ease;
+//    background-color: rgba($primary-purple, 0.15);
+//    box-shadow: 0px 4px 8px rgba($primary-purple-dark, 0.4);
+//    transition:
+//       background-color 0.3s ease,
+//       box-shadow 0.3s ease;
 // }
 
 // // Bordered Table
 // .table-bordered {
-//     border: 0.2rem solid $light-silver;
+//    border: 0.2rem solid $light-silver;
 // }
 
 // .table-bordered th,
 // .table-bordered td {
-//     border: 0.1rem solid $light-silver;
+//    border: 0.1rem solid $light-silver;
 // }
 
 // // Responsive Table
-// @media (max-width: 768px) {
-//     .table th,
-//     .table td {
-//         padding: 0.5rem;
-//         font-size: 0.9rem;
-//     }
+// @media (max-width: $breakpoint-md) {
+//    .table th,
+//    .table td {
+//       padding: $spacing-small;
+//       font-size: $font-size-small;
+//    }
 
-//     .table-container {
-//         overflow-x: auto; // Enable horizontal scrolling for small screens
-//     }
+//    .table-container {
+//       overflow-x: auto; // Enable horizontal scrolling for small screens
+//    }
 // }

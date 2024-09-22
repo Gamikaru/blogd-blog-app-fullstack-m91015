@@ -131,10 +131,10 @@ export default function BloggsPosts() {
                <Spinner animation="border" variant="primary" />
             </div>
          ) : (
-            <div className="blog-posts-grid">
+            <div className="grid-container blog-posts-grid">
                {blogPosts.length > 0 ? (
                   blogPosts.map((post) => (
-                     <div key={post._id}>
+                     <div className="grid-item bloggs-grid-item" key={post._id}>
                         <Card className="bloggs-post-section">
                            <Card.Body className="bloggs-body">
                               <Card.Title className="bloggs-card-title">
@@ -147,15 +147,9 @@ export default function BloggsPosts() {
                                  <Button
                                     className="like-button"
                                     onClick={() => handleLike(post._id)}
-                                    aria-label={
-                                       post.likesBy?.includes(cookie.userID)
-                                          ? "Unlike"
-                                          : "Like"
-                                    }
+                                    aria-label={post.likesBy?.includes(cookie.userID) ? "Unlike" : "Like"}
                                  >
-                                    {post.likesBy?.includes(cookie.userID)
-                                       ? "Unlike"
-                                       : "Like"}
+                                    {post.likesBy?.includes(cookie.userID) ? "Unlike" : "Like"}
                                  </Button>
                                  <div className="like-section">
                                     <FaHeart className="heart-icon" />
@@ -187,9 +181,7 @@ export default function BloggsPosts() {
                                           rows={3}
                                           placeholder="Write a comment..."
                                           value={commentTexts[post._id] || ""}
-                                          onChange={(e) =>
-                                             handleCommentChange(post._id, e.target.value)
-                                          }
+                                          onChange={(e) => handleCommentChange(post._id, e.target.value)}
                                           aria-label="Write a comment"
                                        />
                                        <div className="character-counter">

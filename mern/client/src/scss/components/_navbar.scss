@@ -1,138 +1,218 @@
-@import "../abstracts/variables";
-@import "../abstracts/mixins";
+@import "../abstracts/variables"; // Import global variables
+@import "../abstracts/mixins"; // Import centralized mixins
+@import "../abstracts/functions"; // Import utility functions
+@import "../base/_typography"; // Ensure typography styles are included
 
-// Navbar Header
+// Navbar Header with Frosted Glass Effect
 .nav-header {
-   background: rgba($charcoal-light, 0.8);
-   backdrop-filter: blur(10px);
-   -webkit-backdrop-filter: blur(10px);
-   padding: 0rem 2rem;
    position: fixed;
    top: 0;
    left: 0;
    right: 0;
-   height: 80px;
+   height: $navbar-height;
    z-index: 1000;
    display: flex;
    align-items: center;
    justify-content: space-between;
-   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-   transition:
-      background-color 0.3s ease,
-      box-shadow 0.3s ease;
+   background: rgba(255, 255, 255, 0.2); // Transparent background
+   backdrop-filter: blur(10px); // Apply frosted glass effect
+   -webkit-backdrop-filter: blur(10px); // Safari support
+   border-bottom: 1px solid rgba(255, 255, 255, 0.18); // Optional frosted border
+   box-shadow: $box-shadow-light; // Light shadow for depth
+   padding: 0 $spacing-large;
+   @include transition-all(0.3s, ease-in-out); // Smooth transitions
+
+   // Apply dark background when scrolling
+   &.scrolled {
+      background-color: $primary-purple-dark;
+      transition: background-color 0.3s ease;
+   }
 }
 
 // Navbar Container
 .navbar {
-   display: flex;
-   align-items: center;
+   @include flex-container(space-between, center); // Use flexbox for layout
    width: 100%;
 
-   // Hamburger menu on the far left
    .sidebar-toggle {
       order: 1;
       background: none;
       border: none;
-      color: $white;
+      color: $primary-purple;
       font-size: 2rem;
       cursor: pointer;
-      display: block;
-      margin-right: 1rem;
-
-      @media (max-width: 768px) {
-         display: block;
-      }
+      margin-left: $spacing-extra-large;
+      @include transition-all(0.3s); // Smooth color transition
 
       &:hover {
-         color: lighten($primary-purple, 10%);
+         color: $charcoal-light;
       }
 
       &:focus {
-         outline: none;
+         box-shadow: none;
+      }
+
+      @media (max-width: $breakpoint-sm) {
+         margin-left: $spacing-small;
+         font-size: 1.8rem;
       }
    }
 
-   // Centering the Logo
+   // Logo in the center with responsive scaling
    .navbar-logo {
       order: 2;
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-      padding-top: 2rem;
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
+      width: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      img {
+         width: 100%;
+         height: auto;
+         object-fit: cover;
+         object-position: center;
+      }
+
+      @media (max-width: $breakpoint-sm) {
+         width: 160px; // Adjust logo size for smaller screens
+      }
    }
 
-   // Post button and Account dropdown on the far right
+   // Navbar Buttons
    .navbar-buttons {
       order: 3;
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
+      @include flex-container(flex-start, center);
+      gap: $spacing-medium;
       margin-left: auto;
+      margin-right: $spacing-medium;
 
-      @media (max-width: 768px) {
-         gap: 1rem;
+      @media (max-width: $breakpoint-md) {
+         gap: $spacing-small;
       }
    }
 }
 
-// Logo Section
-.navbar-logo img {
-   width: 60%;
-   height: auto;
-   max-height: 80%;
-   transition: transform 0.3s ease;
-
-   &:hover {
-      transform: scale(1.05);
-   }
-}
-
-// Post Button and Dropdown
+// Post Button and Dropdown - Optimized for Small Screens
 .post-button,
 .dropdown-toggle {
-   @include button-base(
-      $primary-purple,
-      $white,
-      darken($primary-purple, 5%),
-      $primary-purple-dark,
-      medium,
-      12px,
-      "Anton",
-      400,
-      0.6rem 1.2rem,
-      1rem,
-      uppercase,
-      2px
-   );
+   @include button-base($primary-purple, $white, darken($primary-purple, 5%), $border-radius);
 
-   @media (max-width: 768px) {
-      font-size: 0.9rem;
-      padding: 0.5rem 1rem;
+   @media (max-width: $breakpoint-md) {
+      font-size: $font-size-small;
+      padding: $spacing-small $spacing-medium;
    }
 }
 
-// Dropdown Menu
+// Dropdown Menu - Frosted Glass and Modern Styling
 .dropdown-menu {
-   background-color: $charcoal-extreme-light;
-   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+   @include dropdown-base($white, $primary-purple-light, $charcoal, $white);
+   backdrop-filter: blur(10px); // Frosted glass effect
+   -webkit-backdrop-filter: blur(10px); // Support for Safari
+   opacity: 0;
+   visibility: hidden;
+   transform: translateY(-10px);
+   @include transition-all(0.3s, ease-in-out);
 
+   &.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+   }
+
+   // Dropdown Item Styling
    .dropdown-item {
+      @include font-default($font-size-base, $font-weight-regular, $font-primary); // Matching font styling
       color: $charcoal;
-      font-family: "JetBrains Mono", monospace;
-      font-size: 1rem;
-      padding: 0.75rem 1.5rem;
-      transition:
-         background-color 0.3s ease,
-         color 0.3s ease;
+      padding: $spacing-small $spacing-medium;
+      @include transition-all(0.3s, ease-in-out);
 
       &:hover {
          background-color: $primary-purple;
          color: $white;
+         box-shadow: 0 6px 12px rgba($electric-violet, 0.6);
       }
+
+      &.active {
+         background-color: $primary-purple;
+         color: $white;
+      }
+
+      &::after {
+         content: "";
+         position: absolute;
+         bottom: 0;
+         left: 0;
+         width: 0;
+         height: 2px;
+         background-color: $primary-purple;
+         @include transition-all(0.3s, ease-in-out);
+      }
+
+      &:hover::after {
+         width: 100%;
+      }
+   }
+}
+
+// Responsive Dropdown Styling for Small Screens
+@media (max-width: $breakpoint-md) {
+   .dropdown-menu {
+      width: 100%; // Adjust dropdown width for smaller screens
+      left: 0;
+   }
+
+   .dropdown-item {
+      padding: $spacing-small $spacing-medium;
+      font-size: $font-size-small;
+   }
+}
+
+@media (max-width: $breakpoint-sm) {
+   .dropdown-menu {
+      width: 100vw; // Full-width dropdown on small screens
+      left: 0;
+      right: 0;
+      top: $navbar-height;
+   }
+
+   .dropdown-item {
+      padding: $spacing-small;
+      font-size: $font-size-small;
+   }
+}
+
+// Media Queries for Responsiveness
+@media (max-width: $breakpoint-md) {
+   .navbar-logo {
+      width: 180px; // Adjusted logo size for medium screens
+   }
+
+   .sidebar-toggle {
+      font-size: 1.6rem;
+   }
+
+   .navbar-buttons {
+      gap: $spacing-small;
+   }
+}
+
+@media (max-width: $breakpoint-sm) {
+   .navbar {
+      padding: 0 $spacing-small;
+   }
+
+   .navbar-logo {
+      width: 140px;
+   }
+
+   .sidebar-toggle {
+      font-size: 1.4rem;
+   }
+
+   .navbar-buttons {
+      gap: $spacing-small;
    }
 }

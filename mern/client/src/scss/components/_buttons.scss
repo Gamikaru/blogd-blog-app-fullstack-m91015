@@ -1,35 +1,68 @@
-@import "../abstracts/variables";
-@import "../abstracts/mixins"; // Import mixins for buttons
+// scss/components/_buttons.scss
 
-/* Button Types */
+@import "../abstracts/variables"; // Import global variables
+@import "../abstracts/mixins"; // Import centralized mixins
+
+/* Primary Button */
 .primary-btn {
-   @include button-base($primary-purple, $white, $electric-violet, $electric-violet-light, medium);
-   @extend .btn; // Ensure Bootstrap button styles are applied
+   @include button-base($primary-purple, $white, $primary-purple-hover, $border-radius);
 }
 
+/* Secondary Button */
 .secondary-btn {
-   @include button-base($charcoal, $white, $primary-purple-dark, $primary-purple-light);
-   @extend .btn;
+   @include button-base(
+      $charcoal,
+      $white,
+      darken($charcoal, 10%),
+      // Custom hover color
+      $border-radius
+   );
 }
 
+/* Success Button */
 .success-btn {
-   @include button-base($success-green, $white, $success-light, $success-green);
-   @extend .btn-success; // Extending Bootstrap’s btn-success for more consistency
+   @include button-base($success-green, $white, $success-green-hover, $border-radius);
 }
 
+/* Danger Button */
 .danger-btn {
-   @include button-base($bright-red, $white, $error-dark, $bright-red);
-   @extend .btn-danger;
+   @include button-base($bright-red, $white, $bright-red-hover, $border-radius);
 }
 
-/* Override Bootstrap defaults to prevent style conflicts */
+/* Disabled Button */
+.disabled-btn {
+   @include button-base(
+      $disabled-gray,
+      $white,
+      $disabled-gray,
+      // No hover state for disabled buttons
+      $border-radius
+   );
+   cursor: not-allowed;
+}
+
+/* Override Bootstrap defaults */
 .btn {
-   & {
-      border: none; // Remove default Bootstrap border
-      box-shadow: none; // Remove Bootstrap default shadow for clean effect
-   }
+   border: none;
+   box-shadow: none;
+
    &:hover,
    &:focus {
-      text-decoration: none; // Ensure no underline on hover
+      text-decoration: none;
+   }
+
+   &:focus {
+      outline: 2px solid $primary-purple;
+   }
+}
+
+/* Button Group Styling */
+.btn-group {
+   display: inline-flex;
+   .btn {
+      margin-left: -1px;
+      &:first-child {
+         margin-left: 0;
+      }
    }
 }

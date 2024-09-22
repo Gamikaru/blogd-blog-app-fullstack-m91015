@@ -1,45 +1,104 @@
+// scss/abstracts/_variables.scss
+
+// --------------------
+// Color Variables
+// --------------------
+
 // Background Colors
 $charcoal: #333333;
+$charcoal-extra-light: #e0e0e0; // Light charcoal color
+$charcoal-light: #555555;
 $white: #ffffff;
 
 // Primary Colors
-$primary-purple: #a0a0fc;
+$primary-purple: #9191ec;
+$primary-purple-light: #a0a0ff; // Lightened primary purple
+$primary-purple-dark: #6b6bdf;
 $electric-violet: #8a2be2;
+$electric-violet-light: #a020f0; // Lightened violet
 $dark-indigo: #4b0082;
 
 // Accent Colors
 $success-green: #27ae60;
 $bright-red: #e74c3c;
 $sunset-orange: #f39c12;
-$mint-green: #98ff98;
-
-// Extended Shades
-$primary-purple-light: lighten($primary-purple, 15%);
-$primary-purple-dark: darken($primary-purple, 10%);
-$electric-violet-light: lighten($electric-violet, 20%);
-$mint-green-dark: darken($mint-green, 10%);
-$charcoal-light: lighten($charcoal, 10%);
-$charcoal-extra-light: lighten($charcoal, 40%);
-$charcoal-extreme-light: lighten($charcoal, 70%);
-
-// Semantic Colors
-$success-light: lighten($success-green, 15%);
-$warning-light: lighten($sunset-orange, 15%);
-$error-dark: darken($bright-red, 15%);
 
 // Neutral Colors
 $light-gray: #f5f5f5;
 $light-silver: #bdc3c7;
 $disabled-gray: #7f8c8d;
 
-// Fonts
-$font-primary: "JetBrains Mono-Bold", monospace;
-$font-secondary: "JetBrains Mono-Light", sans-serif;
-$font-tertiary: "Inter", sans-serif;
-$font-quarternary: "Monoton", sans-serif;
+// Dark Theme Colors
+$dark-background: #121212;
+$dark-text: #e0e0e0;
 
-// Bootstrap Customization
-$primary: $primary-purple; // Use your primary purple as the Bootstrap primary color
-$danger: $bright-red; // Apply your bright red to Bootstrap's danger alerts/buttons
-$success: $success-green; // Use custom success green for Bootstrap success components
-$warning: $sunset-orange; // Apply sunset orange for Bootstrap warnings
+// Light Theme Colors
+$light-background: #ffffff;
+$light-text: #333333;
+
+// Hover State Variables
+$primary-purple-hover: darken($primary-purple, 10%);
+$electric-violet-hover: darken($electric-violet, 10%);
+$success-green-hover: darken($success-green, 10%);
+$bright-red-hover: lighten($bright-red, 10%);
+$sunset-orange-hover: darken($sunset-orange, 10%);
+
+// --------------------
+// Box Shadows
+// --------------------
+$box-shadow-light: 0 4px 8px rgba(0, 0, 0, 0.1);
+$box-shadow-heavy: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+// --------------------
+// Font Variables
+// --------------------
+$font-tertiary: "JetBrains Mono", monospace;
+$font-primary: "Anton", sans-serif;
+$font-secondary: "Inter", sans-serif;
+
+// Font Weights
+$font-weight-extra-light: 100;
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-bold: 700;
+
+// Font Sizes (with REM values for modular scaling)
+$font-size-base: 1rem; // Default body text
+$font-size-small: 0.875rem; // Small text
+$font-size-medium: 1.25rem; // Medium text
+$font-size-large: 2rem; // Large headings
+
+// --------------------
+// Breakpoints
+// --------------------
+$breakpoint-xs: 360px; // Very small devices
+$breakpoint-sm: 576px; // Small devices
+$breakpoint-md: 768px; // Medium devices (tablets)
+$breakpoint-lg: 992px; // Large devices (desktops)
+$breakpoint-xl: 1200px; // Extra large devices (large desktops)
+
+// --------------------
+// Global Border Radius
+// --------------------
+$border-radius: 6px; // Standard rounded corners
+$border-radius-large: 12px; // Large rounded corners
+
+// --------------------
+// Spacing Variables (modular system)
+// --------------------
+$spacing-small: 0.5rem; // Small spacing (8px)
+$spacing-medium: 1rem; // Medium spacing (16px)
+$spacing-large: 2rem; // Large spacing (32px)
+$spacing-extra-large: 3rem; // Extra-large spacing (48px)
+
+// Modular Spacing System
+$base-spacing: 1rem; // Base spacing for modular scaling
+
+// Navbar Scaling
+$navbar-height: 5.5rem; // Fixed navbar height
+// --------------------
+// Gradient Background Variables (optional)
+// --------------------
+$primary-gradient: linear-gradient(145deg, $primary-purple, $primary-purple-dark);
+$accent-gradient: linear-gradient(145deg, $electric-violet, $electric-violet-light);
+$neutral-gradient: linear-gradient(145deg, $light-gray, $light-silver);

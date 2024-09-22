@@ -1,0 +1,48 @@
+// layout/_footer.scss
+
+@import "../abstracts/variables";
+@import "../abstracts/mixins"; // Flex and grid mixins
+
+.footer {
+   background-color: $charcoal-light;
+   color: $white;
+   padding: $spacing-large;
+   // margin-top: $spacing-large;
+   text-align: center;
+
+   .footer-container {
+      @include flex-container(center, center);
+      flex-wrap: wrap;
+
+      .footer-section {
+         flex: 1;
+         min-width: 200px;
+         @include padding($spacing-medium);
+
+         h4 {
+            color: $primary-purple;
+            margin-bottom: $spacing-small;
+         }
+
+         p,
+         a {
+            color: $white;
+            font-size: $font-size-small;
+            text-decoration: none;
+         }
+
+         a:hover {
+            color: $primary-purple-light;
+         }
+      }
+   }
+
+   @media (max-width: $breakpoint-md) {
+      padding: $spacing-medium;
+
+      .footer-section {
+         min-width: 100%;
+         @include padding($spacing-small);
+      }
+   }
+}
