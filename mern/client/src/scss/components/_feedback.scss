@@ -1,71 +1,60 @@
 @import "../abstracts/variables";
-@import "../abstracts/mixins"; // Ensure mixins are imported for consistent form styles
-
-/* Alerts */
-.alert {
-   padding: $spacing-medium $spacing-large; // Use centralized spacing
-   border-radius: $border-radius; // Use global border-radius
-   font-size: $font-size-base; // Use centralized font-size variable
-   display: flex;
-   align-items: center;
-   gap: 0.75rem;
-   margin-bottom: $spacing-medium; // Use centralized spacing
-   border: 1px solid transparent;
-   @include shadow-light; // Apply light shadow for consistency
-   transition:
-      opacity 0.3s ease,
-      transform 0.3s ease;
-}
-
-.alert--success {
-   background-color: $success-green; // Use centralized success color
-   color: $white;
-   border-color: darken($success-green, 10%);
-}
-
-.alert--error {
-   background-color: $bright-red; // Use centralized error color
-   color: $white;
-   border-color: darken($bright-red, 10%);
-}
-
-.alert--warning {
-   background-color: $sunset-orange; // Use centralized warning color
-   color: $white;
-   border-color: darken($sunset-orange, 10%);
-}
+@import "../abstracts/mixins";
 
 /* Toasts */
 .toast {
-   position: fixed;
-   bottom: $spacing-large;
-   right: $spacing-large;
-   padding: $spacing-medium $spacing-large;
-   border-radius: $border-radius; // Use global border-radius
-   display: flex;
-   align-items: center;
-   gap: 0.75rem;
-   font-size: $font-size-base;
-   z-index: 1000;
-   @include shadow-light; // Use light shadow for toasts
+   background-color: $white; // Background color of the toast
+   color: $charcoal-light; // White text color
+   padding: 1rem 1.5rem; // Adequate padding for the toast
+   border-radius: $border-radius; // Rounded corners
+   box-shadow: 0 2px 10px rgba($electric-violet-light, 0.2); // Light shadow
+   font-size: $font-size-base; // Base font size
+   max-width: 90%; // Ensure the toast doesn’t get too wide on large screens
+   display: flex; // Flexbox for toast content
+   align-items: center; // Center toast content vertically
+   gap: 0.5rem; // Space between icon and text
+   z-index: 3100;
    transition:
-      opacity 0.3s ease,
-      transform 0.3s ease;
-   opacity: 0;
-   transform: translateY(1rem);
+      opacity 0.5s ease,
+      transform 0.5s ease;
+
+   @media (max-width: $breakpoint-md) {
+      padding: 0.5rem;
+   }
+
+   @media (max-width: $breakpoint-sm) {
+      padding: 0.5rem;
+   }
 }
 
 .toast--show {
    opacity: 1;
-   transform: translateY(0);
+   transform: translateY(0); // Reset transform on show
 }
 
-.toast--success {
-   background-color: $success-green; // Use centralized success color for success toast
-   color: $charcoal;
+.toast--hide {
+   opacity: 0;
+   transform: translateY(-1rem); // Slight upward movement when hiding
+}
+// Keyframes for fade animations
+@keyframes fadeIn {
+   from {
+      opacity: 0;
+      transform: translate(-50%, -40%);
+   }
+   to {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+   }
 }
 
-.toast--error {
-   background-color: $bright-red; // Use centralized error color for error toast
-   color: $white;
+@keyframes fadeOut {
+   from {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+   }
+   to {
+      opacity: 0;
+      transform: translate(-50%, -40%);
+   }
 }

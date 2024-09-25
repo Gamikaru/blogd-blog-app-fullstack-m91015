@@ -1,100 +1,100 @@
-// // base/_reset.scss
+// base/_reset.scss
 
-// /* Box sizing rules */
-// *,
-// *::before,
-// *::after {
-//    box-sizing: border-box;
-// }
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+   box-sizing: border-box;
+}
 
-// /* Remove default margin */
-// * {
-//    margin: 0;
-//    padding: 0;
-// }
+/* Remove default margin */
+* {
+   margin: 0;
+   padding: 0;
+}
 
-// /* Allow percentage-based heights in the application */
-// html,
-// body {
-//    height: 100%;
-// }
+/* Allow percentage-based heights in the application */
+html,
+body {
+   height: 100%;
+}
 
-// /* Set base font-size and ensure a consistent line-height */
-// html {
-//    font-size: 100%; // Adjusts to 16px as default
-//    line-height: 1.6;
-//    scroll-behavior: smooth;
-//    text-size-adjust: 100%; // Disable text-size adjustment on mobile devices
-// }
+/* Set base font-size and ensure a consistent line-height */
+html {
+   font-size: 100%; // Adjusts to 16px as default
+   line-height: 1.6;
+   scroll-behavior: smooth;
+   text-size-adjust: 100%; // Disable text-size adjustment on mobile devices
+}
 
-// /* Reset body styling */
-// body {
-//    font-family: $font-primary, sans-serif; // Custom font
-//    color: $charcoal; // Default text color
-//    background-color: $white; // Background color
-//    -webkit-font-smoothing: antialiased;
-//    -moz-osx-font-smoothing: grayscale;
-// }
+/* Reset body styling */
+body {
+   font-family: $font-primary, sans-serif; // Custom font
+   color: $charcoal; // Default text color
+   background-color: $white; // Background color
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+}
 
-// /* Remove built-in form typography styles */
-// input,
-// button,
-// textarea,
-// select {
-//    font: inherit; // Inherit from the parent
-//    margin: 0; // Remove default margins
-// }
+/* Remove built-in form typography styles */
+input,
+button,
+textarea,
+select {
+   font: inherit; // Inherit from the parent
+   margin: 0; // Remove default margins
+}
 
-// /* Remove list styling */
-// ul,
-// ol {
-//    list-style: none;
-// }
+/* Remove list styling */
+ul,
+ol {
+   list-style: none;
+}
 
-// /* Remove default text underline */
-// a {
-//    text-decoration: none;
-//    color: inherit; // Ensures it takes custom link color
-// }
+/* Remove default text underline */
+a {
+   text-decoration: none;
+   color: inherit; // Ensures it takes custom link color
+}
 
-// /* Make images easier to work with */
-// img,
-// picture {
-//    max-width: 100%;
-//    display: block;
-// }
+/* Make images easier to work with */
+img,
+picture {
+   max-width: 100%;
+   display: block;
+}
 
-// /* Reset table layout */
-// table {
-//    border-collapse: collapse;
-//    width: 100%;
-// }
+/* Reset table layout */
+table {
+   border-collapse: collapse;
+   width: 100%;
+}
 
-// /* Ensure form elements have no additional styling */
-// button,
-// input,
-// select,
-// textarea {
-//    border: 0;
-//    padding: 0;
-//    background-color: transparent;
-//    appearance: none;
-// }
+/* Ensure form elements have no additional styling */
+button,
+input,
+select,
+textarea {
+   border: 0;
+   padding: 0;
+   background-color: transparent;
+   appearance: none;
+}
 
-// /* Focus styles for accessibility */
-// :focus {
-//    outline: 2px solid $primary-purple;
-//    outline-offset: 2px;
-// }
+/* Focus styles for accessibility */
+:focus {
+   outline: 2px solid $primary-purple;
+   outline-offset: 2px;
+}
 
-// /* Remove all animations, transitions for people that prefer reduced motion */
-// @media (prefers-reduced-motion: reduce) {
-//    *,
-//    *::before,
-//    *::after {
-//       animation-duration: 0.01ms !important;
-//       animation-iteration-count: 1 !important;
-//       transition-duration: 0.01ms !important;
-//       scroll-behavior: auto !important;
-//    }
-// }
+/* Remove all animations, transitions for people that prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+   *,
+   *::before,
+   *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+   }
+}

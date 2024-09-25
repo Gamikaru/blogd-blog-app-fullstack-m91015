@@ -1,0 +1,116 @@
+@import "../abstracts/variables"; // Importing variables for colors, spacing, etc.
+@import "../abstracts/mixins"; // Importing mixins for reusable styles
+@import "../base/animations"; // Importing animations
+
+// Post Modal Container
+.post-modal-container {
+   @include flex-container($justify: space-between, $align: center, $direction: row, $wrap: wrap);
+   background-color: rgba($light-gray, 0.1); // Semi-transparent background
+   backdrop-filter: blur(2px); // Blur effect for the background , t make the background more transparent,
+   -webkit-backdrop-filter: blur(10px); // Safari support for blur effect
+   animation: fadeIn 0.4s ease-in-out; // Fade-in animation
+}
+
+// .post-modal-title-container {
+//    // @include flex-container($justify: center, $align: center, $direction: row, $wrap: wrap);
+//    // width: 100%; // Ensure full width to center the text properly
+//    // text-align: center; // Center the text
+//    // align-items: center; // Center vertically
+// }
+
+// Post Modal Header
+.post-modal-header {
+   display: flex; // Flexbox for layout
+   justify-content: center; // Center horizontally
+   align-items: center; // Center vertically
+   padding: $spacing-medium; // Large padding
+   background-color: $primary-purple; // Primary purple background color
+   position: relative; // Relative positioning
+   .post-modal-title-container {
+      width: 100%; // Ensure full width to center the text properly
+      text-align: center; // Center the text
+      color: $white; // White color
+   }
+
+
+   // Close button remains positioned on the right
+   .close-button {
+      position: absolute; // Absolute positioning
+      top: 50%; // Center vertically
+      right: $spacing-large; // Align to the right
+      transform: translateY(-50%); // Adjust vertical position
+      font-size: 1.5rem; // Font size
+      color: $white; // White color
+      cursor: pointer; // Pointer cursor on hover
+      transition: all 0.3s ease-in-out; // Smooth transition for all properties
+
+      &:hover {
+         color: lighten($white, 20%); // Lighten color on hover
+      }
+   }
+
+   .post-modal-title-container {
+      width: 100%; // Ensure full width to center the text properly
+      text-align: center; // Center the text
+   }
+
+   .post-modal-title {
+      font-family: $font-primary; // Primary font family
+      font-size: 2rem; // Font size
+      color: $white;
+      font-weight: $font-weight-regular; // Bold font weight
+      letter-spacing: 0.2rem; // Letter spacing
+      text-align: center; // Center the text
+      position: relative; // Ensure it is relative to the header
+      z-index: 1; // Make sure it remains above the close button
+   }
+}
+
+// Post Modal Body
+.post-modal-body {
+   padding: $spacing-medium; // Medium padding
+   background-color: $charcoal-extra-light; // White background color
+   border-radius: $border-radius; // Border radius for rounded corners
+   transition: all 0.3s ease-in-out; // Smooth transition for all properties
+   overflow-y: auto; // Enable vertical scrolling
+   max-height: 70vh; // Maximum height for the modal body
+
+   @media (max-width: $breakpoint-sm) {
+      max-height: none; // Remove max-height for small screens
+   }
+}
+
+// Two-column layout for form fields using the combined form-base mixin
+.post-form {
+   @include form-base;
+   background-color: $charcoal-extra-light; // Light charcoal background color
+   color: $charcoal; // Dark charcoal text colordd
+
+}
+
+// Post Modal Submit Container
+.post-modal-submit-container {
+   display: flex; // Flexbox for layout
+   justify-content: center; // Center horizontally
+   background-color: $charcoal-extra-light; // Light charcoal background color
+}
+
+// Post Submit Button
+.post-submit-btn {
+   @include button-base(
+      $bg-color: $primary-purple,
+      $text-color: $white,
+      $hover-bg-color: darken($primary-purple, 10%),
+      $border-radius: $border-radius,
+      $font-weight: $font-weight-regular,
+      $padding: 0.75rem 1rem,
+      $font-size: 1.1rem,
+      $text-transform: uppercase,
+      $letter-spacing: 2px,
+      $width: auto
+   );
+   display: flex;
+   justify-content: center;
+   max-width: 30%; // Control width of the button
+   font-size: 1.3rem; // Font size
+}

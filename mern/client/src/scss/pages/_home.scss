@@ -55,11 +55,8 @@
       }
 
       .home-user-status {
-         @include form-field-base(); // Consistent form field styling
-         margin-top: $spacing-small;
-         font-size: $font-size-base;
-         text-align: center;
-         font-family: $font-tertiary;
+         @include form-base($spacing-medium, 100%, $spacing-medium, $white, $border-radius); // Consistent form styling
+
       }
    }
 

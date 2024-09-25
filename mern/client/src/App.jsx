@@ -1,13 +1,13 @@
 import React from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import LoginPage from './components/auth/LoginPage'; // Import LoginPage component
-import { Admin, Bloggs, HomePage, Network } from './components/features'; // Import all features from features barrel
 import { AppLayout, PrivateRoute } from './components/layout'; // Import AppLayout and PrivateRoute from layout barrel
 import PostModal from './components/modals/PostModal';
 import RegisterModal from './components/modals/RegisterModal';
-import { NotificationProvider, PostProvider, UserProvider, PublicModalProvider, PrivateModalProvider, usePublicModalContext, usePrivateModalContext } from './contexts'; // Import context providers and hooks
-import Logger from './utils/Logger'; // Import Logger utility
+import { Admin, Bloggs, HomePage, Network } from './components/pages'; // Import all features from features barrel
+import { NotificationProvider, PostProvider, PrivateModalProvider, PublicModalProvider, usePrivateModalContext, usePublicModalContext, UserProvider } from './contexts'; // Import context providers and hooks
 import { useUser } from './contexts/UserContext'; // Import user context
+import Logger from './utils/Logger'; // Import Logger utility
 
 /**
  * RedirectIfLoggedIn: Component to redirect users if they are already logged in.

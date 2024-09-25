@@ -20,3 +20,7 @@
 @mixin responsive-font($min-size, $max-size) {
    font-size: responsive-font-size($min-size, $max-size);
 }
+
+@mixin text-position($position) {
+   text-align: $position;
+}

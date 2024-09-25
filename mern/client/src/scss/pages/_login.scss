@@ -7,117 +7,117 @@
 Overall Container for Centering the Login Content
 -------------------------------------------------------------------------- */
 .login-page {
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   justify-content: center;
-   background-color: rgba($charcoal-extra-light, 0.8); // Use centralized variable
-   height: 100vh;
-   padding: $spacing-large;
-   overflow: hidden;
-   margin: 0;
+   display: flex; // Use flexbox for layout
+   flex-direction: column; // Arrange items in a column
+   align-items: center; // Center items horizontally
+   justify-content: center; // Center items vertically
+   background-color: rgba($charcoal-light, 0.8); // Semi-transparent background color
+   height: 100vh; // Full viewport height
+   padding: $spacing-large; // Large padding around the container
+   overflow: hidden; // Hide overflow content
+   margin: 0; // Remove default margin
 }
 
 .login-container {
-   width: 100%;
-   max-width: 1200px;
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   justify-content: center;
-   height: 100%;
+   width: 100%; // Full width
+   max-width: 1200px; // Maximum width of the container
+   display: flex; // Use flexbox for layout
+   flex-direction: column; // Arrange items in a column
+   align-items: center; // Center items horizontally
+   justify-content: center; // Center items vertically
+   height: 100%; // Full height of the container
 }
 
 .login-content {
-   width: 100%;
-   max-width: 800px;
-   margin: 0 auto;
-   text-align: center;
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   margin-top: 0;
+   width: 100%; // Full width
+   max-width: 800px; // Maximum width of the content
+   margin: 0 auto; // Center content horizontally
+   text-align: center; // Center text
+   display: flex; // Use flexbox for layout
+   flex-direction: column; // Arrange items in a column
+   align-items: center; // Center items horizontally
+   margin-top: 0; // Remove top margin
 }
 
 /* Adjust the logo to ensure it doesn't overlap the form */
 .logo-image {
-   width: 90%;
-   max-width: 400px;
-   transition: transform 0.3s ease;
-   position: relative;
-   z-index: 1;
-   bottom: 6rem;
+   width: 90%; // 90% width of the container
+   max-width: 400px; // Maximum width of the logo
+   transition: transform 0.3s ease; // Smooth transition for transform property
+   position: relative; // Relative positioning
+   z-index: 1; // Stack order
+   bottom: 6rem; // Move the logo up by 6rem
 
    &:hover {
-      transform: scale(1.05);
+      transform: scale(1.05); // Slightly enlarge the logo on hover
    }
 
    @media (max-width: $breakpoint-lg) {
-      width: 70%;
-      bottom: 10rem;
+      width: 70%; // 70% width on large screens
+      bottom: 10rem; // Move the logo up by 10rem
    }
 
    @media (max-width: $breakpoint-md) {
-      width: 60%;
-      bottom: 7rem;
+      width: 60%; // 60% width on medium screens
+      bottom: 7rem; // Move the logo up by 7rem
    }
 
    @media (max-width: $breakpoint-sm) {
-      width: 50%;
-      bottom: 1.5rem;
+      width: 50%; // 50% width on small screens
+      bottom: 1.5rem; // Move the logo up by 1.5rem
    }
 }
 
 .login-card-container {
-   width: 100%;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   margin-top: -8rem;
+   width: 100%; // Full width
+   display: flex; // Use flexbox for layout
+   justify-content: center; // Center items horizontally
+   align-items: center; // Center items vertically
+   margin-top: -8rem; // Move the container up by 8rem
 
    @media (max-width: $breakpoint-md) {
-      margin-top: -2rem;
+      margin-top: -2rem; // Move the container up by 2rem on medium screens
    }
 
    @media (max-width: $breakpoint-sm) {
-      margin-top: -1rem;
+      margin-top: -1rem; // Move the container up by 1rem on small screens
    }
 }
 
 .login-card {
-   background-color: $charcoal-extra-light; // Use centralized color
-   border-radius: $border-radius; // Use centralized border-radius
-   @include shadow-light;
-   padding: $spacing-large;
-   width: 35%;
-   max-width: 450px;
-   min-width: 280px;
-   position: relative;
-   z-index: 2;
-   top: -8rem;
-   transition: transform 0.3s ease;
-   text-align: center;
+   background-color: $charcoal-extra-light; // Light charcoal background color
+   border-radius: $border-radius; // Rounded corners
+   @include shadow-light; // Light shadow mixin
+   padding: $spacing-large; // Large padding inside the card
+   width: 35%; // 35% width of the container
+   max-width: 450px; // Maximum width of the card
+   min-width: 280px; // Minimum width of the card
+   position: relative; // Relative positioning
+   z-index: 2; // Stack order
+   top: -8rem; // Move the card up by 8rem
+   transition: transform 0.3s ease; // Smooth transition for transform property
+   text-align: center; // Center text
 
    &:hover {
-      transform: translateY(-5px);
+      transform: translateY(-5px); // Move the card up by 5px on hover
    }
 
    @media (max-width: $breakpoint-lg) {
-      width: 50%;
-      padding: $spacing-medium;
-      top: -12rem;
+      width: 50%; // 50% width on large screens
+      padding: $spacing-medium; // Medium padding inside the card
+      top: -12rem; // Move the card up by 12rem
    }
 
    @media (max-width: $breakpoint-md) {
-      width: 65%;
-      padding: $spacing-medium;
-      top: -14rem;
+      width: 65%; // 65% width on medium screens
+      padding: $spacing-medium; // Medium padding inside the card
+      top: -14rem; // Move the card up by 14rem
    }
 
    @media (max-width: $breakpoint-sm) {
-      width: 80%;
-      padding: $spacing-medium;
-      top: -4rem;
+      width: 80%; // 80% width on small screens
+      padding: $spacing-medium; // Medium padding inside the card
+      top: -4rem; // Move the card up by 4rem
    }
 }
 
@@ -125,31 +125,32 @@ Overall Container for Centering the Login Content
 Input Container and Fields
 -------------------------------------------------------------------------- */
 .login-input-container {
-   margin-bottom: $spacing-large;
-   margin-top: $spacing-large;
-   text-align: center;
-   width: 100%;
-   padding: 0 $spacing-medium;
+   @include form-base; // Use form-base mixin for form styling
+   margin-bottom: $spacing-small; // Large bottom margin
+   margin-top: $spacing-medium; // Large top margin
+   text-align: left; // Center text
+   width: 100%; // Full width
+   padding: 0 $spacing-medium; // Medium horizontal padding
+   background-color: $charcoal-extra-light; // Light charcoal background color
 }
 
 .login-input-field {
-   width: 100%;
-   padding: $spacing-medium;
-   font-size: $font-size-base;
-   background-color: $white;
-   @include shadow-light;
-   position: relative;
-   z-index: 3;
+
+   width: 100%; // Full width
+   padding: $spacing-medium; // Medium padding inside the input field
+   font-size: $font-size-base; // Base font size
+   background-color: $white; // White background color
+   z-index: 3; // Stack order
 
    &:focus {
-      box-shadow: 0 0 15px rgba($primary-purple, 0.6); // Use centralized color
-      outline: none;
-      border-color: transparent;
+      box-shadow: 0 0 15px rgba($primary-purple, 0.6); // Purple shadow on focus
+      outline: none; // Remove default outline
+      border-color: transparent; // Transparent border color
    }
 
    @media (max-width: $breakpoint-sm) {
-      font-size: $font-size-small;
-      padding: $spacing-small;
+      font-size: $font-size-small; // Small font size on small screens
+      padding: $spacing-small; // Small padding inside the input field
    }
 }
 
@@ -158,35 +159,21 @@ Submit Button Styling
 -------------------------------------------------------------------------- */
 .submit-btn {
    @include button-base($charcoal, $white, lighten($charcoal, 10%), $border-radius); // Use button-base mixin
-   font-family: "Anton", sans-serif;
-   font-size: $font-size-large;
-   width: 50%;
-   box-shadow:
-      0 0 10px rgba($primary-purple, 0.3),
-      0 0 20px rgba($primary-purple, 0.2);
+   margin-bottom: $spacing-medium; // Medium bottom margin
 
-   &:hover {
-      color: rgba($primary-purple-light, 1);
-      text-shadow:
-         0 0 8px rgba($primary-purple, 0.8),
-         0 0 16px rgba($primary-purple, 0.6);
-      box-shadow:
-         0 0 20px rgba($primary-purple, 0.7),
-         0 0 40px rgba($primary-purple, 0.9);
-   }
 
    &:active {
-      transform: scale(0.98);
-      box-shadow: none;
+      transform: scale(0.98); // Slightly shrink the button on active state
+      box-shadow: none; // Remove box shadow on active state
    }
 
    @media (max-width: $breakpoint-md) {
-      font-size: $font-size-medium;
+      font-size: $font-size-medium; // Medium font size on medium screens
    }
 
    @media (max-width: $breakpoint-sm) {
-      font-size: $font-size-small;
-      padding: $spacing-small $spacing-medium;
+      font-size: $font-size-small; // Small font size on small screens
+      padding: $spacing-small $spacing-medium; // Small vertical and medium horizontal padding
    }
 }
 
@@ -194,43 +181,43 @@ Submit Button Styling
 Register Link Styling
 -------------------------------------------------------------------------- */
 .register-link {
-   margin-top: $spacing-medium;
-   font-size: $font-size-medium;
-   font-family: "JetBrains Mono-Light", monospace;
-   color: $charcoal;
-   font-weight: 200;
-   cursor: pointer;
-   text-decoration: none;
+   margin-top: $spacing-medium; // Medium top margin
+   font-size: $font-size-medium; // Medium font size
+   font-family: "JetBrains Mono-Light", monospace; // Custom font family
+   color: $charcoal; // Charcoal text color
+   font-weight: 200; // Light font weight
+   cursor: pointer; // Pointer cursor on hover
+   text-decoration: none; // Remove text decoration
 }
 
 .register-link span {
-   font-weight: bold;
-   color: $charcoal;
+   font-weight: bold; // Bold font weight
+   color: $charcoal; // Charcoal text color
 
    &:hover {
-      color: $white;
+      color: $white; // White text color on hover
       text-shadow:
-         0 0 5px rgba($primary-purple, 0.8),
-         0 0 10px rgba($primary-purple, 0.6);
+         0 0 5px rgba($primary-purple, 0.8), // Purple text shadow
+         0 0 10px rgba($primary-purple, 0.6); // Lighter purple text shadow
    }
 
    &::after {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 2px;
-      bottom: -5px;
-      left: 0;
-      background-color: rgba($primary-purple, 0.6);
-      visibility: hidden;
-      transform: scaleX(0);
-      transition: all 0.3s ease-in-out;
+      content: ""; // Empty content
+      position: absolute; // Absolute positioning
+      width: 100%; // Full width
+      height: 2px; // 2px height
+      bottom: -5px; // Position 5px below the text
+      left: 0; // Align to the left
+      background-color: rgba($primary-purple, 0.6); // Purple background color
+      visibility: hidden; // Hidden by default
+      transform: scaleX(0); // Scale to 0 by default
+      transition: all 0.3s ease-in-out; // Smooth transition for all properties
    }
 
    &:hover::after {
-      visibility: visible;
-      transform: scaleX(1);
-      background-color: $white;
+      visibility: visible; // Make visible on hover
+      transform: scaleX(1); // Scale to full width on hover
+      background-color: $white; // White background color on hover
    }
 }
 
@@ -239,20 +226,20 @@ Responsive Design Adjustments
 -------------------------------------------------------------------------- */
 @media (max-width: $breakpoint-md) {
    .login-content {
-      max-width: 85%;
+      max-width: 85%; // 85% width on medium screens
    }
 
    .login-card {
-      padding: $spacing-medium;
+      padding: $spacing-medium; // Medium padding inside the card
    }
 }
 
 @media (max-width: $breakpoint-sm) {
    .login-content {
-      max-width: 95%;
+      max-width: 95%; // 95% width on small screens
    }
 
    .login-card {
-      padding: $spacing-medium;
+      padding: $spacing-medium; // Medium padding inside the card
    }
 }

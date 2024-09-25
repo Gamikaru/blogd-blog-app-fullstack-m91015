@@ -1,3 +1,5 @@
+// services/api/UserService.js
+
 import ApiClient from './ApiClient'; // Assuming you have an ApiClient set up for Axios
 
 const UserService = {
@@ -17,7 +19,37 @@ const UserService = {
       }
    },
 
-   // Other user-related services can go here, such as fetching or deleting a user.
+   /**
+    * Register a new user
+    * @param {Object} userData - The data for the new user
+    * @returns {Promise<Object>} - The created user data or error message
+    */
+   async registerUser(userData) {
+      try {
+         const response = await ApiClient.post("/user/register", userData);
+         return response.data;
+      } catch (error) {
+         console.error('Error registering user:', error);
+         throw error.response?.data || { message: 'Registration failed' };
+      }
+   },
+
+   /**
+   * Login user
+   * @param {Object} loginData - The login credentials
+   * @returns {Promise<Object>} - The logged-in user data or error message
+   */
+   async loginUser(loginData) {
+      try {
+         const response = await ApiClient.post("/user/login", loginData);
+         return response.data;
+      } catch (error) {
+         console.error('Error logging in user:', error);
+         throw error.response?.data || { message: 'Login failed' };
+      }
+   }
+
+   // Add more user-related services here if needed
 };
 
 export default UserService;

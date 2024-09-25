@@ -1,6 +1,6 @@
-// src/NotificationContext.js
-
 import { createContext, useContext, useState } from 'react';
+import CustomToast from '../components/common/CustomToast';
+import Logger from '../utils/Logger';
 
 // Create NotificationContext
 const NotificationContext = createContext();
@@ -10,27 +10,31 @@ export const useNotificationContext = () => useContext(NotificationContext);
 
 // Provider component to wrap the app and provide notification handling
 export const NotificationProvider = ({ children }) => {
-   const [notification, setNotification] = useState({ message: '', type: '', show: false });
+   const [notification, setNotification] = useState({ message: '', type: '', show: false, position: {} });
 
    // Function to show notification
-   const showNotification = (message, type = 'success') => {
-      setNotification({ message, type, show: true });
+   const showNotification = (message, type = 'success', position = { top: '40%', left: '50%' }) => {
+      Logger.info(`Showing notification: ${message} (${type})`);
+      setNotification({ message, type, show: true, position });
    };
 
    // Function to hide notification
    const hideNotification = () => {
-      setNotification({ message: '', type: '', show: false });
+      Logger.info('Hiding notification');
+      setNotification({ message: '', type: '', show: false, position: {} });
    };
 
    return (
       <NotificationContext.Provider value={{ notification, showNotification, hideNotification }}>
          {children}
-         {notification.show && (
-            <div className={`toast-container ${notification.type}`}>
-               <div className="toast-message">{notification.message}</div>
-               <button onClick={hideNotification}>Close</button>
-            </div>
-         )}
+         {/* Render CustomToast */}
+         <CustomToast
+            message={notification.message}
+            show={notification.show}
+            type={notification.type}
+            position={notification.position}
+            onClose={hideNotification}
+         />
       </NotificationContext.Provider>
    );
 };

@@ -11,3 +11,20 @@
 @mixin margin($margin-size) {
    margin: $margin-size;
 }
+
+@mixin responsive-padding($padding-top, $padding-right, $padding-bottom, $padding-left) {
+   padding-top: $padding-top;
+   padding-right: $padding-right;
+   padding-bottom: $padding-bottom;
+   padding-left: $padding-left;
+}
+
+
+// Responsive Margin Helper
+@mixin responsive-margin($margin-top: $navbar-height, $margin-right, $margin-bottom, $margin-left) {
+   margin-top: $margin-top;
+   margin-right: $margin-right;
+   margin-bottom: $margin-bottom;
+   margin-left: $margin-left;
+}
+

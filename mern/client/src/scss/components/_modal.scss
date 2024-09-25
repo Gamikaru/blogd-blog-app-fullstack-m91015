@@ -1,112 +1,142 @@
-@import "../abstracts/variables";
-@import "../abstracts/mixins";
+// @import "../abstracts/variables";
+// @import "../abstracts/mixins";
+// @import "../base/animations";
 
-// Modal Container
-.register-modal-container,
-.post-modal-container {
-   display: flex !important; // Make sure it's displayed
-   visibility: visible !important;
-   justify-content: center;
-   align-items: center;
-   position: fixed;
-   top: 0;
-   left: 0;
-   width: 100vw;
-   height: 100vh;
-   z-index: 3000;
-   background-color: rgba($charcoal-extra-light, 0.8);
-}
+// // Modal Container (Shared styles)
+// .register-modal-container,
+// .post-modal-container {
+//    display: flex !important;
+//    justify-content: center;
+//    align-items: center;
+//    position: fixed;
+//    top: 0;
+//    left: 0;
+//    width: 100vw;
+//    height: 100vh;
+//    z-index: 3000;
+//    background-color: rgba($charcoal-extra-light, 0.8); // Semi-transparent background
+//    animation: fadeIn 0.4s ease-in-out; // Apply fade-in animation
+// }
 
-// Modal
-.register-modal,
-.post-modal {
-   width: 90%;
-   max-width: 500px;
-   overflow: hidden;
-   z-index: 3001; // Ensure modal content is on top of the background
-   position: relative;
+// // Modal (Shared base)
+// .register-modal,
+// .post-modal {
+//    @include modal-base($white, $spacing-large, $box-shadow-heavy, $border-radius-large);
+//    max-width: 500px;
+//    width: 90%;
+//    z-index: 3001;
+//    position: relative;
+//    overflow: hidden;
 
-   @media (max-width: $breakpoint-md) {
-      width: 95%;
-      max-width: 400px;
-   }
+//    // Responsive adjustments
+//    @media (max-width: $breakpoint-md) {
+//       width: 95%;
+//       max-width: 400px;
+//    }
+//    @media (max-width: $breakpoint-sm) {
+//       width: 100%;
+//       max-width: 350px;
+//    }
+// }
 
-   @media (max-width: $breakpoint-sm) {
-      width: 100%;
-      max-width: 350px;
-   }
-}
+// // Modal Header (Customizable by modal type)
+// .register-modal-header,
+// .post-modal-header {
+//    display: flex;
+//    justify-content: space-between; // Space between title and close button
+//    align-items: center;
+//    text-align: center;
+//    padding: $spacing-large;
+//    color: $white;
 
-// Modal Header with Centered Title
-.register-modal-header,
-.post-modal-header {
-   background-color: $primary-purple; // Use centralized primary color
-   color: $white;
-   padding: $spacing-large;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   text-align: center;
+//    &.register-modal-header {
+//       background-color: $primary-purple;
+//    }
+//    &.post-modal-header {
+//       background-color: $electric-violet;
+//    }
 
-   .modal-title {
-      @include font-default($font-tertiary, 1.5rem, $font-weight-light); // Use centralized font mixin
-      color: $white;
-      letter-spacing: 0.2rem;
-   }
-}
+//    .modal-title {
+//       @include font-default($font-tertiary, 2rem, $font-weight-bold); // Increased font size and bold weight
+//       letter-spacing: 0.2rem;
+//       margin-right: auto; // Adds space between title and close button
+//    }
 
-// Modal Body
-.register-modal-body,
-.post-modal-body {
-   padding: $spacing-large; // Use centralized spacing
-   background-color: $white;
-}
+//    // Close Button
+//    .close-button {
+//       font-size: 1.5rem;
+//       color: $white;
+//       cursor: pointer;
+//       padding-left: $spacing-medium;
+//       &:hover {
+//          color: lighten($white, 20%);
+//       }
+//    }
+// }
 
-// Form Inputs (Scoped specifically for the register and post modals)
-.register-modal-input,
-.post-modal-input {
-   width: 100%;
-   padding: $spacing-medium; // Use centralized spacing
-   margin-bottom: $spacing-large;
-   background-color: $white;
-   color: $charcoal;
-   border: 1px solid $light-gray;
-   border-radius: $border-radius;
-   @include shadow-light; // Apply light shadow
+// // Modal Body (Customizable by modal type)
+// .register-modal-body,
+// .post-modal-body {
+//    padding: $spacing-large;
+//    background-color: $white;
 
-   &:focus {
-      border-color: $primary-purple; // Use centralized primary color
-      box-shadow: 0 0 0 0.2rem rgba($primary-purple, 0.25);
-      outline: none;
-   }
-}
+//    &.post-modal-body {
+//       padding: $spacing-medium;
+//    }
+// }
 
-// Submit Button (Scoped specifically for the register and post modals)
-.register-submit-btn,
-.post-submit-btn {
-   @include button-base(
-      $primary-purple,
-      $white,
-      darken($primary-purple, 10%),
-      $primary-purple-light
-   ); // Use button mixin and centralized colors
-   align-self: flex-end;
-   padding: 0.75rem 1.5rem;
-   font-size: 1rem;
-   border-radius: $border-radius;
-   transition: background-color 0.3s ease;
+// // Input Fields (Shared)
+// .register-modal-input,
+// .post-modal-input {
+//    width: 100%;
+//    padding: $spacing-medium;
+//    margin-bottom: $spacing-large;
+//    background-color: $white;
+//    border: 1px solid $light-gray;
+//    border-radius: $border-radius;
+//    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+//    @include transition-all();
 
-   &:hover {
-      background-color: darken($primary-purple, 10%);
-   }
+//    &:hover {
+//       border-color: darken($light-gray, 10%);
+//    }
 
-   &:focus {
-      outline: none;
-      box-shadow: 0 0 20px rgba($primary-purple, 0.8);
-   }
+//    &:focus {
+//       border-color: $primary-purple;
+//       box-shadow: 0 0 5px rgba($primary-purple, 0.25);
+//       outline: none;
+//    }
+// }
 
-   &:active {
-      background-color: darken($primary-purple, 15%);
-      transform: scale(0.98);
-   }
-}
+// // Submit Button (Customizable by modal type)
+// .register-submit-btn,
+// .post-submit-btn {
+//    @include button-base($primary-purple, $white, darken($primary-purple, 10%), $primary-purple-light);
+//    padding: 0.75rem 1.5rem;
+//    font-size: 1.1rem;
+//    border-radius: $border-radius;
+//    transition: background-color 0.3s ease;
+
+//    &:hover {
+//       background-color: darken($primary-purple, 10%);
+//       @include hover-animation(scale(1.05)); // Apply slight hover animation for better UX
+//    }
+
+//    &:focus {
+//       outline: none;
+//       box-shadow: 0 0 20px rgba($primary-purple, 0.8);
+//    }
+
+//    &:active {
+//       background-color: darken($primary-purple, 15%);
+//       transform: scale(0.98); // Slight shrink on click
+//    }
+// }
+
+// // Post modal button customization
+// .post-submit-btn {
+//    @include button-base($electric-violet, $white, darken($electric-violet, 10%), $electric-violet-light);
+//    &:hover {
+//       background-color: darken($electric-violet, 10%);
+//    }
+// }

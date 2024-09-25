@@ -31,7 +31,6 @@
    padding: 0 $spacing-extra-large;
    background-color: transparent;
 
-
    .sidebar-toggle {
       order: 1;
       border: none;
@@ -62,7 +61,7 @@
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
-      width: 200px;
+      width: 40vh;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -118,9 +117,10 @@
    transform: translateY(-10px);
    @include transition-all(0.3s, ease-in-out);
 
+   // Show class applied when dropdown is visible
    &.show {
       opacity: 1;
-      visibility: visible;
+      visibility: visible; // Ensure visibility is toggled
       transform: translateY(0);
    }
 

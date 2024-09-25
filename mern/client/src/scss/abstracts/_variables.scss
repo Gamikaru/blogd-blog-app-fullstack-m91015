@@ -86,10 +86,12 @@ $border-radius-large: 12px; // Large rounded corners
 // --------------------
 // Spacing Variables (modular system)
 // --------------------
+$spacing-extra-small: 0.25rem; // Extra-small spacing (4px)
 $spacing-small: 0.5rem; // Small spacing (8px)
 $spacing-medium: 1rem; // Medium spacing (16px)
 $spacing-large: 2rem; // Large spacing (32px)
 $spacing-extra-large: 3rem; // Extra-large spacing (48px)
+
 
 // Modular Spacing System
 $base-spacing: 1rem; // Base spacing for modular scaling
