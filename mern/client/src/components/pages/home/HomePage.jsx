@@ -1,9 +1,7 @@
-import React, { lazy, Suspense, useCallback, useEffect, useState } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import { useNotificationContext, usePostContext, useUser } from "../../../contexts"; // Import contexts
-import { likePost, unlikePost } from "../../../services/api/PostService"; // Import PostService for handling posts
-import UserService from "../../../services/api/UserService"; // Import UserService for user-related API calls
-import Logger from "../../../utils/Logger"; // Import Logger from utils barrel
+import { useUser, usePostContext } from "../../../contexts";
+import Logger from "../../../utils/Logger";
 
 // Lazy load components
 const UserCard = lazy(() => import("./UserCard"));
@@ -11,88 +9,56 @@ const PostCard = lazy(() => import("./PostCard"));
 
 const HomePage = () => {
    const { user, loading } = useUser();
-   const { posts, fetchPostsByUserHandler, handleLike, handleUnlike, likeStatus } = usePostContext(); // Use fetchPostsByUserHandler for fetching user's posts
-   const { showNotification } = useNotificationContext();
-   const [status, setStatus] = useState("");
-   const [error, setError] = useState(null); // Add error state
+   const { posts, fetchPostsByUserHandler, refreshPosts } = usePostContext(); // Added refreshPosts
+   const [error, setError] = useState(null);
+   const [postsFetched, setPostsFetched] = useState(false); // Flag to track if posts have been fetched
 
+   // Fetch user posts only once when the user is available
    useEffect(() => {
-      if (user && user._id) {
-         setStatus(user.status);
-         fetchPostsByUserHandler(user._id).catch((err) => {
-            setError("Error fetching user posts.");
-            Logger.error("Error fetching user posts:", err);
-         }); // Fetch user posts only
+      if (user && user._id && !postsFetched) {
+         Logger.info('Fetching posts for user:', user._id);
+         fetchPostsByUserHandler(user._id)
+            .then(() => setPostsFetched(true))
+            .catch((err) => {
+               setError("Error fetching user posts.");
+               Logger.error("Error fetching user posts:", err);
+            });
       }
-   }, [user, fetchPostsByUserHandler]);
+   }, [user, fetchPostsByUserHandler, postsFetched]);
 
-   // Handle liking a post with useCallback to prevent unnecessary re-renders
-   const handleLikePost = useCallback(async (postId) => {
-      try {
-         await handleLike(postId, user._id); // Like the post using PostContext
-         showNotification("Post liked successfully!", "success");
-      } catch (error) {
-         Logger.error("Error liking post:", error);
-         showNotification("Error liking post. Please try again.", "error");
+   // Re-fetch posts when refreshPosts is triggered
+   useEffect(() => {
+      if (postsFetched === false) {
+         fetchPostsByUserHandler(user._id).then(() => setPostsFetched(true));
       }
-   }, [showNotification, handleLike, user._id]);
-
-   // Handle unliking a post with useCallback
-   const handleUnlikePost = useCallback(async (postId) => {
-      try {
-         await handleUnlike(postId, user._id); // Unlike the post using PostContext
-         showNotification("Post unliked successfully!", "success");
-      } catch (error) {
-         Logger.error("Error unliking post:", error);
-         showNotification("Error unliking post. Please try again.", "error");
-      }
-   }, [showNotification, handleUnlike, user._id]);
-
-   // Handle updating user status with useCallback
-   const updateUserStatus = useCallback(async (newStatus) => {
-      try {
-         setStatus(newStatus); // Optimistically update the status locally
-         await UserService.updateUserStatus(user._id, newStatus);
-         showNotification("Status updated successfully!", "success");
-      } catch (error) {
-         Logger.error("Error updating status:", error);
-         showNotification("Error updating status. Please try again.", "error");
-      }
-   }, [user._id, showNotification]);
+   }, [postsFetched, fetchPostsByUserHandler, user._id]);
 
    // Loading state
    if (loading) {
+      Logger.info('Loading user data...');
       return <Spinner animation="border" />;
    }
 
    // Error handling
    if (error) {
+      Logger.error('Error encountered:', error);
       return <p>{error}</p>;
    }
 
    // User not available state
    if (!user || !user._id) {
+      Logger.warn('User data not available.');
       return <p>User data not available.</p>;
    }
 
+   Logger.info('Rendering HomePage component.');
    return (
       <div className="home-page-container">
          <div className="page-container">
             <div className="grid-container">
                <Suspense fallback={<Spinner animation="border" />}>
-                  <UserCard
-                     userInitials={`${user.firstName.charAt(0)}${user.lastName.charAt(0)}`}
-                     user={user}
-                     updateUserStatus={updateUserStatus}
-                     status={status}
-                     setStatus={setStatus}
-                  />
-                  <PostCard
-                     userPosts={posts} // Display the user's posts
-                     handleLike={handleLikePost}
-                     handleUnlike={handleUnlikePost}
-                     likeStatus={likeStatus}
-                  />
+                  <UserCard user={user} />
+                  <PostCard userPosts={posts} />
                </Suspense>
             </div>
          </div>

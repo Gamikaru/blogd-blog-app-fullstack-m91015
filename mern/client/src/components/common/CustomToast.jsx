@@ -1,45 +1,58 @@
+import { React, useEffect } from "react";
+import Logger from "../../utils/Logger";
+import {
+   BsCheckCircle,
+   BsExclamationCircle,
+   BsExclamationTriangle,
+   BsInfoCircle,
+   BsXCircle,
+} from "react-icons/bs";
 
-import React from "react";
-import { Toast } from "react-bootstrap";
-import { BsCheckCircle, BsExclamationCircle, BsExclamationTriangle, BsInfoCircle } from "react-icons/bs";
-
-
-const CustomToast = ({ message, show, type, onClose, delay = 6000, position = { top: '40%', left: '50%' } }) => {
+const CustomToast = ({ message, show, type, onClose, delay = 6000, position }) => {
    const iconColorMap = {
-      success: "green",
-      error: "red",
-      info: "blue",
-      warning: "orange",
+      success: "#27ae60",
+      error: "#e74c3c",
+      info: "#9191ec",
+      warning: "#f39c12",
    };
+
+   useEffect(() => {
+      if (show) {
+         const timeout = setTimeout(onClose, delay); // Auto close after delay
+         return () => clearTimeout(timeout); // Clear timeout on unmount
+      }
+   }, [show, delay, onClose]);
 
    const iconMap = {
-      success: <BsCheckCircle className="me-2" style={{ color: iconColorMap.success, fontSize: "1.5rem" }} />,
-      error: <BsExclamationCircle className="me-2" style={{ color: iconColorMap.error, fontSize: "1.5rem" }} />,
-      info: <BsInfoCircle className="me-2" style={{ color: iconColorMap.info, fontSize: "1.5rem" }} />,
-      warning: <BsExclamationTriangle className="me-2" style={{ color: iconColorMap.warning, fontSize: "1.5rem" }} />,
+      success: <BsCheckCircle className="toast-icon" style={{ color: iconColorMap.success }} />,
+      error: <BsExclamationCircle className="toast-icon" style={{ color: iconColorMap.error }} />,
+      info: <BsInfoCircle className="toast-icon" style={{ color: iconColorMap.info }} />,
+      warning: <BsExclamationTriangle className="toast-icon" style={{ color: iconColorMap.warning }} />,
    };
+
+   // Ensure the `position` is applied dynamically
+   const positionStyle = position === "top-right"
+      ? { top: "70px", right: "20px", transform: "translateY(0)" }  // Top-right for success
+      : { top: "50%", left: "50%", transform: "translate(-50%, -50%)" };  // Centered for error or default
 
    return (
       message && (
-         <Toast
-            className={`toast toast--${type} ${show ? "toast--show" : ""}`}
+         <div
+            className={`custom-toast custom-toast--${type} ${show ? "custom-toast--show" : "custom-toast--hide"}`}
             style={{
-               position: 'fixed', // Ensure it's fixed to the viewport
-               top: position.top, // Use the top position dynamically
-               left: position.left, // Use the left position dynamically
-               transform: 'translate(-50%, -50%)', // Center it properly
-               zIndex: 3060, // Ensure it's above the modal (default modal z-index in Bootstrap is 1050)
-               minWidth: '300px', // Ensure it's visible on small screens
+               position: "fixed", // Fixed to screen
+               ...positionStyle,  // Dynamic position based on prop
+               zIndex: 3060,
+               minWidth: "320px",
             }}
-            onClose={onClose}
-            autohide={true}
-            delay={delay}
          >
-            <Toast.Body className={`toast-body-${type} align-items-center`}>
+            <div className="custom-toast-header">
                {iconMap[type] || iconMap.info}
-               {message}
-            </Toast.Body>
-         </Toast>
+               <strong className="me-auto">{type.toUpperCase()}</strong>
+               <BsXCircle className="close-button" onClick={onClose} />
+            </div>
+            <div className="custom-toast-body">{message}</div>
+         </div>
       )
    );
 };

@@ -4,20 +4,20 @@
 // @import "../abstracts/mixins";
 
 // .contact-page {
-//    padding: $spacing-large;
+//    padding: $spacing-l;
 //    background-color: $light-background;
 //    color: $charcoal;
 
 //    h1 {
 //       @include responsive-font;
 //       color: $primary-purple;
-//       margin-bottom: $spacing-medium;
+//       margin-bottom: $spacing-m;
 //    }
 
 //    .contact-form {
 //       background-color: $white;
 //       @include shadow-light;
-//       padding: $spacing-large;
+//       padding: $spacing-l;
 //       border-radius: $border-radius;
 //       max-width: 600px;
 //       margin: 0 auto;
@@ -25,7 +25,7 @@
 //       input,
 //       textarea {
 //          @include form-field-base;
-//          margin-bottom: $spacing-medium;
+//          margin-bottom: $spacing-m;
 //          width: 100%;
 
 //          &:focus {
@@ -35,7 +35,7 @@
 
 //       .submit-btn {
 //          @include button-base($primary-purple, $primary-purple-hover);
-//          margin-top: $spacing-medium;
+//          margin-top: $spacing-m;
 //       }
 //    }
 // }

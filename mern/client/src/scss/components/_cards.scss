@@ -13,7 +13,7 @@
 //    color: $white;
 //    font-size: $font-size-medium;
 //    @include font-bold;
-//    padding: $spacing-medium;
+//    padding: $spacing-m;
 //    border-radius: $border-radius $border-radius 0 0;
 // }
 
@@ -21,12 +21,12 @@
 //    font-size: $font-size-base;
 //    color: $charcoal;
 //    line-height: 1.6;
-//    padding: $spacing-medium;
+//    padding: $spacing-m;
 // }
 
 // .card-footer {
 //    background-color: $white;
-//    padding: $spacing-medium;
+//    padding: $spacing-m;
 //    border-radius: 0 0 $border-radius $border-radius;
 //    text-align: right;
 // }
@@ -34,7 +34,7 @@
 // /* Responsive adjustments */
 // @media (max-width: $breakpoint-md) {
 //    .card {
-//       padding: $spacing-small;
+//       padding: $spacing-s;
 //    }
 //    .card-header {
 //       font-size: $font-size-small;

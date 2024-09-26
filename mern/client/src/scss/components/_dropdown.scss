@@ -11,7 +11,7 @@
 // .dropdown-toggle {
 //    background-color: $white; // White background for toggle button
 //    color: $charcoal; // Charcoal text color
-//    padding: $spacing-small $spacing-large; // Use centralized padding
+//    padding: $spacing-s $spacing-l; // Use centralized padding
 //    border-radius: 0.5rem;
 //    @include shadow-light; // Apply light shadow
 //    transition:
@@ -37,7 +37,7 @@
 //    background-color: $charcoal-extra-light; // Lighter charcoal background
 //    border-radius: $border-radius; // Use global border radius
 //    box-shadow: $box-shadow-light; // Light shadow for the menu
-//    padding: $spacing-small $spacing-medium; // Padding for inside items
+//    padding: $spacing-s $spacing-m; // Padding for inside items
 //    transition:
 //       box-shadow 0.3s ease,
 //       background-color 0.3s ease;
@@ -45,7 +45,7 @@
 
 //    .dropdown-item {
 //       color: $charcoal;
-//       padding: $spacing-small $spacing-medium; // Centralized padding for items
+//       padding: $spacing-s $spacing-m; // Centralized padding for items
 //       transition: background-color 0.3s ease;
 
 
@@ -59,7 +59,7 @@
 // /* Enhanced touch interaction for mobile devices */
 // @media (max-width: $breakpoint-md) {
 //    .dropdown-toggle {
-//       padding: $spacing-small $spacing-medium; // Adjust padding for mobile
+//       padding: $spacing-s $spacing-m; // Adjust padding for mobile
 //    }
 
 //    .dropdown-menu {

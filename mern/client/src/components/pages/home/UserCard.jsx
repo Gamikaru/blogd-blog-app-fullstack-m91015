@@ -1,8 +1,12 @@
 import React, { useCallback } from "react";
-import { Card } from "react-bootstrap";
 import { FaBirthdayCake, FaBriefcase, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
+import InputField from "../../common/InputField"; // Import InputField component
+import UserService from "../../../services/api/UserService";
+import Logger from "../../../utils/Logger";
 
-const UserCard = React.memo(({ userInitials, user, updateUserStatus, status, setStatus }) => {
+const UserCard = React.memo(({ user }) => {
+   const [status, setStatus] = React.useState(user.status);
+
    // Format birthdate using user data
    const formattedBirthdate = new Date(user.birthDate).toLocaleDateString("en-US", {
       year: "numeric",
@@ -10,35 +14,51 @@ const UserCard = React.memo(({ userInitials, user, updateUserStatus, status, set
       day: "numeric",
    });
 
-   // Memoize event handler to avoid re-creation on each render
    const handleKeyDown = useCallback(
-      (e) => {
+      async (e) => {
          if (e.key === "Enter") {
             e.preventDefault();
-            updateUserStatus(status); // Optimistically update the status
+            Logger.info("Key pressed: Enter. Attempting to update status:", status);
+            try {
+               await UserService.updateUserStatus(user._id, status);
+               Logger.info("Status updated successfully");
+            } catch (error) {
+               Logger.error("Error updating status:", error);
+            }
          }
       },
-      [status, updateUserStatus]
+      [status, user._id]
    );
+
+   const handleBlur = useCallback(async () => {
+      Logger.info("Blur event triggered. Attempting to update status:", status);
+      try {
+         await UserService.updateUserStatus(user._id, status);
+         Logger.info("Status updated successfully");
+      } catch (error) {
+         Logger.error("Error updating status:", error);
+      }
+   }, [status, user._id]);
 
    return (
       <div className="user-card-container">
-         <Card className="user-card">
+         <div className="user-card">
             <div className="user-card-header">
-               <div className="initials-title">{userInitials}</div>
-               <label htmlFor="status-update" className="sr-only">Update Status</label>
-               <input
-                  id="status-update"
-                  type="text"
-                  value={status}
-                  onChange={(e) => setStatus(e.target.value)} // Update local state
-                  onBlur={() => updateUserStatus(status)} // Optimistically update status on blur
-                  onKeyDown={handleKeyDown}
-                  placeholder="Update Status"
-                  aria-label="Update your status"
-               />
+               <div className="initials-title">{`${user.firstName[0]}${user.lastName[0]}`}</div>
+               <div className="status-update-container">
+                  <InputField
+                     label="Update Status"
+                     value={status}
+                     onChange={(e) => setStatus(e.target.value)} // Update local state
+                     onBlur={handleBlur} // Trigger update on blur
+                     onKeyDown={handleKeyDown} // Trigger update on Enter
+                     error={null}
+                     placeholder="Enter your status here!"
+                     className="status-update-input"
+                  />
+               </div>
             </div>
-            <Card.Body className="user-details">
+            <div className="user-details">
                <div className="detail-item">
                   <FaEnvelope className="detail-icon" />
                   <span className="detail-text">{user.email}</span>
@@ -55,8 +75,8 @@ const UserCard = React.memo(({ userInitials, user, updateUserStatus, status, set
                   <FaMapMarkerAlt className="detail-icon" />
                   <span className="detail-text">{user.location}</span>
                </div>
-            </Card.Body>
-         </Card>
+            </div>
+         </div>
       </div>
    );
 });

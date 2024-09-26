@@ -21,7 +21,7 @@
 //    .form-input,
 //    .input-field,
 //    .date-selector {
-//       padding: $spacing-small; // Use centralized spacing for small screens
+//       padding: $spacing-s; // Use centralized spacing for small screens
 //       font-size: 0.9rem; // Smaller font size for responsive design
 //    }
 // }
@@ -35,5 +35,5 @@
 // // Submit Button for Forms
 // .form-submit-btn {
 //    @include button-base($primary-purple, $white, $primary-purple-hover, $border-radius);
-//    margin-top: $spacing-medium;
+//    margin-top: $spacing-m;
 // }

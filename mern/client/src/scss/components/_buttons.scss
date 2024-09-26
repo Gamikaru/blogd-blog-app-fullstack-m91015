@@ -3,6 +3,10 @@
 @import "../abstracts/variables"; // Import global variables
 @import "../abstracts/mixins"; // Import centralized mixins
 
+// Close Button Colors
+$close-button-color: $disabled-gray;
+$close-button-hover-color: lighten($close-button-color, 20%);
+
 /* Primary Button */
 .primary-btn {
    @include button-base($primary-purple, $white, $primary-purple-hover, $border-radius);

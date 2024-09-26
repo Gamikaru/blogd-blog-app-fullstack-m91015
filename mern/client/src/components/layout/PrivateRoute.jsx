@@ -2,7 +2,7 @@ import React from 'react';
 import { useCookies } from 'react-cookie';
 import { useUser } from '../../contexts'; // Import UserContext
 import Logger from '../../utils/Logger';
-import { Navigate } from  'react-router-dom'; // Import Navigate component from react-router-dom
+import { Navigate } from 'react-router-dom'; // Import Navigate component from react-router-dom
 
 /**
  * PrivateRoute: A component wrapper to protect routes and redirect unauthenticated users.
@@ -14,6 +14,7 @@ const PrivateRoute = ({ children }) => {
 
    // If data is still loading, return a loading indicator
    if (loading) {
+      Logger.info('PrivateRoute: Loading user data...');
       return <div>Loading...</div>;
    }
 

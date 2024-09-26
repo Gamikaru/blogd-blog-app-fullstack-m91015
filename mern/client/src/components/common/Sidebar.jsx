@@ -2,9 +2,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FaBlog, FaHome, FaNetworkWired, FaUserShield } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
-import Logger from '../../utils/Logger'; // Import Logger
+import Logger from '../../utils/Logger';
 
-const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
+const Sidebar = ({ sidebarOpen, toggleSidebar, toggleButtonRef }) => {
    const sidebarRef = useRef(null);
    const navRef = useRef(null);
    const [closeTimeout, setCloseTimeout] = useState(null);
@@ -16,7 +16,7 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
 
       const timeout = setTimeout(() => {
          Logger.info('Auto-closing sidebar after 5 seconds');
-         toggleSidebar(false); // Close the sidebar after 5 seconds
+         toggleSidebar(false);
       }, 5000);
 
       setCloseTimeout(timeout);
@@ -41,8 +41,14 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
    };
 
    useEffect(() => {
-      Logger.info('Adding event listener for mousedown to handle clicks outside');
       const handleClickOutside = (event) => {
+         if (
+            toggleButtonRef.current && toggleButtonRef.current.contains(event.target) // Check if toggle button was clicked
+         ) {
+            Logger.info('Click on toggle button, ignoring close');
+            return; // Ignore click on toggle button
+         }
+
          if (
             navRef.current &&
             !navRef.current.contains(event.target) &&
@@ -51,24 +57,24 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
             !sidebarRef.current.contains(event.target)
          ) {
             Logger.info('Click outside detected, closing sidebar');
-            toggleSidebar(false); // Close sidebar when clicking outside
+            toggleSidebar(false);
             clearAutoCloseTimer();
          }
       };
+
       document.addEventListener('mousedown', handleClickOutside);
 
       return () => {
-         Logger.info('Removing event listener for mousedown');
          document.removeEventListener('mousedown', handleClickOutside);
       };
-   }, [sidebarOpen, toggleSidebar]);
+   }, [sidebarOpen, toggleSidebar, toggleButtonRef]);
 
    const navLinks = [
       { path: '/', label: 'Home', icon: <FaHome className="nav-icon" /> },
       { path: '/bloggs', label: 'Bloggs', icon: <FaBlog className="nav-icon" /> },
       { path: '/network', label: 'Network', icon: <FaNetworkWired className="nav-icon" /> },
       { path: '/admin', label: 'Admin', icon: <FaUserShield className="nav-icon" />, condition: true },
-   ].filter(Boolean);
+   ];
 
    return (
       <div

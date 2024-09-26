@@ -4,7 +4,7 @@
 // // Table Container Styling
 // .table-container {
 //    width: 100%;
-//    margin: $spacing-large 0;
+//    margin: $spacing-l 0;
 //    box-shadow: $box-shadow-heavy;
 //    border-radius: $border-radius;
 //    overflow: hidden;
@@ -22,7 +22,7 @@
 // .table th {
 //    background-color: $primary-purple;
 //    color: $white;
-//    @include table-padding($spacing-medium);
+//    @include table-padding($spacing-m);
 //    font-size: $font-size-medium;
 //    text-align: left;
 //    border-bottom: 0.15rem solid $light-silver;
@@ -31,7 +31,7 @@
 
 // // Table Data with Padding Mixin
 // .table td {
-//    @include table-padding($spacing-medium);
+//    @include table-padding($spacing-m);
 //    font-size: $font-size-base;
 //    color: $charcoal;
 //    border-bottom: 0.1rem solid $light-silver;
@@ -69,7 +69,7 @@
 // @media (max-width: $breakpoint-md) {
 //    .table th,
 //    .table td {
-//       padding: $spacing-small;
+//       padding: $spacing-s;
 //       font-size: $font-size-small;
 //    }
 

@@ -1,0 +1,19 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+@import "../../abstracts/functions";
+
+/* Home Page container */
+.home-page-container {
+   @include page-container($navbar-height: 80px, $extra-top-padding: 0);
+   @include flex-center;
+   max-height: 100vh;
+}
+
+/* Grid container for UserCard and PostCard */
+.grid-container {
+   @include grid-container($min-width: 300px, $gap: $spacing-l, $padding: $spacing-l, $padding-top: 5rem);
+   max-width: 90%;
+   display: flex;
+   align-items: stretch;
+}
+

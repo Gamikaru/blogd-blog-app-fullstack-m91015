@@ -1,5 +1,5 @@
-@import "../abstracts/variables"; // Import global variables
-@import "../abstracts/mixins"; // Import centralized mixins
+@import "../../abstracts/variables"; // Import global variables
+@import "../../abstracts/mixins"; // Import centralized mixins
 
 /* --------------------------------------------------------------------------
 Network Page Container
@@ -15,8 +15,8 @@ Grid container for Network cards
 .network-grid {
    @include grid-container(
       $min-width: 300px,
-      $gap: $spacing-large,
-      $padding: $spacing-large,
+      $gap: $spacing-l,
+      $padding: $spacing-l,
       $padding-top: 5rem
    ); // Regular padding for network
 }
@@ -33,10 +33,10 @@ Network Card Styling
       box-shadow 0.3s ease;
    position: relative;
    z-index: 0;
-   padding: $spacing-medium;
+   padding: $spacing-m;
    width: 100%;
    height: 100%;
-   margin-bottom: $spacing-medium;
+   margin-bottom: $spacing-m;
 
    &:hover {
       transform: translateY(-5px);
@@ -44,9 +44,9 @@ Network Card Styling
       z-index: 10;
 
       .network-card-body {
-         padding: $spacing-small;
+         padding: $spacing-s;
          .user-details {
-            gap: $spacing-small;
+            gap: $spacing-s;
          }
          .top-section {
             .initials-circle.has-status {
@@ -64,10 +64,10 @@ Network Card Styling
          }
       }
    }
-   
+
 
    .network-card-body {
-      padding: $spacing-medium;
+      padding: $spacing-m;
       font-size: $font-size-base;
       color: $charcoal;
 
@@ -75,7 +75,7 @@ Network Card Styling
          display: flex;
          flex-direction: column;
          align-items: center;
-         gap: $spacing-medium;
+         gap: $spacing-m;
 
          .initials-circle {
             background-color: $white;
@@ -129,7 +129,7 @@ Network Card Styling
                .status-bubble {
                   background-color: $primary-purple;
                   color: $white;
-                  padding: $spacing-small $spacing-medium;
+                  padding: $spacing-s $spacing-m;
                   border-radius: 1.4rem;
                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                   opacity: 0;
@@ -166,19 +166,19 @@ Network Card Styling
             font-family: "Anton", sans-serif;
             font-size: 1.6rem;
             font-weight: bold;
-            margin-bottom: $spacing-small;
+            margin-bottom: $spacing-s;
             letter-spacing: 0.2rem;
          }
 
          .user-details {
             display: flex;
             flex-direction: column;
-            gap: $spacing-small;
+            gap: $spacing-s;
 
             .detail-item {
                display: flex;
                align-items: center;
-               gap: $spacing-small;
+               gap: $spacing-s;
 
                svg {
                   font-size: 1.2rem;
@@ -198,14 +198,14 @@ Network Card Styling
          color: $primary-purple;
          font-family: "Anton", sans-serif;
          margin-bottom: 0;
-         padding-top: $spacing-large;
+         padding-top: $spacing-l;
          text-align: center;
       }
 
       .recent-post {
-         margin-top: $spacing-medium;
+         margin-top: $spacing-m;
          background: linear-gradient(145deg, lighten($light-gray, 5%), darken($light-gray, 5%));
-         padding: $spacing-small $spacing-medium;
+         padding: $spacing-s $spacing-m;
          border-radius: $border-radius;
          box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.05);
 
@@ -231,7 +231,7 @@ Responsive Design for the Network Page
 @media (max-width: $breakpoint-md) {
    .network-card {
       max-width: 100%;
-      padding: $spacing-medium;
+      padding: $spacing-m;
    }
 
    .network-card-body {

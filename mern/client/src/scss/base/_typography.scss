@@ -45,24 +45,24 @@ h6 {
 /* Headings */
 .heading-large {
    @include font-default($font-size-large, $font-weight-bold);
-   margin-bottom: $spacing-large;
+   margin-bottom: $spacing-l;
 }
 
 .heading-medium {
    @include font-default($font-size-medium, $font-weight-bold);
-   margin-bottom: $spacing-medium;
+   margin-bottom: $spacing-m;
 }
 
 .heading-small {
    @include font-default($font-size-small, $font-weight-bold);
-   margin-bottom: $spacing-small;
+   margin-bottom: $spacing-s;
 }
 
 /* Paragraph Styles */
 .paragraph {
    @include font-default($font-size-base, $font-weight-regular);
    line-height: 1.6;
-   margin-bottom: $spacing-medium;
+   margin-bottom: $spacing-m;
 }
 
 /* Link Styles */
@@ -80,12 +80,12 @@ a {
 ul,
 ol {
    margin: 0;
-   padding: 0 0 0 $spacing-large;
+   padding: 0 0 0 $spacing-l;
    list-style: disc;
 }
 
 li {
-   margin-bottom: $spacing-small;
+   margin-bottom: $spacing-s;
    font-size: $font-size-base;
    color: $charcoal;
 }

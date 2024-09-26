@@ -4,21 +4,21 @@
 // @import "../abstracts/mixins";
 
 // .about-page {
-//    padding: $spacing-large;
+//    padding: $spacing-l;
 //    background-color: $light-background;
 //    color: $charcoal;
 
 //    h1 {
 //       @include responsive-text(1.5rem, 2.5rem);
 //       color: $primary-purple;
-//       margin-bottom: $spacing-medium;
+//       margin-bottom: $spacing-m;
 //    }
 
 //    .about-section {
-//       margin-top: $spacing-medium;
+//       margin-top: $spacing-m;
 //       background-color: $white;
 //       @include shadow-light;
-//       padding: $spacing-large;
+//       padding: $spacing-l;
 //       border-radius: $border-radius;
 
 //       &:hover {
@@ -32,7 +32,7 @@
 //       color: $charcoal-light;
 
 //       p {
-//          margin-bottom: $spacing-medium;
+//          margin-bottom: $spacing-m;
 //       }
 
 //       a {

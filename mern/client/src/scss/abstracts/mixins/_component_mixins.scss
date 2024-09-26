@@ -28,7 +28,8 @@
    // Transform text to uppercase
    $letter-spacing: 2px,
    // Spacing between letters
-   $width: 100%, // Width of the button
+   $width: auto,
+   // Width of the button
    $margin-top: 0 // Margin at the top of the button
 ) {
    background-color: $bg-color; // Set the background color
@@ -62,7 +63,7 @@
    // Background color of the card
    $box-shadow: $box-shadow-light,
    // Box shadow for the card
-   $padding: $spacing-small,
+   $padding: $spacing-s,
    // Padding inside the card
    $border-radius: $border-radius // Border radius for rounded corners
 ) {
@@ -73,48 +74,17 @@
    transition: box-shadow 0.3s ease; // Smooth transition for box shadow
 
    &:hover {
-      box-shadow: $box-shadow-heavy; // Change box shadow on hover
+      box-shadow: 0 8px 16px rgba($primary-purple, 0.2); // Violet glow on hover
    }
 }
 
-// Dropdown Mixin
-@mixin dropdown-base(
-   $bg-color: $white,
-   // Background color of the dropdown
-   $hover-bg-color: $primary-purple-light,
-   // Background color when hovered
-   $text-color: $charcoal,
-   // Text color of the dropdown items
-   $hover-text-color: $white,
-   // Text color when hovered
-   $padding: $spacing-small $spacing-medium // Padding inside the dropdown items
-) {
-   background-color: $bg-color; // Set the background color
-   color: $text-color; // Set the text color
-   padding: $padding; // Apply padding inside the dropdown items
-   border: 1px solid $light-gray; // Apply border with light gray color
-   box-shadow: $box-shadow-light; // Apply light box shadow
-   border-radius: $border-radius; // Apply border radius for rounded corners
-
-   .dropdown-item {
-      padding: $padding; // Apply padding inside each dropdown item
-      transition:
-         background-color 0.3s ease,
-         color 0.3s ease; // Smooth transition for background color and text color
-
-      &:hover {
-         background-color: $hover-bg-color; // Change background color on hover
-         color: $hover-text-color; // Change text color on hover
-      }
-   }
-}
-
+// Form Mixin
 @mixin form-base(
-   $gap: $spacing-medium,
+   $gap: $spacing-m,
    // Space between form fields
    $max-width: 100%,
    // Maximum width of the form
-   $padding: $spacing-extra-small,
+   $padding: $spacing-xs,
    // Padding inside the form container
    $background-color: $white,
    // Background color of the form container
@@ -126,27 +96,26 @@
    // Font size for text inside form fields
    $field-border-radius: $border-radius,
    // Rounded corners for form fields
-   $field-padding: $spacing-small $spacing-large,
+   $field-padding: $spacing-s $spacing-l,
    // Padding inside form fields
-   $field-margin-bottom: $spacing-extra-small // Space below each form field
+   $field-margin-bottom: $spacing-xs // Space below each form field
 ) {
-   // Form container styling
-   background-color: $background-color; // Set background color for the form container
-   padding: $padding; // Apply padding inside the form container
-   border-radius: $border-radius; // Rounded corners for the form container
-   max-width: $max-width; // Set the maximum width of the form
-   display: flex; // Flexbox for layout
-   flex-direction: column; // Arrange form fields in a column
-   gap: $gap; // Space between form fields
+   background-color: $background-color;
+   padding: $padding;
+   border-radius: $border-radius;
+   max-width: $max-width;
+   display: flex;
+   flex-direction: column;
+   gap: $gap;
    transition:
       background-color 0.3s ease,
-      box-shadow 0.3s ease; // Smooth transition for background and shadow
+      box-shadow 0.3s ease;
 
    // Grid layout for form fields
    .form-row {
-      display: grid; // Use grid layout for form fields
-      grid-template-columns: repeat(2, 1fr); // Two equal-width columns for form fields
-      gap: $gap; // Space between columns
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: $gap;
 
       @media (max-width: $breakpoint-md) {
          grid-template-columns: 1fr; // Switch to a single column layout on smaller screens
@@ -155,91 +124,173 @@
 
    // Individual form field styling
    .form-control {
-      background-color: $field-bg-color; // Set background color of form fields
-      border-radius: $field-border-radius; // Rounded corners for form fields
-      padding: $spacing-small 0 $spacing-small $spacing-small; // Apply padding inside the form fields, set left padding to $spacing-small
-      font-size: $field-font-size; // Set font size inside the form fields
-      font-family: $font-tertiary; // Set font family to tertiary
-      color: $charcoal; // Set text color inside form fields
-      width: 100%; // Full width for form fields
+      background-color: $field-bg-color;
+      border-radius: $field-border-radius;
+      padding: $field-padding;
+      font-size: $field-font-size;
+      font-family: $font-tertiary;
+      color: $charcoal;
+      width: 100%;
       transition:
          box-shadow 0.3s ease,
-         border-color 0.3s ease; // Smooth transition for shadow and border color
-      text-align: left; // Align text to the left
+         border-color 0.3s ease;
+      text-align: left;
 
-      // Prevent text overflow
-      white-space: nowrap; // Prevent text wrapping
-      overflow: hidden; // Hide overflowed text
-      text-overflow: ellipsis; // Show ellipsis for overflowing text
+      // Default shadow
+      box-shadow: inset 0 1px 3px rgba($charcoal-light, 0.2); // Light default shadow
 
-      // Default shadow state
-      box-shadow: inset 0 1px 3px rgba($charcoal-light, 0.2); // Subtle shadow inside the form field
-
-      // Hover state
       &:hover {
-         box-shadow: 0 0 5px rgba($charcoal-light, 0.4); // Stronger shadow on hover
+         box-shadow: 0 0 5px rgba($charcoal, 0.4); // Charcoal glow on hover
       }
 
-      // Focus state
       &:focus {
-         box-shadow: 0 0 8px rgba($primary-purple, 0.5); // Purple shadow on focus
-         outline: none; // Remove the default outline
+         box-shadow: 0 0 8px rgba($primary-purple, 0.5); // Violet glow on focus
+         outline: none;
       }
 
-      // Invalid state (for form validation errors)
-      &.is-invalid {
-         border-color: $danger; // Red border color for invalid fields
-         box-shadow: 0 0 5px rgba($danger, 0.5); // Red shadow for invalid fields
-
-         &:focus {
-            box-shadow: 0 0 8px rgba($danger, 0.6); // Stronger red shadow on focus
-         }
-      }
-
-      // Placeholder styling
       &::placeholder {
          color: rgba($charcoal-light, 0.5);
-         font-family: $font-tertiary; // Set font family to tertiary
+         font-family: $font-tertiary; // Font for placeholder text
          text-overflow: ellipsis; // Show ellipsis for overflowing placeholder text
-         opacity: 1; // Full opacity for placeholder text
+         opacity: 1;
       }
+   }
+}
+
+// Modal Mixin
+@mixin modal-base(
+   $bg-color: rgba($light-gray, 0.1),
+   $backdrop-blur: 2px,
+   $webkit-backdrop-blur: 10px,
+   $padding: $spacing-m,
+   $max-width: 100vw,
+   $max-height: 100vh,
+   $animation: fadeIn 0.4s ease-in-out,
+   $zIndex: 3000
+) {
+   @include flex-container(
+      $justify: space-between,
+      $align: center,
+      $direction: column
+   ); // Ensure it's vertically aligned
+
+   background-color: $bg-color; // Semi-transparent background
+   backdrop-filter: blur($backdrop-blur); // Blur effect for the background
+   -webkit-backdrop-filter: blur($webkit-backdrop-blur); // Safari support for blur effect
+   animation: $animation; // Fade-in animation
+   max-width: $max-width; // Max width of modal
+   max-height: $max-height; // Max height of modal
+   width: 100%; // Allow flexibility but maintain structure
+   margin: 0 auto; // Center the modal horizontally
+   padding: $padding; // Apply padding
+
+   // Default modal body style
+   .modal-body {
+      padding: $padding;
+      background-color: $charcoal-extra-light;
+      border-radius: $border-radius;
+      overflow-y: auto; // Enable scrolling for long content
+      max-height: 75vh; // Allow scrolling at 75% of viewport height
+      transition: all 0.3s ease-in-out;
+   }
+
+   // Responsive for small screens
+   @media (max-width: $breakpoint-sm) {
+      .modal-body {
+         max-height: none;
+      }
+   }
+
+   // Optional modal header styling
+   .modal-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: $padding;
+      background-color: $primary-purple;
+      color: $white;
+      position: relative;
+
+      .modal-title {
+         font-family: $font-primary;
+         font-size: 2rem;
+         font-weight: $font-weight-regular;
+         letter-spacing: 0.2rem;
+         text-align: center;
+      }
+
+      .close-button {
+         position: absolute;
+         top: 50%;
+         right: $spacing-l;
+         transform: translateY(-50%);
+         font-size: 1.5rem;
+         color: $white;
+         cursor: pointer;
+         transition: all 0.3s ease-in-out;
+
+         &:hover {
+            color: lighten($white, 20%);
+         }
+      }
+   }
+
+   // Optional modal footer styling
+   .modal-footer {
+      display: flex;
+      justify-content: center;
+      background-color: $charcoal-extra-light;
+      margin-top: $spacing-s;
+   }
+
+   .modal-submit-btn {
+      @include button-base(
+         $bg-color: $primary-purple,
+         $text-color: $white,
+         $hover-bg-color: darken($primary-purple, 10%),
+         $border-radius: $border-radius,
+         $font-weight: $font-weight-regular,
+         $padding: 0.75rem 1rem,
+         $font-size: 1.1rem,
+         $text-transform: uppercase,
+         $letter-spacing: 2px,
+         $width: auto
+      );
+      max-width: 200px;
+      font-size: 1.3rem;
    }
 }
 
 // Table Mixin
 @mixin table-base(
    $bg-color: $white,
-   // Background color of the table
    $border-color: $light-gray,
-   // Border color of the table
    $header-bg-color: $primary-purple-light,
-   // Background color for table header
    $header-text-color: $charcoal,
-   // Text color for table header
-   $padding: $spacing-small // Padding inside table cells
+   $padding: $spacing-s
 ) {
-   width: 100%; // Full width of the table
-   border-collapse: collapse; // Collapse borders for the table
-   background-color: $bg-color; // Set the background color
-   border: 1px solid $border-color; // Apply border with specified color
+   width: 100%;
+   border-collapse: collapse;
+   background-color: $bg-color;
+   border: 1px solid $border-color;
 
    th,
    td {
-      padding: $padding; // Apply padding inside table cells
-      border: 1px solid $border-color; // Apply border to table cells
+      padding: $padding;
+      border: 1px solid $border-color;
    }
 
    th {
-      background-color: $header-bg-color; // Set background color for header cells
-      color: $header-text-color; // Set text color for header cells
+      background-color: $header-bg-color;
+      color: $header-text-color;
    }
 
    tr:nth-child(even) {
-      background-color: lighten($bg-color, 5%); // Lighten background color for even rows
+      background-color: lighten($bg-color, 5%);
    }
 }
 
 // Table Padding Mixin
 @mixin table-padding($padding) {
-   padding: $padding; // Apply padding inside table cells
+   padding: $padding;
 }

@@ -6,8 +6,8 @@
 .footer {
    background-color: $charcoal-light;
    color: $white;
-   padding: $spacing-large;
-   // margin-top: $spacing-large;
+   padding: $spacing-l;
+   // margin-top: $spacing-l;
    text-align: center;
 
    .footer-container {
@@ -17,11 +17,11 @@
       .footer-section {
          flex: 1;
          min-width: 200px;
-         @include padding($spacing-medium);
+         @include padding($spacing-m);
 
          h4 {
             color: $primary-purple;
-            margin-bottom: $spacing-small;
+            margin-bottom: $spacing-s;
          }
 
          p,
@@ -38,11 +38,11 @@
    }
 
    @media (max-width: $breakpoint-md) {
-      padding: $spacing-medium;
+      padding: $spacing-m;
 
       .footer-section {
          min-width: 100%;
-         @include padding($spacing-small);
+         @include padding($spacing-s);
       }
    }
 }

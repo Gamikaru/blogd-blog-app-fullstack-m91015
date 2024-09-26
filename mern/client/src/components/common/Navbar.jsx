@@ -1,19 +1,20 @@
 import React, { useEffect } from "react";
-import { FaBars } from "react-icons/fa";
 import { useCookies } from "react-cookie";
+import { FaBars } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useUser, useNotificationContext } from "../../contexts"; // Import contexts
+import { useNotificationContext, useUser, useUserUpdate } from "../../contexts"; // Import contexts
 import Logger from "../../utils/Logger"; // Import Logger
 import Logo from "../common/Logo"; // Import the separate Logo component
 import NavbarButtons from "../common/NavbarButtons"; // Import the separate NavbarButtons component
 import PostModal from "../modals/PostModal"; // Import PostModal for creating posts
 
-const Navbar = ({ toggleSidebar }) => {
+const Navbar = ({ toggleSidebar, toggleButtonRef }) => {
    const [, removeCookie] = useCookies();
    const location = useLocation();
    const navigate = useNavigate();
    const { showNotification } = useNotificationContext();
    const { user } = useUser();
+   const setUser = useUserUpdate(); // Hook to update user state
 
    useEffect(() => {
       Logger.info("Navbar initialized with props");
@@ -22,10 +23,20 @@ const Navbar = ({ toggleSidebar }) => {
    // Handle user logout
    const handleLogout = () => {
       Logger.info("Logging out user");
+
+      // Remove cookies
       removeCookie("PassBloggs", { path: "/" });
       removeCookie("userID", { path: "/" });
-      navigate("/login");
+
+      // Clear user state in UserContext
+      setUser(null);
+
+      // Notify user about logout
       showNotification("Logged out successfully!", "success");
+
+      // Navigate to login and optionally reload the page to ensure a fresh state
+      navigate("/login", { replace: true });
+      window.location.reload(); // Optional: ensures the page is fully refreshed after logout
    };
 
    // Hide the navbar on login or register pages
@@ -37,8 +48,18 @@ const Navbar = ({ toggleSidebar }) => {
       <>
          <div className="nav-header">
             <nav className="navbar">
+               {/* Navbar buttons: Post and UserDropdown */}
+               <NavbarButtons
+                  handleAccountModal={() => Logger.info("Toggling account modal")}
+                  handleLogout={handleLogout} // Pass handleLogout to NavbarButtons
+               />
+
+               {/* Logo */}
+               <Logo />
+
                {/* Sidebar toggle (hamburger icon) */}
                <button
+                  ref={toggleButtonRef} // Pass the reference to the button
                   className="sidebar-toggle"
                   onClick={() => {
                      Logger.info("Hamburger clicked, toggling sidebar");
@@ -47,15 +68,6 @@ const Navbar = ({ toggleSidebar }) => {
                >
                   <FaBars />
                </button>
-
-               {/* Logo */}
-               <Logo />
-
-               {/* Navbar buttons: Post and UserDropdown */}
-               <NavbarButtons
-                  handleAccountModal={() => Logger.info("Toggling account modal")}
-                  handleLogout={handleLogout}
-               />
             </nav>
          </div>
 

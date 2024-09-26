@@ -1,142 +1,138 @@
-@import "../abstracts/variables"; // Importing variables for colors, spacing, etc.
-@import "../abstracts/mixins"; // Importing mixins for reusable styles
-@import "../base/animations"; // Importing animations
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+@import "../abstracts/functions";
+@import "../base/animations";
 
 // Register Modal Container
 .register-modal-container {
-   display: flex !important; // Flexbox for centering the modal
-   justify-content: center; // Center horizontally
-   align-items: center; // Center vertically
-   position: fixed; // Fixed position to cover the entire viewport
-   top: 0; // Align to the top of the viewport
-   left: 0; // Align to the left of the viewport
-   width: 100vw; // Full viewport width
-   height: 100vh; // Full viewport height
-   z-index: 3000; // High z-index to ensure it appears above other elements
-   background-color: rgba($light-gray, 0.1); // Semi-transparent background
-   backdrop-filter: blur(10px); // Blur effect for the background
-   -webkit-backdrop-filter: blur(10px); // Safari support for blur effect
-   animation: fadeIn 0.4s ease-in-out; // Fade-in animation
+   @include modal-base($bg-color: rgba($charcoal, 0.5), $backdrop-blur: 10px, $webkit-backdrop-blur: 10px);
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100vw;
+   height: 100vh;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   z-index: 3000;
+   opacity: 0;
+   visibility: hidden;
+   transition:
+      opacity 0.4s ease,
+      visibility 0.4s ease;
+
+   &.open {
+      opacity: 1;
+      visibility: visible;
+   }
+
+   &.closed {
+      opacity: 0;
+      visibility: hidden;
+   }
 }
 
 // Register Modal
 .register-modal {
-   background-color: $white; // White background for the modal
-   padding: $spacing-extra-large; // Extra large padding
-   border-radius: $border-radius-large; // Large border radius for rounded corners
-   max-width: 800px; // Maximum width of the modal
-   width: 90%; // Width of the modal
-   z-index: 3001; // Slightly higher z-index than the container
-   position: relative; // Relative positioning
-   overflow: hidden; // Hide overflow content
+   @include card-base($white, $box-shadow-light, $spacing-m, $border-radius-large);
+   max-width: 50%;
+   width: 90%;
+   z-index: 6000;
+   position: relative;
+   height: auto;
    transition:
-      opacity 0.4s ease-in-out,
-      transform 0.4s ease-in-out; // Smooth transitions for opacity and transform
-   height: auto; // Automatic height based on content
+      opacity 0.4s ease,
+      transform 0.4s ease;
 
    @media (max-width: $breakpoint-md) {
-      width: 95%; // Adjust width for medium screens
-      max-width: 600px; // Adjust max-width for medium screens
+      width: 95%;
+      max-width: 600px;
    }
 
    @media (max-width: $breakpoint-sm) {
-      width: 100%; // Full width for small screens
-      max-width: 500px; // Adjust max-width for small screens
-      max-height: 90vh; // Maximum height for small screens
-      overflow-y: auto; // Enable vertical scrolling for small screens
+      width: 100%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
    }
 }
 
 // Register Modal Header
-// Register Modal Header
 .register-modal-header {
-   display: flex; // Flexbox for layout
-   justify-content: center; // Center horizontally
-   align-items: center; // Center vertically
-   padding: $spacing-large; // Large padding
-   background-color: $primary-purple; // Primary purple background color
-   position: relative; // Relative positioning
+   @include flex-container(center, center);
+   padding: $spacing-m;
+   background-color: $primary-purple;
+   position: relative;
+   color: $white;
 
-   // Close button remains positioned on the right
    .close-button {
-      position: absolute; // Absolute positioning
-      top: 50%; // Center vertically
-      right: $spacing-large; // Align to the right
-      transform: translateY(-50%); // Adjust vertical position
-      font-size: 1.5rem; // Font size
-      color: $white; // White color
-      cursor: pointer; // Pointer cursor on hover
-      transition: all 0.3s ease-in-out; // Smooth transition for all properties
+      position: absolute;
+      top: 50%;
+      right: $spacing-l;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      color: $white;
+      cursor: pointer;
+      transition: all 0.3s ease;
 
       &:hover {
-         color: lighten($white, 20%); // Lighten color on hover
+         color: $close-button-hover-color;
       }
    }
 
    .register-modal-title {
-      font-family: $font-primary; // Primary font family
-      font-size: 2rem; // Font size
-      color: $white; // White color
-      font-weight: $font-weight-bold; // Bold font weight
-      letter-spacing: 0.2rem; // Letter spacing
-      text-align: center; // Center the text
-      position: relative; // Make it relative to allow for proper centering
-      z-index: 1; // Ensure it is above the close button's absolute positioning
-      width: 100%; // Take full width to center the text properly
+      @include font-default($font-size-large, $font-weight-regular, $font-primary);
+      text-align: center;
+      letter-spacing: 0.2rem;
    }
 }
 
-.register-card {
-   border: none; // Remove border
-}
-
-// Register Modal Body
+// Register Modal Body with tighter spacing
 .register-modal-body {
-   padding: $spacing-medium; // Medium padding
-   background-color: $white; // White background color
-   border-radius: $border-radius; // Border radius for rounded corners
-   transition: all 0.3s ease-in-out; // Smooth transition for all properties
-   overflow-y: auto; // Enable vertical scrolling
-   max-height: 70vh; // Maximum height
+   padding: $spacing-s; // Smaller padding inside the modal
+   padding-top: 2rem;
+   background-color: $white;
+   border-radius: $border-radius;
+   transition: all 0.3s ease;
+   overflow-y: auto;
+   max-height: 70vh;
 
-   @media (max-width: $breakpoint-sm) {
-      max-height: none; // Remove max-height for small screens
+   .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr; // Two columns
+      gap: $spacing-l; // Smaller gap between columns and rows
+
+      @media (max-width: $breakpoint-sm) {
+         grid-template-columns: 1fr; // Single column layout on smaller screens
+      }
    }
-}
 
-// Two-column layout for form fields using the combined form-base mixin
-.form-container {
-   @include form-base;
+   .form-column {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-xs; // Consistent smaller spacing between fields within columns
+   }
 }
 
 .register-submit-container {
-   display: flex; // Flexbox for layout
-   justify-content: center; // Center horizontally
-}
-// Register Modal Submit Button
-.register-submit-btn {
-   @include button-base(
-      $bg-color: $primary-purple,
-      $text-color: $white,
-      $hover-bg-color: darken($primary-purple, 10%),
-      $border-radius: $border-radius,
-      $font-weight: $font-weight-regular,
-      $padding: 0.75rem 1.25rem,
-      $font-size: 1.1rem,
-      $text-transform: uppercase,
-      $letter-spacing: 2px,
-      $width: auto
-   );
    display: flex;
    justify-content: center;
-   max-width: 35%; // Control width of the button
-   margin-top: -0.5rem; // Adjust margin for alignment
+   margin-top: $spacing-xl;
 }
 
-// Styling for error messages under invalid inputs
-.invalid-feedback {
-   color: $danger; // Red color for error messages
-   font-size: 0.9rem; // Font size of the error message text
-   margin-top: 0.25rem; // Small margin at the top of the error message
-   font-family: $font-secondary; // Secondary font family for the error message text
+.register-submit-btn {
+   @include button-base($primary-purple, $white, darken($primary-purple, 10%), $border-radius);
+   padding: 0.75rem 1.25rem;
+   font-size: $font-size-base; // Match the font size with the inputs
+   text-transform: uppercase;
+   letter-spacing: 2px;
+   display: flex;
+   justify-content: center;
+   max-width: 35%;
+   margin-top: -2rem;
+
+   &:disabled {
+      background-color: $disabled-gray;
+      cursor: not-allowed;
+   }
 }

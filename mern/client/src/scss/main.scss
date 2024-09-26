@@ -19,6 +19,7 @@
 // Base
 @import "base/reset"; // CSS resets for consistency
 @import "base/typography"; // Centralized typography styles
+@import "base/shadows"; // Shadow styles
 @import "base/animations"; // Reusable animation keyframes
 @import "base/utilities"; // Utility classes like margin, padding, etc.
 
@@ -33,22 +34,36 @@
 @import "components/cards"; // Card component styles
 @import "components/carousel"; // Carousel component styles
 @import "components/dropdown"; // Dropdown component styles
-@import "components/feedback"; // Feedback component styles
+@import "components/toast"; // Feedback component styles
 @import "components/forms"; // Form styling using form-field mixin
 @import "components/register_modal"; // Register modal component
 @import "components/post_modal"; // Post modal component
+@import "components/edit_post_modal"; // Edit post modal component
 @import "components/navbar"; // Navbar component
 @import "components/sidebar"; // Sidebar component
 @import "components/tables"; // Table styles
+@import "components/input_fields"; // Input field styles
+// @import "components/select_field"; // Select field styles
+
 
 // Themes
-@import "themes/_dark"; // Dark theme styles
-@import "themes/_light"; // Light theme styles
+@import "themes/dark"; // Dark theme styles
+@import "themes/light"; // Light theme styles
 
-// Pages
-@import "pages/home"; // Home page styles
-@import "pages/bloggs"; // Blog page styles
-@import "pages/network"; // Network page styles
-@import "pages/login"; // Login page styles
-@import "pages/contact"; // Contact page (add styles if needed)
-@import "pages/about"; // About page (add styles if needed)
+// Pages & Page Components
+// Home page styles and components
+@import "pages/home/home"; // Home page styles
+@import "pages/home/user_card"; // User card component
+@import "pages/home/home_posts_card"; // Post card component
+
+// Bloggs page styles and components
+@import "pages/bloggs/bloggs_comments"; // Blog comments component
+@import "pages/bloggs/bloggs_post"; // Blog post section
+@import "pages/bloggs/bloggs"; // Blog page styles
+
+//Network Page styles and components
+// @import "pages/network/network_card"; // Network card component
+@import "pages/network/network"; // Network page styles
+
+// Login Page styles and components
+@import "pages/login/login"; // Login page styles

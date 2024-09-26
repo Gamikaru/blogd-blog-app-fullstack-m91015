@@ -1,5 +1,6 @@
 // services/api/UserService.js
 
+import Logger from '../../utils/Logger'; // Import Logger utility
 import ApiClient from './ApiClient'; // Assuming you have an ApiClient set up for Axios
 
 const UserService = {
@@ -11,13 +12,15 @@ const UserService = {
     */
    async updateUserStatus(userId, status) {
       try {
+         // Ensure this is a PUT request
          const response = await ApiClient.put(`/user/${userId}/status`, { status });
          return response.data;
       } catch (error) {
-         console.error('Error updating user status:', error);
+         Logger.error('Error updating user status:', error);
          throw error;
       }
    },
+
 
    /**
     * Register a new user
@@ -27,9 +30,10 @@ const UserService = {
    async registerUser(userData) {
       try {
          const response = await ApiClient.post("/user/register", userData);
+         Logger.info('User registered:', response.data);
          return response.data;
       } catch (error) {
-         console.error('Error registering user:', error);
+         Logger.error('Error registering user:', error);
          throw error.response?.data || { message: 'Registration failed' };
       }
    },
@@ -41,10 +45,12 @@ const UserService = {
    */
    async loginUser(loginData) {
       try {
+
          const response = await ApiClient.post("/user/login", loginData);
+         Logger.info('User logged in:', response.data);
          return response.data;
       } catch (error) {
-         console.error('Error logging in user:', error);
+         Logger.error('Error logging in user:', error);
          throw error.response?.data || { message: 'Login failed' };
       }
    }

@@ -20,7 +20,7 @@
 // Placeholder for default text styling
 %text-default {
    font-family: $font-primary;
-   font-size: $font-size-base;
+   font-size: $font-size-small;
    color: $charcoal;
 }
 
@@ -30,5 +30,5 @@
    border: 1px solid $light-gray;
    box-shadow: $box-shadow-light;
    border-radius: $border-radius;
-   padding: $spacing-medium;
+   padding: $spacing-m;
 }

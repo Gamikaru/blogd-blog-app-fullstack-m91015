@@ -23,7 +23,7 @@
    display: flex; // Flexbox for layout
    justify-content: center; // Center horizontally
    align-items: center; // Center vertically
-   padding: $spacing-medium; // Large padding
+   padding: $spacing-m; // Large padding
    background-color: $primary-purple; // Primary purple background color
    position: relative; // Relative positioning
    .post-modal-title-container {
@@ -37,7 +37,7 @@
    .close-button {
       position: absolute; // Absolute positioning
       top: 50%; // Center vertically
-      right: $spacing-large; // Align to the right
+      right: $spacing-l; // Align to the right
       transform: translateY(-50%); // Adjust vertical position
       font-size: 1.5rem; // Font size
       color: $white; // White color
@@ -68,7 +68,7 @@
 
 // Post Modal Body
 .post-modal-body {
-   padding: $spacing-medium; // Medium padding
+   padding: $spacing-m; // Medium padding
    background-color: $charcoal-extra-light; // White background color
    border-radius: $border-radius; // Border radius for rounded corners
    transition: all 0.3s ease-in-out; // Smooth transition for all properties

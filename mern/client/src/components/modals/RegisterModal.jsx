@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Card, Modal, Spinner } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Spinner, CloseButton } from "react-bootstrap"; // Only keeping Spinner for now as it's being used within the button.
 import { useCookies } from "react-cookie";
-import { usePublicModalContext, useUserUpdate } from "../../contexts";
+import { usePublicModalContext, useUserUpdate, useNotificationContext } from "../../contexts";
 import Logger from "../../utils/Logger";
 import { capitalizeFirstLetter, validateRegForm } from "../../utils/formValidation";
-import CustomToast from "../common/CustomToast";
 import InputField from "../common/InputField";
 import SelectField from "../common/SelectField";
 import UserService from './../../services/api/UserService';
@@ -23,32 +22,22 @@ const initialFormState = {
 
 export default function RegisterModal() {
    const [registerForm, setRegisterForm] = useState(initialFormState);
-   const [showErrorToast, setShowErrorToast] = useState(false);
-   const [showSuccessToast, setShowSuccessToast] = useState(false);
-   const [toastMessage, setToastMessage] = useState("");
    const [loading, setLoading] = useState(false);
    const [errors, setErrors] = useState({});
    const setUser = useUserUpdate();
    const [cookies, setCookie] = useCookies(["PassBloggs", "userID"]);
    const { showModal, togglePublicModal } = usePublicModalContext();
+   const { showNotification, setPosition } = useNotificationContext(); // Use NotificationContext
 
    function updateRegisterForm(value) {
       Logger.info("Updating register form", value);
       setRegisterForm((prev) => ({ ...prev, ...value }));
    }
 
-   // Auto-close the modal ONLY after successful registration and display the toast for 5 seconds
+   // Automatically close the modal after a successful registration and toast notification
    useEffect(() => {
-      if (showSuccessToast) {
-         const timer = setTimeout(() => {
-            setShowSuccessToast(false);
-            setRegisterForm(initialFormState); // Reset form on success
-            togglePublicModal(); // Close the modal
-         }, 5000); // Display toast for 5 seconds
-
-         return () => clearTimeout(timer); // Cleanup timer on component unmount
-      }
-   }, [showSuccessToast, togglePublicModal]);
+      setPosition('info', false); // Always center for public routes like registration
+   }, [setPosition]);
 
    async function handleRegister(e) {
       e.preventDefault();
@@ -58,8 +47,7 @@ export default function RegisterModal() {
       setErrors(formErrors);
 
       if (Object.keys(formErrors).length > 0) {
-         setToastMessage("Please fill out all required fields.");
-         setShowErrorToast(true);
+         showNotification("Please fill out all required fields.", "error");
          return;
       }
 
@@ -75,8 +63,7 @@ export default function RegisterModal() {
       try {
          const response = await UserService.registerUser(capitalizedForm);
          if (response.message) {
-            setToastMessage(response.message);
-            setShowSuccessToast(true);
+            showNotification(response.message, "success");
 
             const userData = response.user;
             if (userData) {
@@ -84,10 +71,15 @@ export default function RegisterModal() {
                setCookie("userID", userData._id, { path: "/", maxAge: 24 * 60 * 60 });
                setUser(userData);
             }
+
+            // Close modal after success
+            setTimeout(() => {
+               togglePublicModal(); // Close modal immediately after success
+               setRegisterForm(initialFormState); // Reset form on success
+            }, 3000); // Keep the toast for 3 seconds before closing
          }
       } catch (error) {
-         setToastMessage(error.message || "Registration failed due to an unexpected error.");
-         setShowErrorToast(true);
+         showNotification(error.message || "Registration failed due to an unexpected error.", "error");
       } finally {
          setLoading(false);
       }
@@ -100,16 +92,20 @@ export default function RegisterModal() {
    ];
 
    return (
-      <>
-         <Modal show={showModal} onHide={togglePublicModal} centered className="register-modal-container">
-            <Modal.Header className="register-modal-header" closeButton>
-               <Modal.Title className="register-modal-title">REGISTER</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className="register-modal-body">
-               <Card className="register-card">
-                  <Card.Body className="register-card-body">
-                     <form onSubmit={handleRegister} className="form-container">
-                        <div className="form-row">
+      <div className={`register-modal-container ${showModal ? "open" : "closed"}`}>
+         <div className="register-modal">
+            <div className="register-modal-header">
+               <h2 className="register-modal-title">REGISTER</h2>
+               <span className="close-button" onClick={togglePublicModal}>
+                  <CloseButton />
+               </span>
+            </div>
+            <div className="register-modal-body">
+               <div className="register-card">
+                  <form onSubmit={handleRegister} className="form-container">
+                     <div className="form-row">
+                        {/* First Column */}
+                        <div className="form-column">
                            <InputField
                               label="First Name"
                               placeholder="Enter your first name"
@@ -117,15 +113,6 @@ export default function RegisterModal() {
                               onChange={(e) => updateRegisterForm({ firstName: e.target.value })}
                               error={errors.firstName}
                            />
-                           <InputField
-                              label="Last Name"
-                              placeholder="Enter your last name"
-                              value={registerForm.lastName}
-                              onChange={(e) => updateRegisterForm({ lastName: e.target.value })}
-                              error={errors.lastName}
-                           />
-                        </div>
-                        <div className="form-row">
                            <InputField
                               label="Email"
                               placeholder="Enter your email"
@@ -135,21 +122,30 @@ export default function RegisterModal() {
                               error={errors.email}
                            />
                            <InputField
+                              label="Birth Date"
+                              type="date"
+                              value={registerForm.birthDate}
+                              onChange={(e) => updateRegisterForm({ birthDate: e.target.value })}
+                              error={errors.birthDate}
+                           />
+                        </div>
+
+                        {/* Second Column */}
+                        <div className="form-column">
+                           <InputField
+                              label="Last Name"
+                              placeholder="Enter your last name"
+                              value={registerForm.lastName}
+                              onChange={(e) => updateRegisterForm({ lastName: e.target.value })}
+                              error={errors.lastName}
+                           />
+                           <InputField
                               label="Password"
                               placeholder="Enter your password"
                               type="password"
                               value={registerForm.password}
                               onChange={(e) => updateRegisterForm({ password: e.target.value })}
                               error={errors.password}
-                           />
-                        </div>
-                        <div className="form-row">
-                           <InputField
-                              label="Birth Date"
-                              type="date"
-                              value={registerForm.birthDate}
-                              onChange={(e) => updateRegisterForm({ birthDate: e.target.value })}
-                              error={errors.birthDate}
                            />
                            <InputField
                               label="Occupation"
@@ -159,55 +155,39 @@ export default function RegisterModal() {
                               error={errors.occupation}
                            />
                         </div>
-                        <div className="form-row">
-                           <SelectField
-                              label="Location"
-                              placeholder="Select your location"
-                              options={capitalCities}
-                              value={registerForm.location}
-                              onChange={(e) => updateRegisterForm({ location: e.target.value })}
-                              error={errors.location}
-                           />
-                           <InputField
-                              label="Status"
-                              placeholder="Enter your status"
-                              value={registerForm.status}
-                              onChange={(e) => updateRegisterForm({ status: e.target.value })}
-                           />
-                        </div>
-                        <div className="register-submit-container">
-                           <button type="submit" className="register-submit-btn" disabled={loading}>
-                              {loading ? <Spinner animation="border" size="sm" /> : "Submit"}
-                           </button>
-                        </div>
-                     </form>
+                     </div>
 
-                     {/* Custom Toast for success or error messages */}
-                     {showSuccessToast && (
-                        <CustomToast
-                           message={toastMessage}
-                           show={showSuccessToast}
-                           type="success"
-                           autohide
-                           delay={5000}
-                           onClose={() => setShowSuccessToast(false)}
+                     {/* Third Row for Select and Status */}
+                     <div className="form-row">
+                        <SelectField
+                           label="Location"
+                           options={capitalCities}
+                           value={registerForm.location}
+                           onChange={(e) => updateRegisterForm({ location: e.target.value })}
+                           error={errors.location}
+                           className="select-field-location"
                         />
-                     )}
-                     {showErrorToast && (
-                        <CustomToast
-                           message={toastMessage}
-                           show={showErrorToast}
-                           type="error"
-                           autohide
-                           delay={5000}
-                           onClose={() => setShowErrorToast(false)} // Only hide the toast on error
+                        <InputField
+                           label="Status"
+                           placeholder="Enter your status"
+                           value={registerForm.status}
+                           onChange={(e) => updateRegisterForm({ status: e.target.value })}
                         />
-                     )}
-                  </Card.Body>
-               </Card>
-            </Modal.Body>
-         </Modal>
-      </>
+                     </div>
+
+                     {/* Submit Button */}
+                     <div className="register-submit-container">
+                        <button type="submit" className="register-submit-btn" disabled={loading}>
+                           {loading ? <Spinner animation="border" size="sm" /> : "Submit"}
+                        </button>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
    );
 
 }
+
+

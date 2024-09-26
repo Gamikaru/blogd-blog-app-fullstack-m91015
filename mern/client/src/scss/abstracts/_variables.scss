@@ -12,10 +12,10 @@ $white: #ffffff;
 
 // Primary Colors
 $primary-purple: #9191ec;
-$primary-purple-light: #a0a0ff; // Lightened primary purple
-$primary-purple-dark: #6b6bdf;
+$primary-purple-light: lighten($primary-purple, 10%); // Lightened primary purple
+$primary-purple-dark: darken($primary-purple, 10%); // Darkened primary purple
 $electric-violet: #8a2be2;
-$electric-violet-light: #a020f0; // Lightened violet
+$electric-violet-light: lighten($electric-violet, 10%); // Lightened violet
 $dark-indigo: #4b0082;
 
 // Accent Colors
@@ -36,25 +36,26 @@ $dark-text: #e0e0e0;
 $light-background: #ffffff;
 $light-text: #333333;
 
-// Hover State Variables
-$primary-purple-hover: darken($primary-purple, 10%);
-$electric-violet-hover: darken($electric-violet, 10%);
-$success-green-hover: darken($success-green, 10%);
-$bright-red-hover: lighten($bright-red, 10%);
-$sunset-orange-hover: darken($sunset-orange, 10%);
+// Hover State Variables (use consistent hover approach)
+$hover-darken-percentage: 10%;
+$primary-purple-hover: darken($primary-purple, $hover-darken-percentage);
+$electric-violet-hover: darken($electric-violet, $hover-darken-percentage);
+$success-green-hover: darken($success-green, $hover-darken-percentage);
+$bright-red-hover: lighten($bright-red, $hover-darken-percentage);
+$sunset-orange-hover: darken($sunset-orange, $hover-darken-percentage);
 
 // --------------------
-// Box Shadows
-// --------------------
+// Box Shadows (modularized for better control)
 $box-shadow-light: 0 4px 8px rgba(0, 0, 0, 0.1);
+$box-shadow-medium: 0 6px 12px rgba(0, 0, 0, 0.15); // Added medium shadow
 $box-shadow-heavy: 0 8px 16px rgba(0, 0, 0, 0.2);
+$box-shadow-focus: 0 6px 12px $primary-purple;
 
 // --------------------
 // Font Variables
-// --------------------
-$font-tertiary: "JetBrains Mono", monospace;
 $font-primary: "Anton", sans-serif;
 $font-secondary: "Inter", sans-serif;
+$font-tertiary: "JetBrains Mono", monospace;
 
 // Font Weights
 $font-weight-extra-light: 100;
@@ -64,33 +65,36 @@ $font-weight-bold: 700;
 
 // Font Sizes (with REM values for modular scaling)
 $font-size-base: 1rem; // Default body text
+$font-size-xsmall: 0.625rem; // Extra-extra-small text (12px)
 $font-size-small: 0.875rem; // Small text
 $font-size-medium: 1.25rem; // Medium text
 $font-size-large: 2rem; // Large headings
 
 // --------------------
-// Breakpoints
-// --------------------
-$breakpoint-xs: 360px; // Very small devices
-$breakpoint-sm: 576px; // Small devices
-$breakpoint-md: 768px; // Medium devices (tablets)
-$breakpoint-lg: 992px; // Large devices (desktops)
-$breakpoint-xl: 1200px; // Extra large devices (large desktops)
+// Breakpoints (optimized for em scaling)
+$breakpoint-xs: 22.5em; // 360px in em
+$breakpoint-sm: 36em; // 576px
+$breakpoint-md: 48em; // 768px
+$breakpoint-lg: 62em; // 992px
+$breakpoint-xl: 75em; // 1200px
 
 // --------------------
-// Global Border Radius
-// --------------------
+// Global Border Radius (added more granular control)
+$border-radius-small: 3px;
 $border-radius: 6px; // Standard rounded corners
 $border-radius-large: 12px; // Large rounded corners
 
 // --------------------
-// Spacing Variables (modular system)
-// --------------------
-$spacing-extra-small: 0.25rem; // Extra-small spacing (4px)
-$spacing-small: 0.5rem; // Small spacing (8px)
-$spacing-medium: 1rem; // Medium spacing (16px)
-$spacing-large: 2rem; // Large spacing (32px)
-$spacing-extra-large: 3rem; // Extra-large spacing (48px)
+// Spacing Variables (expanded modular system)
+$spacing-xxs: 0.125rem; // Extra-extra-small spacing (2px)
+$spacing-xs: 0.25rem; // Extra-small spacing (4px)
+$spacing-s: 0.5rem; // Small spacing (8px)
+$spacing-m: 1rem; // Medium spacing (16px)
+$spacing-l: 2rem; // Large spacing (32px)
+$spacing-xl: 3rem; // Extra-large spacing (48px)
+$spacing-xxl: 4rem; // Extra-extra-large spacing (64px)
+$spacing-xxxl: 6rem; // Extra-extra-extra-large spacing (96px)
+$spacing-xxxxl: 8rem; // Extra-extra-extra-extra-large spacing (128px)
 
 
 // Modular Spacing System
@@ -98,9 +102,3 @@ $base-spacing: 1rem; // Base spacing for modular scaling
 
 // Navbar Scaling
 $navbar-height: 5.5rem; // Fixed navbar height
-// --------------------
-// Gradient Background Variables (optional)
-// --------------------
-$primary-gradient: linear-gradient(145deg, $primary-purple, $primary-purple-dark);
-$accent-gradient: linear-gradient(145deg, $electric-violet, $electric-violet-light);
-$neutral-gradient: linear-gradient(145deg, $light-gray, $light-silver);

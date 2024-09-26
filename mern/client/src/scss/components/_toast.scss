@@ -1,0 +1,103 @@
+/* Custom Toasts */
+// Toast variables
+$toast-icon-size-small: 1.25rem;
+$toast-icon-size-medium: 1.5rem;
+$toast-icon-size-large: 2rem;
+
+// Toast Padding and Layout
+$toast-padding-vertical: 0.75rem;
+$toast-padding-horizontal: 1.5rem;
+$toast-gap: $spacing-s;
+
+// Toast Transitions
+$toast-transition-duration: 0.4s;
+$toast-transform-movement: 1rem;
+
+// Font Sizes for Toast Headers
+$toast-header-font-size: $font-size-medium;
+
+// Box Shadows for Toasts
+$toast-box-shadow: $box-shadow-light;
+
+.custom-toast {
+   background-color: $white;
+   color: $charcoal-light;
+   padding: $toast-padding-vertical $toast-padding-horizontal;
+   border-radius: 16px;
+   box-shadow: $box-shadow-heavy;
+   font-size: $font-size-base;
+   max-width: 85%;
+   display: flex;
+   flex-direction: column;
+   gap: $toast-gap;
+   z-index: 3100;
+   position: fixed; // Positioning handled dynamically by JS
+   margin: $spacing-s; // Optionally, ensure enough space from screen edges
+
+   transition:
+      opacity $toast-transition-duration ease-in-out,
+      transform $toast-transition-duration ease-in-out;
+
+   &.custom-toast--success {
+      border-color: $success-green;
+   }
+   &.custom-toast--error {
+      border-color: $bright-red;
+   }
+   &.custom-toast--info {
+      border-color: $primary-purple;
+   }
+   &.custom-toast--warning {
+      border-color: $sunset-orange;
+   }
+
+   &.custom-toast--show {
+      opacity: 1;
+      transform: translateY(0); // Show with smooth slide
+   }
+
+   &.custom-toast--hide {
+      opacity: 0;
+      transform: translateY(-10px); // Hide with slight upward movement
+   }
+}
+
+/* Toast Header */
+.custom-toast-header {
+   display: flex;
+   align-items: center;
+   gap: $toast-gap;
+   font-weight: $font-weight-bold;
+   color: $charcoal;
+   font-size: $font-size-medium;
+   position: relative;
+
+   .toast-icon {
+      font-size: $toast-icon-size-large;
+   }
+
+   .close-button {
+      position: absolute;
+      top: 50%;
+      right: $spacing-m;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: $font-size-medium;
+      color: $disabled-gray;
+      transition: color 0.3s ease-in-out;
+
+      &:hover {
+         color: $charcoal;
+      }
+   }
+}
+
+/* Toast Body */
+.custom-toast-body {
+   font-size: $font-size-base;
+   padding-top: $spacing-s;
+   display: flex;
+   align-items: center;
+   color: $charcoal-light;
+   line-height: 1.5;
+}

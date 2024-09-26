@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, Container, Form, Spinner } from "react-bootstrap";
 import { useCookies } from "react-cookie";
 import { FaHeart } from "react-icons/fa";
 import { fetchAllPosts, likePost, unlikePost } from "../../services/api/PostService"; // Updated service imports
@@ -111,32 +110,32 @@ export default function BloggsPosts() {
    };
 
    return (
-      <Container>
+      <div className="container">
          {loading ? (
             <div className="loading-spinner">
-               <Spinner animation="border" variant="primary" />
+               <div className="spinner" />
             </div>
          ) : (
             <div className="grid-container blog-posts-grid">
                {blogPosts.length > 0 ? (
                   blogPosts.map((post) => (
                      <div className="grid-item bloggs-grid-item" key={post._id}>
-                        <Card className="bloggs-post-section">
-                           <Card.Body className="bloggs-body">
-                              <Card.Title className="bloggs-card-title">
+                        <div className="bloggs-post-section card">
+                           <div className="bloggs-body card-body">
+                              <div className="bloggs-card-title">
                                  <span className="username">{author(post)}</span>
-                              </Card.Title>
-                              <Card.Text className="speech-bubble">
+                              </div>
+                              <div className="speech-bubble">
                                  <span className="post-text">{post.content}</span>
-                              </Card.Text>
+                              </div>
                               <div className="post-interactions">
-                                 <Button
+                                 <button
                                     className="like-button"
                                     onClick={() => handleLike(post._id)}
                                     aria-label={post.likesBy?.includes(cookie.userID) ? "Unlike" : "Like"}
                                  >
                                     {post.likesBy?.includes(cookie.userID) ? "Unlike" : "Like"}
-                                 </Button>
+                                 </button>
                                  <div className="like-section">
                                     <FaHeart className="heart-icon" />
                                     <span className="likes-count">{post.likes}</span>
@@ -145,8 +144,8 @@ export default function BloggsPosts() {
                                     {new Date(post.createdAt).toLocaleDateString()}
                                  </div>
                               </div>
-                           </Card.Body>
-                           <Card.Footer className="bloggs-card-footer">
+                           </div>
+                           <div className="bloggs-card-footer">
                               <div className="bloggs-comments">
                                  {post.comments.map((comment) => (
                                     <div key={comment._id}>
@@ -154,16 +153,15 @@ export default function BloggsPosts() {
                                        <p className="comment-text">{comment.content}</p>
                                     </div>
                                  ))}
-                                 <Form
+                                 <form
                                     className="bloggs-comment-form"
                                     onSubmit={(e) => {
                                        e.preventDefault();
                                        handleCommentSubmit(post._id);
                                     }}
                                  >
-                                    <Form.Group controlId={`commentText-${post._id}`}>
-                                       <Form.Control
-                                          as="textarea"
+                                    <div className="form-group">
+                                       <textarea
                                           rows={3}
                                           placeholder="Write a comment..."
                                           value={commentTexts[post._id] || ""}
@@ -173,18 +171,18 @@ export default function BloggsPosts() {
                                        <div className="character-counter">
                                           {commentTexts[post._id]?.length || 0}/500
                                        </div>
-                                    </Form.Group>
-                                    <Button
+                                    </div>
+                                    <button
                                        className="bloggs-submit-bttn"
                                        type="submit"
                                        disabled={!commentTexts[post._id]}
                                     >
                                        Submit
-                                    </Button>
-                                 </Form>
+                                    </button>
+                                 </form>
                               </div>
-                           </Card.Footer>
-                        </Card>
+                           </div>
+                        </div>
                      </div>
                   ))
                ) : (
@@ -192,6 +190,6 @@ export default function BloggsPosts() {
                )}
             </div>
          )}
-      </Container>
+      </div>
    );
 }

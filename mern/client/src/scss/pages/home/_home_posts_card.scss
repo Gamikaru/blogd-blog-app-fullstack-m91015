@@ -1,0 +1,158 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+@import "../../abstracts/functions";
+
+/* Posts Card Styling */
+.home-posts-card {
+   @include card-base;
+   background-color: $white;
+   width: 50vw;
+   display: flex;
+   flex-direction: column;
+   border-radius: $border-radius-large;
+   overflow: hidden;
+   box-shadow: $box-shadow-light;
+   padding: $spacing-l;
+   transition:
+      box-shadow 0.3s ease,
+      transform 0.3s ease;
+
+   &:hover {
+      box-shadow: 0 8px 16px rgba($primary-purple, 0.2); // Subtle violet shadow on hover
+      transform: translateY(-5px);
+   }
+
+   .home-post-title {
+      font-size: $font-size-large;
+      font-family: $font-primary;
+      font-weight: bold;
+      letter-spacing: 0.1rem;
+      color: $primary-purple;
+      margin-bottom: $spacing-l;
+   }
+
+   .posts-scroll-container {
+      max-height: 400px;
+      overflow-y: auto;
+      padding-right: $spacing-m;
+      flex-grow: 1;
+
+      &::-webkit-scrollbar {
+         width: 8px;
+      }
+
+      &::-webkit-scrollbar-track {
+         background: lighten($charcoal-extra-light, 10%);
+         border-radius: 10px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+         background-color: $primary-purple;
+         border-radius: 10px;
+         border: 2px solid $white;
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+         background-color: darken($primary-purple, 10%);
+      }
+   }
+
+   .post-container {
+      margin-bottom: $spacing-m;
+
+      .speech-bubble {
+         position: relative;
+         padding: $spacing-m $spacing-l;
+         background-color: $charcoal-extra-light;
+         border-radius: 1rem;
+         margin-bottom: $spacing-s;
+
+         &::before {
+            content: "";
+            position: absolute;
+            bottom: -12px;
+            left: 30px;
+            width: 20px;
+            height: 15px;
+            background-color: $charcoal-extra-light;
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+         }
+
+         .post-text {
+            font-family: "Fira Code", monospace;
+            font-size: 1.05rem;
+            color: $charcoal;
+            word-wrap: break-word;
+            white-space: normal;
+         }
+      }
+
+      .post-info {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+
+         .action-buttons {
+            display: flex;
+            gap: $spacing-s;
+
+            .edit-button,
+            .delete-button {
+               background-color: $primary-purple;
+               color: $white;
+               font-family: $font-primary;
+               padding: $spacing-s $spacing-m;
+               border-radius: 0.5rem;
+               cursor: pointer;
+               transition: background-color 0.3s ease;
+
+               &:hover {
+                  background-color: darken($primary-purple, 10%);
+               }
+            }
+
+            .edit-button {
+               @include button-base;
+               background-color: cadetblue;
+
+               &:hover {
+                  background-color: darken(cadetblue, 10%);
+               }
+            }
+
+            .delete-button {
+               @include button-base($danger); // Use the danger color for delete button
+               background-color: $danger;
+
+               &:hover {
+                  background-color: darken($danger, 10%);
+               }
+            }
+         }
+
+         .post-date {
+            font-size: 0.875rem;
+            color: $primary-purple;
+            text-align: right;
+         }
+      }
+   }
+}
+
+/* Animation */
+@keyframes fadeInUp {
+   from {
+      opacity: 0;
+      transform: translateY(20px);
+   }
+   to {
+      opacity: 1;
+      transform: translateY(0);
+   }
+}
+
+.user-card,
+.home-posts-card {
+   opacity: 0;
+   animation: fadeInUp 0.6s forwards;
+}

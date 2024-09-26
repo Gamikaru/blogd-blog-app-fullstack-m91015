@@ -7,20 +7,20 @@
 .grid-container {
    display: grid;
    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-   gap: $spacing-medium;
+   gap: $spacing-m;
    width: 100%;
    max-width: 1200px;
    margin: 0 auto;
-   padding: $spacing-large;
+   padding: $spacing-l;
 
    @media (max-width: $breakpoint-md) {
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      padding: $spacing-medium;
+      padding: $spacing-m;
    }
 
    @media (max-width: $breakpoint-sm) {
       grid-template-columns: 1fr;
-      padding: $spacing-small;
+      padding: $spacing-s;
    }
 }
 
@@ -28,7 +28,7 @@
 .grid-item {
    background-color: $light-gray;
    border-radius: $border-radius;
-   padding: $spacing-medium;
+   padding: $spacing-m;
    box-shadow: $box-shadow-light;
    transition: transform 0.3s ease;
 
@@ -37,10 +37,10 @@
    }
 
    @media (max-width: $breakpoint-md) {
-      padding: $spacing-small;
+      padding: $spacing-s;
    }
 
    @media (max-width: $breakpoint-sm) {
-      padding: $spacing-small;
+      padding: $spacing-s;
    }
 }

@@ -21,7 +21,7 @@
 // // Modal (Shared base)
 // .register-modal,
 // .post-modal {
-//    @include modal-base($white, $spacing-large, $box-shadow-heavy, $border-radius-large);
+//    @include modal-base($white, $spacing-l, $box-shadow-heavy, $border-radius-large);
 //    max-width: 500px;
 //    width: 90%;
 //    z-index: 3001;
@@ -46,7 +46,7 @@
 //    justify-content: space-between; // Space between title and close button
 //    align-items: center;
 //    text-align: center;
-//    padding: $spacing-large;
+//    padding: $spacing-l;
 //    color: $white;
 
 //    &.register-modal-header {
@@ -67,7 +67,7 @@
 //       font-size: 1.5rem;
 //       color: $white;
 //       cursor: pointer;
-//       padding-left: $spacing-medium;
+//       padding-left: $spacing-m;
 //       &:hover {
 //          color: lighten($white, 20%);
 //       }
@@ -77,11 +77,11 @@
 // // Modal Body (Customizable by modal type)
 // .register-modal-body,
 // .post-modal-body {
-//    padding: $spacing-large;
+//    padding: $spacing-l;
 //    background-color: $white;
 
 //    &.post-modal-body {
-//       padding: $spacing-medium;
+//       padding: $spacing-m;
 //    }
 // }
 
@@ -89,8 +89,8 @@
 // .register-modal-input,
 // .post-modal-input {
 //    width: 100%;
-//    padding: $spacing-medium;
-//    margin-bottom: $spacing-large;
+//    padding: $spacing-m;
+//    margin-bottom: $spacing-l;
 //    background-color: $white;
 //    border: 1px solid $light-gray;
 //    border-radius: $border-radius;

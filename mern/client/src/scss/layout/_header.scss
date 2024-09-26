@@ -4,7 +4,7 @@
 
 // .header {
 //    background-color: $primary-purple;
-//    padding: $spacing-medium;
+//    padding: $spacing-m;
 //    box-shadow: $box-shadow-heavy;
 //    position: fixed;
 //    width: 100%;
@@ -23,7 +23,7 @@
 
 //    // Ensure full responsiveness
 //    @media (max-width: $breakpoint-md) {
-//       padding: $spacing-small;
+//       padding: $spacing-s;
 //       .nav {
 //          @include flex-container(center, center, column);
 //       }
