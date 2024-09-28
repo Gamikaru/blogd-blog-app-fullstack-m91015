@@ -61,6 +61,9 @@ export default function LoginPage() {
          setCookie("userID", response.user._id, { path: "/", maxAge: 24 * 60 * 60 });
          Logger.info("Cookies set", { token: response.token, userID: response.user._id });
 
+         // Store token in localStorage for tests
+         localStorage.setItem("authToken", response.token);
+
          showNotification("Login successful!", "success");
          setTimeout(() => {
             window.location.reload();
