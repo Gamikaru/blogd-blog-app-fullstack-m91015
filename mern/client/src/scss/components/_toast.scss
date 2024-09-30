@@ -31,34 +31,42 @@ $toast-box-shadow: $box-shadow-light;
    flex-direction: column;
    gap: $toast-gap;
    z-index: 3100;
-   position: fixed; // Positioning handled dynamically by JS
-   margin: $spacing-s; // Optionally, ensure enough space from screen edges
-
+   position: fixed;
+   margin: $spacing-s;
    transition:
-      opacity $toast-transition-duration ease-in-out,
-      transform $toast-transition-duration ease-in-out;
-
-   &.custom-toast--success {
-      border-color: $success-green;
-   }
-   &.custom-toast--error {
-      border-color: $bright-red;
-   }
-   &.custom-toast--info {
-      border-color: $primary-purple;
-   }
-   &.custom-toast--warning {
-      border-color: $sunset-orange;
-   }
+      opacity 0.4s ease-in-out,
+      transform 0.4s ease-in-out; // Animation transition
 
    &.custom-toast--show {
       opacity: 1;
-      transform: translateY(0); // Show with smooth slide
+      transform: translateY(0); // Slide in smoothly
    }
 
    &.custom-toast--hide {
       opacity: 0;
-      transform: translateY(-10px); // Hide with slight upward movement
+      transform: translateY(-10px); // Slide out smoothly
+   }
+
+   // Error toast styling
+   &.custom-toast--error {
+      border-left: 5px solid $bright-red; // Left border for error
+      border-bottom: 5px solid $bright-red; // Bottom border for error
+   }
+
+   // Success, info, and warning toasts
+   &.custom-toast--success {
+      border-left: 5px solid $success-green;
+      border-bottom: 5px solid $success-green;
+   }
+
+   &.custom-toast--info {
+      border-left: 5px solid $primary-purple;
+      border-bottom: 5px solid $primary-purple;
+   }
+
+   &.custom-toast--warning {
+      border-left: 5px solid $sunset-orange;
+      border-bottom: 5px solid $sunset-orange;
    }
 }
 

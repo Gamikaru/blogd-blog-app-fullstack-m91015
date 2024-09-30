@@ -70,3 +70,37 @@ $close-button-hover-color: lighten($close-button-color, 20%);
       }
    }
 }
+
+// Toast Actions Button Styles
+.toast-actions {
+   display: flex;
+   justify-content: flex-end;
+   gap: $spacing-s; // Spacing between buttons
+
+   // Primary "Yes" Button (using primary purple with modern styling)
+   .toast-primary-btn {
+      @include button-base($primary-purple, $white, $electric-violet-hover, $border-radius);
+      padding: $spacing-xs $spacing-m; // Use existing spacing variables
+      font-size: $font-size-small; // Ensure small size for the button text
+      font-weight: $font-weight-bold; // Add bold font for modern, strong emphasis
+      box-shadow: $box-shadow-light; // Add a soft box-shadow for modern touch
+
+      &:hover {
+         box-shadow: $box-shadow-medium; // Elevate on hover
+      }
+   }
+
+   // Secondary "No" Button (using neutral gray with charcoal hover)
+   .toast-secondary-btn {
+      @include button-base($light-gray, $charcoal, $charcoal-light, $border-radius);
+      padding: $spacing-xs $spacing-m; // Consistent padding with primary button
+      font-size: $font-size-small; // Keep button text small
+      font-weight: $font-weight-regular; // Regular font-weight for secondary actions
+      box-shadow: $box-shadow-light; // Same box-shadow as primary for consistency
+
+      &:hover {
+         background-color: $charcoal-extra-light; // Subtle change on hover
+         color: $white; // Ensure contrast with the light gray background
+      }
+   }
+}

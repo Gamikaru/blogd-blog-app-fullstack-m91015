@@ -1,6 +1,6 @@
 import express from 'express';
-import Post from '../models/postSchema.js';
 import { authenticate } from '../middleware/authMiddleware.js';
+import Post from '../models/postSchema.js';
 
 const router = express.Router();
 
@@ -138,7 +138,7 @@ router.patch('/:id', authenticate, async (req, res) => {
       const post = await Post.findById(req.params.id);
       if (!post) {
          console.log('Post not found:', req.params.id);
-         return res.status(404).send('Post not found');
+         return res.status(404).json({ success: false, message: 'Post not found' });
       }
 
       const fieldsToUpdate = req.body;
@@ -148,10 +148,23 @@ router.patch('/:id', authenticate, async (req, res) => {
 
       await post.save();
       console.log('Post updated successfully:', post);
-      res.status(200).send('Post updated successfully');
+
+      // Return the updated post with all necessary fields
+      return res.status(200).json({
+         success: true,
+         post: {
+            _id: post._id,
+            content: post.content,
+            likes: post.likes,
+            userId: post.userId,
+            comments: post.comments,
+            createdAt: post.createdAt,
+            updatedAt: post.updatedAt
+         }
+      });
    } catch (error) {
       console.error('Error updating post:', error);
-      return res.status(500).send('Server error: ' + error.message);
+      return res.status(500).json({ success: false, message: 'Server error: ' + error.message });
    }
 });
 
@@ -166,17 +179,18 @@ router.delete('/:id', authenticate, async (req, res) => {
       const post = await Post.findById(req.params.id);
       if (!post) {
          console.log('Post not found:', req.params.id);
-         return res.status(404).send('Post not found');
+         return res.status(404).json({ success: false, message: 'Post not found' });
       }
 
       await post.deleteOne();
       console.log('Post deleted successfully:', req.params.id);
-      res.status(200).send('Post deleted successfully');
+      return res.status(200).json({ success: true, message: 'Post deleted successfully' }); // Return JSON instead of plain text
    } catch (error) {
       console.error('Error deleting post:', error);
-      return res.status(500).send('Server error: ' + error.message);
+      return res.status(500).json({ success: false, message: 'Server error: ' + error.message });
    }
 });
+
 
 /**
  * @route   PUT /like/:id

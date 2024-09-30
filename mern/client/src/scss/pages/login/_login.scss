@@ -59,7 +59,7 @@ Overall Container for Centering the Login Content
 
    @media (max-width: $breakpoint-md) {
       width: 60%; // 60% width on medium screens
-      bottom: 7rem; // Move the logo up by 7rem
+      bottom: 3rem; // Move the logo up by 7rem
    }
 
    @media (max-width: $breakpoint-sm) {
@@ -110,8 +110,7 @@ Overall Container for Centering the Login Content
 
    @media (max-width: $breakpoint-md) {
       width: 65%; // 65% width on medium screens
-      padding: $spacing-m; // Medium padding inside the card
-      top: -14rem; // Move the card up by 14rem
+      top: -11rem; // Move the card up by 14rem
    }
 
    @media (max-width: $breakpoint-sm) {
@@ -150,6 +149,11 @@ Input Container and Fields
    @media (max-width: $breakpoint-sm) {
       font-size: $font-size-small; // Small font size on small screens
       padding: $spacing-s; // Small padding inside the input field
+   }
+
+   @media (max-width: $breakpoint-md) {
+      font-size: $font-size-small; // Small font size on medium screens
+      padding-inline: $spacing-xl; // Small horizontal padding
    }
 }
 
@@ -242,7 +246,7 @@ Responsive Design Adjustments
 -------------------------------------------------------------------------- */
 @media (max-width: $breakpoint-md) {
    .login-content {
-      max-width: 85%; // 85% width on medium screens
+      max-width: 100%; // 85% width on medium screens
    }
 
    .login-card {

@@ -53,15 +53,23 @@ $box-shadow-focus: 0 6px 12px $primary-purple;
 
 // --------------------
 // Font Variables
-$font-primary: "Anton", sans-serif;
-$font-secondary: "Inter", sans-serif;
-$font-tertiary: "JetBrains Mono", monospace;
+$font-primary: "Anton", sans-serif; // Primary font for headers
+$font-secondary: "Inter", sans-serif; // Secondary font for body text
+$font-tertiary: "JetBrains Mono", monospace; // Tertiary font for code-like elements
 
 // Font Weights
-$font-weight-extra-light: 100;
-$font-weight-light: 300;
-$font-weight-regular: 400;
-$font-weight-bold: 700;
+$font-weight-extra-light: 100; // Ultra-light weight (use for very soft accents)
+$font-weight-light: 300; // Light weight for less emphasis
+$font-weight-regular: 400; // Regular font weight for balanced text
+$font-weight-medium: 500; // Medium weight for code or code-like fonts
+$font-weight-bold: 700; // Bold weight for strong emphasis (e.g., headers)
+$font-weight-extra-bold: 800; // Extra bold for very heavy emphasis
+
+// JetBrains Mono Font Weight Variants (specific usage)
+$jetbrains-light: 300; // Light JetBrains Mono (ideal for subtle, clean code text)
+$jetbrains-regular: 400; // Regular JetBrains Mono (use in input fields or basic code snippets)
+$jetbrains-medium: 500; // Medium JetBrains Mono (use for important code-like elements)
+$jetbrains-bold: 700; // Bold JetBrains Mono (strong code emphasis or headings)
 
 // Font Sizes (with REM values for modular scaling)
 $font-size-base: 1rem; // Default body text
@@ -95,7 +103,6 @@ $spacing-xl: 3rem; // Extra-large spacing (48px)
 $spacing-xxl: 4rem; // Extra-extra-large spacing (64px)
 $spacing-xxxl: 6rem; // Extra-extra-extra-large spacing (96px)
 $spacing-xxxxl: 8rem; // Extra-extra-extra-extra-large spacing (128px)
-
 
 // Modular Spacing System
 $base-spacing: 1rem; // Base spacing for modular scaling

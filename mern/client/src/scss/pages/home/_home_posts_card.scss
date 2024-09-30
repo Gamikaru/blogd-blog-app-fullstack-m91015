@@ -62,10 +62,11 @@
 
       .speech-bubble {
          position: relative;
-         padding: $spacing-m $spacing-l;
+         padding: $spacing-l $spacing-l;
          background-color: $charcoal-extra-light;
-         border-radius: 1rem;
-         margin-bottom: $spacing-s;
+         border-radius: 2rem;
+         margin-bottom: $spacing-m;
+         box-shadow: $box-shadow-light;
 
          &::before {
             content: "";
@@ -79,7 +80,8 @@
          }
 
          .post-text {
-            font-family: "Fira Code", monospace;
+            font-family: $font-tertiary;
+            font-weight: 300;
             font-size: 1.05rem;
             color: $charcoal;
             word-wrap: break-word;

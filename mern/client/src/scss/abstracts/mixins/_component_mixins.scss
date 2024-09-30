@@ -6,54 +6,46 @@
 // Component Mixins
 // --------------------
 
-// Button Mixin
+// Button Mixin (modularized for better control and consistency)
 @mixin button-base(
    $bg-color: $primary-purple,
-   // Background color of the button
    $text-color: $white,
-   // Text color of the button
    $hover-bg-color: darken($bg-color, 10%),
-   // Background color when hovered
    $border-radius: $border-radius,
-   // Border radius for rounded corners
    $font-family: $font-primary,
-   // Font family for the button text
    $font-weight: $font-weight-regular,
-   // Font weight for the button text
-   $padding: 0.6rem 1.2rem,
-   // Padding inside the button
-   $font-size: $font-size-base,
-   // Font size of the button text
+   $padding: $spacing-xs $spacing-m,
+   $font-size: $font-size-small,
    $text-transform: uppercase,
-   // Transform text to uppercase
-   $letter-spacing: 2px,
-   // Spacing between letters
-   $width: auto,
-   // Width of the button
-   $margin-top: 0 // Margin at the top of the button
+   $letter-spacing: 1.5px,
+   $box-shadow: $box-shadow-light,
+   $transition-duration: 0.3s, // Ensure smooth transitions for hover states
+   $width: 100%
 ) {
-   background-color: $bg-color; // Set the background color
-   color: $text-color; // Set the text color
-   padding: $padding; // Apply padding inside the button
-   font-family: $font-family; // Apply font family to the button text
-   font-weight: $font-weight; // Apply font weight to the button text
-   font-size: $font-size; // Apply font size to the button text
-   border: none; // Remove border
-   border-radius: $border-radius; // Apply border radius for rounded corners
-   text-transform: $text-transform; // Transform text to uppercase
-   letter-spacing: $letter-spacing; // Apply letter spacing
-   cursor: pointer; // Change cursor to pointer on hover
+   background-color: $bg-color;
+   color: $text-color;
+   padding: $padding;
+   font-family: $font-family;
+   font-weight: $font-weight;
+   font-size: $font-size;
+   border: none;
+   border-radius: $border-radius;
+   text-transform: $text-transform;
+   letter-spacing: $letter-spacing;
+   cursor: pointer;
+   box-shadow: $box-shadow;
    transition:
-      background-color 0.3s ease,
-      box-shadow 0.3s ease; // Smooth transition for background color and box shadow
+      background-color $transition-duration ease,
+      box-shadow $transition-duration ease;
 
    &:hover {
-      background-color: $hover-bg-color; // Change background color on hover
+      background-color: $hover-bg-color;
+      box-shadow: $box-shadow-medium; // Add shadow elevation on hover
    }
 
    &:disabled {
-      background-color: $disabled-gray; // Set background color for disabled state
-      cursor: not-allowed; // Change cursor to not-allowed for disabled state
+      background-color: $disabled-gray;
+      cursor: not-allowed;
    }
 }
 

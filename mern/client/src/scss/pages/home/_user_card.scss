@@ -60,16 +60,19 @@
             width: 100%;
             padding: $spacing-s $spacing-m;
             font-size: $font-size-medium;
-            font-family: "Fira Code", monospace;
+            font-family: $font-tertiary;
+            font-weight: $font-weight-extra-light;
             background-color: $white;
             border: none;
             box-shadow: none; // Remove any shadow
+            color: $charcoal-light;
             transition:
                box-shadow 0.3s ease,
                border-color 0.3s ease;
             white-space: normal;
             word-wrap: break-word;
             overflow: visible;
+            overflow-wrap: break-word;
 
             &:hover {
                box-shadow: 0 0 5px rgba($charcoal, 0.4); // Charcoal glow on hover
