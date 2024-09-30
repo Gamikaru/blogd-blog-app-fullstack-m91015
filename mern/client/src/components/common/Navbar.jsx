@@ -31,13 +31,13 @@ const Navbar = ({ toggleSidebar, toggleButtonRef }) => {
       // Clear user state in UserContext
       setUser(null);
 
-      // Notify user about logout
-      showNotification("Logged out successfully!", "success");
-
-      // Navigate to login and optionally reload the page to ensure a fresh state
-      navigate("/login", { replace: true });
-      window.location.reload(); // Optional: ensures the page is fully refreshed after logout
+      // Use a small delay to allow the notification to show before navigation
+      setTimeout(() => {
+         // Navigate to login page smoothly
+         navigate("/login", { replace: true });
+      }, 1000); // 1-second delay for a smooth transition
    };
+
 
    // Hide the navbar on login or register pages
    if (location.pathname === "/login" || location.pathname === "/register") {

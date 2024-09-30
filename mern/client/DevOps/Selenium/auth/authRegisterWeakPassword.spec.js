@@ -1,37 +1,29 @@
-import { Builder, By, until } from 'selenium-webdriver';
+import { By, until } from 'selenium-webdriver';
 import {
-   fillInputField,
+   closeToastIfVisible,
    fillDatePicker,
+   fillInputField,
+   initializeTestDriver,
    selectDropdownOption,
    submitForm,
    takeScreenshot,
-   verifyErrorLabel,
-   closeToastIfVisible
-} from './registerFormHelpers.js'; // Adjust the path if necessary
+   verifyInlineError
+} from './authHelpers.js'; // Adjust the path if necessary
 
 describe('Register Form Tests: weak password validation', function () {
    this.timeout(60000); // Increased timeout for the test suite
-   let driver;
 
-   beforeEach(async function () {
-      driver = new Builder().forBrowser('chrome').build();
-      await driver.manage().window().setRect({ width: 1552, height: 832 });
-      console.log('Browser setup completed');
-   });
-
-   afterEach(async function () {
-      await driver.quit();
-      console.log('Browser closed');
-   });
+   // Initialize the test driver and get the driver instance
+   const getDriver = initializeTestDriver();  // Combined helper manages setup and teardown
 
    it('should show an inline error for weak password', async function () {
-      console.log('Test: Weak password error');
+      const driver = getDriver();  // Get the WebDriver instance
+
       await driver.get('http://localhost:5173/login');
 
       // Navigate to the registration form
       const registerLink = await driver.wait(until.elementLocated(By.css('.register-link')), 10000);
       await registerLink.click();
-      console.log('Navigated to register form');
 
       // Fill in the first name
       await fillInputField(driver, '.register-first-name-input', 'Test');
@@ -67,9 +59,7 @@ describe('Register Form Tests: weak password validation', function () {
       // Close the toast if it's visible (just in case)
       await closeToastIfVisible(driver);
 
-
-
       // Verify the inline error for the password field
-      await verifyErrorLabel(driver, '.register-password-input', 'Password must be at least 8 characters long and include letters, numbers, and special characters.');
+      await verifyInlineError(driver, '.register-password-input ~ span.error-label', 'Password must be at least 8 characters long and include letters, numbers, and special characters.');
    });
 });

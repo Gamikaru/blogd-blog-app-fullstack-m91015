@@ -39,19 +39,26 @@ const UserService = {
    },
 
    /**
-   * Login user
-   * @param {Object} loginData - The login credentials
-   * @returns {Promise<Object>} - The logged-in user data or error message
-   */
+ * Login user
+ * @param {Object} loginData - The login credentials
+ * @returns {Promise<Object>} - The logged-in user data or error message
+ */
    async loginUser(loginData) {
       try {
-
          const response = await ApiClient.post("/user/login", loginData);
          Logger.info('User logged in:', response.data);
          return response.data;
       } catch (error) {
          Logger.error('Error logging in user:', error);
-         throw error.response?.data || { message: 'Login failed' };
+
+         // Explicitly check if error.response exists and pass the message back
+         if (error.response && error.response.data) {
+            Logger.error('Error details from server:', error.response.data);
+            throw new Error(error.response.data.message || 'Login failed. Please try again.');
+         } else {
+            // Handle cases where no detailed response is available
+            throw new Error('An unexpected error occurred during login.');
+         }
       }
    }
 

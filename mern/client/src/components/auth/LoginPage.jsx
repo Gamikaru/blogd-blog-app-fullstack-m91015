@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { Card, Spinner } from "react-bootstrap";
+import React, { useState } from "react";
+import { Card } from "react-bootstrap"; // Remove Bootstrap Spinner
 import { useCookies } from "react-cookie";
-import { useNotificationContext } from "../../contexts/NotificationContext";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom'; // Import for navigation
+import { useNotificationContext, usePublicModalContext, useUserUpdate } from "../../contexts";
 import UserService from "../../services/api/UserService";
-import { InputField } from "../common"; // Updated to use InputField component
-import { usePublicModalContext } from "../../contexts/PublicModalContext";
 import Logger from "../../utils/Logger";
 import { validateLoginForm } from '../../utils/formValidation';
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import icons for password visibility toggle
+import InputField from "../common/InputField";
+import Spinner from "../common/Spinner"; // Import your custom spinner
 
 export default function LoginPage() {
    const [loginForm, setLoginForm] = useState({
@@ -15,67 +16,98 @@ export default function LoginPage() {
       password: "",
    });
    const [cookies, setCookie] = useCookies(["PassBloggs", "userID"]);
-   const [loading, setLoading] = useState(false); // Loading state for form submission
-   const [showPassword, setShowPassword] = useState(false); // For toggling password visibility
-   const [errors, setErrors] = useState({}); // State to store validation errors
-
-   const { showNotification, setPosition } = useNotificationContext();
+   const [loading, setLoading] = useState(false);  // Spinner state for page transitions
+   const [showPassword, setShowPassword] = useState(false);
+   const [errors, setErrors] = useState({});
+   const [emailTouched, setEmailTouched] = useState(false);  // Track if email field has been touched
+   const { showNotification, hideNotification } = useNotificationContext();  // Notification context
    const { togglePublicModal } = usePublicModalContext();
+   const navigate = useNavigate(); // Use navigate hook for programmatic navigation
+   const setUser = useUserUpdate();  // Hook for setting user
 
-   useEffect(() => {
-      setPosition('info', false);
-   }, [setPosition]);
-
+   // Update form state and track if email is being typed
    function updateLoginForm(value) {
-      Logger.info("Updating login form", value);
-      setLoginForm((prev) => ({ ...prev, ...value }));
+      if (value.email !== undefined) {
+         setEmailTouched(true);  // Set touched flag to true once the user types in the email field
+      }
+      const newForm = { ...loginForm, ...value };
+      setLoginForm(newForm);
    }
 
+   // Validate the field on blur and show error if email field was touched
+   function handleBlur(fieldName) {
+      if (fieldName === "email" && emailTouched) {
+         const validationErrors = validateLoginForm(loginForm);
+         const newErrors = { ...errors };
+
+         // Show error only if the email is invalid after the user blurs the field
+         if (validationErrors.email) {
+            newErrors.email = validationErrors.email;
+         } else {
+            delete newErrors.email;
+         }
+         setErrors(newErrors);
+      }
+   }
+
+   // Handle form submission
    async function handleLogin(e) {
-      e.preventDefault();
+      e.preventDefault(); // Prevent form default behavior
+
       Logger.info("Login form submitted", loginForm);
 
-      // Validate form
       const validationErrors = validateLoginForm(loginForm);
 
-      // If validation errors exist, set the errors in state and prevent form submission
       if (Object.keys(validationErrors).length > 0) {
-         setErrors(validationErrors); // Set inline errors
+         setErrors(validationErrors);  // Show all errors upon form submission
          return;
       } else {
-         setErrors({}); // Clear errors if form is valid
+         setErrors({});
       }
 
-      setLoading(true); // Start loading
+      setLoading(true);  // Start the loading spinner during login process
       try {
          const response = await UserService.loginUser(loginForm);
-         if (!response || !response.token || !response.user._id) {
-            // Show a toast notification if login failed due to incorrect credentials
-            showNotification("Login failed. No user found with the provided credentials.", "error");
+
+         Logger.info("Login response received", response);
+
+         // Check response validity
+         if (!response || !response.token || !response.user || !response.user._id) {
+            if (!response.user) {
+               showNotification("No user found with this email.", "error");
+            } else {
+               showNotification("Incorrect password for this user.", "error");
+            }
             Logger.error("Login failed: invalid response data", response);
-            return;
+            setLoading(false); // Stop loading spinner on failure
+            return; // Prevent further execution on failure
          }
 
-         // Set cookies and proceed with login success
+         // Set cookies but do not update the user state immediately
          setCookie("PassBloggs", response.token, { path: "/", maxAge: 24 * 60 * 60 });
          setCookie("userID", response.user._id, { path: "/", maxAge: 24 * 60 * 60 });
          Logger.info("Cookies set", { token: response.token, userID: response.user._id });
 
-         // Store token in localStorage for tests
-         localStorage.setItem("authToken", response.token);
-
-         showNotification("Login successful!", "success");
+         // Delay setting the user state and redirection until the toast has been displayed
          setTimeout(() => {
-            window.location.reload();
-         }, 1000);
+            setUser(response.user); // Now update the user state
+            hideNotification();  // Close the notification
+            setLoading(false);    // Stop loading spinner
+            navigate("/");        // Redirect to home page
+         }, 2000);               // 2 seconds for success toast display
 
       } catch (error) {
-         // Show a toast notification for any errors during login request
-         showNotification("An error occurred during login. Please try again.", "error");
          Logger.error("Login error", error);
-      } finally {
-         setLoading(false); // End loading
+
+         const errorMessage = error.message || "An error occurred during login. Please try again.";
+         showNotification(errorMessage, "error");  // Display error message from backend
+         setLoading(false);  // Stop loading spinner after error
       }
+   }
+
+   // If loading, display the spinner for page transition
+   if (loading) {
+      return <Spinner message="Logging you in..." />;  // Custom full-screen spinner
    }
 
    return (
@@ -89,29 +121,27 @@ export default function LoginPage() {
                      <h1 className="login-card-header">Welcome</h1>
                      <form onSubmit={handleLogin}>
                         <div className="login-input-container">
-                           {/* InputField for email */}
                            <InputField
                               label="Email"
                               value={loginForm.email}
                               onChange={(e) => updateLoginForm({ email: e.target.value })}
+                              onBlur={() => handleBlur("email")} // Validate email on blur
                               placeholder="Enter your email"
-                              className={`login-input-field ${errors.email ? "invalid-input" : ""}`} // Highlight if invalid
-                              error={errors.email} // Display email error
+                              className={`login-input-field ${errors.email ? "invalid-input" : ""}`}
+                              error={errors.email}
                            />
                         </div>
 
                         <div className="login-input-container password-container">
-                           {/* InputField for password with a show/hide toggle */}
                            <InputField
                               label="Password"
                               value={loginForm.password}
                               onChange={(e) => updateLoginForm({ password: e.target.value })}
                               placeholder="Enter your password"
                               type={showPassword ? "text" : "password"}
-                              className={`login-input-field ${errors.password ? "invalid-input" : ""}`} // Highlight if invalid
-                              error={errors.password} // Display password error
+                              className={`login-input-field ${errors.password ? "invalid-input" : ""}`}
+                              error={errors.password}
                            />
-                           {/* Password visibility toggle with eye icon */}
                            <button
                               type="button"
                               onClick={() => setShowPassword(!showPassword)}
@@ -123,13 +153,13 @@ export default function LoginPage() {
                         </div>
 
                         <div className="login-submit-container">
-                           <input
+                           <button
                               type="submit"
-                              value={loading ? "Logging in..." : "LOGIN"}
                               disabled={loading}
                               className="submit-btn"
-                           />
-                           {loading && <Spinner animation="border" />}
+                           >
+                              {loading ? "Logging in..." : "LOGIN"} {/* Text-only loading for the button */}
+                           </button>
                         </div>
                      </form>
 

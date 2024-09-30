@@ -1,37 +1,29 @@
-import { Builder, By, until } from 'selenium-webdriver';
+import { By, until } from 'selenium-webdriver';
 import {
-   fillInputField,
+   closeToastIfVisible,
    fillDatePicker,
+   fillInputField,
+   initializeTestDriver,
    selectDropdownOption,
    submitForm,
    takeScreenshot,
-   verifyErrorLabel,
-   closeToastIfVisible
-} from './registerFormHelpers.js'; // Adjust the path if necessary
+   verifyInlineError
+} from './authHelpers.js'; // Adjust the path if necessary
 
 describe('Register Form Tests: password mismatch validation', function () {
    this.timeout(60000); // Increased timeout for the test suite
-   let driver;
 
-   beforeEach(async function () {
-      driver = new Builder().forBrowser('chrome').build();
-      await driver.manage().window().setRect({ width: 1552, height: 832 });
-      console.log('Browser setup completed');
-   });
-
-   afterEach(async function () {
-      await driver.quit();
-      console.log('Browser closed');
-   });
+   // Initialize the test driver and get the driver instance
+   const getDriver = initializeTestDriver();
 
    it('should show an inline error for password mismatch', async function () {
-      console.log('Test: Password mismatch error');
+      const driver = getDriver();  // Get the WebDriver instance
+
       await driver.get('http://localhost:5173/login');
 
       // Navigate to the registration form
       const registerLink = await driver.wait(until.elementLocated(By.css('.register-link')), 10000);
       await registerLink.click();
-      console.log('Navigated to register form');
 
       // Fill in the first name
       await fillInputField(driver, '.register-first-name-input', 'Test');
@@ -68,6 +60,7 @@ describe('Register Form Tests: password mismatch validation', function () {
       await closeToastIfVisible(driver);
 
       // Verify the inline error for password mismatch
-      await verifyErrorLabel(driver, '.register-confirm-password-input', 'Passwords do not match.');
+      // Adjust the selector to target the error label for the confirm password field
+      await verifyInlineError(driver, '.register-confirm-password-input ~ span.error-label', 'Passwords do not match.');
    });
 });

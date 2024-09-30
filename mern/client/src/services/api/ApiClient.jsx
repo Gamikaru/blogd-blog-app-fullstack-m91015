@@ -37,14 +37,21 @@ ApiClient.interceptors.response.use(
    (error) => {
       const { response } = error;
 
-      // Check if the error is due to unauthorized or forbidden requests (e.g., token expired or invalid)
-      if (response && (response.status === 401 || response.status === 403)) {
-         console.error('Unauthorized - token may be expired or insufficient permissions');
-         cookies.remove('PassBloggs'); // Remove the token from cookies
-         window.location.href = '/login'; // Redirect the user to the login page to re-authenticate
+      // Check if the error is due to unauthorized or forbidden requests
+      if (response && response.status === 401) {
+         // Check if the request is a login attempt
+         if (response.config.url.includes('/login')) {
+            // For login requests, just return the error without redirecting
+            console.error('Login failed with status:', response.status, response.data);
+         } else {
+            // For other unauthorized requests, remove the token and redirect to login
+            console.error('Unauthorized - token may be expired or insufficient permissions');
+            cookies.remove('PassBloggs'); // Remove the token from cookies
+            window.location.href = '/login'; // Redirect to login to re-authenticate
+         }
       }
 
-      // Additional error handling for other cases (e.g., 400, 500)
+      // Handle other error codes (400, 500, etc.)
       if (response && response.status === 400) {
          console.error('Bad request:', response.data.message || 'Invalid request data');
       } else if (response && response.status >= 500) {

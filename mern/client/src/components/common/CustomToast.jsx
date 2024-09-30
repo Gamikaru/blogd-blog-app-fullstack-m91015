@@ -1,5 +1,4 @@
 import { React, useEffect } from "react";
-import Logger from "../../utils/Logger";
 import {
    BsCheckCircle,
    BsExclamationCircle,
@@ -8,7 +7,7 @@ import {
    BsXCircle,
 } from "react-icons/bs";
 
-const CustomToast = ({ message, show, type, onClose, delay = 6000, position }) => {
+const CustomToast = ({ message, show, type, onClose, delay = 5000, position }) => {
    const iconColorMap = {
       success: "#27ae60",
       error: "#e74c3c",
@@ -18,7 +17,7 @@ const CustomToast = ({ message, show, type, onClose, delay = 6000, position }) =
 
    useEffect(() => {
       if (show) {
-         const timeout = setTimeout(onClose, delay); // Auto close after delay
+         const timeout = setTimeout(onClose, delay); // Auto close after the dynamic delay
          return () => clearTimeout(timeout); // Clear timeout on unmount
       }
    }, [show, delay, onClose]);
@@ -30,7 +29,6 @@ const CustomToast = ({ message, show, type, onClose, delay = 6000, position }) =
       warning: <BsExclamationTriangle className="toast-icon" style={{ color: iconColorMap.warning }} />,
    };
 
-   // Ensure the `position` is applied dynamically
    const positionStyle = position === "top-right"
       ? { top: "70px", right: "20px", transform: "translateY(0)" }  // Top-right for success
       : { top: "50%", left: "50%", transform: "translate(-50%, -50%)" };  // Centered for error or default

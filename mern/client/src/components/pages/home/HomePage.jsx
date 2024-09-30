@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
+import {Spinner} from "../../common"; // Import custom spinner component
 import { useUser, usePostContext } from "../../../contexts";
 import Logger from "../../../utils/Logger";
 
@@ -33,10 +33,10 @@ const HomePage = () => {
       }
    }, [postsFetched, fetchPostsByUserHandler, user._id]);
 
-   // Loading state
+   // Show custom spinner when loading user data
    if (loading) {
       Logger.info('Loading user data...');
-      return <Spinner animation="border" />;
+      return <Spinner message="Loading user data..." />;
    }
 
    // Error handling
@@ -56,7 +56,7 @@ const HomePage = () => {
       <div className="home-page-container">
          <div className="page-container">
             <div className="grid-container">
-               <Suspense fallback={<Spinner animation="border" />}>
+               <Suspense fallback={<Spinner message="Loading posts..." />}>
                   <UserCard user={user} />
                   <PostCard userPosts={posts} />
                </Suspense>

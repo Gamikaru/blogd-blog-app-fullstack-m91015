@@ -4,6 +4,7 @@ import { FaHeart } from "react-icons/fa";
 import { fetchAllPosts, likePost, unlikePost } from "../../services/api/PostService"; // Updated service imports
 import { useUser } from "../../contexts"; // Import useUser from contexts
 import Logger from "../../utils/Logger"; // Import Logger
+import { Spinner } from "../common"; // Import custom Spinner component
 
 export default function BloggsPosts() {
    const [cookie] = useCookies();
@@ -112,9 +113,8 @@ export default function BloggsPosts() {
    return (
       <div className="container">
          {loading ? (
-            <div className="loading-spinner">
-               <div className="spinner" />
-            </div>
+            // Use custom spinner during loading state
+            <Spinner message="Loading blog posts..." />
          ) : (
             <div className="grid-container blog-posts-grid">
                {blogPosts.length > 0 ? (

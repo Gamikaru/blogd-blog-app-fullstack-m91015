@@ -1,5 +1,4 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
 import { useUser } from '../../contexts';
 import Logger from '../../utils/Logger';
 
@@ -12,6 +11,6 @@ export default function RedirectIfLoggedIn({ children }) {
       return <div>Loading...</div>;  // Wait until loading is complete
    }
 
-   Logger.info(`RedirectIfLoggedIn: ${user ? 'Redirecting to home' : 'Rendering children'}`);
-   return user ? <Navigate to="/" /> : children;
-};
+   // Instead of automatically redirecting, we simply render the children or message
+   return user ? <div>User is logged in</div> : children;
+}

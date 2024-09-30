@@ -144,18 +144,19 @@ export const validateLoginForm = (formData) => {
    // Validate email with regex for valid format
    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
    if (!formData.email.trim()) {
-      errors.email = "Email is required";
+      errors.email = "Email is required.";
    } else if (!emailRegex.test(formData.email.trim())) {
-      errors.email = "Please enter a valid email address";
+      errors.email = "Please enter a valid email address in the format: example@domain.com.";
    }
 
-   // Validate password (no strict strength validation for login)
+   // Validate password (at least 6 characters for example)
    if (!formData.password.trim()) {
-      errors.password = "Password is required";
+      errors.password = "Password is required.";
    }
 
    return errors;
 };
+
 
 
 /**

@@ -16,6 +16,7 @@ export const NotificationProvider = ({ children }) => {
       type: 'info', // Default type
       show: false,
       position: { top: '40%', left: '50%' }, // Default position (center)
+      delay: 5000, // Default delay
    });
 
    // Function to dynamically set position
@@ -42,10 +43,20 @@ export const NotificationProvider = ({ children }) => {
       }
    };
 
-   // Function to show notification
+   // Function to show notification with dynamic delay based on type
    const showNotification = (message, type = 'success') => {
       Logger.info(`Showing notification: ${message} (${type})`);
-      setNotification((prev) => ({ ...prev, message, type, show: true }));
+
+      // Set delay based on notification type
+      const delay = type === 'success' ? 2000 : 5000;  // 2 seconds for success, 5 seconds for error
+
+      setNotification((prev) => ({
+         ...prev,
+         message,
+         type,
+         show: true,
+         delay,  // Set the delay dynamically based on the type
+      }));
    };
 
    // Function to hide notification
@@ -64,6 +75,7 @@ export const NotificationProvider = ({ children }) => {
             type={notification.type}
             position={notification.position}
             onClose={hideNotification}
+            delay={notification.delay}  // Pass the dynamic delay to CustomToast
          />
       </NotificationContext.Provider>
    );
