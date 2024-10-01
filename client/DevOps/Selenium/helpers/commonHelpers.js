@@ -1,9 +1,7 @@
-// commonHelpers.js
-
 import assert from 'assert'; // For message verification
-import { Builder, By, until } from 'selenium-webdriver'; // Import Builder for WebDriver
+import { Builder, By, until } from 'selenium-webdriver';  // Import Builder for WebDriver
 import fs from 'fs'; // For screenshots
-import edge from 'selenium-webdriver/edge.js'; // For Edge WebDriver
+
 
 // Helper to locate elements with wait (CSS or XPath selectors)
 export async function findElementWithWait(driver, selectorOrXPath, isXPath = false, timeout = 10000) {
@@ -16,22 +14,19 @@ export async function findElementWithWait(driver, selectorOrXPath, isXPath = fal
 
 // Function to fill text input fields (handles both placeholder and CSS selector)
 export async function fillInputField(driver, selectorOrPlaceholder, value) {
-   const inputField = await findElementWithWait(
-      driver,
-      selectorOrPlaceholder.startsWith('.')
-         ? selectorOrPlaceholder
-         : `input[placeholder="${selectorOrPlaceholder}"]`
-   );
+   const inputField = await findElementWithWait(driver, selectorOrPlaceholder.startsWith('.')
+      ? selectorOrPlaceholder
+      : `input[placeholder="${selectorOrPlaceholder}"]`);
    await inputField.clear();
    await inputField.sendKeys(value);
-   await driver.sleep(500); // Optional sleep for stability
+   await driver.sleep(500);  // Optional sleep for stability
 }
 
 // Helper to initialize and teardown the WebDriver for tests
-export function initializeTestDriver(browserName = 'chrome') {
+export function initializeTestDriver() {
    let driver;
    beforeEach(async function () {
-      driver = await getDriver(browserName);
+      driver = await new Builder().forBrowser('chrome').build(); // Initialize WebDriver
       await driver.manage().window().setRect({ width: 1552, height: 832 });
    });
    afterEach(async function () {
@@ -39,31 +34,13 @@ export function initializeTestDriver(browserName = 'chrome') {
          await driver.quit(); // Quit WebDriver after each test
       }
    });
-   return () => driver; // Return a function to get the driver instance
-}
-
-// Function to get WebDriver for different browsers
-export function getDriver(browserName) {
-   if (browserName === 'chrome') {
-      return new Builder().forBrowser('chrome').build();
-   } else if (browserName === 'edge') {
-      // Set up Edge WebDriver service
-      const options = new edge.Options();
-      const service = new edge.ServiceBuilder('/usr/local/bin/msedgedriver'); // Update the path as needed
-      return new Builder()
-         .forBrowser('MicrosoftEdge')
-         .setEdgeOptions(options)
-         .setEdgeService(service)
-         .build();
-   } else {
-      throw new Error('Unsupported browser: ' + browserName);
-   }
+   return () => driver;  // Return a function to get the driver instance
 }
 
 // Function to select an option from a dropdown (handles CSS selectors)
 export async function selectDropdownOption(driver, dropdownCss, optionText) {
    const dropdown = await findElementWithWait(driver, dropdownCss);
-   await dropdown.click(); // Open the dropdown
+   await dropdown.click();  // Open the dropdown
    await driver.sleep(500);
    const option = await dropdown.findElement(By.xpath(`//option[. = '${optionText}']`)); // Select by visible text
    await option.click();
@@ -74,7 +51,7 @@ export async function selectDropdownOption(driver, dropdownCss, optionText) {
 export async function submitForm(driver, submitButtonCss = '.submit-btn') {
    const submitBtn = await findElementWithWait(driver, submitButtonCss);
    await submitBtn.click();
-   await driver.sleep(2000); // Adding sleep to ensure the action completes
+   await driver.sleep(2000);  // Adding sleep to ensure the action completes
 }
 
 // Function to verify a toast message
@@ -123,18 +100,19 @@ export async function login(driver, email, password) {
 export async function logout(driver) {
    const dropdownToggle = await findElementWithWait(driver, '.dropdown-toggle');
    await dropdownToggle.click();
-   await driver.sleep(1000); // Wait for dropdown animation
+   await driver.sleep(1000);  // Wait for dropdown animation
    const logoutBtn = await findElementWithWait(driver, '.dropdown-item:nth-child(2)');
    await logoutBtn.click();
    const loginUrl = await driver.getCurrentUrl();
    assert.strictEqual(loginUrl, 'http://localhost:5173/login', 'Successfully logged out and returned to the login page.');
 }
 
+
 // Function to delete a user from the backend
 export async function deleteUser(email, authToken) {
    try {
       const response = await axios.delete(`http://localhost:5050/user/email/${email}`, {
-         headers: { Authorization: `Bearer ${authToken}` },
+         headers: { Authorization: `Bearer ${authToken}` }
       });
       assert.strictEqual(response.status, 200, 'User was not deleted successfully');
    } catch (error) {
@@ -147,9 +125,10 @@ export async function toggleSidebarIfNotVisible(driver) {
    const sidebarToggle = await findElementWithWait(driver, '.sidebar-toggle');
    await driver.wait(until.elementIsVisible(sidebarToggle), 10000);
    try {
-      await driver.findElement(By.css('.nav-container.open')); // If sidebar is open, return
+      await driver.findElement(By.css('.nav-container.open'));  // If sidebar is open, return
    } catch {
-      await sidebarToggle.click(); // If sidebar is not open, click to open it
+      await sidebarToggle.click();  // If sidebar is not open, click to open it
    }
-   await driver.sleep(1000); // Small delay to ensure the sidebar opens
+   await driver.sleep(1000);  // Small delay to ensure the sidebar opens
 }
+

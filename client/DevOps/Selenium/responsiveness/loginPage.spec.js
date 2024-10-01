@@ -1,96 +1,99 @@
-// loginResponsiveness.spec.js
+import { Builder } from 'selenium-webdriver';
+import { findElementWithWait, takeScreenshot } from '../helpers/commonHelpers.js'; // Adjust the path if necessary
 
-import { Builder, By, until } from 'selenium-webdriver';
-import { findElementWithWait, takeScreenshot } from '../helpers/commonHelpers.js';
-import assert from 'assert';
-import edge from 'selenium-webdriver/edge.js';
+describe('Login Page Responsiveness Test', function () {
+   this.timeout(60000); // Set timeout for the test suite
 
-const BROWSERS = ['chrome', 'edge']; // Define supported browsers
+   let driver;
 
-// Function to initialize WebDriver for different browsers
-function getDriver(browserName) {
-   if (browserName === 'chrome') {
-      return new Builder().forBrowser('chrome').build();
-   } else if (browserName === 'edge') {
-      // Set up Edge WebDriver service
-      const options = new edge.Options();
-      const service = new edge.ServiceBuilder('/usr/local/bin/msedgedriver');
-      return new Builder()
-         .forBrowser('MicrosoftEdge')
-         .setEdgeOptions(options)
-         .setEdgeService(service)
-         .build();
-   } else {
-      throw new Error('Unsupported browser: ' + browserName);
-   }
-}
+   // Initialize WebDriver before tests
+   before(async function () {
+      driver = await new Builder().forBrowser('chrome').build();
+      await driver.get('http://localhost:5173/login'); // Update with the actual URL of the login page
+   });
 
-BROWSERS.forEach((browserName) => {
-   describe(`Login Page Responsiveness Test on ${browserName}`, function () {
-      this.timeout(60000); // Set timeout for the test suite
-
-      let driver;
-
-      // Initialize WebDriver before tests
-      before(async function () {
-         driver = getDriver(browserName); // Initialize driver for the given browser
-         await driver.get('http://localhost:5173/login'); // Update with the actual URL of the login page
-      });
-
-      // Quit WebDriver after all tests
-      after(async function () {
-         if (driver) {
-            await driver.quit();
-         }
-      });
-
-      // Helper function to verify login page components
-      async function verifyLoginPageComponents(view) {
-         // Verify that the logo is displayed
-         const logo = await findElementWithWait(driver, '.logo-image');
-         assert.ok(logo, `Logo not visible in ${view} view.`);
-
-         // Verify the login card and its components
-         const loginCard = await findElementWithWait(driver, '.login-card');
-         assert.ok(loginCard, `Login card not visible in ${view} view.`);
-
-         const emailField = await findElementWithWait(driver, '.login-input-field');
-         assert.ok(emailField, `Email input field not visible in ${view} view.`);
-
-         const passwordField = await findElementWithWait(driver, '.password-container .login-input-field');
-         assert.ok(passwordField, `Password input field not visible in ${view} view.`);
-
-         const submitBtn = await findElementWithWait(driver, '.submit-btn');
-         assert.ok(submitBtn, `Submit button not visible in ${view} view.`);
-
-         console.log(`${view} view passed in ${browserName}.`);
+   // Quit WebDriver after all tests
+   after(async function () {
+      if (driver) {
+         await driver.quit();
       }
+   });
 
-      // Mobile view test
-      it(`should be responsive on mobile (375x812) in ${browserName}`, async function () {
-         await driver.manage().window().setRect({ width: 375, height: 812 }); // Mobile resolution
-         await driver.sleep(2000); // Allow time for resizing
-         await takeScreenshot(driver, `login-mobile-view-${browserName}`); // Take screenshot for visual confirmation
+   // Mobile view test
+   it('should be responsive on mobile (375x812)', async function () {
+      await driver.manage().window().setRect({ width: 375, height: 812 }); // Mobile resolution
+      await driver.sleep(2000); // Allow time for resizing
+      await takeScreenshot(driver, 'login-mobile-view'); // Take screenshot for visual confirmation
 
-         await verifyLoginPageComponents('mobile');
-      });
+      // Verify that the logo is displayed
+      const logo = await findElementWithWait(driver, '.logo-image', false, 10000);
+      if (!logo) throw new Error('Logo not visible in mobile view.');
 
-      // Tablet view test
-      it(`should be responsive on tablet (768x1024) in ${browserName}`, async function () {
-         await driver.manage().window().setRect({ width: 768, height: 1024 }); // Tablet resolution
-         await driver.sleep(2000); // Allow time for resizing
-         await takeScreenshot(driver, `login-tablet-view-${browserName}`); // Take screenshot for visual confirmation
+      // Verify the login card and its components
+      const loginCard = await findElementWithWait(driver, '.login-card', false, 10000);
+      if (!loginCard) throw new Error('Login card not visible in mobile view.');
 
-         await verifyLoginPageComponents('tablet');
-      });
+      const emailField = await findElementWithWait(driver, '.login-input-field', false, 10000);
+      if (!emailField) throw new Error('Email input field not visible in mobile view.');
 
-      // Desktop view test
-      it(`should be responsive on desktop (1920x1080) in ${browserName}`, async function () {
-         await driver.manage().window().setRect({ width: 1920, height: 1080 }); // Desktop resolution
-         await driver.sleep(2000); // Allow time for resizing
-         await takeScreenshot(driver, `login-desktop-view-${browserName}`); // Take screenshot for visual confirmation
+      const passwordField = await findElementWithWait(driver, '.password-container .login-input-field', false, 10000);
+      if (!passwordField) throw new Error('Password input field not visible in mobile view.');
 
-         await verifyLoginPageComponents('desktop');
-      });
+      const submitBtn = await findElementWithWait(driver, '.submit-btn', false, 10000);
+      if (!submitBtn) throw new Error('Submit button not visible in mobile view.');
+
+      console.log('Mobile view passed.');
+   });
+
+   // Tablet view test
+   it('should be responsive on tablet (768x1024)', async function () {
+      await driver.manage().window().setRect({ width: 768, height: 1024 }); // Tablet resolution
+      await driver.sleep(2000); // Allow time for resizing
+      await takeScreenshot(driver, 'login-tablet-view'); // Take screenshot for visual confirmation
+
+      // Verify that the logo is displayed
+      const logo = await findElementWithWait(driver, '.logo-image', false, 10000);
+      if (!logo) throw new Error('Logo not visible in tablet view.');
+
+      // Verify the login card and its components
+      const loginCard = await findElementWithWait(driver, '.login-card', false, 10000);
+      if (!loginCard) throw new Error('Login card not visible in tablet view.');
+
+      const emailField = await findElementWithWait(driver, '.login-input-field', false, 10000);
+      if (!emailField) throw new Error('Email input field not visible in tablet view.');
+
+      const passwordField = await findElementWithWait(driver, '.password-container .login-input-field', false, 10000);
+      if (!passwordField) throw new Error('Password input field not visible in tablet view.');
+
+      const submitBtn = await findElementWithWait(driver, '.submit-btn', false, 10000);
+      if (!submitBtn) throw new Error('Submit button not visible in tablet view.');
+
+      console.log('Tablet view passed.');
+   });
+
+   // Desktop view test
+   it('should be responsive on desktop (1920x1080)', async function () {
+      await driver.manage().window().setRect({ width: 1920, height: 1080 }); // Desktop resolution
+      await driver.sleep(2000); // Allow time for resizing
+      await takeScreenshot(driver, 'login-desktop-view'); // Take screenshot for visual confirmation
+
+      // Verify that the logo is displayed
+      const logo = await findElementWithWait(driver, '.logo-image', false, 10000);
+      if (!logo) throw new Error('Logo not visible in desktop view.');
+
+      // Verify the login card and its components
+      const loginCard = await findElementWithWait(driver, '.login-card', false, 10000);
+      if (!loginCard) throw new Error('Login card not visible in desktop view.');
+
+      const emailField = await findElementWithWait(driver, '.login-input-field', false, 10000);
+      if (!emailField) throw new Error('Email input field not visible in desktop view.');
+
+      const passwordField = await findElementWithWait(driver, '.password-container .login-input-field', false, 10000);
+      if (!passwordField) throw new Error('Password input field not visible in desktop view.');
+
+      const submitBtn = await findElementWithWait(driver, '.submit-btn', false, 10000);
+      if (!submitBtn) throw new Error('Submit button not visible in desktop view.');
+
+      console.log('Desktop view passed.');
    });
 });

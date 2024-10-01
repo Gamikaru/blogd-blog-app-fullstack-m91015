@@ -1,4 +1,3 @@
-// UserContext.jsx
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import Cookies from 'universal-cookie';
 import ApiClient from '../services/api/ApiClient';
@@ -7,26 +6,32 @@ const cookies = new Cookies();
 
 const UserContext = createContext();
 
+/**
+ * UserProvider: A context provider component to manage user authentication state.
+ */
 export const UserProvider = ({ children }) => {
-   const [user, setUser] = useState(null);
-   const [loading, setLoading] = useState(true);
+   const [user, setUser] = useState(null); // Store user data
+   const [loading, setLoading] = useState(true); // Loading state for fetching user data
 
+   // Fetch user data when the component is mounted
    useEffect(() => {
       const fetchUser = async () => {
-         const token = cookies.get('PassBloggs');
-         const userID = cookies.get('userID');
+         const token = cookies.get('PassBloggs'); // Retrieve token from cookies
+         const userID = cookies.get('userID');   // Retrieve userID from cookies
 
+         // If token or userID is missing, stop loading and return early
          if (!token || !userID) {
             console.log('No token or userID found.');
-            setUser(null);
-            setLoading(false);
+            setLoading(false); // End loading state
             return;
          }
 
          try {
+            // Fetch user data from API
             console.log('Fetching user data for userID:', userID);
             const response = await ApiClient.get(`/user/${userID}`);
 
+            // If user data is found, set user state
             if (response.data) {
                console.log('User data fetched:', response.data);
                setUser(response.data);
@@ -35,18 +40,20 @@ export const UserProvider = ({ children }) => {
                setUser(null);
             }
          } catch (error) {
+            // Log any errors during the user fetch process
             console.error('Error fetching user data:', error.message);
-            setUser(null);
+            setUser(null); // Reset user if error occurs
          } finally {
-            setLoading(false);
+            setLoading(false); // Ensure loading ends in all cases
          }
       };
 
-      fetchUser();
-   }, []);
+      fetchUser(); // Invoke fetch user function on component mount
+   }, []);  // Empty dependency array for one-time fetch
 
    console.log('UserProvider rendered with user:', user);
 
+   // Provide both user and loading states to the context consumers
    return (
       <UserContext.Provider value={{ user, loading, setUser }}>
          {children}
@@ -54,6 +61,7 @@ export const UserProvider = ({ children }) => {
    );
 };
 
+// Hook to access the current user and loading state
 export const useUser = () => {
    const context = useContext(UserContext);
    if (!context) {
@@ -62,6 +70,7 @@ export const useUser = () => {
    return context;
 };
 
+// Hook to update the user
 export const useUserUpdate = () => {
    const context = useContext(UserContext);
    if (!context) {

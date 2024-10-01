@@ -1,7 +1,7 @@
-// RegisterModal.jsx
 import React, { useEffect, useState, useRef } from "react";
 import { CloseButton, Spinner } from "react-bootstrap";
-import { useNotificationContext, usePublicModalContext } from "../../contexts";
+import { useCookies } from "react-cookie";
+import { useNotificationContext, usePublicModalContext, useUserUpdate } from "../../contexts";
 import Logger from "../../utils/Logger";
 import { capitalizeFirstLetter, validateRegForm } from "../../utils/formValidation";
 import InputField from "../common/InputField";
@@ -13,7 +13,7 @@ const initialFormState = {
    lastName: "",
    email: "",
    password: "",
-   confirmPassword: "",
+   confirmPassword: "",  // Added confirm password
    birthDate: "",
    occupation: "",
    location: "",
@@ -25,9 +25,12 @@ export default function RegisterModal() {
    const [registerForm, setRegisterForm] = useState(initialFormState);
    const [loading, setLoading] = useState(false);
    const [errors, setErrors] = useState({});
+   const setUser = useUserUpdate();
+   const [cookies, setCookie] = useCookies(["PassBloggs", "userID"]);
    const { showModal, togglePublicModal } = usePublicModalContext();
    const { showNotification, setPosition } = useNotificationContext();
 
+   // Initialize refs for form inputs
    const inputRefs = useRef({
       firstName: null,
       lastName: null,
@@ -45,9 +48,10 @@ export default function RegisterModal() {
    }
 
    useEffect(() => {
-      setPosition('info', false);
+      setPosition('info', false); // Always center for public routes like registration
    }, [setPosition]);
 
+   // Focus on first error field
    const focusFirstErrorField = (formErrors) => {
       const firstErrorField = Object.keys(formErrors)[0];
       if (inputRefs.current[firstErrorField]) {
@@ -69,10 +73,12 @@ export default function RegisterModal() {
             showNotification("Please fill out the required fields correctly.", "error");
          }
 
+         // Focus on the first invalid field
          focusFirstErrorField(formErrors);
          return;
       }
 
+      // Capitalize form fields where applicable
       const capitalizedForm = {
          ...registerForm,
          firstName: capitalizeFirstLetter(registerForm.firstName),
@@ -87,14 +93,19 @@ export default function RegisterModal() {
          if (response.message) {
             showNotification(response.message, "success");
 
-            // Removed automatic login after registration
+            const userData = response.user;
+            if (userData) {
+               setCookie("PassBloggs", response.token, { path: "/", maxAge: 24 * 60 * 60 });
+               setCookie("userID", userData._id, { path: "/", maxAge: 24 * 60 * 60 });
+               setUser(userData);
+            }
 
             // Delay modal close to allow users to see success toast
             setTimeout(() => {
                togglePublicModal();
                setRegisterForm(initialFormState);
-               setErrors({});
-            }, 4000);
+               setErrors({});  // Clear errors after success
+            }, 4000);  // Increase timing for better UX
          }
       } catch (error) {
          showNotification(error.message || "Registration failed due to an unexpected error.", "error");

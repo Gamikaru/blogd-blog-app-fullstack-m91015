@@ -1,8 +1,8 @@
 import React from 'react';
 import { useCookies } from 'react-cookie';
-import { Navigate } from 'react-router-dom'; // Import Navigate component from react-router-dom
 import { useUser } from '../../contexts'; // Import UserContext
 import Logger from '../../utils/Logger';
+import { Navigate } from 'react-router-dom'; // Import Navigate component from react-router-dom
 import { Spinner } from '../common';
 
 /**
