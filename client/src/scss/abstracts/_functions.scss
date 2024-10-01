@@ -1,0 +1,44 @@
+// scss/abstracts/_functions.scss
+
+// Function to adjust color brightness by a given percentage
+@function adjust-color($color, $percent) {
+   @return mix($color, if($percent > 0, white, black), abs($percent));
+}
+
+// Function for responsive font-size scaling between min and max sizes
+@function responsive-font-size($min-size, $max-size) {
+   @return calc(#{$min-size} + (#{$max-size} - $min-size) * ((100vw - 360px) / (1920 - 360)));
+}
+
+// Function to convert pixels to rem for typography and layout consistency
+@function px-to-rem($px-value) {
+   $base-font-size: 16px; // Base font size for the project
+   @return #{$px-value / $base-font-size}rem;
+}
+
+// Function to handle dynamic spacing based on a factor (for modular spacing)
+@function modular-spacing($factor) {
+   $base-spacing: 1rem;
+   @return $factor * $base-spacing;
+}
+
+// Function to calculate clamp for fluid responsive values
+@function clamp-value($min, $mid, $max) {
+   @return clamp(#{$min}, #{$mid}, #{$max});
+}
+
+// Function to calculate rem from pixel values for both width and height
+@function rem-calc($value) {
+   $base-size: 16px;
+   @return calc(#{$value / $base-size}rem);
+}
+
+// Function to calculate percentage widths
+@function percentage($value, $context) {
+   @return calc((#{$value} / #{$context}) * 100%);
+}
+
+// Function to set linear-gradient color for backgrounds
+@function linear-bg($start-color, $end-color, $angle: 145deg) {
+   @return linear-gradient($angle, $start-color, $end-color);
+}

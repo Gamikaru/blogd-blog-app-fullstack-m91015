@@ -1,0 +1,118 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+@import "../../abstracts/functions";
+
+/* User Card Styling */
+.user-card-container {
+   width: 100%;
+}
+
+.user-card {
+   background-color: $white;
+   display: flex;
+   flex-direction: column;
+   border-radius: $border-radius-large;
+   overflow: hidden;
+   box-shadow: $box-shadow-light;
+   padding: $spacing-l;
+   transition:
+      box-shadow 0.3s ease,
+      transform 0.3s ease;
+
+   &:hover {
+      box-shadow: 0 8px 16px rgba($primary-purple, 0.2); // Violet shadow on hover
+      transform: translateY(-5px);
+   }
+
+   .user-card-header {
+      padding: $spacing-m;
+      background-color: $white;
+      text-align: center;
+      color: $primary-purple;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      .initials-title {
+         width: 100px;
+         height: 100px;
+         background-color: $white;
+         border: 3px solid $primary-purple;
+         border-radius: 50%;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         font-size: 2rem;
+         font-family: "Monoton", sans-serif;
+         margin-bottom: $spacing-m;
+         color: $primary-purple;
+      }
+
+      .status-update-container {
+         width: 100%;
+         padding: $spacing-s;
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+
+         .status-update-input {
+            width: 100%;
+            padding: $spacing-s $spacing-m;
+            font-size: $font-size-medium;
+            font-family: $font-tertiary;
+            font-weight: $font-weight-extra-light;
+            background-color: $white;
+            border: none;
+            box-shadow: none; // Remove any shadow
+            color: $charcoal-light;
+            transition:
+               box-shadow 0.3s ease,
+               border-color 0.3s ease;
+            white-space: normal;
+            word-wrap: break-word;
+            overflow: visible;
+            overflow-wrap: break-word;
+
+            &:hover {
+               box-shadow: 0 0 5px rgba($charcoal, 0.4); // Charcoal glow on hover
+            }
+
+            &:focus {
+               box-shadow: 0 0 8px rgba($primary-purple, 0.5); // Violet glow on focus
+               outline: none;
+            }
+         }
+      }
+   }
+
+   .user-details {
+      padding: $spacing-s;
+      display: flex;
+      flex-direction: column;
+      font-family: $font-secondary;
+      font-weight: $font-weight-regular;
+
+      .detail-item {
+         display: flex;
+         align-items: center;
+         padding: 0.5rem 0;
+
+         &:last-child {
+            border-bottom: none;
+         }
+
+         .detail-icon {
+            font-size: 1.2rem;
+            color: $primary-purple;
+            margin-right: $spacing-s;
+         }
+
+         .detail-text {
+            font-size: $font-size-base;
+            color: $charcoal;
+            word-wrap: break-word;
+         }
+      }
+   }
+}

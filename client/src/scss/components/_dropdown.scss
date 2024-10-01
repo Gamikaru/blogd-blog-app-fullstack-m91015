@@ -1,0 +1,68 @@
+// @import "../abstracts/variables";
+// @import "../abstracts/mixins"; // Ensure your mixins are imported for dropdown customizations
+
+// /* Dropdown Container */
+// .dropdown-container {
+//    position: relative;
+//    display: inline-block;
+// }
+
+// /* Toggle Button */
+// .dropdown-toggle {
+//    background-color: $white; // White background for toggle button
+//    color: $charcoal; // Charcoal text color
+//    padding: $spacing-s $spacing-l; // Use centralized padding
+//    border-radius: 0.5rem;
+//    @include shadow-light; // Apply light shadow
+//    transition:
+//       background-color 0.3s ease,
+//       box-shadow 0.3s ease;
+
+//    &:hover,
+//    &:focus {
+//       background-color: rgba($primary-purple, 0.1); // Light purple on hover
+//       @include shadow-heavy; // Use heavier shadow on hover
+//       outline: none;
+//       color: $white; // Change text color to white on hover/focus
+//    }
+
+//    &:focus {
+//       outline: 2px solid $primary-purple; // Better focus state for accessibility
+//       box-shadow: none; // Remove box-shadow on focus
+//    }
+// }
+
+// /* Dropdown Menu */
+// .dropdown-menu {
+//    background-color: $charcoal-extra-light; // Lighter charcoal background
+//    border-radius: $border-radius; // Use global border radius
+//    box-shadow: $box-shadow-light; // Light shadow for the menu
+//    padding: $spacing-s $spacing-m; // Padding for inside items
+//    transition:
+//       box-shadow 0.3s ease,
+//       background-color 0.3s ease;
+
+
+//    .dropdown-item {
+//       color: $charcoal;
+//       padding: $spacing-s $spacing-m; // Centralized padding for items
+//       transition: background-color 0.3s ease;
+
+
+//       &:hover {
+//          background-color: $primary-purple-light; // Light purple hover effect
+//          color: $white;
+//       }
+//    }
+// }
+
+// /* Enhanced touch interaction for mobile devices */
+// @media (max-width: $breakpoint-md) {
+//    .dropdown-toggle {
+//       padding: $spacing-s $spacing-m; // Adjust padding for mobile
+//    }
+
+//    .dropdown-menu {
+//       min-width: 100%; // Full width for dropdown on small screens
+//    }
+// }

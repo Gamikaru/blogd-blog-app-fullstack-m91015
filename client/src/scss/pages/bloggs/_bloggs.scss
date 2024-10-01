@@ -1,0 +1,280 @@
+// Importing variables, mixins, and functions for reusable styles and utility methods.
+// These are key for setting up consistent design tokens across your stylesheets.
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+@import "../../abstracts/functions";
+
+// Blog Page Container
+// This sets up the main page container using a layout mixin.
+// To adjust the page layout, look at the "page-container" mixin in "_layout_mixins.txt".
+// You can change the $navbar-height variable in "variables.scss" if the navbar size changes globally.
+.blog-page-container {
+   @include page-container($navbar-height: 80px);
+   @include responsive-margin($navbar-height, $spacing-m, $spacing-xs, $spacing-m);
+
+}
+
+// Blog Posts Grid
+// This section handles the grid layout for displaying blog posts.
+// To change grid layout, adjust the "grid-container" mixin from "_layout_mixins.txt".
+// For responsive adjustments, check the $min-width, $gap, $padding values.
+.blog-posts-grid {
+   @include grid-container(
+      $min-width: 300px,
+      // Minimum width for grid items, modify for smaller/larger items.
+      $gap: $spacing-xl,
+      // Adjusts the gap between grid items, controlled by spacing variables.
+      $padding: $spacing-xs,
+      // Grid container padding, change in variables.scss.
+      $padding-top: $spacing-xxxxl,
+   );
+   max-width: 100%; // Ensures grid doesn't exceed container width.
+   margin: 0 auto; // Centers the grid on the page.
+   margin-bottom: $spacing-l; // Adjust the spacing below the grid.
+}
+
+// Blog Grid Item
+// Defines each individual grid item (blog post).
+// To modify flex behavior, refer to the "flex-container" mixin from "_flexbox_mixins.txt".
+// You can adjust shadow and background styles via mixins or variables.
+.bloggs-grid-item {
+   // @include flex-container(center, center, column); // Centers content inside the grid item using flexbox.
+   flex-basis: 100%; // Item takes up full width (can be adjusted based on grid size).
+   margin-bottom: 0rem;
+   margin-top: $spacing-s;
+   @include shadow-light; // Light shadow, tweak it in "_fx_mixins.txt".
+   background-color: $white; // White background, modify via color variables.
+   border-radius: $border-radius-large; // Rounded corners, tweak in "_variables.txt".
+   padding: $spacing-xs; //
+   transition: transform 0.3s ease; // Smooth hover animation.
+
+   &:hover {
+      transform: translateY(-5px); // Moves grid item up slightly on hover.
+      @include shadow-heavy; // Adds a heavier shadow on hover.
+   }
+
+   // Responsive adjustments using mixins for consistent padding/margin at breakpoints.
+   // @include responsive-padding($spacing-s, $spacing-s, $spacing-s, $spacing-s);
+   // @include responsive-margin($navbar-height, $spacing-m, $spacing-xs, $spacing-m);
+}
+
+// // Blog Post Section
+// // Each individual blog post card with padding, shadow, and layout.
+// // Modify this section to adjust the style of blog post cards.
+// .bloggs-post-section {
+//    @include card-base($white, $light-gray, $box-shadow-light); // Sets card's base styles using a card mixin.
+//    display: flex;
+//    flex-direction: column; // Arranges elements vertically.
+//    justify-content: space-between; // Distributes space between child elements.
+//    padding: $spacing-s;
+//    transition: transform 0.3s ease;
+//    width: 100%;
+//    height: 100%;
+//    border-radius: 1rem; // You can change the default border-radius globally in "_variables.txt".
+
+//    &:hover {
+//       @include shadow-heavy; // Adds a heavier shadow on hover.
+//    }
+
+//    // Title styling for the blog card.
+//    .bloggs-card-title {
+//       text-align: center;
+//       padding: clamp($spacing-m, 2vw, $spacing-l); // Uses the clamp function for fluid padding.
+//       color: $primary-purple; // Text color, modify in "_variables.txt".
+//       font-family: $font-primary; // Font settings, defined in "_variables.txt".
+//       font-size: $font-size-large;
+//       font-weight: bold;
+//       letter-spacing: 0.1rem; // Adjusts the spacing between letters.
+//    }
+
+//    // Speech Bubble for blog content
+//    .speech-bubble {
+//       position: relative;
+//       padding: $spacing-m $spacing-l; // Padding with modular spacing variables.
+//       background-color: $charcoal-extra-light; // Speech bubble background color.
+//       border-radius: 1rem;
+//       margin-bottom: $spacing-s;
+
+//       &::before {
+//          content: "";
+//          position: absolute;
+//          bottom: -12px;
+//          left: 30px;
+//          width: 20px;
+//          height: 15px;
+//          background-color: $charcoal-extra-light;
+//          clip-path: polygon(0 0, 100% 0, 50% 100%); // Creates a triangle for the speech bubble tail.
+//       }
+
+//       .post-text {
+//          font-size: $font-size-small;
+//          font-family: $font-tertiary; // Modify in "_variables.txt" for global font changes.
+//          font-weight: $font-weight-extra-light; // Lightweight font.
+//          color: $charcoal; // Text color, tweak in "_variables.txt".
+//       }
+//    }
+
+//    // Post Interactions Section (Likes, Heart Icon, Date)
+//    .post-interactions {
+//       display: flex;
+//       align-items: center;
+//       margin-top: $spacing-l; // Adds spacing above interactions.
+
+//       .like-button {
+//          @include button-base(
+//             $primary-purple,
+//             $white,
+//             darken($primary-purple, 10%),
+//             $primary-purple-light
+//          ); // Standard button mixin.
+//          margin-right: $spacing-s;
+//          font-family: "Anton", sans-serif; // Custom font for button.
+//          padding: 0.5rem 1.5rem;
+//          border-radius: 0.5rem;
+//       }
+
+//       .like-section {
+//          display: flex;
+//          align-items: center; // Aligns icon and count vertically.
+
+//          .heart-icon {
+//             color: $primary-purple; // Heart icon color.
+//             font-size: 1.2rem;
+//             margin-right: 5px;
+//          }
+
+//          .likes-count {
+//             font-size: $font-size-small;
+//             color: $charcoal;
+//          }
+//       }
+
+//       .date-section {
+//          margin-left: auto; // Pushes the date to the far right.
+//          font-size: 0.875rem;
+//          color: $primary-purple;
+//          text-align: right;
+//       }
+//    }
+// }
+
+// // Comments Section
+// // Handles styling for comments under blog posts.
+// .bloggs-comments {
+//    padding: clamp($spacing-s, 2vw, $spacing-m); // Fluid padding based on screen size.
+//    border-radius: 1rem;
+//    margin-bottom: $spacing-s;
+//    flex-grow: 1;
+
+//    .comment-author {
+//       color: $primary-purple;
+//       font-weight: bold; // Makes author name bold.
+//       margin-bottom: $spacing-s;
+//    }
+
+//    .comment-text {
+//       color: $charcoal;
+//       margin-bottom: $spacing-s;
+//       font-family: $font-tertiary; // Change the font globally in "_variables.txt".
+//    }
+// }
+
+// // Comment Form
+// // Styles the comment input form.
+// .bloggs-comment-form {
+//    @include form-base; // Applies form styles using the form-base mixin.
+//    margin-bottom: $spacing-s;
+
+//    .bloggs-submit-bttn {
+//       @include button-base(
+//          $primary-purple,
+//          $white,
+//          darken($primary-purple, 10%),
+//          $primary-purple-light
+//       ); // Button styles using mixin.
+//       margin-top: $spacing-s;
+//       font-size: $font-size-small;
+//       padding: 0.4rem 1.2rem;
+//       font-family: "Anton", sans-serif; // Font specific to this button.
+//       width: 40%;
+//       margin-left: auto; // Aligns submit button to the right.
+
+//       &:hover {
+//          background-color: darken($primary-purple, 10%); // Darkens button color on hover.
+//          box-shadow: $box-shadow-light;
+//       }
+
+//       &:focus {
+//          background-color: darken($primary-purple, 12%);
+//          box-shadow: 0 0 8px rgba($primary-purple, 0.6);
+//          outline: none;
+//       }
+
+//       &:active {
+//          transform: scale(0.95); // Button shrinks slightly when clicked.
+//       }
+//    }
+
+//    .character-counter {
+//       font-size: $font-size-small;
+//       color: $charcoal;
+//       margin-top: $spacing-s;
+//       margin-bottom: $spacing-s;
+//       font-family: $font-tertiary; // Tweak globally in "_variables.txt".
+//       margin-left: 0.5rem;
+//    }
+// }
+
+// // Message for No Blog Posts
+// // Displayed when no blog posts are available.
+// .no-blog-posts {
+//    text-align: center;
+//    padding: clamp($spacing-m, 2vw, $spacing-l); // Fluid padding for different screen sizes.
+//    background-color: $charcoal-extra-light;
+//    border-radius: 1rem;
+//    box-shadow: $box-shadow-light;
+//    margin-top: $spacing-l;
+
+//    font-family: $font-primary; // Set font-family globally in "_variables.txt".
+//    font-size: $font-size-large;
+//    font-weight: bold;
+//    letter-spacing: 0.1rem;
+//    color: $primary-purple;
+// }
+
+// // Loading Spinner
+// // Full-screen centered loading spinner.
+// .loading-spinner {
+//    display: flex;
+//    justify-content: center;
+//    align-items: center;
+//    height: 100vh; // Fills the full viewport height.
+// }
+
+// // Animation for Blog Post Section
+// // Fade-in animation for blog post elements.
+// @keyframes fadeInUp {
+//    from {
+//       opacity: 0;
+//       transform: translateY(20px); // Starts with a slight vertical offset.
+//    }
+//    to {
+//       opacity: 1;
+//       transform: translateY(0); // Fades in and slides up to its final position.
+//    }
+// }
+
+// // Apply the animation to blog post sections.
+// .bloggs-post-section {
+//    opacity: 0;
+//    animation: fadeInUp 0.6s forwards;
+// }
+
+// // Footer of the Blog Card
+// // Handles the footer section of each blog card.
+// .bloggs-card-footer {
+//    padding: $spacing-s;
+//    background-color: $charcoal-extra-light;
+//    border-top: 1px solid $light-gray;
+//    border-radius: 0 0 1rem 1rem; // Rounded corners only on the bottom.
+// }
