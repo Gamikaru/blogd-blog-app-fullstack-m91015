@@ -1,0 +1,30 @@
+// Padding Helper
+@import "../variables"; // Import centralized variables
+@import "../functions"; // Import utility functions
+@import "../placeholders"; // Import placeholder styles
+
+@mixin padding($padding-size) {
+   padding: $padding-size;
+}
+
+// Margin Helper
+@mixin margin($margin-size) {
+   margin: $margin-size;
+}
+
+@mixin responsive-padding($padding-top, $padding-right, $padding-bottom, $padding-left) {
+   padding-top: $padding-top;
+   padding-right: $padding-right;
+   padding-bottom: $padding-bottom;
+   padding-left: $padding-left;
+}
+
+
+// Responsive Margin Helper
+@mixin responsive-margin($margin-top: $navbar-height, $margin-right, $margin-bottom, $margin-left) {
+   margin-top: $margin-top;
+   margin-right: $margin-right;
+   margin-bottom: $margin-bottom;
+   margin-left: $margin-left;
+}
+

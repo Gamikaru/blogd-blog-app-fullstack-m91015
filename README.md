@@ -1,41 +1,216 @@
-## **Research Document - Reactive vs. Responsive Design**
+# CodeBloggs
 
-### **Reactive Design**
-**Definition:** 
-Reactive Design focuses on how a system responds to user inputs and events, ensuring the application feels fast and interactive.
+CodeBloggs is a full-stack web application designed for users to create, share, and interact with blog posts. It features a React frontend and an Express.js backend with MongoDB as the database.
 
-**Key Concepts:**
-- **Event-Driven:** Reacts to user actions and other events.
-- **Asynchronous Processing:** Utilizes promises, async/await, and reactive programming libraries like RxJS.
-- **Real-Time Updates:** Implements features like live notifications and dynamic content changes.
+## Table of Contents
 
-**Example:**
-- **Skeleton Screens:** Display placeholders while loading content to provide immediate feedback.
+- [CodeBloggs](#codebloggs)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Technologies Used](#technologies-used)
+    - [Frontend](#frontend)
+    - [Backend](#backend)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+    - [Clone the Repository](#clone-the-repository)
+    - [Backend Setup](#backend-setup)
+    - [Frontend Setup](#frontend-setup)
+  - [Usage](#usage)
+    - [Running the Backend Server](#running-the-backend-server)
+    - [Running the Frontend Application](#running-the-frontend-application)
+  - [Project Structure](#project-structure)
+  - [Scripts](#scripts)
+    - [Backend Scripts (in `/backend/package.json`)](#backend-scripts-in-backendpackagejson)
+    - [Frontend Scripts (in `/client/package.json`)](#frontend-scripts-in-clientpackagejson)
+  - [Contributing](#contributing)
+  - [License](#license)
 
-### **Responsive Design**
-**Definition:** 
-Responsive Design ensures that a website or application layout adjusts seamlessly across different screen sizes and devices.
+## Features
 
-**Key Concepts:**
-- **Fluid Grids:** Uses relative units like percentages for layout.
-- **Flexible Images:** Images resize with their container.
-- **Media Queries:** Applies different styles based on device characteristics.
+- **User Authentication**: Secure login and registration with JWT authentication.
+- **Post Creation**: Users can create, edit, and delete blog posts.
+- **Commenting System**: Comment on posts and interact with other users.
+- **Real-Time Updates**: Instant updates on new posts and comments.
+- **Admin Panel**: Manage users and content with different authorization levels.
 
-**Example:**
-- **Responsive Navigation:** Collapses a navigation bar into a hamburger menu on smaller screens.
+## Technologies Used
 
-### **Differences**
+### Frontend
 
-| Aspect               | Reactive Design                                  | Responsive Design                                |
-|----------------------|--------------------------------------------------|--------------------------------------------------|
-| **Focus**            | Event-driven interactions and real-time updates  | Layout adaptability across different devices     |
-| **Techniques**       | Asynchronous processing, event handling          | Fluid grids, flexible images, media queries      |
-| **Goal**             | Improve perceived speed and interactivity        | Ensure optimal user experience across devices    |
-| **Example**          | Live chat updates without refreshing the page    | A layout that adjusts from desktop to mobile     |
+- **React**: JavaScript library for building user interfaces.
+- **Vite**: Next-generation frontend tooling.
+- **Axios**: Promise-based HTTP client for the browser.
+- **React Router**: Declarative routing for React applications.
+- **Bootstrap & React-Bootstrap**: Styling and responsive design.
+- **SCSS**: Enhanced CSS with variables and mixins.
+- **React Toastify**: Notifications and alerts.
+- **Selenium WebDriver**: For end-to-end testing.
 
-### **Implementation in CodeBloggs Project**
-- **Reactive Design:** Implement skeleton screens in the User Manager and Content Manager to indicate when updates are being processed.
-- **Responsive Design:** Adjust the navigation bar based on screen width. Replace the vertical navigation bar with a horizontal one for screens below 768 pixels.
+### Backend
 
-### **Conclusion**
-Understanding and implementing both Reactive and Responsive Design principles are crucial for creating modern web applications that are visually appealing and highly interactive. By applying these principles, CodeBloggs can deliver a superior user experience across all devices.
+- **Node.js & Express.js**: Server-side JavaScript environment and web framework.
+- **MongoDB & Mongoose**: NoSQL database and object modeling.
+- **JWT (jsonwebtoken)**: Secure authentication tokens.
+- **bcrypt**: Password hashing.
+- **dotenv**: Environment variable management.
+- **CORS**: Cross-Origin Resource Sharing.
+
+## Prerequisites
+
+- **Node.js** (v14 or higher)
+- **npm** (v6 or higher)
+- **MongoDB** instance (local or cloud-based)
+
+## Installation
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/CodeBloggs.git
+cd CodeBloggs
+```
+
+### Backend Setup
+
+1. Navigate to the backend directory:
+
+   ```bash
+   cd backend
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Create a `.env` file in the `backend` directory with the following content:
+
+   ```env
+   PORT=5050
+   ATLAS_URI=your_mongodb_connection_string
+   JWT_SECRET=your_jwt_secret
+   ```
+
+   Replace `your_mongodb_connection_string` with your actual MongoDB URI and `your_jwt_secret` with a secure secret string.
+
+### Frontend Setup
+
+1. Navigate to the client directory:
+
+   ```bash
+   cd ../client
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+## Usage
+
+### Running the Backend Server
+
+1. Start the backend server:
+
+   ```bash
+   npm start
+   ```
+
+   The server will run on `http://localhost:5050`.
+
+### Running the Frontend Application
+
+1. Start the frontend development server:
+
+   ```bash
+   npm run dev
+   ```
+
+2. Open your browser and navigate to:
+
+   ```
+   http://localhost:5173
+   ```
+
+## Project Structure
+
+```bash
+CodeBloggs/
+├── backend/
+│   ├── db/
+│   │   └── connection.js
+│   ├── middleware/
+│   │   └── authMiddleware.js
+│   ├── models/
+│   │   ├── userSchema.js
+│   │   ├── postSchema.js
+│   │   └── sessionSchema.js
+│   ├── routes/
+│   │   ├── userRoutes.js
+│   │   ├── postRoutes.js
+│   │   └── sessionRoutes.js
+│   ├── .env
+│   ├── package.json
+│   └── server.js
+├── client/
+│   ├── public/
+│   │   └── index.html
+│   ├── src/
+│   │   ├── components/
+│   │   ├── contexts/
+│   │   ├── scss/
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── ApiClient.js
+│   ├── package.json
+│   └── vite.config.js
+└── README.md
+```
+
+## Scripts
+
+### Backend Scripts (in `/backend/package.json`)
+
+- **Start Server**: `npm start`
+
+### Frontend Scripts (in `/client/package.json`)
+
+- **Start Development Server**: `npm run dev`
+- **Build for Production**: `npm run build`
+- **Preview Production Build**: `npm run serve`
+- **Run Tests**: `npm run test`
+
+## Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch:
+
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+
+3. Commit your changes:
+
+   ```bash
+   git commit -m "Add your message"
+   ```
+
+4. Push to the branch:
+
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+
+5. Open a pull request.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+Feel free to customize this README to better suit your project's needs.

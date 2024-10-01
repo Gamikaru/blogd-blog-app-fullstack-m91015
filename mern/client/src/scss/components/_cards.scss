@@ -1,0 +1,48 @@
+// // scss/components/_cards.scss
+
+// @import "../abstracts/variables";
+// @import "../abstracts/mixins";
+
+// /* Card Component */
+// .card {
+//    @include card-base($charcoal, $light-gray, $box-shadow-light);
+// }
+
+// .card-header {
+//    background-color: $primary-purple;
+//    color: $white;
+//    font-size: $font-size-medium;
+//    @include font-bold;
+//    padding: $spacing-m;
+//    border-radius: $border-radius $border-radius 0 0;
+// }
+
+// .card-body {
+//    font-size: $font-size-base;
+//    color: $charcoal;
+//    line-height: 1.6;
+//    padding: $spacing-m;
+// }
+
+// .card-footer {
+//    background-color: $white;
+//    padding: $spacing-m;
+//    border-radius: 0 0 $border-radius $border-radius;
+//    text-align: right;
+// }
+
+// /* Responsive adjustments */
+// @media (max-width: $breakpoint-md) {
+//    .card {
+//       padding: $spacing-s;
+//    }
+//    .card-header {
+//       font-size: $font-size-small;
+//    }
+//    .card-body {
+//       font-size: 0.95rem;
+//    }
+//    .card-footer {
+//       font-size: 0.85rem;
+//    }
+// }

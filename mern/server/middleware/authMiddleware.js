@@ -3,41 +3,59 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+/**
+ * @middleware authenticate
+ * @desc       Middleware to authenticate user using JWT
+ */
 export const authenticate = (req, res, next) => {
-    const { authorization } = req.headers;
-    if (!authorization) {
-        console.log('Authorization header is missing');
-        return res.status(401).send('Authorization header is missing');
-    }
+   const { authorization } = req.headers;
 
-    const token = authorization.split(' ')[1];
-    if (!token) {
-        console.log('Access denied. No token provided.');
-        return res.status(401).send('Access denied. No token provided.');
-    }
+   // Check if the authorization header is present
+   if (!authorization) {
+      console.log('Authorization header is missing');
+      return res.status(401).send('Authorization header is missing');
+   }
 
-    jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
-        if (err) {
-            console.log('Invalid token:', err);
-            return res.status(403).send('Invalid token');
-        }
+   console.log('Authorization header received');
 
-        console.log('Decoded token:', decodedToken);
+   // Ensure token is in the correct format "Bearer <token>"
+   const parts = authorization.split(' ');
+   if (parts[0] !== 'Bearer' || parts.length !== 2) {
+      console.log('Malformed token format');
+      return res.status(401).send('Malformed token');
+   }
 
-        if (!decodedToken._id) {
-            console.log('Token does not contain _id');
-            return res.status(400).send('Invalid token payload');
-        }
+   const token = parts[1];
 
-        req.user = {
-            _id: decodedToken._id,
-            email: decodedToken.email,
-            auth_level: decodedToken.auth_level
-        };
+   // Verify the JWT token
+   jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+      if (err) {
+         if (err.name === 'TokenExpiredError') {
+            console.error('Token expired:', err.message);
+            return res.status(403).send('Token expired, please log in again');
+         }
+         console.error('Invalid token:', err.message);
+         return res.status(403).send(`Invalid token: ${err.message}`);
+      }
 
-        console.log('req.user set to:', req.user);
+      console.log('Decoded token:', decodedToken);
 
-        next();
-    });
+      // Check if the decoded token has the required fields
+      if (!decodedToken._id || !decodedToken.email || !decodedToken.authLevel) {
+         console.log('Token payload missing required fields');
+         return res.status(400).send('Invalid token payload');
+      }
+
+      // Set the user information on the request object
+      req.user = {
+         _id: decodedToken._id,
+         email: decodedToken.email,
+         authLevel: decodedToken.authLevel,
+      };
+
+      console.log('User authenticated successfully');
+
+      // Continue to the next middleware or route
+      next();
+   });
 };
-

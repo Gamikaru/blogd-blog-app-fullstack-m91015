@@ -1,0 +1,64 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+@import "../../abstracts/functions";
+
+// Bloggs Comments and Comment Form
+.bloggs-comments {
+   margin-top: $spacing-m;
+
+   .comment-author {
+      font-size: $font-size-small;
+      font-weight: $font-weight-regular;
+      color: $charcoal-light;
+      margin-bottom: $spacing-s;
+   }
+
+   .comment-text {
+      font-size: $font-size-small;
+      color: $charcoal;
+      margin-bottom: $spacing-m;
+   }
+
+   // Bloggs Comment Form
+   .bloggs-comment-form {
+      margin-top: $spacing-s;
+
+      .form-group {
+         margin-bottom: $spacing-s;
+
+         textarea {
+            width: 100%;
+            padding: $spacing-s;
+            border-radius: $border-radius;
+            border: 1px solid $light-gray;
+            font-size: $font-size-small;
+            font-family: $font-tertiary;
+            resize: none;
+
+            &:focus {
+               border-color: $primary-purple;
+               outline: none;
+               box-shadow: 0 0 5px rgba($primary-purple, 0.3);
+            }
+         }
+
+         .character-counter {
+            text-align: right;
+            font-size: $font-size-small;
+            color: $charcoal;
+         }
+      }
+
+      .bloggs-submit-bttn {
+         @include button-base($primary-purple, $white, darken($primary-purple, 5%), $border-radius);
+         padding: $spacing-s $spacing-m;
+         font-weight: $font-weight-bold;
+         margin-top: $spacing-s;
+
+         &:disabled {
+            background-color: $disabled-gray;
+            cursor: not-allowed;
+         }
+      }
+   }
+}
