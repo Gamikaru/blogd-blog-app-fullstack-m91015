@@ -1,0 +1,69 @@
+
+// Import Bootstrap's SCSS
+@import "bootstrap/scss/bootstrap";
+
+// Abstracts
+@import "abstracts/variables"; // Custom variables first
+@import "abstracts/functions"; // Functions for dynamic calculations
+@import "abstracts/mixins/component_mixins"; // Mixins for reusable styles
+@import "abstracts/mixins/flexbox_mixins"; // Flexbox mixins
+@import "abstracts/mixins/layout_mixins"; // Layout mixins
+@import "abstracts/mixins/fx_mixins"; // Shadow mixins
+@import "abstracts/mixins/typography_mixins"; // Typography mixins
+@import "abstracts/mixins/utility_mixins"; // Utility mixins
+
+
+// Vendors (Third-party libraries, if needed)
+@import "vendors/jquery-ui"; // Example vendor
+
+// Base
+@import "base/reset"; // CSS resets for consistency
+@import "base/typography"; // Centralized typography styles
+@import "base/shadows"; // Shadow styles
+@import "base/animations"; // Reusable animation keyframes
+@import "base/utilities"; // Utility classes like margin, padding, etc.
+
+// Layout
+// @import "layout/navigation"; // Navigation styles
+@import "layout/header"; // Header layout styles
+@import "layout/footer"; // Footer layout styles
+@import "layout/grid"; // Grid system styles
+
+// Components
+@import "components/buttons"; // Button styles using the button-base mixin
+@import "components/cards"; // Card component styles
+@import "components/carousel"; // Carousel component styles
+@import "components/dropdown"; // Dropdown component styles
+@import "components/toast"; // Feedback component styles
+@import "components/forms"; // Form styling using form-field mixin
+@import "components/register_modal"; // Register modal component
+@import "components/post_modal"; // Post modal component
+@import "components/edit_post_modal"; // Edit post modal component
+@import "components/navbar"; // Navbar component
+@import "components/sidebar"; // Sidebar component
+@import "components/tables"; // Table styles
+@import "components/input_fields"; // Input field styles
+// @import "components/select_field"; // Select field styles
+
+
+// Themes
+@import "themes/dark"; // Dark theme styles
+@import "themes/light"; // Light theme styles
+
+// Pages & Page Components
+// Home page styles and components
+@import "pages/home/home"; // Home page styles
+@import "pages/home/user_card"; // User card component
+@import "pages/home/home_posts_card"; // Post card component
+
+// Bloggs page styles and components
+@import "pages/bloggs/bloggs_comments"; // Blog comments component
+@import "pages/bloggs/bloggs_post"; // Blog post section
+@import "pages/bloggs/bloggs"; // Blog page styles
+
+//Network Page styles and components
+// @import "pages/network/network_card"; // Network card component
+@import "pages/network/network"; // Network page styles
+
+// Login Page styles and components
+@import "pages/login/login"; // Login page styles

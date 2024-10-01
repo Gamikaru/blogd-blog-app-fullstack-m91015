@@ -1,0 +1,265 @@
+@import "../../abstracts/variables"; // Import global colors
+@import "../../abstracts/mixins"; // Import mixins
+@import "../../components/forms"; // Form-specific styles
+@import "../../components/buttons"; // Button styles
+
+/* --------------------------------------------------------------------------
+Overall Container for Centering the Login Content
+-------------------------------------------------------------------------- */
+.login-page {
+   display: flex; // Use flexbox for layout
+   flex-direction: column; // Arrange items in a column
+   align-items: center; // Center items horizontally
+   justify-content: center; // Center items vertically
+   background-color: rgba($charcoal-light, 0.8); // Semi-transparent background color
+   height: 100vh; // Full viewport height
+   padding: $spacing-l; // Large padding around the container
+   overflow: hidden; // Hide overflow content
+   margin: 0; // Remove default margin
+}
+
+.login-container {
+   width: 100%; // Full width
+   max-width: 1200px; // Maximum width of the container
+   display: flex; // Use flexbox for layout
+   flex-direction: column; // Arrange items in a column
+   align-items: center; // Center items horizontally
+   justify-content: center; // Center items vertically
+   height: 100%; // Full height of the container
+}
+
+.login-content {
+   width: 100%; // Full width
+   max-width: 800px; // Maximum width of the content
+   margin: 0 auto; // Center content horizontally
+   text-align: center; // Center text
+   display: flex; // Use flexbox for layout
+   flex-direction: column; // Arrange items in a column
+   align-items: center; // Center items horizontally
+   margin-top: 0; // Remove top margin
+}
+
+/* Adjust the logo to ensure it doesn't overlap the form */
+.logo-image {
+   width: 90%; // 90% width of the container
+   max-width: 400px; // Maximum width of the logo
+   transition: transform 0.3s ease; // Smooth transition for transform property
+   position: relative; // Relative positioning
+   z-index: 1; // Stack order
+   bottom: 6rem; // Move the logo up by 6rem
+
+   &:hover {
+      transform: scale(1.05); // Slightly enlarge the logo on hover
+   }
+
+   @media (max-width: $breakpoint-lg) {
+      width: 70%; // 70% width on large screens
+      bottom: 10rem; // Move the logo up by 10rem
+   }
+
+   @media (max-width: $breakpoint-md) {
+      width: 60%; // 60% width on medium screens
+      bottom: 3rem; // Move the logo up by 7rem
+   }
+
+   @media (max-width: $breakpoint-sm) {
+      width: 50%; // 50% width on small screens
+      bottom: 1.5rem; // Move the logo up by 1.5rem
+   }
+}
+
+.login-card-container {
+   width: 100%; // Full width
+   display: flex; // Use flexbox for layout
+   justify-content: center; // Center items horizontally
+   align-items: center; // Center items vertically
+   margin-top: -8rem; // Move the container up by 8rem
+
+   @media (max-width: $breakpoint-md) {
+      margin-top: -2rem; // Move the container up by 2rem on medium screens
+   }
+
+   @media (max-width: $breakpoint-sm) {
+      margin-top: -1rem; // Move the container up by 1rem on small screens
+   }
+}
+
+.login-card {
+   background-color: $charcoal-extra-light; // Light charcoal background color
+   border-radius: $border-radius; // Rounded corners
+   @include shadow-light; // Light shadow mixin
+   padding: $spacing-m; // Large padding inside the card
+   width: 35%; // 35% width of the container
+   max-width: 450px; // Maximum width of the card
+   min-width: 280px; // Minimum width of the card
+   position: relative; // Relative positioning
+   z-index: 2; // Stack order
+   top: -8rem; // Move the card up by 8rem
+   transition: transform 0.3s ease; // Smooth transition for transform property
+   text-align: center; // Center text
+
+   &:hover {
+      transform: translateY(-5px); // Move the card up by 5px on hover
+   }
+
+   @media (max-width: $breakpoint-lg) {
+      width: 50%; // 50% width on large screens
+      padding: $spacing-m; // Medium padding inside the card
+      top: -12rem; // Move the card up by 12rem
+   }
+
+   @media (max-width: $breakpoint-md) {
+      width: 65%; // 65% width on medium screens
+      top: -11rem; // Move the card up by 14rem
+   }
+
+   @media (max-width: $breakpoint-sm) {
+      width: 80%; // 80% width on small screens
+      padding: $spacing-m; // Medium padding inside the card
+      top: -4rem; // Move the card up by 4rem
+   }
+}
+
+/* --------------------------------------------------------------------------
+Input Container and Fields
+-------------------------------------------------------------------------- */
+.login-input-container {
+   @include form-base; // Use form-base mixin for form styling
+   margin-bottom: $spacing-s; // Large bottom margin
+   margin-top: $spacing-m; // Large top margin
+   text-align: left; // Center text
+   width: 100%; // Full width
+   padding: $spacing-s $spacing-m; // Medium horizontal padding
+   background-color: $charcoal-extra-light; // Light charcoal background color
+}
+
+.login-input-field {
+   width: 100%; // Full width
+   padding: $spacing-m; // Medium padding inside the input field
+   font-size: $font-size-base; // Base font size
+   background-color: $white; // White background color
+   z-index: 3; // Stack order
+
+   &:focus {
+      box-shadow: 0 0 15px rgba($primary-purple, 0.6); // Purple shadow on focus
+      outline: none; // Remove default outline
+      border-color: transparent; // Transparent border color
+   }
+
+   @media (max-width: $breakpoint-sm) {
+      font-size: $font-size-small; // Small font size on small screens
+      padding: $spacing-s; // Small padding inside the input field
+   }
+
+   @media (max-width: $breakpoint-md) {
+      font-size: $font-size-small; // Small font size on medium screens
+      padding-inline: $spacing-xl; // Small horizontal padding
+   }
+}
+
+.password-container {
+   position: relative; // Ensure button can be placed inside the input container
+   display: flex; // Use flexbox for layout
+   align-items: center; // Center items vertically
+   justify-content: center; // Center items horizontally
+   margin-top: $spacing-s; // Small top margin
+   margin-bottom: $spacing-m; // Medium bottom margin
+   width: 100%; // Full width
+}
+
+.password-toggle-btn {
+   position: absolute;
+   right: 2rem; // Place the button to the right of the input field
+   top: 60%;
+   transform: translateY(-50%);
+   background: none;
+   border: none;
+   cursor: pointer;
+   font-size: 1.2rem; // Size of the eye icon
+   color: $charcoal;
+}
+
+/* --------------------------------------------------------------------------
+Submit Button Styling
+-------------------------------------------------------------------------- */
+.submit-btn {
+   @include button-base($charcoal, $white, lighten($charcoal, 10%), $border-radius); // Use button-base mixin
+   margin-bottom: $spacing-m; // Medium bottom margin
+
+   &:active {
+      transform: scale(0.98); // Slightly shrink the button on active state
+      box-shadow: none; // Remove box shadow on active state
+   }
+
+   @media (max-width: $breakpoint-md) {
+      font-size: $font-size-medium; // Medium font size on medium screens
+   }
+
+   @media (max-width: $breakpoint-sm) {
+      font-size: $font-size-small; // Small font size on small screens
+      padding: $spacing-s $spacing-m; // Small vertical and medium horizontal padding
+   }
+}
+
+/* --------------------------------------------------------------------------
+Register Link Styling
+-------------------------------------------------------------------------- */
+.register-text {
+   margin-top: $spacing-m; // Medium top margin
+   font-size: $font-size-medium; // Medium font size
+   color: $charcoal; // Charcoal text color
+   font-family: "JetBrains Mono-Light", monospace; // Custom font family
+   text-align: center;
+   font-weight: 200; // Light font weight
+}
+
+.register-link {
+   font-weight: bold; // Bold font weight for emphasis
+   color: $primary-purple; // Primary purple text color
+   cursor: pointer; // Pointer cursor on hover
+   position: relative; // Relative for underline effect
+
+   &:hover {
+      color: lighten($primary-purple, 10%); // Lighter purple on hover
+   }
+
+   &::after {
+      content: ""; // Empty content for underline
+      position: absolute; // Positioning the underline
+      left: 0;
+      bottom: -3px; // Place just below the text
+      width: 100%;
+      height: 2px;
+      background-color: $primary-purple; // Underline color
+      transform: scaleX(0); // Start with 0 width
+      transition: transform 0.3s ease; // Smooth transition
+      visibility: hidden;
+   }
+
+   &:hover::after {
+      transform: scaleX(1); // Full width on hover
+      visibility: visible; // Make visible on hover
+   }
+}
+/* --------------------------------------------------------------------------
+Responsive Design Adjustments
+-------------------------------------------------------------------------- */
+@media (max-width: $breakpoint-md) {
+   .login-content {
+      max-width: 100%; // 85% width on medium screens
+   }
+
+   .login-card {
+      padding: $spacing-m; // Medium padding inside the card
+   }
+}
+
+@media (max-width: $breakpoint-sm) {
+   .login-content {
+      max-width: 95%; // 95% width on small screens
+   }
+
+   .login-card {
+      padding: $spacing-m; // Medium padding inside the card
+   }
+}

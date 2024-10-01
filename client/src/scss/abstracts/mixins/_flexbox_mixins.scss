@@ -1,0 +1,35 @@
+@import "../variables"; // Import centralized variables
+@import "../functions"; // Import utility functions
+@import "../placeholders"; // Import placeholder styles
+
+// --------------------
+// Flexbox Mixins
+// --------------------
+
+// Centered flexbox container
+@mixin flex-container($justify: space-between, $align: center, $direction: row, $wrap: wrap) {
+   display: flex;
+   justify-content: $justify;
+   align-items: $align;
+   flex-direction: $direction;
+   flex-wrap: $wrap;
+}
+
+@mixin flex-center($direction: row) {
+   @include flex-container(center, center, $direction);
+}
+
+// Flex Item Mixin
+@mixin flex-item($basis: auto, $grow: 1, $shrink: 1, $order: 0) {
+   flex-basis: $basis;
+   flex-grow: $grow;
+   flex-shrink: $shrink;
+   order: $order;
+}
+
+// Additional Helper for Alignment
+@mixin align-items-center {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}

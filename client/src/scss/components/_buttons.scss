@@ -1,0 +1,106 @@
+// scss/components/_buttons.scss
+
+@import "../abstracts/variables"; // Import global variables
+@import "../abstracts/mixins"; // Import centralized mixins
+
+// Close Button Colors
+$close-button-color: $disabled-gray;
+$close-button-hover-color: lighten($close-button-color, 20%);
+
+/* Primary Button */
+.primary-btn {
+   @include button-base($primary-purple, $white, $primary-purple-hover, $border-radius);
+}
+
+/* Secondary Button */
+.secondary-btn {
+   @include button-base(
+      $charcoal,
+      $white,
+      darken($charcoal, 10%),
+      // Custom hover color
+      $border-radius
+   );
+}
+
+/* Success Button */
+.success-btn {
+   @include button-base($success-green, $white, $success-green-hover, $border-radius);
+}
+
+/* Danger Button */
+.danger-btn {
+   @include button-base($bright-red, $white, $bright-red-hover, $border-radius);
+}
+
+/* Disabled Button */
+.disabled-btn {
+   @include button-base(
+      $disabled-gray,
+      $white,
+      $disabled-gray,
+      // No hover state for disabled buttons
+      $border-radius
+   );
+   cursor: not-allowed;
+}
+
+/* Override Bootstrap defaults */
+.btn {
+   border: none;
+   box-shadow: none;
+
+   &:hover,
+   &:focus {
+      text-decoration: none;
+   }
+
+   &:focus {
+      outline: 2px solid $primary-purple;
+   }
+}
+
+/* Button Group Styling */
+.btn-group {
+   display: inline-flex;
+   .btn {
+      margin-left: -1px;
+      &:first-child {
+         margin-left: 0;
+      }
+   }
+}
+
+// Toast Actions Button Styles
+.toast-actions {
+   display: flex;
+   justify-content: flex-end;
+   gap: $spacing-s; // Spacing between buttons
+
+   // Primary "Yes" Button (using primary purple with modern styling)
+   .toast-primary-btn {
+      @include button-base($primary-purple, $white, $electric-violet-hover, $border-radius);
+      padding: $spacing-xs $spacing-m; // Use existing spacing variables
+      font-size: $font-size-small; // Ensure small size for the button text
+      font-weight: $font-weight-bold; // Add bold font for modern, strong emphasis
+      box-shadow: $box-shadow-light; // Add a soft box-shadow for modern touch
+
+      &:hover {
+         box-shadow: $box-shadow-medium; // Elevate on hover
+      }
+   }
+
+   // Secondary "No" Button (using neutral gray with charcoal hover)
+   .toast-secondary-btn {
+      @include button-base($light-gray, $charcoal, $charcoal-light, $border-radius);
+      padding: $spacing-xs $spacing-m; // Consistent padding with primary button
+      font-size: $font-size-small; // Keep button text small
+      font-weight: $font-weight-regular; // Regular font-weight for secondary actions
+      box-shadow: $box-shadow-light; // Same box-shadow as primary for consistency
+
+      &:hover {
+         background-color: $charcoal-extra-light; // Subtle change on hover
+         color: $white; // Ensure contrast with the light gray background
+      }
+   }
+}

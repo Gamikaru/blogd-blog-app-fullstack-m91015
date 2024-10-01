@@ -1,0 +1,80 @@
+@import "../abstracts/variables";
+
+// Mobile first adjustments
+@media (max-width: $mobile) {
+   .navbar {
+      flex-direction: column;
+      padding: 0.5rem;
+      align-items: flex-start;
+
+      .navbar-buttons {
+         width: 100%;
+         display: flex;
+         flex-direction: column;
+         margin-top: 0.5rem;
+      }
+
+      .post-button,
+      .dropdown-container .dropdown-toggle {
+         width: 100%; // Ensure buttons take full width on mobile
+         font-size: 0.85rem; // Adjust font-size on mobile
+         padding: 0.5rem; // Adjust padding to shrink with screen
+      }
+   }
+
+   .grid-container {
+      grid-template-columns: 1fr;
+   }
+
+   .page-container {
+      padding: 5vh 2vw;
+      margin-left: 0; // Adjust for full width
+   }
+}
+
+// Tablet Breakpoints
+@media (min-width: $small-tablet) and (max-width: $tablet) {
+   .navbar {
+      padding: 0.75rem;
+
+      .post-button,
+      .dropdown-container .dropdown-toggle {
+         font-size: 0.9rem; // Adjust button font size for tablet
+         padding: 0.6rem 1rem; // Adjust padding to make it proportional
+      }
+   }
+}
+
+@media (min-width: $tablet) {
+   .sidebar {
+      display: block;
+   }
+
+   .post-button,
+   .dropdown-container .dropdown-toggle {
+      font-size: 1rem;
+      padding: 0.75rem 1.5rem;
+   }
+}
+
+@media (min-width: $desktop) {
+   .navbar {
+      padding: 1rem;
+   }
+
+   .page-container {
+      padding: 8vh 5vw;
+   }
+}
+
+// Landscape orientation
+@media (orientation: landscape) {
+   .navbar {
+      flex-direction: row;
+
+      .navbar-buttons {
+         flex-direction: row;
+         width: auto;
+      }
+   }
+}

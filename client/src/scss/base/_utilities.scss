@@ -1,0 +1,87 @@
+// base/_utilities.scss
+
+// Margin Utilities
+.m-0 {
+   margin: 0 !important;
+}
+.m-1 {
+   margin: $spacing-s !important;
+}
+.m-2 {
+   margin: $spacing-m !important;
+}
+.m-3 {
+   margin: $spacing-l !important;
+}
+.m-auto {
+   margin: auto !important;
+}
+
+// Padding Utilities
+.p-0 {
+   padding: 0 !important;
+}
+.p-1 {
+   padding: $spacing-s !important;
+}
+.p-2 {
+   padding: $spacing-m !important;
+}
+.p-3 {
+   padding: $spacing-l !important;
+}
+.p-auto {
+   padding: auto !important;
+}
+
+// Text Alignment
+.text-center {
+   text-align: center !important;
+}
+.text-left {
+   text-align: left !important;
+}
+.text-right {
+   text-align: right !important;
+}
+
+// Visibility Utilities
+.d-none {
+   display: none !important;
+}
+.d-block {
+   display: block !important;
+}
+.d-inline {
+   display: inline !important;
+}
+.d-inline-block {
+   display: inline-block !important;
+}
+
+// Flex Utilities
+.d-flex {
+   display: flex !important;
+}
+.flex-center {
+   @include flex-container(center, center);
+}
+.flex-space-between {
+   @include flex-container(space-between, center);
+}
+
+// Width Utilities
+.w-100 {
+   width: 100% !important;
+}
+.max-w-100 {
+   max-width: 100% !important;
+}
+
+// Overflow Utilities
+.overflow-hidden {
+   overflow: hidden !important;
+}
+.overflow-visible {
+   overflow: visible !important;
+}

@@ -1,0 +1,259 @@
+@import "../../abstracts/variables"; // Import global variables
+@import "../../abstracts/mixins"; // Import centralized mixins
+
+/* --------------------------------------------------------------------------
+Network Page Container
+-------------------------------------------------------------------------- */
+.network-page-container {
+   @include page-container($navbar-height: 80px, $extra-top-padding: 0);
+   @include flex-center; // No negative padding required
+}
+
+/* --------------------------------------------------------------------------
+Grid container for Network cards
+-------------------------------------------------------------------------- */
+.network-grid {
+   @include grid-container(
+      $min-width: 300px,
+      $gap: $spacing-l,
+      $padding: $spacing-l,
+      $padding-top: 5rem
+   ); // Regular padding for network
+}
+/* --------------------------------------------------------------------------
+Network Card Styling
+-------------------------------------------------------------------------- */
+.network-card {
+   @include card-base($white, $light-gray, $box-shadow-light); // Consistent card styling
+
+   border-radius: $border-radius-large;
+   background: linear-gradient(145deg, $white, lighten($light-gray, 5%));
+   transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+   position: relative;
+   z-index: 0;
+   padding: $spacing-m;
+   width: 100%;
+   height: 100%;
+   margin-bottom: $spacing-m;
+
+   &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px rgba($primary-purple, 0.2);
+      z-index: 10;
+
+      .network-card-body {
+         padding: $spacing-s;
+         .user-details {
+            gap: $spacing-s;
+         }
+         .top-section {
+            .initials-circle.has-status {
+               &::before,
+               &::after {
+                  opacity: 1;
+                  transform: translateY(-0.5rem);
+               }
+               .user-status .status-bubble {
+                  opacity: 1;
+                  visibility: visible;
+                  transform: translateY(-1rem);
+               }
+            }
+         }
+      }
+   }
+
+
+   .network-card-body {
+      padding: $spacing-m;
+      font-size: $font-size-base;
+      color: $charcoal;
+
+      .top-section {
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         gap: $spacing-m;
+
+         .initials-circle {
+            background-color: $white;
+            border: 3px solid $primary-purple;
+            color: $primary-purple;
+            font-size: 2.5rem;
+            font-family: $font-tertiary;
+            border-radius: 50%;
+            width: 6rem;
+            height: 6rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 1;
+            position: relative;
+
+            &.has-status {
+               &::before,
+               &::after {
+                  content: "";
+                  position: absolute;
+                  background-color: $primary-purple;
+                  border-radius: 50%;
+                  opacity: 0;
+                  transform: translateY(0);
+                  transition:
+                     opacity 0.3s ease,
+                     transform 0.3s ease;
+               }
+
+               &::before {
+                  width: 0.6rem;
+                  height: 0.6rem;
+                  top: 30%;
+                  left: 120%;
+               }
+
+               &::after {
+                  width: 0.9rem;
+                  height: 0.9rem;
+                  top: 20%;
+                  left: 140%;
+               }
+            }
+
+            .user-status {
+               position: absolute;
+               top: -10px;
+               left: 160%;
+
+               .status-bubble {
+                  background-color: $primary-purple;
+                  color: $white;
+                  padding: $spacing-s $spacing-m;
+                  border-radius: 1.4rem;
+                  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                  opacity: 0;
+                  visibility: hidden;
+                  transform: translateY(0);
+                  transition:
+                     opacity 0.3s ease,
+                     visibility 0.3s ease,
+                     transform 0.3s ease;
+                  font-family: $font-primary;
+                  font-size: $font-size-small;
+                  max-width: 150px;
+
+                  &::after {
+                     content: "";
+                     position: absolute;
+                     bottom: -10px;
+                     left: 20%;
+                     width: 0;
+                     height: 0;
+                     border: 10px solid transparent;
+                     border-top-color: $primary-purple;
+                  }
+               }
+            }
+         }
+      }
+
+      .user-info {
+         text-align: center;
+
+         h5 {
+            color: rgba($charcoal-extra-light, 0.8);
+            font-family: "Anton", sans-serif;
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin-bottom: $spacing-s;
+            letter-spacing: 0.2rem;
+         }
+
+         .user-details {
+            display: flex;
+            flex-direction: column;
+            gap: $spacing-s;
+
+            .detail-item {
+               display: flex;
+               align-items: center;
+               gap: $spacing-s;
+
+               svg {
+                  font-size: 1.2rem;
+                  color: $primary-purple;
+               }
+
+               span {
+                  font-size: $font-size-small;
+                  font-weight: 400;
+               }
+            }
+         }
+      }
+
+      h6 {
+         font-size: $font-size-base;
+         color: $primary-purple;
+         font-family: "Anton", sans-serif;
+         margin-bottom: 0;
+         padding-top: $spacing-l;
+         text-align: center;
+      }
+
+      .recent-post {
+         margin-top: $spacing-m;
+         background: linear-gradient(145deg, lighten($light-gray, 5%), darken($light-gray, 5%));
+         padding: $spacing-s $spacing-m;
+         border-radius: $border-radius;
+         box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.05);
+
+         .post-content {
+            font-size: $font-size-small;
+            color: $charcoal;
+            font-family: $font-secondary;
+            white-space: normal;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+         }
+      }
+   }
+}
+
+/* --------------------------------------------------------------------------
+Responsive Design for the Network Page
+-------------------------------------------------------------------------- */
+@media (max-width: $breakpoint-md) {
+   .network-card {
+      max-width: 100%;
+      padding: $spacing-m;
+   }
+
+   .network-card-body {
+      .top-section {
+         .initials-circle {
+            width: 3rem;
+            height: 3rem;
+            font-size: 1.5rem;
+
+            &::before,
+            &::after {
+               display: none;
+            }
+
+            .user-status {
+               display: none;
+            }
+         }
+      }
+
+      .user-info h5 {
+         font-size: 1.25rem;
+      }
+   }
+}

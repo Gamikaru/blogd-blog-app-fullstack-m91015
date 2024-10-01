@@ -1,0 +1,142 @@
+// @import "../abstracts/variables";
+// @import "../abstracts/mixins";
+// @import "../base/animations";
+
+// // Modal Container (Shared styles)
+// .register-modal-container,
+// .post-modal-container {
+//    display: flex !important;
+//    justify-content: center;
+//    align-items: center;
+//    position: fixed;
+//    top: 0;
+//    left: 0;
+//    width: 100vw;
+//    height: 100vh;
+//    z-index: 3000;
+//    background-color: rgba($charcoal-extra-light, 0.8); // Semi-transparent background
+//    animation: fadeIn 0.4s ease-in-out; // Apply fade-in animation
+// }
+
+// // Modal (Shared base)
+// .register-modal,
+// .post-modal {
+//    @include modal-base($white, $spacing-l, $box-shadow-heavy, $border-radius-large);
+//    max-width: 500px;
+//    width: 90%;
+//    z-index: 3001;
+//    position: relative;
+//    overflow: hidden;
+
+//    // Responsive adjustments
+//    @media (max-width: $breakpoint-md) {
+//       width: 95%;
+//       max-width: 400px;
+//    }
+//    @media (max-width: $breakpoint-sm) {
+//       width: 100%;
+//       max-width: 350px;
+//    }
+// }
+
+// // Modal Header (Customizable by modal type)
+// .register-modal-header,
+// .post-modal-header {
+//    display: flex;
+//    justify-content: space-between; // Space between title and close button
+//    align-items: center;
+//    text-align: center;
+//    padding: $spacing-l;
+//    color: $white;
+
+//    &.register-modal-header {
+//       background-color: $primary-purple;
+//    }
+//    &.post-modal-header {
+//       background-color: $electric-violet;
+//    }
+
+//    .modal-title {
+//       @include font-default($font-tertiary, 2rem, $font-weight-bold); // Increased font size and bold weight
+//       letter-spacing: 0.2rem;
+//       margin-right: auto; // Adds space between title and close button
+//    }
+
+//    // Close Button
+//    .close-button {
+//       font-size: 1.5rem;
+//       color: $white;
+//       cursor: pointer;
+//       padding-left: $spacing-m;
+//       &:hover {
+//          color: lighten($white, 20%);
+//       }
+//    }
+// }
+
+// // Modal Body (Customizable by modal type)
+// .register-modal-body,
+// .post-modal-body {
+//    padding: $spacing-l;
+//    background-color: $white;
+
+//    &.post-modal-body {
+//       padding: $spacing-m;
+//    }
+// }
+
+// // Input Fields (Shared)
+// .register-modal-input,
+// .post-modal-input {
+//    width: 100%;
+//    padding: $spacing-m;
+//    margin-bottom: $spacing-l;
+//    background-color: $white;
+//    border: 1px solid $light-gray;
+//    border-radius: $border-radius;
+//    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+//    @include transition-all();
+
+//    &:hover {
+//       border-color: darken($light-gray, 10%);
+//    }
+
+//    &:focus {
+//       border-color: $primary-purple;
+//       box-shadow: 0 0 5px rgba($primary-purple, 0.25);
+//       outline: none;
+//    }
+// }
+
+// // Submit Button (Customizable by modal type)
+// .register-submit-btn,
+// .post-submit-btn {
+//    @include button-base($primary-purple, $white, darken($primary-purple, 10%), $primary-purple-light);
+//    padding: 0.75rem 1.5rem;
+//    font-size: 1.1rem;
+//    border-radius: $border-radius;
+//    transition: background-color 0.3s ease;
+
+//    &:hover {
+//       background-color: darken($primary-purple, 10%);
+//       @include hover-animation(scale(1.05)); // Apply slight hover animation for better UX
+//    }
+
+//    &:focus {
+//       outline: none;
+//       box-shadow: 0 0 20px rgba($primary-purple, 0.8);
+//    }
+
+//    &:active {
+//       background-color: darken($primary-purple, 15%);
+//       transform: scale(0.98); // Slight shrink on click
+//    }
+// }
+
+// // Post modal button customization
+// .post-submit-btn {
+//    @include button-base($electric-violet, $white, darken($electric-violet, 10%), $electric-violet-light);
+//    &:hover {
+//       background-color: darken($electric-violet, 10%);
+//    }
+// }
