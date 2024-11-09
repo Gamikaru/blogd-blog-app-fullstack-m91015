@@ -1,0 +1,209 @@
+// _user-dropdown.scss
+
+.user-dropdown-portal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; // Allow interactions only when visible
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: $spacing-md;
+    z-index: map-get($z-indices, modal); // Ensure it appears above other elements
+
+    .user-dropdown {
+        background-color: $primary-bg-color;
+        border-radius: $border-radius;
+        // box-shadow: $box-shadow-medium;
+        min-width: 280px;
+        width: 25%;
+        overflow: hidden;
+        pointer-events: auto; // Enable interactions
+        transition: opacity $transitions-base, transform $transitions-base;
+        opacity: 0;
+        transform: translateY(-10px);
+        animation: dropdownFadeIn $transitions-base forwards;
+        position: relative;
+        top: 3rem;
+        right: 2rem;
+
+        &__content {
+            padding: $spacing-lg;
+            display: flex;
+            flex-direction: column;
+            gap: $spacing-md;
+
+            .user-info {
+                display: flex;
+                align-items: center;
+                gap: $spacing-md;
+                padding-bottom: $spacing-md;
+                border-bottom: 1px solid $border-color;
+
+                .user-avatar {
+                    width: 50px;
+                    height: 50px;
+                    background-color: $primary-bg-color;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    box-shadow: $box-shadow-small;
+                    cursor: pointer;
+                    transition: transform 0.2s ease;
+
+                    &:hover {
+                        transform: scale(1.05);
+                    }
+
+                    .avatar-icon {
+                        font-size: 1.5rem;
+                        color: $primary-text-color;
+                    }
+                }
+
+                .user-details {
+                    display: flex;
+                    flex-direction: column;
+                    gap: $spacing-xs;
+
+                    .detail-item {
+                        display: flex;
+                        align-items: center;
+                        gap: $spacing-xs;
+                        color: $primary-text-color;
+                        transition: color 0.2s ease;
+
+                        .detail-icon {
+                            font-size: 1rem;
+                            color: $accent-color-1;
+                        }
+
+                        .detail-text {
+                            font-size: $body-font-size;
+                        }
+
+                        &:hover {
+                            color: $accent-color-1;
+
+                            .detail-icon {
+                                color: darken($accent-color-1, 10%);
+                            }
+                        }
+                    }
+                }
+            }
+
+            .dropdown-actions {
+                display: flex;
+                flex-direction: column;
+                gap: $spacing-sm;
+                padding-top: $spacing-md;
+
+                .dropdown-button {
+                    display: flex;
+                    align-items: center;
+                    gap: $spacing-sm;
+                    padding: map-get($button-padding, sm);
+                    background-color: transparent;
+                    border: none;
+                    border-radius: $button-border-radius;
+                    cursor: pointer;
+                    font-size: $body-font-size;
+                    color: $secondary-text-color;
+                    transition: background-color $transitions-base, transform 0.2s ease;
+
+                    .button-icon {
+                        font-size: 1rem;
+                        color: inherit;
+                    }
+
+                    &:hover {
+                        background-color: $button-hover-bg-color;
+                        transform: translateY(-2px);
+                        color: $highlight-color;
+
+                        .button-icon {
+                            color: $highlight-color;
+                        }
+                    }
+
+                    &.delete {
+                        color: $error-color;
+
+                        .button-icon {
+                            color: $error-color;
+                        }
+
+                        &:hover {
+                            background-color: lighten($error-color, 40%);
+                            color: $error-color;
+
+                            .button-icon {
+                                color: $error-color;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Animations
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Responsive Design
+@media (max-width: $breakpoint-md) {
+    .user-dropdown-portal {
+        align-items: center;
+        justify-content: center;
+        padding: $spacing-sm;
+
+        .user-dropdown {
+            min-width: 90%;
+            max-width: 400px;
+        }
+
+        .user-dropdown__content {
+            padding: $spacing-md;
+        }
+
+        .user-info {
+            flex-direction: column;
+            align-items: center;
+            gap: $spacing-sm;
+            border-bottom: none;
+
+            .user-avatar {
+                margin-bottom: $spacing-sm;
+            }
+
+            .user-details {
+                align-items: center;
+                text-align: center;
+            }
+        }
+
+        .dropdown-actions {
+            flex-direction: row;
+            justify-content: space-around;
+        }
+
+        .dropdown-button {
+            width: 45%;
+            justify-content: center;
+        }
+    }
+}

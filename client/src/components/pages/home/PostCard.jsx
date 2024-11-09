@@ -1,114 +1,95 @@
+import { Button, deletePostById, Logger, sanitizeContent, useNotificationContext, usePostContext, usePrivateModalContext, useUser } from '@components';
 import { formatDistanceToNow } from "date-fns";
-import React, { useCallback, useEffect } from "react";
-import { usePrivateModalContext, usePostContext, useNotificationContext } from "../../../contexts";
-import { deletePostById } from "../../../services/api/PostService";
-import Logger from "../../../utils/Logger";
+import React, { useCallback } from "react";
 
-const PostCard = ({ userPosts }) => {
-   const { setPosts, setSelectedPost, refreshPosts } = usePostContext();
-   const { togglePrivateModal } = usePrivateModalContext();
-   const { showNotification, hideNotification } = useNotificationContext();
+const PostCard = ({ posts = [] }) => {
+    const { setPosts, setSelectedPost, refreshPosts } = usePostContext();
+    const { togglePrivateModal } = usePrivateModalContext();
+    const { showNotification, hideNotification } = useNotificationContext();
+    const { user } = useUser(); // Get current logged-in user
 
-   // Sort posts by creation date, with the most recent first
-   const sortedPosts = [...userPosts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    // And update the sorting logic:
+    const sortedPosts = [...posts].sort((a, b) =>
+        new Date(b.createdAt) - new Date(a.createdAt)
+    );
 
-   // Function to delete the post after confirmation
-   const handleDeletePost = useCallback(async (postId) => {
-      Logger.info('Attempting to delete post with ID:', postId);
-      try {
-         // Optimistically remove the post from UI
-         setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
+    // Only show edit/delete buttons if the post belongs to the current user
+    const isCurrentUserPost = (postUserId) => {
+        return user._id === postUserId;
+    };
 
-         // API call to delete post
-         await deletePostById(postId);
-         Logger.info('Post deleted successfully with ID:', postId);
+    const handleDeletePost = useCallback(async (postId) => {
+        try {
+            await deletePostById(postId);
+            setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
+            refreshPosts();
+            showNotification('Post deleted successfully!', 'success');
+        } catch (error) {
+            Logger.error("Error deleting post:", error);
+            showNotification('Failed to delete the post. Please try again.', 'error');
+        }
+    }, [setPosts, refreshPosts, showNotification]);
 
-         // Refresh the post list after deletion
-         refreshPosts();
+    const confirmDeletePost = useCallback((postId) => {
+        showNotification(
+            "Are you sure you want to delete this post?",
+            'warning',
+            false,
+            () => handleDeletePost(postId),
+            hideNotification
+        );
+    }, [handleDeletePost, showNotification, hideNotification]);
 
-         // Show a success notification for the deletion
-         showNotification('Post deleted successfully!', 'success');  // Add this line
+    const handleEditPostModal = useCallback((post) => {
+        if (post?._id) {
+            setSelectedPost(post);
+            togglePrivateModal('editPost');
+        }
+    }, [setSelectedPost, togglePrivateModal]);
 
-      } catch (error) {
-         Logger.error("Error deleting post:", error);
-
-         // Show an error notification if deletion fails
-         showNotification('Failed to delete the post. Please try again.', 'error');
-      }
-   }, [setPosts, refreshPosts, showNotification, hideNotification]);
-
-
-   // Handle delete confirmation logic
-   const confirmDeletePost = useCallback((postId) => {
-      Logger.info('Request to delete post with ID:', postId);
-
-      // Show confirmation toast with 'Yes' or 'No' buttons
-      showNotification(
-         "Are you sure you want to delete this post?",
-         'warning',
-         false,
-         () => handleDeletePost(postId),  // Confirm delete action
-         hideNotification // Cancel action
-      );
-   }, [handleDeletePost, showNotification, hideNotification]);
-
-   // Handle opening the edit post modal
-   const handleEditPostModal = useCallback((post) => {
-      if (post && post._id) {
-         Logger.info('Attempting to edit post:', post);
-         setSelectedPost(post);
-         togglePrivateModal('editPost');
-      } else {
-         Logger.error('Attempted to edit post with invalid data');
-      }
-   }, [setSelectedPost, togglePrivateModal]);
-
-   // Track re-render and updates
-   useEffect(() => {
-      Logger.info('PostCard re-rendered with posts:', userPosts);
-   }, [userPosts]);
-
-   return (
-      <div className="home-post-card-container">
-         <div className="home-posts-card">
-            <div className="home-post-title">Your Recent Posts!</div>
+    return (
+        <div className="post-card-container">
             {sortedPosts.length > 0 ? (
-               <div className="posts-scroll-container">
-                  {sortedPosts.map((post) => (
-                     <div key={post._id} className="post-container">
-                        <div className="speech-bubble">
-                           <p className="post-text">{post.content}</p>
+                <div className="posts-scroll-container">
+                    {sortedPosts.map((post) => (
+                        <div key={post._id} className="post-container">
+                            <div className="speech-bubble">
+                                <div
+                                    className="post-text"
+                                    dangerouslySetInnerHTML={{ __html: sanitizeContent(post.content) }}
+                                />
+                            </div>
+                            <div className="post-info">
+                                <span className="post-date">
+                                    {post.createdAt
+                                        ? formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })
+                                        : "Date Unavailable"}
+                                </span>
+                                {isCurrentUserPost(post.userId) && (
+                                    <div className="action-buttons">
+                                        <Button
+                                            className="button button-edit"
+                                            onClick={() => handleEditPostModal(post)}
+                                        >
+                                            Edit
+                                        </Button>
+                                        <Button
+                                            className="button button-delete"
+                                            onClick={() => confirmDeletePost(post._id)}
+                                        >
+                                            Delete
+                                        </Button>
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                        <div className="post-info">
-                           <span className="post-date">
-                              {post.createdAt
-                                 ? formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })
-                                 : "Date Unavailable"}
-                           </span>
-                           <div className="action-buttons">
-                              <button
-                                 className="edit-button"
-                                 onClick={() => handleEditPostModal(post)}
-                              >
-                                 Edit
-                              </button>
-                              <button
-                                 className="delete-button"
-                                 onClick={() => confirmDeletePost(post._id)}
-                              >
-                                 Delete
-                              </button>
-                           </div>
-                        </div>
-                     </div>
-                  ))}
-               </div>
+                    ))}
+                </div>
             ) : (
-               <p className="no-posts-message">No posts available.</p>
+                <p className="no-posts-message">No posts available.</p>
             )}
-         </div>
-      </div>
-   );
+        </div>
+    );
 };
 
 export default PostCard;

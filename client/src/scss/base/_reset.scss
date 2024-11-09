@@ -1,82 +1,72 @@
-// base/_reset.scss
+/* Reset Browser Defaults */
+// *,
+// *::before,
+// *::after {
+//     margin: 0;
+//     padding: 0;
+//     box-sizing: border-box;
+// }
 
-/* Box sizing rules */
-*,
-*::before,
-*::after {
-   box-sizing: border-box;
-}
-
-/* Remove default margin */
-* {
-   margin: 0;
-   padding: 0;
-}
-
-/* Allow percentage-based heights in the application */
 html,
 body {
-   height: 100%;
+    height: 100%;
+    font-family: $font-family-primary;
+    background-color: $secondary-bg-color;
+    color: $primary-text-color;
+    line-height: $line-height;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* Set base font-size and ensure a consistent line-height */
-html {
-   font-size: 100%; // Adjusts to 16px as default
-   line-height: 1.6;
-   scroll-behavior: smooth;
-   text-size-adjust: 100%; // Disable text-size adjustment on mobile devices
-}
-
-/* Reset body styling */
-body {
-   font-family: $font-primary, sans-serif; // Custom font
-   color: $charcoal; // Default text color
-   background-color: $white; // Background color
-   -webkit-font-smoothing: antialiased;
-   -moz-osx-font-smoothing: grayscale;
-}
-
-
-/* Remove list styling */
-ul,
-ol {
-   list-style: none;
-}
-
-/* Remove default text underline */
+/* Links */
 a {
-   text-decoration: none;
-   color: inherit; // Ensures it takes custom link color
+    text-decoration: none;
+    font-weight: 600;
+    color: $accent-color-2;
+
+    &:hover {
+        color: adjust-color($accent-color-2, $lightness: -10%);
+        text-decoration: underline;
+    }
 }
 
-/* Make images easier to work with */
-img,
-picture {
-   max-width: 100%;
-   display: block;
+/* Images */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
 }
 
-/* Reset table layout */
-table {
-   border-collapse: collapse;
-   width: 100%;
+/* Buttons */
+button {
+    font-family: inherit;
+    cursor: pointer;
 }
 
+/* main.scss or a specific component's SCSS file */
 
-/* Focus styles for accessibility */
-:focus {
-   outline: 2px solid $primary-purple;
-   outline-offset: 2px;
+/* WebKit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
 }
 
-/* Remove all animations, transitions for people that prefer reduced motion */
-@media (prefers-reduced-motion: reduce) {
-   *,
-   *::before,
-   *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-   }
+::-webkit-scrollbar-track {
+    background: $secondary-bg-color; /* Use your background color variable */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: $primary-text-color; /* Use your primary text color variable */
+    border-radius: 10px;
+    border: 3px solid $secondary-bg-color; /* Match the track background */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: adjust-color($primary-text-color, $lightness: -10%);
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: $primary-text-color $secondary-bg-color;
 }

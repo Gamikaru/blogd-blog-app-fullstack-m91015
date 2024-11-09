@@ -1,0 +1,493 @@
+// Wrapper for the entire modal
+.modal-wrapper-usermanager {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: get-z-index(modal-backdrop); // Use defined z-index
+    background: rgba(0, 0, 0, 0.5); // Semi-transparent backdrop
+    backdrop-filter: blur(5px); // Optional: Blur effect for the backdrop
+    animation: backdropFadeIn $transitions-base;
+}
+
+// Backdrop to capture clicks outside the modal
+.modal-backdrop-usermanager {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: $modal-backdrop-color; // Use defined variable
+    cursor: pointer;
+}
+
+// Modal container
+.usermanager-modal {
+    position: relative;
+    background-color: $secondary-bg-color;
+    border-radius: $border-radius;
+    width: 90%;
+    max-width: map-get($container-max-widths, md);
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: $spacing-lg;
+    box-shadow: $box-shadow-medium;
+    z-index: get-z-index(modal); // Use defined z-index
+    animation: modalFadeIn $transitions-base;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: $spacing-md;
+
+        h2 {
+            margin: 0;
+            font-size: $heading-font-size-md;
+            color: $primary-text-color;
+        }
+
+        &__close {
+            background: none;
+            border: none;
+            color: $secondary-text-color;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: color $transitions-base;
+
+            &:hover {
+                color: $accent-color-1;
+            }
+
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+
+    &__tabs {
+        display: flex;
+        gap: $spacing-sm;
+        border-bottom: 1px solid $border-color;
+        margin-bottom: $spacing-md;
+        justify-content: space-around;
+        flex-wrap: wrap;
+
+        &__tab {
+            display: flex;
+            align-items: center;
+            gap: $spacing-xs;
+            padding: $spacing-sm;
+            background: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: $body-font-size;
+            color: $secondary-text-color;
+            transition: background-color $transitions-base, color $transitions-base, transform 0.2s ease;
+
+            &:hover {
+                background-color: $hover-color;
+                color: $primary-text-color;
+                transform: translateY(-2px);
+            }
+
+            &.active {
+                background-color: $accent-color-1;
+                color: #fff;
+                border-bottom: 2px solid $accent-color-2;
+            }
+
+            &:focus {
+                outline: none;
+            }
+
+            svg {
+                font-size: 1.2rem;
+            }
+
+            span {
+                display: none; // Hide labels on smaller screens
+            }
+
+            @media (min-width: $breakpoint-sm) {
+                span {
+                    display: inline; // Show labels on larger screens
+                }
+            }
+        }
+    }
+
+    &__content {
+        flex: 1;
+        padding: $spacing-md;
+        background-color: $primary-bg-color;
+        border-radius: $border-radius;
+        box-shadow: $box-shadow-medium;
+    }
+}
+
+// Form Styling
+.usermanager-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-md;
+
+    &__group {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-xs;
+
+        label {
+            font-size: $small-font-size;
+            color: $primary-text-color;
+            margin-bottom: 4px;
+        }
+
+        input,
+        select {
+            padding: $input-padding;
+            border: 1px solid $border-color;
+            border-radius: $border-radius;
+            font-size: $body-font-size;
+            color: $primary-text-color;
+            background-color: $input-bg-color;
+            transition: border-color $transitions-base, box-shadow $transitions-base;
+
+            &:focus {
+                border-color: $highlight-color;
+                box-shadow: 0 0 0 3px rgba($highlight-color, 0.25);
+                outline: none;
+            }
+        }
+
+        input[type="file"] {
+            padding: 0;
+        }
+
+        .error {
+            color: $error-color;
+            font-size: $xsmall-font-size;
+            margin-top: 2px;
+        }
+    }
+
+    &__submit {
+        grid-column: span 2;
+        padding: map-get($button-padding, sm);
+        background-color: $accent-color-1;
+        color: #fff;
+        border: none;
+        border-radius: $border-radius;
+        font-size: $body-font-size;
+        cursor: pointer;
+        transition: background-color $transitions-base, transform 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        justify-self: end;
+
+        &:hover {
+            background-color: darken($accent-color-1, 5%);
+            transform: translateY(-1px);
+        }
+
+        &:disabled {
+            background-color: lighten($accent-color-1, 20%);
+            cursor: not-allowed;
+        }
+    }
+}
+
+// Coming Soon Content
+.usermanager-content__coming-soon {
+    text-align: center;
+    font-size: $body-font-size;
+    color: $secondary-text-color;
+    padding: $spacing-lg 0;
+}
+
+// Animations
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes backdropFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+// Responsive Design
+@media (max-width: $breakpoint-md) {
+    .usermanager-form {
+        grid-template-columns: 1fr;
+
+        &__submit {
+            grid-column: 1;
+        }
+    }
+
+    .usermanager-modal {
+        padding: $spacing-lg;
+    }
+
+    .usermanager-modal__tabs {
+        justify-content: center;
+    }
+
+    .usermanager-modal__tab {
+        flex: none;
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+// _usermanager.scss
+
+.usermanager {
+    &-wrapper {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: get-z-index(modal);
+        background: $modal-backdrop-color;
+        backdrop-filter: blur(10px);
+        animation: backdropFadeIn $transitions-base;
+    }
+
+    &-backdrop {
+        position: absolute;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+    }
+
+    &-container {
+        position: relative;
+        width: 90%;
+        max-width: 800px;
+        max-height: 90vh;
+        background: $secondary-bg-color;
+        border-radius: $border-radius;
+        box-shadow: $box-shadow-strong;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        animation: modalFadeIn $transitions-base;
+    }
+
+    &-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: $spacing-lg $spacing-lg 0;
+
+        &__title {
+            font-family: $font-family-heading;
+            font-size: $heading-font-size-md;
+            color: $primary-text-color;
+            margin: 0;
+        }
+
+        &__close {
+            @include reset-button;
+            font-size: 1.2rem;
+            color: $secondary-text-color;
+            padding: $spacing-xs;
+            transition: color 0.2s ease;
+
+            &:hover {
+                color: $primary-text-color;
+            }
+        }
+    }
+
+    &-tabs {
+        display: flex;
+        gap: $spacing-sm;
+        padding: $spacing-lg $spacing-lg 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+
+        &__button {
+            @include reset-button;
+            display: flex;
+            align-items: center;
+            gap: $spacing-xs;
+            padding: $spacing-sm $spacing-md;
+            color: $secondary-text-color;
+            font-size: $small-font-size;
+            border-radius: $border-radius $border-radius 0 0;
+            transition: all 0.2s ease;
+
+            svg {
+                font-size: 1.1rem;
+            }
+
+            &:hover {
+                color: $primary-text-color;
+                background: rgba($accent-color-2, 0.1);
+            }
+
+            &.active {
+                color: $primary-text-color;
+                background: rgba($accent-color-2, 0.15);
+                border-bottom: 2px solid $accent-color-2;
+            }
+        }
+    }
+
+    &-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: $spacing-lg;
+
+        &__form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: $spacing-md;
+
+            .form-group {
+                display: flex;
+                flex-direction: column;
+                gap: $spacing-xs;
+
+                label {
+                    font-size: $small-font-size;
+                    color: $secondary-text-color;
+                }
+
+                input,
+                select {
+                    padding: $spacing-sm;
+                    border: 1px solid rgba(0, 0, 0, 0.08);
+                    border-radius: $border-radius;
+                    background: $primary-bg-color;
+                    font-size: $body-font-size;
+                    color: $primary-text-color;
+                    transition: all 0.2s ease;
+
+                    &:focus {
+                        border-color: $accent-color-2;
+                        outline: none;
+                        box-shadow: 0 0 0 3px rgba($accent-color-2, 0.1);
+                    }
+                }
+
+                input[type="file"] {
+                    padding: $spacing-xs;
+                    border: 1px dashed rgba(0, 0, 0, 0.1);
+
+                    &::-webkit-file-upload-button {
+                        display: none;
+                    }
+
+                    &::before {
+                        content: "Choose file";
+                        color: $secondary-text-color;
+                        margin-right: $spacing-xs;
+                    }
+                }
+
+                .error {
+                    color: $error-color;
+                    font-size: $xsmall-font-size;
+                    margin-top: 2px;
+                }
+            }
+        }
+
+        &__submit {
+            grid-column: 1 / -1;
+            padding: $spacing-sm $spacing-lg;
+            background: $accent-color-2;
+            color: $primary-text-color;
+            border: none;
+            border-radius: $button-border-radius;
+            font-size: $body-font-size;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            justify-self: end;
+            margin-top: $spacing-md;
+
+            &:hover {
+                background: darken($accent-color-2, 5%);
+            }
+
+            &:disabled {
+                opacity: 0.7;
+                cursor: not-allowed;
+            }
+        }
+
+        &__coming-soon {
+            text-align: center;
+            color: $secondary-text-color;
+            padding: $spacing-xl;
+            font-size: $body-font-size;
+        }
+    }
+}
+
+// Animations
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes backdropFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+// Responsive Design
+@media (max-width: $breakpoint-md) {
+    .usermanager {
+        &-container {
+            width: 95%;
+            max-height: 95vh;
+        }
+
+        &-content__form {
+            grid-template-columns: 1fr;
+        }
+
+        &-tabs {
+            overflow-x: auto;
+            padding-bottom: $spacing-xs;
+
+            &__button {
+                white-space: nowrap;
+            }
+        }
+    }
+}

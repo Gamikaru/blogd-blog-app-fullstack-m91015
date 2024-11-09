@@ -1,0 +1,20 @@
+// _navbar-header.scss
+
+.nav-header {
+    background-color: $primary-bg-color;
+    padding-bottom: 10rem;
+    padding-inline: $navbar-padding;
+    margin-right: 2rem;
+    border-bottom: 1px solid lighten($primary-bg-color, 10%);
+    position: relative;
+    border-radius: 0 0 1.5rem 0;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 60px;
+}

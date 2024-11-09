@@ -1,0 +1,55 @@
+.error-boundary {
+    background-color: $primary-bg-color;
+    color: $error-color;
+    padding: map-get($spacing-scale, lg);
+    border-radius: $border-radius;
+    box-shadow: $box-shadow-medium;
+    text-align: center;
+    max-width: map-get($container-max-widths, sm);
+    margin: map-get($spacing-scale, xxl) auto;
+
+    &__title {
+        font-family: $font-family-heading;
+        font-size: $heading-font-size-md;
+        color: $error-color;
+        margin-bottom: map-get($spacing-scale, md);
+    }
+
+    &__message {
+        font-family: $font-family-primary;
+        font-size: $body-font-size;
+        color: $secondary-text-color;
+        margin-bottom: map-get($spacing-scale, lg);
+    }
+
+    &__details {
+        font-family: $font-family-primary;
+        font-size: $xsmall-font-size;
+        background-color: $secondary-bg-color;
+        color: $primary-text-color;
+        padding: map-get($spacing-scale, sm);
+        border: 1px solid $border-color;
+        border-radius: $border-radius;
+        text-align: left;
+        white-space: pre-wrap;
+        margin-top: map-get($spacing-scale, lg);
+    }
+
+    .button-retry {
+        background-color: $highlight-color;
+        color: $secondary-bg-color;
+        padding: map-get($button-padding, md);
+        border: none;
+        border-radius: $button-border-radius;
+        cursor: pointer;
+        transition: map-get($transitions, button);
+
+        &:hover {
+            background-color: $button-hover-bg-color;
+        }
+
+        &:focus {
+            box-shadow: $input-focus-box-shadow;
+        }
+    }
+}

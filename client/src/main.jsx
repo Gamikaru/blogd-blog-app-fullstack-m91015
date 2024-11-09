@@ -1,14 +1,24 @@
+// main.jsx
+import 'bootstrap/scss/bootstrap.scss';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import 'swiper/css'; // Global swiper styles
 import App from './App';
-import 'bootstrap/scss/bootstrap.scss'; // Import Bootstrap's SCSS
-import './scss/main.scss'; // Import your global SCSS file
+import { Providers } from './Providers';
+import './scss/main.scss';
+// CubeSlider.jsx (local to CubeSlider)
 
-/**
- * main.jsx: The entry point of the application where React renders the App component.
- */
+
+
+
+
+
 ReactDOM.createRoot(document.getElementById('root')).render(
-   <React.Fragment>
-      <App />
-   </React.Fragment>
+    <BrowserRouter>
+        <Providers>
+            <App />
+        </Providers>
+    </BrowserRouter>
 );
+

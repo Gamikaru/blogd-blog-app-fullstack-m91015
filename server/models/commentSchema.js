@@ -7,7 +7,7 @@ const commentSchema = new Schema({
         type: String,
         required: true,
         minlength: 1, // Ensures a comment has at least one character
-        maxlength: 1000 // Limit comment length to a reasonable size
+        maxlength: 10000 // Limit comment length to a reasonable size
     },
     postId: {
         type: Schema.Types.ObjectId,
@@ -21,10 +21,19 @@ const commentSchema = new Schema({
         required: true,
         index: true // Add index for faster queries on userId
     },
+    parentId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Comment',
+        default: null // Default to null for top-level comments
+    },
     likes: {
         type: Number,
         default: 0
     },
+    replies: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Comment'
+    }],
     timeStamp: {
         type: Date,
         default: Date.now

@@ -1,6 +1,6 @@
+import { ApiClient } from '@components';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import Cookies from 'universal-cookie';
-import ApiClient from '../services/api/ApiClient';
 
 const cookies = new Cookies();
 
@@ -9,74 +9,84 @@ const UserContext = createContext();
 /**
  * UserProvider: A context provider component to manage user authentication state.
  */
-export const UserProvider = ({ children }) => {
-   const [user, setUser] = useState(null); // Store user data
-   const [loading, setLoading] = useState(true); // Loading state for fetching user data
+const UserProvider = ({ children }) => {
+    const [user, setUser] = useState(null); // Store user data
+    const [loading, setLoading] = useState(true); // Loading state for fetching user data
 
-   // Fetch user data when the component is mounted
-   useEffect(() => {
-      const fetchUser = async () => {
-         const token = cookies.get('PassBloggs'); // Retrieve token from cookies
-         const userID = cookies.get('userID');   // Retrieve userID from cookies
+    // Fetch user data when the component is mounted
+    useEffect(() => {
+        const fetchUser = async () => {
+            const token = cookies.get('PassBloggs');
+            const userID = cookies.get('userID');
 
-         // If token or userID is missing, stop loading and return early
-         if (!token || !userID) {
-            console.log('No token or userID found.');
-            setLoading(false); // End loading state
-            return;
-         }
+            // Log the fetched userID and token from cookies
+            console.debug('Fetched userID from cookies:', userID, 'Type:', typeof userID);
+            console.debug('Fetched token from cookies:', token, 'Type:', typeof token);
 
-         try {
-            // Fetch user data from API
-            console.log('Fetching user data for userID:', userID);
-            const response = await ApiClient.get(`/user/${userID}`);
-
-            // If user data is found, set user state
-            if (response.data) {
-               console.log('User data fetched:', response.data);
-               setUser(response.data);
-            } else {
-               console.log('No user data found.');
-               setUser(null);
+            // If token or userID is missing, stop loading and return early
+            if (!token || !userID) {
+                console.warn('No token or userID found. Stopping loading.');
+                setLoading(false);
+                return;
             }
-         } catch (error) {
-            // Log any errors during the user fetch process
-            console.error('Error fetching user data:', error.message);
-            setUser(null); // Reset user if error occurs
-         } finally {
-            setLoading(false); // Ensure loading ends in all cases
-         }
-      };
 
-      fetchUser(); // Invoke fetch user function on component mount
-   }, []);  // Empty dependency array for one-time fetch
+            try {
+                // Make sure userID is a string
+                const userId = String(userID);
+                console.debug('Converted userId:', userId);
 
-   console.log('UserProvider rendered with user:', user);
+                console.info('Fetching user data for userID:', userId);
+                const response = await ApiClient.get(`/user/${userId}`);
 
-   // Provide both user and loading states to the context consumers
-   return (
-      <UserContext.Provider value={{ user, loading, setUser }}>
-         {children}
-      </UserContext.Provider>
-   );
+                if (response.data) {
+                    console.info('User data fetched successfully:', response.data);
+                    setUser(response.data);
+                } else {
+                    console.warn('No user data found for userID:', userId);
+                    setUser(null);
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error.message);
+                // Clear cookies on error
+                cookies.remove('PassBloggs', { path: '/' });
+                cookies.remove('userID', { path: '/' });
+                setUser(null);
+            } finally {
+                setLoading(false);
+                console.debug('Finished fetching user data. Loading state set to false.');
+            }
+        };
+
+        fetchUser();
+    }, []);
+
+    console.debug('UserProvider rendered with user:', user);
+
+    // Provide both user and loading states to the context consumers
+    return (
+        <UserContext.Provider value={{ user, loading, setUser }}>
+            {children}
+        </UserContext.Provider>
+    );
 };
 
 // Hook to access the current user and loading state
-export const useUser = () => {
-   const context = useContext(UserContext);
-   if (!context) {
-      throw new Error('useUser must be used within a UserProvider');
-   }
-   return context;
+const useUser = () => {
+    const context = useContext(UserContext);
+    if (!context) {
+        throw new Error('useUser must be used within a UserProvider');
+    }
+    return context;
 };
 
 // Hook to update the user
-export const useUserUpdate = () => {
-   const context = useContext(UserContext);
-   if (!context) {
-      throw new Error('useUserUpdate must be used within a UserProvider');
-   }
-   return context.setUser;
+const useUserUpdate = () => {
+    const context = useContext(UserContext);
+    if (!context) {
+        throw new Error('useUserUpdate must be used within a UserProvider');
+    }
+    return context.setUser;
 };
 
-export default UserContext;
+export default UserProvider;
+export { useUser, useUserUpdate };

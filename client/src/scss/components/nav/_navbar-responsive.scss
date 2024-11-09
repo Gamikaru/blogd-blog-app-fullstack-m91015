@@ -1,0 +1,17 @@
+// _navbar-responsive.scss
+
+@media (max-width: $breakpoint-md) {
+    .navbar-links {
+        display: none;
+    }
+
+    .navbar-right {
+        gap: 0.5rem;
+    }
+
+    .explore-links {
+        flex-wrap: wrap;
+        gap: $spacing-sm;
+        padding: $spacing-xs $spacing-sm;
+    }
+}

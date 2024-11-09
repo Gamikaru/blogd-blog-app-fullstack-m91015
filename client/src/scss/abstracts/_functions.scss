@@ -1,44 +1,55 @@
-// scss/abstracts/_functions.scss
+@use "sass:math";
 
-// Function to adjust color brightness by a given percentage
-@function adjust-color($color, $percent) {
-   @return mix($color, if($percent > 0, white, black), abs($percent));
+// Function for Rem Conversion
+@function px-to-rem($px) {
+    $base: 16;  // Remove px unit
+    $value: $px / $base;  // Simple division of numbers
+    @return #{$value}rem;  // Interpolate and add rem unit
 }
 
-// Function for responsive font-size scaling between min and max sizes
-@function responsive-font-size($min-size, $max-size) {
-   @return calc(#{$min-size} + (#{$max-size} - $min-size) * ((100vw - 360px) / (1920 - 360)));
+// Function for Calculating Lightness Adjustments
+@function adjust-color-lightness($color, $percent) {
+    @return lighten($color, $percent);
 }
 
-// Function to convert pixels to rem for typography and layout consistency
-@function px-to-rem($px-value) {
-   $base-font-size: 16px; // Base font size for the project
-   @return #{$px-value / $base-font-size}rem;
+// Function for Border Radius
+@function border-radius($radius: $border-radius) {
+    @return $radius;
 }
 
-// Function to handle dynamic spacing based on a factor (for modular spacing)
-@function modular-spacing($factor) {
-   $base-spacing: 1rem;
-   @return $factor * $base-spacing;
+// Function for Spacing Units
+@function spacing($multiplier) {
+    @return $spacing-unit * $multiplier;
 }
 
-// Function to calculate clamp for fluid responsive values
-@function clamp-value($min, $mid, $max) {
-   @return clamp(#{$min}, #{$mid}, #{$max});
+@function luminance($color) {
+    $r: color.channel($color, "red", $space: rgb);
+    $g: color.channel($color, "green", $space: rgb);
+    $b: color.channel($color, "blue", $space: rgb);
+    // Rest of the function...
 }
 
-// Function to calculate rem from pixel values for both width and height
-@function rem-calc($value) {
-   $base-size: 16px;
-   @return calc(#{$value / $base-size}rem);
+// Function for Color Channel
+@function get-color-channel($color, $channel) {
+    @if $channel == "red" {
+        @return red($color);
+    } @else if $channel == "green" {
+        @return green($color);
+    } @else if $channel == "blue" {
+        @return blue($color);
+    }
+    @return 0;
 }
 
-// Function to calculate percentage widths
-@function percentage($value, $context) {
-   @return calc((#{$value} / #{$context}) * 100%);
+// Utility Functions
+@function modal-spacing($key) {
+    @return map-get($modal-spacing, $key);
 }
 
-// Function to set linear-gradient color for backgrounds
-@function linear-bg($start-color, $end-color, $angle: 145deg) {
-   @return linear-gradient($angle, $start-color, $end-color);
+@function modal-dimension($key) {
+    @return map-get($modal-dimensions, $key);
+}
+
+@function get-z-index($key) {
+    @return map-get($z-indices, $key);
 }

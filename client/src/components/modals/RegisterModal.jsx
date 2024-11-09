@@ -1,234 +1,228 @@
-import React, { useEffect, useState, useRef } from "react";
-import { CloseButton, Spinner } from "react-bootstrap";
+//RegisterModal.jsx
+
+import { InputField, Logger, SelectField, UserService, capitalizeFirstLetter, useNotificationContext, usePublicModalContext, useUserUpdate, validateRegForm } from '@components';
+import React, { useEffect, useRef, useState } from "react";
 import { useCookies } from "react-cookie";
-import { useNotificationContext, usePublicModalContext, useUserUpdate } from "../../contexts";
-import Logger from "../../utils/Logger";
-import { capitalizeFirstLetter, validateRegForm } from "../../utils/formValidation";
-import InputField from "../common/InputField";
-import SelectField from "../common/SelectField";
-import UserService from './../../services/api/UserService';
 
 const initialFormState = {
-   firstName: "",
-   lastName: "",
-   email: "",
-   password: "",
-   confirmPassword: "",  // Added confirm password
-   birthDate: "",
-   occupation: "",
-   location: "",
-   status: "",
-   authLevel: "basic",
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",  // Added confirm password
+    birthDate: "",
+    occupation: "",
+    location: "",
+    status: "",
+    authLevel: "basic",
 };
 
 export default function RegisterModal() {
-   const [registerForm, setRegisterForm] = useState(initialFormState);
-   const [loading, setLoading] = useState(false);
-   const [errors, setErrors] = useState({});
-   const setUser = useUserUpdate();
-   const [cookies, setCookie] = useCookies(["PassBloggs", "userID"]);
-   const { showModal, togglePublicModal } = usePublicModalContext();
-   const { showNotification, setPosition } = useNotificationContext();
+    const [registerForm, setRegisterForm] = useState(initialFormState);
+    const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState({});
+    const setUser = useUserUpdate();
+    const [cookies, setCookie] = useCookies(["PassBloggs", "userID"]);
+    const { showModal, togglePublicModal } = usePublicModalContext();
+    const { showNotification, setPosition } = useNotificationContext();
 
-   // Initialize refs for form inputs
-   const inputRefs = useRef({
-      firstName: null,
-      lastName: null,
-      email: null,
-      password: null,
-      confirmPassword: null,
-      birthDate: null,
-      occupation: null,
-      location: null,
-   });
+    // Initialize refs for form inputs
+    const inputRefs = useRef({
+        firstName: null,
+        lastName: null,
+        email: null,
+        password: null,
+        confirmPassword: null,
+        birthDate: null,
+        occupation: null,
+        location: null,
+    });
 
-   function updateRegisterForm(value) {
-      Logger.info("Updating register form", value);
-      setRegisterForm((prev) => ({ ...prev, ...value }));
-   }
+    function updateRegisterForm(value) {
+        Logger.info("Updating register form", value);
+        setRegisterForm((prev) => ({ ...prev, ...value }));
+    }
 
-   useEffect(() => {
-      setPosition('info', false); // Always center for public routes like registration
-   }, [setPosition]);
+    useEffect(() => {
+        setPosition('info', false); // Always center for public routes like registration
+    }, [setPosition]);
 
-   // Focus on first error field
-   const focusFirstErrorField = (formErrors) => {
-      const firstErrorField = Object.keys(formErrors)[0];
-      if (inputRefs.current[firstErrorField]) {
-         inputRefs.current[firstErrorField].focus();
-      }
-   };
+    // Focus on first error field
+    const focusFirstErrorField = (formErrors) => {
+        const firstErrorField = Object.keys(formErrors)[0];
+        if (inputRefs.current[firstErrorField]) {
+            inputRefs.current[firstErrorField].focus();
+        }
+    };
 
-   async function handleRegister(e) {
-      e.preventDefault();
-      Logger.info("Form submitted", registerForm);
+    async function handleRegister(e) {
+        e.preventDefault();
+        Logger.info("Form submitted", registerForm);
 
-      const { errors: formErrors, allFieldsEmpty } = validateRegForm(registerForm);
-      setErrors(formErrors);
+        const { errors: formErrors, allFieldsEmpty } = validateRegForm(registerForm);
+        setErrors(formErrors);
 
-      if (Object.keys(formErrors).length > 0) {
-         if (allFieldsEmpty) {
-            showNotification("All fields are required.", "error");
-         } else {
-            showNotification("Please fill out the required fields correctly.", "error");
-         }
-
-         // Focus on the first invalid field
-         focusFirstErrorField(formErrors);
-         return;
-      }
-
-      // Capitalize form fields where applicable
-      const capitalizedForm = {
-         ...registerForm,
-         firstName: capitalizeFirstLetter(registerForm.firstName),
-         lastName: capitalizeFirstLetter(registerForm.lastName),
-         occupation: capitalizeFirstLetter(registerForm.occupation),
-         email: registerForm.email.toLowerCase(),
-      };
-
-      setLoading(true);
-      try {
-         const response = await UserService.registerUser(capitalizedForm);
-         if (response.message) {
-            showNotification(response.message, "success");
-
-            const userData = response.user;
-            if (userData) {
-               setCookie("PassBloggs", response.token, { path: "/", maxAge: 24 * 60 * 60 });
-               setCookie("userID", userData._id, { path: "/", maxAge: 24 * 60 * 60 });
-               setUser(userData);
+        if (Object.keys(formErrors).length > 0) {
+            if (allFieldsEmpty) {
+                showNotification("All fields are required.", "error");
+            } else {
+                showNotification("Please fill out the required fields correctly.", "error");
             }
 
-            // Delay modal close to allow users to see success toast
-            setTimeout(() => {
-               togglePublicModal();
-               setRegisterForm(initialFormState);
-               setErrors({});  // Clear errors after success
-            }, 4000);  // Increase timing for better UX
-         }
-      } catch (error) {
-         showNotification(error.message || "Registration failed due to an unexpected error.", "error");
-      } finally {
-         setLoading(false);
-      }
-   }
+            // Focus on the first invalid field
+            focusFirstErrorField(formErrors);
+            return;
+        }
 
-   const capitalCities = [
-      "Washington, D.C.", "Ottawa", "Mexico City", "London", "Paris", "Berlin",
-      "Rome", "Madrid", "Tokyo", "Beijing", "Canberra", "Brasília", "Moscow",
-      "New Delhi", "Cairo", "Buenos Aires", "Ankara", "Seoul", "Bangkok", "Jakarta"
-   ];
+        // Capitalize form fields where applicable
+        const capitalizedForm = {
+            ...registerForm,
+            firstName: capitalizeFirstLetter(registerForm.firstName),
+            lastName: capitalizeFirstLetter(registerForm.lastName),
+            occupation: capitalizeFirstLetter(registerForm.occupation),
+            email: registerForm.email.toLowerCase(),
+        };
 
-   return (
-      <div className={`register-modal-container ${showModal ? "open" : "closed"}`}>
-         <div className="register-modal">
-            <div className="register-modal-header">
-               <h2 className="register-modal-title">REGISTER</h2>
-               <span className="close-button" onClick={togglePublicModal}>
-                  <CloseButton />
-               </span>
-            </div>
-            <div className="register-modal-body">
-               <div className="register-card">
-                  <form onSubmit={handleRegister} className="form-container">
-                     <div className="form-row">
+        setLoading(true);
+        try {
+            const response = await UserService.registerUser(capitalizedForm);
+            if (response.message) {
+                showNotification(response.message, "success");
+
+                const userData = response.user;
+                if (userData) {
+                    setCookie("PassBloggs", response.token, { path: "/", maxAge: 24 * 60 * 60 });
+                    setCookie("userID", userData._id, { path: "/", maxAge: 24 * 60 * 60 });
+                    setUser(userData);
+                }
+
+                // Delay modal close to allow users to see success toast
+                setTimeout(() => {
+                    togglePublicModal();
+                    setRegisterForm(initialFormState);
+                    setErrors({});  // Clear errors after success
+                }, 4000);  // Increase timing for better UX
+            }
+        } catch (error) {
+            showNotification(error.message || "Registration failed due to an unexpected error.", "error");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const capitalCities = [
+        "Washington, D.C.", "Ottawa", "Mexico City", "London", "Paris", "Berlin",
+        "Rome", "Madrid", "Tokyo", "Beijing", "Canberra", "Brasília", "Moscow",
+        "New Delhi", "Cairo", "Buenos Aires", "Ankara", "Seoul", "Bangkok", "Jakarta"
+    ];
+
+    return (
+        <Modal
+            show={showModal}
+            onHide={togglePublicModal}
+            centered
+            className="register-modal"
+        >
+            <Modal.Header closeButton className="modal-header">
+                <Modal.Title className="modal-title">REGISTER</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className="modal-body">
+                <Form onSubmit={handleRegister} className="register-form">
+                    <div className="form-row">
                         <div className="form-column">
-                           <InputField
-                              label="First Name"
-                              placeholder="Enter your first name"
-                              value={registerForm.firstName}
-                              onChange={(e) => updateRegisterForm({ firstName: e.target.value })}
-                              error={errors.firstName}
-                              className="register-first-name-input"
-                              ref={(el) => (inputRefs.current.firstName = el)}
-                           />
-                           <InputField
-                              label="Email"
-                              placeholder="Enter your email"
-                              type="text"
-                              value={registerForm.email}
-                              onChange={(e) => updateRegisterForm({ email: e.target.value })}
-                              error={errors.email}
-                              className="register-email-input"
-                              ref={(el) => (inputRefs.current.email = el)}
-                           />
-                           <InputField
-                              label="Birth Date"
-                              type="date"
-                              value={registerForm.birthDate}
-                              onChange={(e) => updateRegisterForm({ birthDate: e.target.value })}
-                              error={errors.birthDate}
-                              className="register-birthdate-input"
-                              ref={(el) => (inputRefs.current.birthDate = el)}
-                           />
+                            <InputField
+                                label="First Name"
+                                placeholder="Enter your first name"
+                                value={registerForm.firstName}
+                                onChange={(e) => updateRegisterForm({ firstName: e.target.value })}
+                                error={errors.firstName}
+                                className="register-modal-input"
+                                ref={(el) => (inputRefs.current.firstName = el)}
+                            />
+                            <InputField
+                                label="Email"
+                                placeholder="Enter your email"
+                                type="text"
+                                value={registerForm.email}
+                                onChange={(e) => updateRegisterForm({ email: e.target.value })}
+                                error={errors.email}
+                                className="register-modal-input"
+                                ref={(el) => (inputRefs.current.email = el)}
+                            />
+                            <InputField
+                                label="Birth Date"
+                                type="date"
+                                value={registerForm.birthDate}
+                                onChange={(e) => updateRegisterForm({ birthDate: e.target.value })}
+                                error={errors.birthDate}
+                                className="register-modal-input"
+                                ref={(el) => (inputRefs.current.birthDate = el)}
+                            />
                         </div>
 
                         {/* Second Column */}
                         <div className="form-column">
-                           <InputField
-                              label="Last Name"
-                              placeholder="Enter your last name"
-                              value={registerForm.lastName}
-                              onChange={(e) => updateRegisterForm({ lastName: e.target.value })}
-                              error={errors.lastName}
-                              className="register-last-name-input"
-                              ref={(el) => (inputRefs.current.lastName = el)}
-                           />
-                           <InputField
-                              label="Password"
-                              placeholder="Enter your password"
-                              type="password"
-                              value={registerForm.password}
-                              onChange={(e) => updateRegisterForm({ password: e.target.value })}
-                              error={errors.password}
-                              className="register-password-input"
-                              ref={(el) => (inputRefs.current.password = el)}
-                           />
-                           <InputField
-                              label="Confirm Password"
-                              placeholder="Confirm your password"
-                              type="password"
-                              value={registerForm.confirmPassword}
-                              onChange={(e) => updateRegisterForm({ confirmPassword: e.target.value })}
-                              error={errors.confirmPassword}
-                              className="register-confirm-password-input"
-                              ref={(el) => (inputRefs.current.confirmPassword = el)}
-                           />
-                           <InputField
-                              label="Occupation"
-                              placeholder="Enter your occupation"
-                              value={registerForm.occupation}
-                              onChange={(e) => updateRegisterForm({ occupation: e.target.value })}
-                              error={errors.occupation}
-                              className="register-occupation-input"
-                              ref={(el) => (inputRefs.current.occupation = el)}
-                           />
+                            <InputField
+                                label="Last Name"
+                                placeholder="Enter your last name"
+                                value={registerForm.lastName}
+                                onChange={(e) => updateRegisterForm({ lastName: e.target.value })}
+                                error={errors.lastName}
+                                className="register-modal-input"
+                                ref={(el) => (inputRefs.current.lastName = el)}
+                            />
+                            <InputField
+                                label="Password"
+                                placeholder="Enter your password"
+                                type="password"
+                                value={registerForm.password}
+                                onChange={(e) => updateRegisterForm({ password: e.target.value })}
+                                error={errors.password}
+                                className="register-modal-input"
+                                ref={(el) => (inputRefs.current.password = el)}
+                            />
+                            <InputField
+                                label="Confirm Password"
+                                placeholder="Confirm your password"
+                                type="password"
+                                value={registerForm.confirmPassword}
+                                onChange={(e) => updateRegisterForm({ confirmPassword: e.target.value })}
+                                error={errors.confirmPassword}
+                                className="register-modal-input"
+                                ref={(el) => (inputRefs.current.confirmPassword = el)}
+                            />
+                            <InputField
+                                label="Occupation"
+                                placeholder="Enter your occupation"
+                                value={registerForm.occupation}
+                                onChange={(e) => updateRegisterForm({ occupation: e.target.value })}
+                                error={errors.occupation}
+                                className="register-modal-input"
+                                ref={(el) => (inputRefs.current.occupation = el)}
+                            />
                         </div>
-                     </div>
+                    </div>
 
-                     {/* Third Row */}
-                     <div className="form-row">
+                    {/* Third Row */}
+                    <div className="form-row">
                         <SelectField
-                           label="Location"
-                           options={capitalCities}
-                           value={registerForm.location}
-                           onChange={(e) => updateRegisterForm({ location: e.target.value })}
-                           error={errors.location}
-                           className="register-location-select"
-                           ref={(el) => (inputRefs.current.location = el)}
+                            label="Location"
+                            options={capitalCities}
+                            value={registerForm.location}
+                            onChange={(e) => updateRegisterForm({ location: e.target.value })}
+                            error={errors.location}
+                            className="register-modal-input"
+                            ref={(el) => (inputRefs.current.location = el)}
                         />
-                     </div>
+                    </div>
 
-                     <div className="register-submit-container">
-                        <button type="submit" className="register-submit-btn" disabled={loading}>
-                           {loading ? <Spinner animation="border" size="sm" /> : "Submit"}
-                        </button>
-                     </div>
-                  </form>
-               </div>
-            </div>
-         </div>
-      </div>
-   );
+                    <div className="submit-container">
+                        <Button type="submit" className="button button-submit" disabled={loading}>
+                            {loading ? "Submitting..." : "Register"}
+                        </Button>
+                    </div>
+                </Form>
+            </Modal.Body>
+        </Modal>
+    );
 }

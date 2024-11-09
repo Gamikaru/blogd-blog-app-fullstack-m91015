@@ -1,0 +1,257 @@
+.cube-slider-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    // max-width: 1400px;
+    margin: 0 auto;
+    margin-top: -8rem !important;
+    padding-bottom: 5rem;
+    overflow: visible; // Ensure overflow is visible
+
+
+    background-color: $primary-bg-color;
+    z-index: 2;
+
+    .cube-slider-container {
+        position: relative;
+
+        &.image-slider-container {
+            width: 100%; /* Adjust width to be about twice the text cube */
+            margin-top: 0;
+            width: 100%; // Increase width beyond parent
+            margin-left: -5%; // Adjust to center or spill over
+            z-index: 2;
+        }
+
+        &.text-slider-container {
+            width: 50%; /* Adjust width to be half of the image cube */
+            margin-left: -1.1%; /* Adjust margin to ensure no overlap */
+            z-index: 1;
+            position: relative;
+            top: 6rem; /* Adjust top margin to align vertically */
+        }
+    }
+
+    .cube-slider {
+        width: 100%;
+        height: 25rem; /* Adjust height as needed */
+
+        &.text-slider {
+            height: 20rem; /* Adjust height to be 4/5 of the image cube */
+        }
+
+        .swiper-slide {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+
+            .cube-slide {
+                width: 100%;
+                height: 100%;
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+
+                img {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    // border: 0.5rem solid $border-color;
+                    // box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    border-radius: $border-radius; /* Optional: Add border-radius to images */
+                }
+            }
+
+            .cube-slide-text {
+                width: 100%;
+                height: 100%;
+                padding: 0.5rem; /* Adjust padding as needed */
+                background-color: $secondary-bg-color;
+                border-radius: 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: center; /* Center content vertically */
+                text-align: left;
+                border-top: 2px solid $secondary-bg-color; /* Example secondary background color */
+                // box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                overflow: visible; /* Ensure content does not overflow */
+                box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+
+
+                .post-title {
+                    font-size: clamp(1.7rem, 2.5vw, $heading-font-size-md); /* Fluid typography */
+                    font-weight: 600;
+                    margin: 0 2rem 0.5rem 2rem;
+                    color: $primary-text-color;
+                    line-height: 1.2; /* Adjust line height */
+                    font-family: $font-family-heading;
+                    white-space: normal; /* Allow text to wrap */
+                    overflow: hidden; /* Hide overflow text */
+                    text-overflow: ellipsis; /* Add ellipsis for overflow text */
+                    min-height: 3rem; /* Ensure enough space for multiple lines */
+                }
+
+                .post-excerpt {
+                    font-size: $body-font-size;
+                    color: $secondary-text-color;
+                    line-height: 1.6; /* Reduced line height */
+                    margin: 0 2rem;
+                    position: relative;
+                    margin-bottom: 1rem;
+                    display: flex;
+                    align-items: center;
+                    z-index: 2000;
+
+                    .cube-quote {
+                        font-size: $body-font-size;
+                        color: $secondary-text-color; /* Example secondary text color */
+                        font-style: italic;
+                        line-height: 1.6rem;
+                        padding-left: 1.5rem;
+                        overflow: visible;
+                        display: inline;
+                        text-indent: -1.5rem;
+                        margin-top: 0;
+
+                        .cube-opening-quote {
+                            font-size: 2rem;
+                            font-weight: bold;
+                            color: $primary-text-color; /* Example primary text color */
+                            margin-right: 1rem;
+                            vertical-align: text-top;
+                            font-family: $font-family-heading;
+                        }
+
+                        .cube-closing-group {
+                            display: inline-flex;
+                            align-items: center;
+                            margin-left: 0.25rem;
+                            position: relative;
+                            top: 0.5rem;
+                            left: 1.5rem;
+
+                            .cube-closing-quote {
+                                font-size: 2rem;
+                                font-weight: bold;
+                                color: $primary-text-color; /* Example primary text color */
+                                vertical-align: baseline;
+                                font-family: $font-family-heading;
+                            }
+
+                            .cube-post-category-icon {
+                                display: inline-block;
+                                vertical-align: middle;
+                                left: 1.5rem;
+                                position: relative; /* Ensure correct positioning */
+                                bottom: 0.2rem; /* Adjust as needed */
+                            }
+                        }
+                    }
+                }
+
+                .post-meta {
+                    margin-top: -1rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center; /* Centers items horizontally */
+                    padding-left: 3rem;
+                    padding-top: 1rem; /* Add padding for vertical space */
+                    padding-bottom: 1rem; /* Add padding for vertical space */
+                    white-space: nowrap; /* Prevent text from wrapping */
+                    overflow: hidden; /* Hide overflow text */
+                    text-overflow: ellipsis; /* Add ellipsis for overflow text */
+
+                    .post-category {
+                        display: inline-block;
+                        background-color: $accent-color-2; /* Use your accent color variable */
+                        color: white;
+                        padding: 0.4rem 0.75rem;
+                        border-radius: $border-radius;
+                        font-size: $sub-heading-font-size;
+                        font-weight: 500;
+                    }
+
+                    .post-author,
+                    .post-date {
+                        font-size: 0.875rem;
+                        color: #666;
+                        margin: 0; /* Removes extra margins */
+                    }
+
+                    .post-author::after {
+                        content: "|";
+                        margin: 0 1rem; /* Adjusts space around the separator */
+                        color: #999;
+                    }
+
+                    .post-date::after {
+                        content: ""; /* Removes the separator after the last item */
+                    }
+                }
+            }
+        }
+    }
+
+    @media (max-width: $breakpoint-md) {
+        .cube-slider-wrapper {
+            flex-direction: column;
+            align-items: center;
+
+            .cube-slider-container {
+                max-width: 100%;
+                margin-left: 0;
+                margin-top: 0;
+            }
+
+            .cube-slider {
+                height: 200px;
+            }
+
+            .image-slider-container,
+            .text-slider-container {
+                margin: 0;
+            }
+
+            .text-slider-container {
+                margin-left: 0;
+                margin-top: 2rem;
+            }
+
+            .cube-slide-text {
+                padding-left: 1rem;
+                padding-right: 1rem;
+
+                .post-title {
+                    margin: 1rem 1rem;
+                }
+
+                .post-excerpt {
+                    margin-left: 1rem;
+                    padding-right: 1rem;
+                }
+
+                .post-meta {
+                    padding-left: 1rem;
+                }
+            }
+        }
+    }
+
+    .cube-slider-loading {
+        height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: $font-family-primary;
+        color: #ffffff;
+        font-size: 1rem;
+    }
+}

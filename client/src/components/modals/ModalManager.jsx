@@ -1,18 +1,28 @@
+// ModalManager.jsx
+import { EditPostModal, PostModal, RegisterModal, usePrivateModalContext, usePublicModalContext, UserManager } from '@components';
+import { AnimatePresence } from 'framer-motion';
 import React from 'react';
-import RegisterModal from './RegisterModal';
-import PostModal from './PostModal';
-import EditPostModal from './EditPostModal';
-import { usePrivateModalContext, usePublicModalContext } from '../../contexts';
 
-export const ModalManager = () => {
-   const { modalType: publicModalType, showModal: showPublicModal } = usePublicModalContext();
-   const { modalType: privateModalType, showModal: showPrivateModal } = usePrivateModalContext();
+const ModalManager = () => {
+    const { modalType: publicModalType, showModal: showPublicModal, togglePublicModal } = usePublicModalContext();
+    const { modalType: privateModalType, showModal: showPrivateModal, togglePrivateModal } = usePrivateModalContext();
 
-   return (
-      <>
-         {showPublicModal && publicModalType === 'register' && <RegisterModal />}
-         {showPrivateModal && privateModalType === 'post' && <PostModal />}
-         {showPrivateModal && privateModalType === 'editPost' && <EditPostModal />}
-      </>
-   );
+    return (
+        <AnimatePresence mode="wait">
+            {showPublicModal && publicModalType === 'register' && (
+                <RegisterModal onClose={() => togglePublicModal()} />
+            )}
+            {showPrivateModal && privateModalType === 'post' && (
+                <PostModal onClose={() => togglePrivateModal()} />
+            )}
+            {showPrivateModal && privateModalType === 'editPost' && (
+                <EditPostModal onClose={() => togglePrivateModal()} />
+            )}
+            {showPrivateModal && privateModalType === 'userSettings' && (
+                <UserManager onClose={() => togglePrivateModal()} />
+            )}
+        </AnimatePresence>
+    );
 };
+
+export default ModalManager;

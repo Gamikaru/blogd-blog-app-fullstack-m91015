@@ -1,111 +1,119 @@
-// scss/abstracts/_variables.scss
+// _variables.scss
 
-// --------------------
-// Color Variables
-// --------------------
+// Base values
+$base-font-size: 16px;
+$base-line-height: 1.6;
 
-// Background Colors
-$charcoal: #333333;
-$charcoal-extra-light: #e0e0e0; // Light charcoal color
-$charcoal-light: #555555;
-$white: #ffffff;
+// Fluid Typography Function
+@function fluid-type($min-vw, $max-vw, $min-size, $max-size) {
+    @return clamp(#{$min-size}rem, #{($max-size - $min-size) * 100}vw, #{$max-size}rem);
+}
 
-// Primary Colors
-$primary-purple: #9191ec;
-$primary-purple-light: lighten($primary-purple, 10%); // Lightened primary purple
-$primary-purple-dark: darken($primary-purple, 10%); // Darkened primary purple
-$electric-violet: #8a2be2;
-$electric-violet-light: lighten($electric-violet, 10%); // Lightened violet
-$dark-indigo: #4b0082;
+// Colors
+$primary-bg-color: #f3f0ed;
+$secondary-bg-color: #ffffff;
+$primary-text-color: #3d3d3d;
+$secondary-text-color: #9c9c9c;
+$accent-color-1: #e2e3d5;
+$accent-color-2: #f1f1f1;
+$highlight-color: #007bff;
+$success-color: #28a745;
+$error-color: #e74c3c;
+$warning-color: #f39c12;
+$hover-color: darken($accent-color-2, 10%);
+$modal-backdrop-color: rgba(0, 0, 0, 0.2);
 
-// Accent Colors
-$success-green: #27ae60;
-$bright-red: #e74c3c;
-$sunset-orange: #f39c12;
+// Border Color (single definition to avoid conflicts)
+$border-color: rgba(0, 0, 0, 0.1);
 
-// Neutral Colors
-$light-gray: #f5f5f5;
-$light-silver: #bdc3c7;
-$disabled-gray: #7f8c8d;
+// Typography - Fluid Responsive
+$font-family-primary: "Inter", sans-serif;
+$font-family-heading: "Merriweather", serif;
+$heading-font-size-xxlg: fluid-type(320px, 1200px, 2.5, 3.5);
+$heading-font-size-lg: fluid-type(320px, 1200px, 1.75, 2.25);
+$heading-font-size-md: fluid-type(320px, 1200px, 1.25, 1.5);
+$sub-heading-font-size: fluid-type(320px, 1200px, 1, 1.125);
+$body-font-size: 1rem;
+$small-font-size: 0.875rem;
+$xsmall-font-size: 0.75rem;
+$line-height: $base-line-height;
 
-// Dark Theme Colors
-$dark-background: #121212;
-$dark-text: #e0e0e0;
+// Responsive Spacing Scale
+$spacing-scale: (
+    xs: 0.25rem,
+    sm: 0.5rem,
+    md: 1rem,
+    lg: 1.5rem,
+    xl: 2rem,
+    xxl: 3rem
+);
 
-// Light Theme Colors
-$light-background: #ffffff;
-$light-text: #333333;
+// Spacing and Layout - More Responsive
+$spacing-unit: map-get($spacing-scale, md);
+$navbar-padding: map-get($spacing-scale, sm) map-get($spacing-scale, md);
+$card-padding: map-get($spacing-scale, lg);
+$button-padding: (
+    sm: 0.5rem 0.75rem,
+    md: 0.75rem 1.25rem,
+    lg: 1rem 1.5rem
+);
+$input-padding: map-get($spacing-scale, sm) map-get($spacing-scale, md);
+$sidebar-width: 12rem;
 
-// Hover State Variables (use consistent hover approach)
-$hover-darken-percentage: 10%;
-$primary-purple-hover: darken($primary-purple, $hover-darken-percentage);
-$electric-violet-hover: darken($electric-violet, $hover-darken-percentage);
-$success-green-hover: darken($success-green, $hover-darken-percentage);
-$bright-red-hover: lighten($bright-red, $hover-darken-percentage);
-$sunset-orange-hover: darken($sunset-orange, $hover-darken-percentage);
+// Responsive Borders and Shadows
+$border-radius: clamp(4px, 0.5vw, 8px);
+$button-border-radius: clamp(20px, 2vw, 30px); // Increased for oval buttons
+$card-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+$box-shadow-small: 0 clamp(1px, 0.25vw, 2px) clamp(2px, 0.5vw, 4px) rgba(0, 0, 0, 0.1);
+$box-shadow-medium: 0 clamp(2px, 0.5vw, 4px) clamp(4px, 0.75vw, 8px) rgba(0, 0, 0, 0.1);
+$box-shadow-strong: 0 clamp(4px, 1vw, 8px) clamp(8px, 1.5vw, 12px) rgba(0, 0, 0, 0.4);
+$shadow-color: rgba(0, 0, 0, 0.08); // For inset shadow effects
 
-// --------------------
-// Box Shadows (modularized for better control)
-$box-shadow-light: 0 4px 8px rgba(0, 0, 0, 0.1);
-$box-shadow-medium: 0 6px 12px rgba(0, 0, 0, 0.15); // Added medium shadow
-$box-shadow-heavy: 0 8px 16px rgba(0, 0, 0, 0.2);
-$box-shadow-focus: 0 6px 12px $primary-purple;
-
-// --------------------
-// Font Variables
-$font-primary: "Anton", sans-serif; // Primary font for headers
-$font-secondary: "Inter", sans-serif; // Secondary font for body text
-$font-tertiary: "JetBrains Mono", monospace; // Tertiary font for code-like elements
-
-// Font Weights
-$font-weight-extra-light: 100; // Ultra-light weight (use for very soft accents)
-$font-weight-light: 300; // Light weight for less emphasis
-$font-weight-regular: 400; // Regular font weight for balanced text
-$font-weight-medium: 500; // Medium weight for code or code-like fonts
-$font-weight-bold: 700; // Bold weight for strong emphasis (e.g., headers)
-$font-weight-extra-bold: 800; // Extra bold for very heavy emphasis
-
-// JetBrains Mono Font Weight Variants (specific usage)
-$jetbrains-light: 300; // Light JetBrains Mono (ideal for subtle, clean code text)
-$jetbrains-regular: 400; // Regular JetBrains Mono (use in input fields or basic code snippets)
-$jetbrains-medium: 500; // Medium JetBrains Mono (use for important code-like elements)
-$jetbrains-bold: 700; // Bold JetBrains Mono (strong code emphasis or headings)
-
-// Font Sizes (with REM values for modular scaling)
-$font-size-base: 1rem; // Default body text
-$font-size-xsmall: 0.625rem; // Extra-extra-small text (12px)
-$font-size-small: 0.875rem; // Small text
-$font-size-medium: 1.25rem; // Medium text
-$font-size-large: 2rem; // Large headings
-
-// --------------------
-// Breakpoints (optimized for em scaling)
-$breakpoint-xs: 22.5em; // 360px in em
+// Breakpoints with em units for better scaling
 $breakpoint-sm: 36em; // 576px
 $breakpoint-md: 48em; // 768px
 $breakpoint-lg: 62em; // 992px
 $breakpoint-xl: 75em; // 1200px
 
-// --------------------
-// Global Border Radius (added more granular control)
-$border-radius-small: 3px;
-$border-radius: 6px; // Standard rounded corners
-$border-radius-large: 12px; // Large rounded corners
+// Viewport-based Container Widths
+$container-max-widths: (
+    sm: 90vw,
+    md: 85vw,
+    lg: 80vw,
+    xl: 75vw
+);
 
-// --------------------
-// Spacing Variables (expanded modular system)
-$spacing-xxs: 0.125rem; // Extra-extra-small spacing (2px)
-$spacing-xs: 0.25rem; // Extra-small spacing (4px)
-$spacing-s: 0.5rem; // Small spacing (8px)
-$spacing-m: 1rem; // Medium spacing (16px)
-$spacing-l: 2rem; // Large spacing (32px)
-$spacing-xl: 3rem; // Extra-large spacing (48px)
-$spacing-xxl: 4rem; // Extra-extra-large spacing (64px)
-$spacing-xxxl: 6rem; // Extra-extra-extra-large spacing (96px)
-$spacing-xxxxl: 8rem; // Extra-extra-extra-extra-large spacing (128px)
+// Additional Button and Input Focus Styles
+$input-bg-color: #f3f0ed; // Added based on usage in UserManager.scss
+$transitions-base: 0.3s ease-out; // Added based on usage in UserManager.scss
 
-// Modular Spacing System
-$base-spacing: 1rem; // Base spacing for modular scaling
+// Transitions
+$transitions: (
+    base: 0.2s ease,
+    button: 0.2s ease-in-out
+);
 
-// Navbar Scaling
-$navbar-height: 5.5rem; // Fixed navbar height
+// Z-indices
+$z-indices: (
+    modal-backdrop: 1040,
+    modal: 1050
+);
+
+// Utility Variables for Responsive Design
+$spacing-xs: map-get($spacing-scale, xs);
+$spacing-sm: map-get($spacing-scale, sm);
+$spacing-md: map-get($spacing-scale, md);
+$spacing-lg: map-get($spacing-scale, lg);
+$spacing-xl: map-get($spacing-scale, xl);
+$spacing-xxl: map-get($spacing-scale, xxl);
+
+// **Added Variables**
+$button-hover-bg-color: lighten($highlight-color, 5%); // Hover background color for buttons
+$input-focus-box-shadow: 0 0 0 2px rgba($highlight-color, 0.2); // Box shadow for focused inputs
+
+// **New Variables for Button Variants**
+$button-opacity-hover: 1;
+$button-opacity-default: 0.8;
+$button-opacity-disabled: 0.6;
+
+// If needed, other variables can be added here

@@ -1,114 +1,109 @@
-@import "../abstracts/variables"; // Import global variables
-@import "../abstracts/mixins"; // Import centralized mixins
+// Sidebar Container
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 5rem;
+    width: $sidebar-width;
+    height: 22vh;
+    background-color: none;
+    padding-inline: $spacing-md;
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+    z-index: 1000; // Add this line with a value lower than the hamburger icon
 
+    &.open {
+        opacity: 1;
+        transform: translateY(0);
+        animation: slideInFromTop 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 
-// Sidebar Styling
-.nav {
-   background: rgba(255, 255, 255, 0.1);
-   backdrop-filter: blur(10px);
-   -webkit-backdrop-filter: blur(10px);
-   border-right: 1px solid rgba(255, 255, 255, 0.18);
-   width: 15vw;
-   padding-top: 20vh;
-   padding-left: $spacing-s;
-   height: 100vh;
-   position: fixed;
-   top: 0;
-   left: -15vw;
-   z-index: 900;
-   box-shadow: $box-shadow-light;
-   @include transition-all(0.3s, ease);
+        .sidebar-content {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.2s;
+        }
+    }
 
-   &.open {
-      left: 0;
-   }
+    &:not(.open) {
+        animation: slideOutToBottom 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
 
-   // Sidebar list styling
-   ul {
-      list-style: none;
-      padding: 0;
+    .sidebar-content {
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-xl;
+        padding-top: $spacing-xl;
+        padding-left: $spacing-md;
 
-      li {
-         margin-bottom: $spacing-l;
-
-         a {
-            text-decoration: none;
-            @include font-default($font-size-large, $font-weight-regular, $font-primary);
-            color: $charcoal;
-            text-transform: uppercase;
+        .button {
+            width: 80%;
+            max-width: 100%;
+            padding: map-get($button-padding, md);
             display: flex;
             align-items: center;
-            padding: $spacing-s $spacing-m;
-            position: relative;
-            @include transition-all(0.3s, ease);
+            gap: $spacing-sm;
+            font-weight: 500;
+            border-radius: $button-border-radius;
+            transition: all 0.2s ease;
 
-            .nav-icon {
-               margin-right: $spacing-s;
-               font-size: 1.8rem;
-               color: $primary-purple;
-               @include transition-all(0.3s, ease);
-            }
-
-            &::after {
-               content: "";
-               position: absolute;
-               bottom: 0;
-               left: 0;
-               width: 0%;
-               height: 2px;
-               background-color: $primary-purple;
-               @include transition-all(0.3s, ease);
+            .icon {
+                font-size: 1.1rem;
             }
 
             &:hover {
-               color: $primary-purple;
-
-               &::after {
-                  width: 100%;
-               }
-
-               .nav-icon {
-                  transform: translateX(5px);
-                  color: $primary-purple-hover;
-               }
+                transform: translateY(-1px);
+                box-shadow: $box-shadow-medium;
             }
+        }
 
-            &.active {
-               color: $primary-purple;
+        .account-options {
+            display: flex;
+            flex-direction: column;
+            gap: $spacing-md;
+            margin-top: auto;
+            padding-top: $spacing-lg;
+            // border-top: 1px solid rgba($primary-text-color, 0.1);
 
-               &::after {
-                  width: 100%;
-               }
+            .button {
+                justify-content: flex-start;
+                background-color: transparent;
+                box-shadow: none;
+                color: $primary-text-color;
+                padding: $spacing-sm $spacing-md;
+
+                &:hover {
+                    background-color: rgba($accent-color-2, 0.1);
+                    transform: none;
+                    box-shadow: none;
+                }
+
+                &.button-delete {
+                    color: $error-color;
+
+                    &:hover {
+                        background-color: rgba($error-color, 0.05);
+                    }
+                }
             }
-         }
-      }
-   }
+        }
+    }
+}
 
-   // Responsive Styling
-   @media (max-width: $breakpoint-lg) {
-      width: 20vw;
-      left: -20vw;
+// Responsive adjustments
+@media (max-width: $breakpoint-md) {
+    .sidebar {
+        width: 100%;
+        padding: $spacing-md;
 
-      &.open {
-         left: 0;
-      }
-   }
+        .sidebar-content {
+            padding-top: $spacing-lg;
 
-   @media (max-width: $breakpoint-md) {
-      width: 60vw;
-      left: -60vw;
-
-      &.open {
-         left: 0;
-      }
-   }
-
-   @media (max-width: $breakpoint-sm) {
-      width: 80vw;
-      left: -80vw;
-
-      &.open {
-         left: 0;
-      }
-   }
+            .button {
+                padding: map-get($button-padding, sm);
+            }
+        }
+    }
 }

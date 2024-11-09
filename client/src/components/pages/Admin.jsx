@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Button, Card, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
 // custom scss imports
 
 export default function Admin() {
@@ -52,6 +51,9 @@ export default function Admin() {
 						onClick={handleCloseModal}
 					>
 						Confirm
+					</Button>
+					<Button className="button button-submit admin-modal-button">
+						{/* Button Content */}
 					</Button>
 				</Modal.Footer>
 			</Modal>

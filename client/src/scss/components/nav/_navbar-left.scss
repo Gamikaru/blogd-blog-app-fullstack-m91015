@@ -1,0 +1,41 @@
+// _navbar-left.scss
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    .hamburger-icon {
+        position: relative;
+        z-index: 2000;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 24px;
+        height: 18px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 0;
+        margin-left: -4rem;
+
+        .line {
+            height: 2px;
+            background-color: $primary-text-color;
+            transition: all 0.3s ease;
+
+            &:first-child {
+                width: 24px;
+                margin-bottom: 4px;
+            }
+
+            &:last-child {
+                width: 18px;
+            }
+        }
+
+        &:hover .line {
+            background-color: $accent-color-1;
+        }
+    }
+}

@@ -1,16 +1,115 @@
-// scss/abstracts/_mixins.scss
+// _mixins.scss
 
+// Mixin for Flex Centering
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-@import './mixins/component_mixins';
-@import './mixins/flexbox_mixins';
-@import './mixins/layout_mixins';
-@import './mixins/fx_mixins';
-@import './mixins/typography_mixins';
-@import './mixins/utility_mixins';
+// Mixin for Box Shadows
+@mixin card-shadow {
+    box-shadow: $card-shadow;
+}
 
+// Mixin for Responsive Grids
+@mixin responsive-grid($columns) {
+    display: grid;
+    grid-template-columns: repeat($columns, 1fr);
+    gap: $spacing-unit;
 
+    @media (max-width: $breakpoint-md) {
+        grid-template-columns: repeat(2, 1fr);
+    }
 
+    @media (max-width: $breakpoint-sm) {
+        grid-template-columns: 1fr;
+    }
+}
 
+// Mixin for Button Styling
+@mixin button-style($bg-color, $text-color) {
+    background-color: $bg-color;
+    color: $text-color;
+    padding: map-get($button-padding, md);
+    border-radius: $button-border-radius;
+    border: none;
+    cursor: pointer;
+    transition:
+        background-color $transitions-base,
+        color $transitions-base,
+        opacity $transitions-base;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 38.4px;
+    width: auto;
+    max-width: 100%;
+    font-family: $font-family-primary;
+    font-size: $base-font-size;
+    font-weight: 500;
+    letter-spacing: 0.1px;
+    text-transform: none;
+    box-shadow: none;
 
+    &:hover {
+        background-color: darken($bg-color, 10%);
+        opacity: $button-opacity-default; // Slightly more opaque on hover
+    }
 
+    &:disabled,
+    &.button-disabled {
+        background-color: rgba(0, 0, 0, 0); // Maintain transparent background
+        color: lighten($primary-text-color, 30%); // Lighter text color when disabled
+        cursor: not-allowed; // Indicate disabled state
+        opacity: $button-opacity-disabled; // Reduced opacity when disabled
+    }
+}
 
+// Mixin for Button Variants
+@mixin button-variant($variant-color, $bg-opacity: 0.1, $hover-bg-opacity: 0.2) {
+    background-color: rgba($variant-color, $bg-opacity);
+    color: $variant-color;
+
+    &:hover {
+        background-color: rgba($variant-color, $hover-bg-opacity);
+        opacity: $button-opacity-hover; // Fully opaque on hover
+    }
+
+    &:disabled,
+    &.button-disabled {
+        background-color: rgba($variant-color, $bg-opacity);
+        color: lighten($variant-color, 30%);
+        cursor: not-allowed;
+        opacity: $button-opacity-disabled;
+    }
+}
+
+// Mixin for Heading Styles
+@mixin heading-style($size: $heading-font-size-lg, $font-family: $font-family-heading, $weight: 700) {
+    font-size: $size;
+    font-family: $font-family;
+    font-weight: $weight;
+    color: $primary-text-color;
+    line-height: 1.2;
+}
+
+// Mixin for Card Style
+@mixin card-style {
+    background-color: $secondary-bg-color;
+    border-radius: $border-radius;
+    box-shadow: $card-shadow;
+    padding: $card-padding;
+    color: $primary-text-color;
+}
+
+// Responsive Typography Mixin
+@mixin responsive-typography($small, $medium, $large) {
+    font-size: $small;
+    @media (min-width: $breakpoint-sm) {
+        font-size: $medium;
+    }
+    @media (min-width: $breakpoint-lg) {
+        font-size: $large;
+    }
+}

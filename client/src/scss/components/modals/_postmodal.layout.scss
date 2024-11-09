@@ -1,0 +1,76 @@
+// _postmodal.layout.scss
+
+@import "postmodal.variables";
+
+.post-modal,
+.edit-post-modal {
+    position: fixed !important;
+    inset: 0 !important;
+    margin: 0 !important;
+    transform: none !important;
+
+    --sidebar-top: 6rem;
+    --sidebar-left: 8rem;
+    --sidebar-z: 1050;
+
+    &.modal {
+        padding: 0 !important;
+    }
+
+    .modal-dialog,
+    .modal-content {
+        max-width: none !important;
+        width: 100% !important;
+        height: 100% !important;
+        margin: 0 !important;
+        border: none;
+        border-radius: 0;
+    }
+
+    &__container {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    &__backdrop {
+        background-color: $modal-backdrop-color;
+        backdrop-filter: blur(10px);
+    }
+
+    // Sidebar positioning classes
+    &__sidebar--left {
+        --sidebar-left: 2rem;
+    }
+
+    &__sidebar--right {
+        --sidebar-left: calc(100% - #{map-get($modal-dimensions, sidebar-width)} - 2rem);
+    }
+
+    &__sidebar--top {
+        --sidebar-top: 2rem;
+    }
+
+    &__sidebar--bottom {
+        --sidebar-top: calc(100% - #{map-get($modal-dimensions, sidebar-height)} - 2rem);
+    }
+
+    // Responsive adjustments
+    @media (max-width: $breakpoint-md) {
+        &__sidebar {
+            width: 80vw;
+            height: 40vh;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: map-get($modal-spacing, sidebar-padding);
+        }
+
+        &__preview {
+            padding-top: calc(var(--sidebar-top) + 2rem);
+        }
+    }
+}

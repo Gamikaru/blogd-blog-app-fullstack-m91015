@@ -1,69 +1,77 @@
-import React, { lazy, Suspense, useEffect, useState } from "react";
-import {Spinner} from "../../common"; // Import custom spinner component
-import { useUser, usePostContext } from "../../../contexts";
-import Logger from "../../../utils/Logger";
+// HomePage.jsx
+import { Bloggs, CubeSlider, fetchTrendingArticles, Logger, Spinner, usePostContext, useUser } from '@components';
+import React, { Suspense, useEffect, useState } from "react";
 
-// Lazy load components
-const UserCard = lazy(() => import("./UserCard"));
-const PostCard = lazy(() => import("./PostCard"));
+// const PostCard = lazy(() => import("./PostCard"));
 
 const HomePage = () => {
-   const { user, loading } = useUser();
-   const { posts, fetchPostsByUserHandler, refreshPosts } = usePostContext(); // Added refreshPosts
-   const [error, setError] = useState(null);
-   const [postsFetched, setPostsFetched] = useState(false); // Flag to track if posts have been fetched
+    const { user, loading } = useUser();
+    const { posts, fetchPostsByUser } = usePostContext();
+    const [error, setError] = useState(null);
+    const [postsFetched, setPostsFetched] = useState(false);
+    const [articles, setArticles] = useState([]);
+    const [articlesLoading, setArticlesLoading] = useState(true);
 
-   // Fetch user posts only once when the user is available
-   useEffect(() => {
-      if (user && user._id && !postsFetched) {
-         Logger.info('Fetching posts for user:', user._id);
-         fetchPostsByUserHandler(user._id)
-            .then(() => setPostsFetched(true))
-            .catch((err) => {
-               setError("Error fetching user posts.");
-               Logger.error("Error fetching user posts:", err);
-            });
-      }
-   }, [user, fetchPostsByUserHandler, postsFetched]);
+    useEffect(() => {
+        const loadArticles = async () => {
+            setArticlesLoading(true);
+            try {
+                const trendingArticles = await fetchTrendingArticles();
+                setArticles(trendingArticles.length ? trendingArticles : []);
+                if (!trendingArticles.length) setError('No articles available');
+            } catch (err) {
+                Logger.error("Error loading trending articles:", err);
+                setError("Failed to load trending articles");
+            } finally {
+                setArticlesLoading(false);
+            }
+        };
+        loadArticles();
+    }, []);
 
-   // Re-fetch posts when refreshPosts is triggered
-   useEffect(() => {
-      if (postsFetched === false) {
-         fetchPostsByUserHandler(user._id).then(() => setPostsFetched(true));
-      }
-   }, [postsFetched, fetchPostsByUserHandler, user._id]);
+    // useEffect(() => {
+    //     if (user && user._id && !postsFetched) {
+    //         fetchPostsByUser(user._id)
+    //             .then(() => setPostsFetched(true))
+    //             .catch((err) => {
+    //                 setError("Error fetching user posts.");
+    //                 Logger.error("Error fetching user posts:", err);
+    //             });
+    //     }
+    // }, [user, fetchPostsByUser, postsFetched]);
 
-   // Show custom spinner when loading user data
-   if (loading) {
-      Logger.info('Loading user data...');
-      return <Spinner message="Loading user data..." />;
-   }
+    if (loading) return <Spinner message="Loading user data..." />;
+    if (error) return <p>{error}</p>;
+    if (!user || !user._id) return <p>User data not available.</p>;
 
-   // Error handling
-   if (error) {
-      Logger.error('Error encountered:', error);
-      return <p>{error}</p>;
-   }
+    return (
+        <div className="home-page-container">
+            {/* CubeSlider placed above the page-container */}
+            <CubeSlider />
+            <div className="page-container">
+                {/* Carousel Section
+                <section className="carousel-section">
+                    <Carousel articles={articles} loading={articlesLoading} />
+                </section> */}
 
-   // User not available state
-   if (!user || !user._id) {
-      Logger.warn('User data not available.');
-      return <p>User data not available.</p>;
-   }
+                {/* Content Section
+                <section className="content-section">
+                    <Suspense fallback={<Spinner message="Loading components..." />}>
+                        <div className="cards-container">
+                            <PostCard userPosts={posts} />
+                        </div>
+                    </Suspense>
+                </section> */}
 
-   Logger.info('Rendering HomePage component.');
-   return (
-      <div className="home-page-container">
-         <div className="page-container">
-            <div className="grid-container">
-               <Suspense fallback={<Spinner message="Loading posts..." />}>
-                  <UserCard user={user} />
-                  <PostCard userPosts={posts} />
-               </Suspense>
+                {/* Integrated Bloggs Section */}
+                <section id="bloggs-section" className="bloggs-section">
+                    <Suspense fallback={<Spinner message="Loading blog posts..." />}>
+                        <Bloggs />
+                    </Suspense>
+                </section>
             </div>
-         </div>
-      </div>
-   );
+        </div>
+    );
 };
 
 export default HomePage;

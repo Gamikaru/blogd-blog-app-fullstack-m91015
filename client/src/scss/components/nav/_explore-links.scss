@@ -1,0 +1,46 @@
+.info-and-explore-container {
+    display: flex;
+    flex-direction: column; // Stack welcome message and explore links vertically
+    align-items: flex-start; // Align items to the left
+    margin-left: 7rem; // Maintain the previous left margin for alignment
+    margin-top: $spacing-lg;
+
+    .page-info-message {
+        text-align: left; // Ensure welcome message remains left-aligned
+        margin-bottom: $spacing-md;
+        width: 100%; // Take the full width for proper layout
+
+        .page-title {
+            font-size: $heading-font-size-xxlg;
+            font-weight: bold;
+            color: $primary-text-color;
+            margin: 0;
+        }
+
+        .page-subtitle {
+            font-size: $sub-heading-font-size;
+            color: $secondary-text-color;
+            margin-top: $spacing-sm;
+        }
+    }
+
+    .explore-links {
+        display: flex;
+        justify-content: flex-start; // Align links to the left
+        gap: $spacing-md;
+        margin-top: $spacing-sm;
+        padding-top: $spacing-sm;
+        // border-top: 1px solid $border-color;
+
+        .explore-link {
+            font-size: $small-font-size;
+            font-weight: 600;
+            color: $primary-text-color;
+            text-decoration: none;
+
+            &:hover {
+                color: $accent-color-1;
+            }
+        }
+    }
+}

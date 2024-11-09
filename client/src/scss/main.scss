@@ -1,69 +1,50 @@
-
-// Import Bootstrap's SCSS
-@import "bootstrap/scss/bootstrap";
-
-// Abstracts
-@import "abstracts/variables"; // Custom variables first
-@import "abstracts/functions"; // Functions for dynamic calculations
-@import "abstracts/mixins/component_mixins"; // Mixins for reusable styles
-@import "abstracts/mixins/flexbox_mixins"; // Flexbox mixins
-@import "abstracts/mixins/layout_mixins"; // Layout mixins
-@import "abstracts/mixins/fx_mixins"; // Shadow mixins
-@import "abstracts/mixins/typography_mixins"; // Typography mixins
-@import "abstracts/mixins/utility_mixins"; // Utility mixins
+// Import sass modules
+@use "sass:math";
 
 
-// Vendors (Third-party libraries, if needed)
-@import "vendors/jquery-ui"; // Example vendor
+// Import abstracts
+@import "abstracts/variables";
+@import "abstracts/functions";
+@import "abstracts/mixins";
 
-// Base
-@import "base/reset"; // CSS resets for consistency
-@import "base/typography"; // Centralized typography styles
-@import "base/shadows"; // Shadow styles
-@import "base/animations"; // Reusable animation keyframes
-@import "base/utilities"; // Utility classes like margin, padding, etc.
+// Import base styles
+@import "base/reset";
+@import "base/typography";
+@import "base/utilities";
+@import "base/responsive";
+@import "base/animations";
 
-// Layout
-// @import "layout/navigation"; // Navigation styles
-@import "layout/header"; // Header layout styles
-@import "layout/footer"; // Footer layout styles
-@import "layout/grid"; // Grid system styles
+// Import component styles
+@import "components/buttons";
+@import "components/carousel";
+@import "components/cubeslider";
+@import 'components/nav/navbar-header';
+@import 'components/nav/navbar-left';
+@import 'components/nav/navbar-center';
+@import 'components/nav/navbar-right';
+@import 'components/nav/navbar-info-message';
+@import 'components/nav/user-dropdown';
+@import 'components/nav/explore-links';
+@import 'components/nav/navbar-responsive';
+@import "components/sidebar";
+@import "components/modals/postmodal.variables";
+@import "components/modals/postmodal.layout";
+@import "components/modals/postmodal.components";
+@import "components/modals/editpostmodal";
+@import "components/modals/usermanager";
+@import "components/toast";
+@import "components/error-boundary";
 
-// Components
-@import "components/buttons"; // Button styles using the button-base mixin
-@import "components/cards"; // Card component styles
-@import "components/carousel"; // Carousel component styles
-@import "components/dropdown"; // Dropdown component styles
-@import "components/toast"; // Feedback component styles
-@import "components/forms"; // Form styling using form-field mixin
-@import "components/register_modal"; // Register modal component
-@import "components/post_modal"; // Post modal component
-@import "components/edit_post_modal"; // Edit post modal component
-@import "components/navbar"; // Navbar component
-@import "components/sidebar"; // Sidebar component
-@import "components/tables"; // Table styles
-@import "components/input_fields"; // Input field styles
-// @import "components/select_field"; // Select field styles
+// Import page-specific styles
+@import "pages/blog_fullview";
+@import "pages/bloggs";
+@import "pages/home";
+@import "pages/login";
+@import "pages/network";
+@import "pages/profile";
+
+// Import vendor styles
+@import "vendors/bootstrap";
+@import "vendors/jquery-ui";
 
 
-// Themes
-@import "themes/dark"; // Dark theme styles
-@import "themes/light"; // Light theme styles
-
-// Pages & Page Components
-// Home page styles and components
-@import "pages/home/home"; // Home page styles
-@import "pages/home/user_card"; // User card component
-@import "pages/home/home_posts_card"; // Post card component
-
-// Bloggs page styles and components
-@import "pages/bloggs/bloggs_comments"; // Blog comments component
-@import "pages/bloggs/bloggs_post"; // Blog post section
-@import "pages/bloggs/bloggs"; // Blog page styles
-
-//Network Page styles and components
-// @import "pages/network/network_card"; // Network card component
-@import "pages/network/network"; // Network page styles
-
-// Login Page styles and components
-@import "pages/login/login"; // Login page styles

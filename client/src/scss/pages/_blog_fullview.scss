@@ -1,0 +1,183 @@
+@import "../abstracts/_variables.scss";
+
+.full-blog-view {
+    padding: $spacing-unit * 4;
+    background-color: $secondary-bg-color;
+    color: $primary-text-color;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: $line-height;
+    position: relative; // Ensure positioning context for overlapping
+    z-index: 14;
+
+    .blog-title {
+        font-size: $heading-font-size-lg; // Larger, bold title for document-style look
+        font-weight: bold;
+        color: $primary-text-color;
+        margin-bottom: $spacing-unit * 2;
+        text-align: center;
+    }
+
+    .blog-excerpt {
+        font-size: $sub-heading-font-size; // Slightly smaller than title, styled like a document excerpt
+        font-style: italic;
+        color: $secondary-text-color;
+        margin: $spacing-unit * 2 auto;
+        max-width: 90%;
+        padding-left: $spacing-unit;
+        border-left: 4px solid $accent-color-2;
+        position: relative;
+        font-weight: bold; // Make the excerpt bold
+
+        &::before {
+            content: "“"; // Opening quote mark
+            font-size: 3rem;
+            font-weight: bold;
+            color: $accent-color-2;
+            position: absolute;
+            left: -1.5rem;
+            top: -0.5rem;
+        }
+
+        &::after {
+            content: "”"; // Closing quote mark
+            font-size: 3rem;
+            font-weight: bold;
+            color: $accent-color-2;
+            position: absolute;
+            right: -1.5rem;
+            bottom: -0.5rem;
+        }
+    }
+
+    .blog-images {
+        float: left; // Float the image to the left
+        margin-right: $spacing-unit * 2; // Add some margin to the right
+        margin-bottom: $spacing-unit * 2; // Add some margin to the bottom
+        width: 100%; // Adjust width as needed
+        height: auto;
+
+        .blog-image {
+            max-width: 100%;
+            border-radius: $border-radius;
+            object-fit: cover;
+            margin-top: -7rem;
+            width:  100%;
+            height: auto;
+            padding: 0;
+        }
+    }
+
+    .blog-content {
+        font-size: $body-font-size;
+        color: $primary-text-color;
+        line-height: $line-height;
+        margin-top: $spacing-unit * 2;
+        padding: 0 $spacing-unit * 2;
+        max-width: 90%;
+        margin: 0 auto;
+
+        p {
+            margin-bottom: $spacing-unit * 1.5;
+        }
+
+        img {
+            max-width: 100%;
+            border-radius: $border-radius;
+            margin: $spacing-unit * 2 0;
+        }
+
+        blockquote {
+            font-style: italic;
+            color: $secondary-text-color;
+            padding-left: $spacing-unit;
+            border-left: 4px solid $accent-color-2;
+            margin: $spacing-unit * 2 0;
+        }
+    }
+
+    .about-author {
+        margin-top: $spacing-unit * 4;
+        text-align: center;
+
+        h3 {
+            font-size: $heading-font-size-md;
+            margin-bottom: $spacing-unit;
+        }
+
+        p {
+            font-size: $body-font-size;
+            color: $secondary-text-color;
+        }
+    }
+
+    .comments-section {
+        margin-top: $spacing-unit * 4;
+        border-top: 1px solid lighten($secondary-bg-color, 10%);
+        padding-top: $spacing-unit;
+
+        .comment {
+            margin-bottom: $spacing-unit * 1.5;
+            padding: $spacing-unit;
+            background-color: lighten($secondary-bg-color, 5%);
+            border-radius: $border-radius;
+            box-shadow: $card-shadow;
+
+            .comment-author {
+                font-weight: bold;
+                font-size: $small-font-size;
+                color: $primary-text-color;
+                margin-bottom: $spacing-unit * 0.5;
+            }
+
+            .comment-text {
+                font-size: $body-font-size;
+                color: $primary-text-color;
+                margin-left: $spacing-unit * 0.5;
+            }
+        }
+
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            margin-top: $spacing-unit * 1.5;
+
+            textarea {
+                padding: $spacing-unit;
+                border: 1px solid lighten($secondary-bg-color, 20%);
+                border-radius: $border-radius;
+                resize: vertical;
+                font-size: $body-font-size;
+                color: $primary-text-color;
+                background-color: lighten($primary-bg-color, 5%);
+                margin-bottom: $spacing-unit;
+                transition: border-color 0.3s ease;
+
+                &:focus {
+                    border-color: $accent-color-2;
+                    outline: none;
+                }
+            }
+
+            .submit-comment-button {
+                align-self: flex-start;
+                padding: map-get($button-padding, md); // Use map-get to access the medium size padding
+                background-color: $accent-color-2;
+                color: #fff;
+                border: none;
+                border-radius: $button-border-radius;
+                cursor: pointer;
+                transition: background-color 0.2s;
+
+                &:hover {
+                    background-color: darken($accent-color-2, 10%);
+                }
+
+                &:disabled {
+                    background-color: lighten($accent-color-2, 30%);
+                    cursor: not-allowed;
+                }
+            }
+        }
+    }
+}

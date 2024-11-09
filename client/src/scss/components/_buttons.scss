@@ -1,106 +1,91 @@
-// scss/components/_buttons.scss
+// _buttons.scss
 
-@import "../abstracts/variables"; // Import global variables
-@import "../abstracts/mixins"; // Import centralized mixins
+// Base Button Styles
+.button {
+    background-color: rgba(0, 0, 0, 0); // Transparent background
+    color: $primary-text-color; // Default text color
+    padding: map-get($button-padding, md); // Medium padding
+    border-radius: $button-border-radius; // Rounded corners
+    font-family: $font-family-primary; // Consistent font family
+    font-size: $base-font-size; // Base font size
+    font-weight: 500; // Medium font weight for prominence
+    letter-spacing: 0.1px; // Subtle letter spacing for readability
+    text-transform: none; // No text transformation for a modern feel
+    border: none; // No border for minimalism
+    box-shadow: none; // Remove box-shadow for a clean look
+    display: flex; // Flex layout for icon and text alignment
+    align-items: center; // Vertically center items
+    justify-content: center; // Center align text and icons
+    transition: background-color $transitions-base, color $transitions-base, opacity $transitions-base; // Smooth transitions
+    max-width: 100%; // Allow buttons to take full width of their container
+    cursor: pointer; // Pointer cursor on hover
+    height: 38.4px; // Fixed height for consistency
+    width: auto; // Adjust width based on content
 
-// Close Button Colors
-$close-button-color: $disabled-gray;
-$close-button-hover-color: lighten($close-button-color, 20%);
+    &:hover {
+        opacity: $button-opacity-default; // Slightly more opaque on hover
+    }
 
-/* Primary Button */
-.primary-btn {
-   @include button-base($primary-purple, $white, $primary-purple-hover, $border-radius);
+    &:disabled,
+    &.button-disabled {
+        background-color: rgba(0, 0, 0, 0); // Maintain transparent background
+        color: lighten($primary-text-color, 30%); // Lighter text color when disabled
+        cursor: not-allowed; // Indicate disabled state
+        opacity: $button-opacity-disabled; // Reduced opacity when disabled
+    }
+
+    .button-icon {
+        margin-right: 0.5rem; // Space between icon and text
+        display: inline-flex;
+        align-items: center;
+    }
 }
 
-/* Secondary Button */
-.secondary-btn {
-   @include button-base(
-      $charcoal,
-      $white,
-      darken($charcoal, 10%),
-      // Custom hover color
-      $border-radius
-   );
+// Button Variants
+
+.button-edit {
+    @include button-variant($highlight-color);
 }
 
-/* Success Button */
-.success-btn {
-   @include button-base($success-green, $white, $success-green-hover, $border-radius);
+.button-create {
+    @include button-variant($success-color);
 }
 
-/* Danger Button */
-.danger-btn {
-   @include button-base($bright-red, $white, $bright-red-hover, $border-radius);
+.button-post {
+    @include button-variant($accent-color-1);
 }
 
-/* Disabled Button */
-.disabled-btn {
-   @include button-base(
-      $disabled-gray,
-      $white,
-      $disabled-gray,
-      // No hover state for disabled buttons
-      $border-radius
-   );
-   cursor: not-allowed;
+.button-submit {
+    @include button-variant($highlight-color);
 }
 
-/* Override Bootstrap defaults */
-.btn {
-   border: none;
-   box-shadow: none;
-
-   &:hover,
-   &:focus {
-      text-decoration: none;
-   }
-
-   &:focus {
-      outline: 2px solid $primary-purple;
-   }
+.button-login {
+    @include button-variant($primary-bg-color, 0.1, 0.2);
+    color: $primary-text-color; // Override text color if different
 }
 
-/* Button Group Styling */
-.btn-group {
-   display: inline-flex;
-   .btn {
-      margin-left: -1px;
-      &:first-child {
-         margin-left: 0;
-      }
-   }
+.button-delete {
+    @include button-variant($error-color);
 }
 
-// Toast Actions Button Styles
-.toast-actions {
-   display: flex;
-   justify-content: flex-end;
-   gap: $spacing-s; // Spacing between buttons
+// Responsive adjustments for mobile
+@media (max-width: $breakpoint-md) {
+    .button {
+        padding: map-get($button-padding, sm); // Small padding for smaller screens
+        font-size: $base-font-size;
+        height: 38.4px; // Consistent height
+        width: 100%; // Full width on mobile
+        justify-content: center; // Center align text and icons
+    }
 
-   // Primary "Yes" Button (using primary purple with modern styling)
-   .toast-primary-btn {
-      @include button-base($primary-purple, $white, $electric-violet-hover, $border-radius);
-      padding: $spacing-xs $spacing-m; // Use existing spacing variables
-      font-size: $font-size-small; // Ensure small size for the button text
-      font-weight: $font-weight-bold; // Add bold font for modern, strong emphasis
-      box-shadow: $box-shadow-light; // Add a soft box-shadow for modern touch
-
-      &:hover {
-         box-shadow: $box-shadow-medium; // Elevate on hover
-      }
-   }
-
-   // Secondary "No" Button (using neutral gray with charcoal hover)
-   .toast-secondary-btn {
-      @include button-base($light-gray, $charcoal, $charcoal-light, $border-radius);
-      padding: $spacing-xs $spacing-m; // Consistent padding with primary button
-      font-size: $font-size-small; // Keep button text small
-      font-weight: $font-weight-regular; // Regular font-weight for secondary actions
-      box-shadow: $box-shadow-light; // Same box-shadow as primary for consistency
-
-      &:hover {
-         background-color: $charcoal-extra-light; // Subtle change on hover
-         color: $white; // Ensure contrast with the light gray background
-      }
-   }
+    // Ensure all button variants take full width on mobile
+    .button-edit,
+    .button-create,
+    .button-post,
+    .button-submit,
+    .button-login,
+    .button-delete {
+        max-width: 100%; // Override any max-width restrictions
+        justify-content: center; // Center align text and icons
+    }
 }

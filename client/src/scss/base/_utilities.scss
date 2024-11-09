@@ -1,87 +1,60 @@
-// base/_utilities.scss
-
-// Margin Utilities
-.m-0 {
-   margin: 0 !important;
-}
-.m-1 {
-   margin: $spacing-s !important;
-}
-.m-2 {
-   margin: $spacing-m !important;
-}
-.m-3 {
-   margin: $spacing-l !important;
-}
-.m-auto {
-   margin: auto !important;
+/* Margin and Padding Utilities */
+@mixin spacing-utility($property, $size) {
+    #{$property}-1 { #{$property}: spacing(0.5); }
+    #{$property}-2 { #{$property}: spacing(1); }
+    #{$property}-3 { #{$property}: spacing(1.5); }
 }
 
-// Padding Utilities
-.p-0 {
-   padding: 0 !important;
-}
-.p-1 {
-   padding: $spacing-s !important;
-}
-.p-2 {
-   padding: $spacing-m !important;
-}
-.p-3 {
-   padding: $spacing-l !important;
-}
-.p-auto {
-   padding: auto !important;
-}
+@include spacing-utility('m', $spacing-unit); // Margin utilities
+@include spacing-utility('p', $spacing-unit); // Padding utilities
 
-// Text Alignment
-.text-center {
-   text-align: center !important;
-}
-.text-left {
-   text-align: left !important;
-}
-.text-right {
-   text-align: right !important;
-}
-
-// Visibility Utilities
-.d-none {
-   display: none !important;
-}
-.d-block {
-   display: block !important;
-}
-.d-inline {
-   display: inline !important;
-}
-.d-inline-block {
-   display: inline-block !important;
-}
-
-// Flex Utilities
-.d-flex {
-   display: flex !important;
-}
+/* Flex Utilities */
 .flex-center {
-   @include flex-container(center, center);
+    @include flex-center;
 }
+
 .flex-space-between {
-   @include flex-container(space-between, center);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-// Width Utilities
-.w-100 {
-   width: 100% !important;
-}
-.max-w-100 {
-   max-width: 100% !important;
+.flex-column {
+    display: flex;
+    flex-direction: column;
 }
 
-// Overflow Utilities
-.overflow-hidden {
-   overflow: hidden !important;
+/* Grid Utilities */
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-unit;
 }
-.overflow-visible {
-   overflow: visible !important;
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-unit;
+}
+
+/* Visibility Utilities */
+.hidden {
+    display: none !important;
+}
+
+.visible {
+    display: block !important;
+}
+
+/* Text Alignment Utilities */
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
 }
