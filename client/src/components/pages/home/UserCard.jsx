@@ -1,6 +1,8 @@
 
 //UserCard.jsx
-import { InputField, Logger, UserService } from '@components';
+import { InputField } from '@components';
+import { UserService } from '@services/api';
+import { logger } from '@utils';
 import React, { useCallback } from "react";
 import { FaBirthdayCake, FaBriefcase, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 
@@ -18,27 +20,27 @@ const UserCard = React.memo(({ user }) => {
         async (e) => {
             if (e.key === "Enter") {
                 e.preventDefault();
-                Logger.info("Key pressed: Enter. Attempting to update status:", status);
+                logger.info("Key pressed: Enter. Attempting to update status:", status);
                 try {
-                    await UserService.updateUserStatus(user._id, status);
-                    Logger.info("Status updated successfully");
+                    await UserService.updateUserStatus(user.userId, status);
+                    logger.info("Status updated successfully");
                 } catch (error) {
-                    Logger.error("Error updating status:", error);
+                    logger.error("Error updating status:", error);
                 }
             }
         },
-        [status, user._id]
+        [status, user.userId]
     );
 
     const handleBlur = useCallback(async () => {
-        Logger.info("Blur event triggered. Attempting to update status:", status);
+        logger.info("Blur event triggered. Attempting to update status:", status);
         try {
-            await UserService.updateUserStatus(user._id, status);
-            Logger.info("Status updated successfully");
+            await UserService.updateUserStatus(user.userId, status);
+            logger.info("Status updated successfully");
         } catch (error) {
-            Logger.error("Error updating status:", error);
+            logger.error("Error updating status:", error);
         }
-    }, [status, user._id]);
+    }, [status, user.userId]);
 
     return (
         <div className="user-card-container">

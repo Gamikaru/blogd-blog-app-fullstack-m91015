@@ -1,6 +1,6 @@
-// client/src/components/nav/HamburgerMenu.jsx
+// src/components/nav/HamburgerMenu.jsx
+
 import { motion } from "framer-motion";
-import React from "react";
 
 const HamburgerMenu = ({ sidebarOpen, handleSidebarToggle, toggleButtonRef }) => {
     const iconVariants = {

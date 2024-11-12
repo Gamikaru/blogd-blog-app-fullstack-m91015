@@ -1,0 +1,18 @@
+.profile-header {
+    background-color: $secondary-bg-color;
+    padding: $spacing-xl;
+    border-radius: $border-radius;
+    margin-bottom: $spacing-lg;
+    box-shadow: $box-shadow-medium;
+
+    h1 {
+        font-size: $heading-font-size-lg;
+        color: $primary-text-color;
+        margin-bottom: $spacing-sm;
+    }
+
+    .profile-subtitle {
+        font-size: $sub-heading-font-size;
+        color: $secondary-text-color;
+    }
+}

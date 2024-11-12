@@ -20,7 +20,7 @@ describe('Page Navigation Test with Sidebar Navigation and Logo Click', function
          await login(driver, 'gavrielmrudolph@gmail.com', 'test');
 
          // 2. Navigate between pages using the sidebar
-         await navigateToPage(driver, 'Bloggs', 'http://localhost:5173/bloggs');
+         await navigateToPage(driver, 'blogs', 'http://localhost:5173/blogs');
          await navigateToPage(driver, 'Admin', 'http://localhost:5173/admin');
          await navigateToPage(driver, 'Network', 'http://localhost:5173/network');
 

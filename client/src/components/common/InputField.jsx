@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import { forwardRef, memo, useMemo } from "react";
 
 const InputField = forwardRef(({
     label,
@@ -7,34 +7,46 @@ const InputField = forwardRef(({
     onBlur,
     onKeyDown,
     error,
-    placeholder,
+    helperText,
+    placeholder = "Enter value",
     type = "text",
-    className,
+    className = "",
     style,
 }, ref) => {
-    const errorId = error ? `${label || placeholder}-error` : undefined;
+    const sanitizedId = useMemo(
+        () => (label || placeholder).replace(/\s+/g, '-').toLowerCase(),
+        [label, placeholder]
+    );
+    const errorId = error ? `${sanitizedId}-error` : undefined;
 
     return (
         <div className="input-field-wrapper">
-            {label && <label className="input-label" htmlFor={label || placeholder}>{label}</label>}
+            {label && (
+                <label className="input-label" htmlFor={sanitizedId}>
+                    {label}
+                </label>
+            )}
             <input
-                id={label || placeholder}
+                id={sanitizedId}
                 type={type}
                 value={value}
                 onChange={onChange}
                 onBlur={onBlur}
                 onKeyDown={onKeyDown}
                 placeholder={placeholder}
-                className={`input-control ${error ? "input-error" : ""} ${className}`} // Apply error class dynamically
+                className={`input-control ${error ? "input-error" : ""} ${className}`}
                 style={style}
                 ref={ref}
                 aria-label={label || placeholder}
-                aria-describedby={errorId} // Associate the error message
+                aria-describedby={errorId}
+                aria-invalid={!!error}
             />
-            {/* Dynamically add an id to the error span */}
             {error && <span id={errorId} className="error-label">{error}</span>}
+            {!error && helperText && (
+                <span className="helper-text">{helperText}</span>
+            )}
         </div>
     );
 });
 
-export default InputField;
+export default memo(InputField);

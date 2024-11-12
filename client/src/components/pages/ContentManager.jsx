@@ -21,7 +21,7 @@
 // 	}, []);
 
 // 	const fetchUser = async () => {
-// 		const token = cookie.PassBloggs;
+// 		const token = cookie.BlogdPass;
 // 		try {
 // 			const response = await fetch(`http://localhost:5050/user/${cookie.userID}`, {
 // 				headers: {
@@ -39,7 +39,7 @@
 // 	};
 
 // 	const fetchPosts = async () => {
-// 		const token = cookie.PassBloggs;
+// 		const token = cookie.BlogdPass;
 // 		try {
 // 			const response = await fetch("http://localhost:5050/posts", {
 // 				headers: { Authorization: `Bearer ${token}` },
@@ -57,7 +57,7 @@
 // 			await fetch(`http://localhost:5050/posts/${postId}`, {
 // 				method: "DELETE",
 // 			});
-// 			setPosts(posts.filter((post) => post._id !== postId));
+// 			setPosts(posts.filter((post) => post.postId !== postId));
 // 			setShowModal(false);
 // 		} catch (error) {
 // 			console.error("Error deleting post:", error);
@@ -102,12 +102,12 @@
 // 			) : (
 // 				<div className="content-posts-section">
 // 					{posts.map((post) => (
-// 						<div key={post._id} className="post-item">
+// 						<div key={post.postId} className="post-item">
 // 							<Card>
 // 								<Card.Body>
 // 									<Card.Title>Blog Post</Card.Title>
 // 									<Card.Text>{post.content}</Card.Text>
-// 									<Button variant="danger" onClick={() => handleShowModal(post._id)}>
+// 									<Button variant="danger" onClick={() => handleShowModal(post.postId)}>
 // 										Delete
 // 									</Button>
 // 								</Card.Body>

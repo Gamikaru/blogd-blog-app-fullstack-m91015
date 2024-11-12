@@ -1,42 +1,51 @@
 // Network.jsx
-import { ApiClient, Button, Logger, NetworkCard, useUser } from '@components';
+import { NetworkCard } from '@components';
+import { useUser } from '@contexts';
+import { ApiClient } from '@services/api';
 import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Network() {
+
+const Network = () => {
     const { user } = useUser();
     const [users, setUsers] = useState([]);
-    const [userPosts, setUserPosts] = useState([]);
+    const [userPosts, setUserPosts] = useState({});  // Change to object for O(1) lookup
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
-        Logger.info("Network component mounted, fetching users and posts...");
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                // Fetch users first, then fetch posts only for visible users
+                const usersResponse = await ApiClient.get("/user");
+                setUsers(usersResponse.data);
+
+                // Batch post fetching for visible users
+                const visibleUsers = usersResponse.data.slice(0, 10); // Limit initial load
+                const postsResponse = await ApiClient.get("/post");
+
+                // Create lookup object
+                const postsLookup = postsResponse.data.reduce((acc, post) => {
+                    if (!acc[post.userId]) {
+                        acc[post.userId] = [];
+                    }
+                    acc[post.userId].push(post);
+                    return acc;
+                }, {});
+
+                setUserPosts(postsLookup);
+            } catch (error) {
+                setError("Failed to fetch data");
+            } finally {
+                setLoading(false);
+            }
+        };
+
         fetchData();
     }, []);
-
-    const fetchData = async () => {
-        try {
-            setLoading(true);
-            const [usersResponse, postsResponse] = await Promise.all([
-                ApiClient.get("/user"),
-                ApiClient.get("/post"),
-            ]);
-
-            Logger.info("Users fetched:", usersResponse.data);
-            Logger.info("Posts fetched:", postsResponse.data);
-
-            setUsers(usersResponse.data);
-            setUserPosts(postsResponse.data);
-        } catch (error) {
-            Logger.error("Error fetching data:", error);
-            setError("Failed to fetch users or posts");
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const truncatePostContent = (content, limit = 20) => {
         if (!content) return "No content available";
@@ -49,12 +58,13 @@ export default function Network() {
             : text;
     };
 
-    const getUserLatestPost = (userId) => {
-        const posts = userPosts
-            .filter((post) => post.userId === userId)
-            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        return posts.length > 0 ? posts[0] : null;
-    };
+    // Memoize getUserLatestPost
+    const getUserLatestPost = useCallback((userId) => {
+        const userPostList = userPosts[userId] || [];
+        return userPostList.length > 0
+            ? userPostList.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0]
+            : null;
+    }, [userPosts]);
 
     const handleUserClick = (userId) => {
         navigate(`/profile/${userId}`);
@@ -102,12 +112,12 @@ export default function Network() {
                     users.map((user) => (
                         <motion.div
                             className="grid-item"
-                            key={user._id}
+                            key={user.userId}
                             variants={cardVariants}
                         >
                             <div
                                 className="user-card"
-                                onClick={() => handleUserClick(user._id)}
+                                onClick={() => handleUserClick(user.userId)}
                                 style={{ cursor: 'pointer' }}
                             >
                                 <NetworkCard
@@ -122,4 +132,6 @@ export default function Network() {
             </motion.div>
         </div>
     );
-}
+};
+
+export default Network;

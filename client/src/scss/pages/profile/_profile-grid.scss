@@ -1,0 +1,10 @@
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: $spacing-lg;
+    margin-top: $spacing-lg;
+
+    @media (max-width: $breakpoint-md) {
+        grid-template-columns: 1fr;
+    }
+}

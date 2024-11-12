@@ -1,8 +1,13 @@
 // UserManager.jsx
-import { AccountTab, NotificationsTab, ProfileTab, SecurityTab, useNotificationContext, useUser, Button } from '@components';
+import { Button } from '@components';
+import { useNotificationContext, useUser } from '@contexts';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { useState } from 'react';
-import { FiLock, FiMail, FiSettings, FiUser, FiX } from 'react-icons/fi';
+import { useState } from 'react';
+import { FiLock, FiMail, FiSettings, FiUser } from 'react-icons/fi';
+import AccountTab from './AccountTab';
+import NotificationsTab from './NotificationsTab';
+import ProfileTab from './ProfileTab';
+import SecurityTab from './SecurityTab';
 
 const tabs = [
     { id: 'profile', label: 'Profile', icon: <FiUser /> },
@@ -88,9 +93,12 @@ const UserManager = ({ onClose }) => {
                 >
                     <div className="usermanager-header">
                         <h2 className="usermanager-header__title">Settings</h2>
-                        <Button className="usermanager-header__close" onClick={onClose}>
-                            <FiX />
-                        </Button>
+                        <Button
+                            variant="close"
+                            className="usermanager-header__close"
+                            onClick={onClose}
+                            showIcon={true}
+                        />
                     </div>
 
                     <div className="usermanager-tabs">
@@ -99,9 +107,9 @@ const UserManager = ({ onClose }) => {
                                 key={tab.id}
                                 className={`usermanager-tabs__button ${activeTab === tab.id ? 'active' : ''}`}
                                 onClick={() => setActiveTab(tab.id)}
+                                variant="noIcon"
                             >
-                                {tab.icon}
-                                <span>{tab.label}</span>
+                                {tab.label}
                             </Button>
                         ))}
                     </div>

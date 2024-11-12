@@ -7,8 +7,10 @@ export default defineConfig({
     resolve: {
         alias: {
             '@components': path.resolve(__dirname, 'src/components'),
-            '@scss': path.resolve(__dirname, 'src/scss'),
-            // Add other aliases as needed
+            '@services': path.resolve(__dirname, 'src/services'),
+            '@utils': path.resolve(__dirname, 'src/utils'),
+            '@contexts': path.resolve(__dirname, 'src/contexts'),
+            '@scss': path.resolve(__dirname, 'src/scss')
         },
     },
     optimizeDeps: {

@@ -1,3 +1,5 @@
+// routes/commentRoutes.js
+
 import express from 'express';
 import mongoose from 'mongoose';
 import { authenticate } from '../middleware/authMiddleware.js';
@@ -12,26 +14,30 @@ function sendError(res, error, message, statusCode = 500) {
     res.status(statusCode).json({
         error: true,
         message,
-        details: error.message || error
+        details: error.message || error,
     });
 }
 
 // Create a new comment
 router.post('/', authenticate, async (req, res) => {
+    console.log('Creating new comment with data:', req.body);
     try {
         const { content, postId } = req.body;
-        const userId = req.user._id;
+        const { userId } = req.user;
 
         if (!content || !postId) {
+            console.error('Comment Creation: Missing required fields.');
             return sendError(res, new Error('Validation Error'), 'Please provide all required fields', 400);
         }
 
         if (!mongoose.Types.ObjectId.isValid(postId)) {
+            console.error('Comment Creation: Invalid postId:', postId);
             return sendError(res, new Error('Invalid postId'), 'The provided postId is not a valid ObjectId', 400);
         }
 
         const post = await Post.findById(postId);
         if (!post) {
+            console.error('Comment Creation: Post not found with ID:', postId);
             return sendError(res, new Error('Post Not Found'), 'No post found with the provided postId', 404);
         }
 
@@ -42,15 +48,16 @@ router.post('/', authenticate, async (req, res) => {
         });
 
         await newComment.save();
+        console.log('Comment created successfully with ID:', newComment._id);
         return res.status(201).json({
             message: 'Comment created successfully',
             comment: {
-                id: newComment._id,
+                commentId: newComment._id,
                 content: newComment.content,
                 postId: newComment.postId,
                 userId: newComment.userId,
-                createdAt: newComment.createdAt
-            }
+                createdAt: newComment.createdAt,
+            },
         });
     } catch (error) {
         sendError(res, error, 'Server error during comment creation');
@@ -58,12 +65,16 @@ router.post('/', authenticate, async (req, res) => {
 });
 
 // Get a single comment
-router.get('/:id', authenticate, async (req, res) => {
+router.get('/:commentId', authenticate, async (req, res) => {
+    const { commentId } = req.params;
+    console.log('Fetching comment with ID:', commentId);
     try {
-        const comment = await Comment.findById(req.params.id);
+        const comment = await Comment.findById(commentId);
         if (!comment) {
+            console.error('Comment not found with ID:', commentId);
             return sendError(res, new Error('Comment Not Found'), 'Comment not found', 404);
         }
+        console.log('Comment fetched successfully with ID:', commentId);
         return res.status(200).json(comment);
     } catch (error) {
         sendError(res, error, 'Server error retrieving the comment');
@@ -71,31 +82,36 @@ router.get('/:id', authenticate, async (req, res) => {
 });
 
 // Update a comment
-router.patch('/:id', authenticate, async (req, res) => {
+router.patch('/:commentId', authenticate, async (req, res) => {
     const { content } = req.body;
-    const userId = req.user._id;
-    const { id } = req.params;
+    const { userId } = req.user;
+    const { commentId } = req.params;
 
+    console.log('Updating comment with ID:', commentId);
     if (!content) {
+        console.error('Comment Update: No content provided.');
         return sendError(res, new Error('Validation Error'), 'Please enter some content to update', 400);
     }
 
     try {
-        const comment = await Comment.findById(id);
+        const comment = await Comment.findById(commentId);
 
         if (!comment) {
+            console.error('Comment not found with ID:', commentId);
             return sendError(res, new Error('Comment Not Found'), 'Comment not found', 404);
         }
 
         if (comment.userId.toString() !== userId.toString()) {
+            console.error('Unauthorized user ID:', userId, 'attempted to update comment ID:', commentId);
             return sendError(res, new Error('Unauthorized'), 'Unauthorized user', 401);
         }
 
         comment.content = content;
         await comment.save();
+        console.log('Comment updated successfully with ID:', commentId);
         return res.status(200).json({
             message: 'Comment updated successfully',
-            comment
+            comment,
         });
     } catch (error) {
         sendError(res, error, 'Server error during comment update');
@@ -103,22 +119,26 @@ router.patch('/:id', authenticate, async (req, res) => {
 });
 
 // Delete a comment
-router.delete('/:id', authenticate, async (req, res) => {
-    const userId = req.user._id;
-    const { id } = req.params;
+router.delete('/:commentId', authenticate, async (req, res) => {
+    const { userId } = req.user;
+    const { commentId } = req.params;
 
+    console.log('Deleting comment with ID:', commentId);
     try {
-        const comment = await Comment.findById(id);
+        const comment = await Comment.findById(commentId);
 
         if (!comment) {
+            console.error('Comment not found with ID:', commentId);
             return sendError(res, new Error('Comment Not Found'), 'Comment not found', 404);
         }
 
         if (comment.userId.toString() !== userId.toString()) {
+            console.error('Unauthorized user ID:', userId, 'attempted to delete comment ID:', commentId);
             return sendError(res, new Error('Unauthorized'), 'Unauthorized user', 401);
         }
 
         await comment.deleteOne();
+        console.log('Comment deleted successfully with ID:', commentId);
         return res.status(200).json({ message: 'Comment deleted successfully' });
     } catch (error) {
         sendError(res, error, 'Server error during comment deletion');
@@ -126,20 +146,22 @@ router.delete('/:id', authenticate, async (req, res) => {
 });
 
 // Like a comment
-router.put('/like/:id', authenticate, async (req, res) => {
-    const { id } = req.params;
+router.put('/like/:commentId', authenticate, async (req, res) => {
+    const { commentId } = req.params;
+    console.log('Liking comment with ID:', commentId);
 
     try {
-        const result = await Comment.findByIdAndUpdate(id, { $inc: { likes: 1 } }, { new: true });
+        const result = await Comment.findByIdAndUpdate(commentId, { $inc: { likes: 1 } }, { new: true });
 
         if (!result) {
+            console.error('Comment not found with ID:', commentId);
             return sendError(res, new Error('Comment Not Found'), 'Comment not found', 404);
         }
 
-        console.log('Comment liked successfully');
+        console.log('Comment liked successfully with ID:', commentId);
         return res.status(200).json({
             message: 'Comment liked successfully',
-            likes: result.likes
+            likes: result.likes,
         });
     } catch (error) {
         sendError(res, error, 'Server error during comment like');
@@ -147,20 +169,22 @@ router.put('/like/:id', authenticate, async (req, res) => {
 });
 
 // Unlike a comment
-router.put('/unlike/:id', authenticate, async (req, res) => {
-    const { id } = req.params;
+router.put('/unlike/:commentId', authenticate, async (req, res) => {
+    const { commentId } = req.params;
+    console.log('Unliking comment with ID:', commentId);
 
     try {
-        const result = await Comment.findByIdAndUpdate(id, { $inc: { likes: -1 } }, { new: true });
+        const result = await Comment.findByIdAndUpdate(commentId, { $inc: { likes: -1 } }, { new: true });
 
         if (!result) {
+            console.error('Comment not found with ID:', commentId);
             return sendError(res, new Error('Comment Not Found'), 'Comment not found', 404);
         }
 
-        console.log('Comment unliked successfully');
+        console.log('Comment unliked successfully with ID:', commentId);
         return res.status(200).json({
             message: 'Comment unliked successfully',
-            likes: result.likes
+            likes: result.likes,
         });
     } catch (error) {
         sendError(res, error, 'Server error during comment unlike');
@@ -168,29 +192,32 @@ router.put('/unlike/:id', authenticate, async (req, res) => {
 });
 
 // Reply to a comment
-router.post('/reply/:id', authenticate, async (req, res) => {
-    const { id } = req.params;
+router.post('/reply/:commentId', authenticate, async (req, res) => {
+    const { commentId } = req.params;
     const { content } = req.body;
-    const userId = req.user._id;
+    const { userId } = req.user;
 
+    console.log('Replying to comment with ID:', commentId);
     if (!content || content.length < 1) {
+        console.error('Reply Creation: No content provided.');
         return res.status(400).json({ success: false, message: 'Reply content is required' });
     }
 
     try {
-        const parentComment = await Comment.findById(id);
+        const parentComment = await Comment.findById(commentId);
 
         if (!parentComment) {
+            console.error('Parent comment not found with ID:', commentId);
             return sendError(res, new Error('Comment Not Found'), 'Parent comment not found', 404);
         }
 
         const newComment = new Comment({
             content,
             userId,
-            parentId: id,
+            parentId: commentId,
             postId: parentComment.postId,
             likes: 0,
-            replies: []
+            replies: [],
         });
 
         await newComment.save();
@@ -198,6 +225,7 @@ router.post('/reply/:id', authenticate, async (req, res) => {
         parentComment.replies.push(newComment._id);
         await parentComment.save();
 
+        console.log('Reply created successfully with ID:', newComment._id);
         return res.status(201).json({ success: true, comment: newComment });
     } catch (error) {
         sendError(res, error, 'Server error during reply creation');
@@ -205,11 +233,13 @@ router.post('/reply/:id', authenticate, async (req, res) => {
 });
 
 // Get a list of comments for a particular post
-router.get('/comments/:post_id', authenticate, async (req, res) => {
-    const { post_id } = req.params;
+router.get('/comments/:postId', authenticate, async (req, res) => {
+    const { postId } = req.params;
+    console.log('Fetching comments for post ID:', postId);
 
     try {
-        const comments = await Comment.find({ postId: post_id }).sort({ createdAt: -1 });
+        const comments = await Comment.find({ postId }).sort({ createdAt: -1 });
+        console.log('Comments fetched successfully for post ID:', postId);
         return res.status(200).json(comments);
     } catch (error) {
         sendError(res, error, 'Server error retrieving comments for the post');

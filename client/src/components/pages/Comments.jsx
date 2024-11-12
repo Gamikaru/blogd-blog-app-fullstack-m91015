@@ -12,7 +12,7 @@
 //     }, []);
 
 //     const fetchComments = async () => {
-//         const token = cookie.PassBloggs;
+//         const token = cookie.BlogdPass;
 //         try {
 //             const response = await fetch(`http://localhost:5050/comments/${postId}`, {
 //                 method: "GET",

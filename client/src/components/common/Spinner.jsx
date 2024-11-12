@@ -1,12 +1,11 @@
 import { motion } from 'framer-motion';
-import React from 'react';
-import CodeBloggsGraphic from '../../../public/assets/images/Icon-Only-Black.png'; // Import spinner image
+import BlogdGraphic from '../../../public/assets/images/Icon-Only-Black.png';
 
 const Spinner = ({ size = '60px', message = '' }) => {
     return (
         <div className="spinner-container" style={spinnerContainerStyle}>
             <motion.img
-                src={CodeBloggsGraphic}
+                src={BlogdGraphic}
                 alt="Loading spinner"
                 className="spinner"
                 style={{ width: size, height: size }}
@@ -25,14 +24,14 @@ const Spinner = ({ size = '60px', message = '' }) => {
     );
 };
 
-// Inline styles for centering the spinner
+// Inline styles retained for full-screen centering
 const spinnerContainerStyle = {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     height: '100vh', // Full viewport height
-    textAlign: 'center', // Center text
+    textAlign: 'center',
 };
 
 export default Spinner;

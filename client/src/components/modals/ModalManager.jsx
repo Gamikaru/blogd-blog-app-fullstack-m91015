@@ -1,7 +1,7 @@
 // ModalManager.jsx
-import { EditPostModal, PostModal, RegisterModal, usePrivateModalContext, usePublicModalContext, UserManager } from '@components';
+import { EditPostModal, PostModal, RegisterModal, UserManager } from '@components';
+import { usePrivateModalContext, usePublicModalContext } from '@contexts';
 import { AnimatePresence } from 'framer-motion';
-import React from 'react';
 
 const ModalManager = () => {
     const { modalType: publicModalType, showModal: showPublicModal, togglePublicModal } = usePublicModalContext();

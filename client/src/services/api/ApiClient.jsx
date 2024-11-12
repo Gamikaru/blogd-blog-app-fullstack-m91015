@@ -1,3 +1,5 @@
+// services/api/ApiClient.js
+
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 
@@ -14,12 +16,12 @@ const ApiClient = axios.create({
 // Request Interceptor: Attach Authorization token to headers if it exists in cookies
 ApiClient.interceptors.request.use(
     (config) => {
-        const token = cookies.get('PassBloggs'); // Retrieve token from cookies
+        const token = cookies.get('BlogdPass'); // Retrieve token from cookies
 
         // If a token exists, add it to the Authorization header
         if (token) {
             config.headers['Authorization'] = `Bearer ${token}`;
-            console.log('Authorization header set'); // For debugging, avoid logging actual tokens for security reasons
+            console.debug('Authorization header set'); // For debugging, avoid logging actual tokens for security reasons
         }
 
         return config; // Proceed with the request
@@ -46,7 +48,7 @@ ApiClient.interceptors.response.use(
             } else {
                 // For other unauthorized requests, remove the token and redirect to login
                 console.error('Unauthorized - token may be expired or insufficient permissions');
-                cookies.remove('PassBloggs'); // Remove the token from cookies
+                cookies.remove('BlogdPass'); // Remove the token from cookies
                 window.location.href = '/login'; // Redirect to login to re-authenticate
             }
         }

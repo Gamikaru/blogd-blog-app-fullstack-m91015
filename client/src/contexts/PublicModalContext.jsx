@@ -1,34 +1,43 @@
-import { Logger } from '@components';
-import { createContext, useContext, useState } from 'react';
+// src/contexts/PublicModalContext.jsx
 
-// Create PublicModalContext
-const PublicModalContext = createContext();
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import logger from '../utils/logger';
 
-// Custom hook to use PublicModalContext
-const usePublicModalContext = () => useContext(PublicModalContext);
+export const PublicModalContext = createContext();
 
-// Provider component to wrap the app or components that need public modal management
-const PublicModalProvider = ({ children }) => {
+export const usePublicModalContext = () => {
+    const context = useContext(PublicModalContext);
+    if (!context) {
+        throw new Error('usePublicModalContext must be used within a PublicModalProvider');
+    }
+    return context;
+};
+
+export const PublicModalProvider = ({ children }) => {
     const [publicModalState, setPublicModalState] = useState({
         showModal: false,
-        modalType: null, // Can be 'register', etc.
+        modalType: null,
     });
 
-    // Function to toggle public modal visibility
-    const togglePublicModal = (modalType = null) => {
-        Logger.info(`Toggling public modal: ${modalType}`);
+    const togglePublicModal = useCallback((modalType = null) => {
+        logger.info(`Toggling public modal: ${modalType}`);
         setPublicModalState((prev) => ({
             showModal: !prev.showModal,
             modalType: !prev.showModal ? modalType : null,
         }));
-    };
+    }, []);
+
+    const contextValue = useMemo(
+        () => ({
+            ...publicModalState,
+            togglePublicModal,
+        }),
+        [publicModalState, togglePublicModal]
+    );
 
     return (
-        <PublicModalContext.Provider value={{ ...publicModalState, togglePublicModal }}>
+        <PublicModalContext.Provider value={contextValue}>
             {children}
         </PublicModalContext.Provider>
     );
 };
-
-export default PublicModalProvider;
-export { usePublicModalContext };

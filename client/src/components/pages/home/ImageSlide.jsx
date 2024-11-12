@@ -1,5 +1,7 @@
 // ImageSlide.jsx
-import React, { memo, useEffect, useRef, useState } from 'react';
+
+import PropTypes from 'prop-types';
+import { memo, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -18,8 +20,7 @@ const ImageSlide = memo(({ posts, swiperProps }) => {
 
     const handleImageLoad = (postId) => {
         if (mounted.current) {
-            setLoadedImages(prev => ({ ...prev, [postId]: true }));
-            // Update swiper after image loads
+            setLoadedImages((prev) => ({ ...prev, [postId]: true }));
             if (swiperRef.current) {
                 swiperRef.current.update();
             }
@@ -39,46 +40,46 @@ const ImageSlide = memo(({ posts, swiperProps }) => {
                 }}
             >
                 {posts.map((post) => {
+                    const postId = post.postId || post._id;
                     const imageSrc =
-                        post.imageUrls?.length > 0
-                            ? post.imageUrls[0]
-                            : post.images?.length > 0
-                                ? `data:image/jpeg;base64,${post.images[0].data}`
-                                : '/assets/images/High-Resolution-Logo-White-on-Black-Background.png';
+                        post.imageUrls?.[0] ||
+                        (post.images?.[0]?.data
+                            ? `data:image/jpeg;base64,${post.images[0].data}`
+                            : '/assets/images/default-placeholder-image.jpg');
 
                     return (
                         <SwiperSlide
-                            key={`image-${post._id}`}
-                            onClick={() => navigate(`/blog/${post._id}`)}
+                            key={`image-${postId}`}
+                            onClick={() => navigate(`/blog/${postId}`)}
                         >
                             <div className="cube-slide">
                                 <div
                                     className="swiper-lazy-preloader"
                                     style={{
-                                        display: loadedImages[post._id] ? 'none' : 'block',
+                                        display: loadedImages[postId] ? 'none' : 'block',
                                         position: 'absolute',
                                         top: '50%',
                                         left: '50%',
-                                        transform: 'translate(-50%, -50%)'
+                                        transform: 'translate(-50%, -50%)',
                                     }}
                                 />
                                 <img
                                     src={imageSrc}
                                     alt={post.title || 'Untitled Post'}
-                                    loading="lazy"
+                                    loading="eager"
                                     decoding="async"
                                     width="100%"
                                     height="auto"
-                                    onLoad={() => handleImageLoad(post._id)}
+                                    onLoad={() => handleImageLoad(postId)}
                                     onError={(e) => {
                                         if (mounted.current) {
                                             e.target.onerror = null;
-                                            e.target.src = '/default-placeholder-image.jpg';
+                                            e.target.src = '/assets/images/default-placeholder-image.jpg';
                                         }
                                     }}
                                     style={{
-                                        opacity: loadedImages[post._id] ? 1 : 0,
-                                        transition: 'opacity 0.3s ease-in-out'
+                                        opacity: loadedImages[postId] ? 1 : 0,
+                                        transition: 'opacity 0.3s ease-in-out',
                                     }}
                                 />
                             </div>
@@ -90,5 +91,21 @@ const ImageSlide = memo(({ posts, swiperProps }) => {
     );
 });
 
-ImageSlide.displayName = 'ImageSlide';
+ImageSlide.propTypes = {
+    posts: PropTypes.arrayOf(
+        PropTypes.shape({
+            postId: PropTypes.string,
+            _id: PropTypes.string,
+            title: PropTypes.string,
+            imageUrls: PropTypes.arrayOf(PropTypes.string),
+            images: PropTypes.arrayOf(
+                PropTypes.shape({
+                    data: PropTypes.string.isRequired,
+                })
+            ),
+        })
+    ).isRequired,
+    swiperProps: PropTypes.object.isRequired,
+};
+
 export default ImageSlide;

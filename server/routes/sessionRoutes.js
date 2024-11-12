@@ -1,3 +1,5 @@
+// routes/sessionRoutes.js
+
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { authenticate } from '../middleware/authMiddleware.js';
@@ -7,35 +9,35 @@ import User from '../models/userSchema.js';
 const router = express.Router();
 
 /**
- * @route   POST /:id
+ * @route   POST /:userId
  * @desc    Create a new session for a user
  * @access  Private (Authentication required)
  */
-router.post('/:id', authenticate, async (req, res) => {
-   const userId = req.params.id;
-   console.log('Creating session for user ID:', userId);
+router.post('/:userId', authenticate, async (req, res) => {
+    const { userId } = req.params;
+    console.log('Creating session for user ID:', userId);
 
-   try {
-      // Check if a session already exists for the user
-      const existingSession = await Session.findOne({ user: userId });
-      if (existingSession) {
-         console.log('User already has an active session:', existingSession);
-         return res.status(409).send('User already has an active session');
-      }
+    try {
+        // Check if a session already exists for the user
+        const existingSession = await Session.findOne({ user: userId });
+        if (existingSession) {
+            console.error('Session Creation: User already has an active session:', existingSession);
+            return res.status(409).json({ message: 'User already has an active session' });
+        }
 
-      const newSession = new Session({
-         sessionId: uuidv4(),
-         user: userId
-      });
+        const newSession = new Session({
+            sessionId: uuidv4(),
+            user: userId,
+        });
 
-      await newSession.save();
-      console.log('Session created successfully:', newSession);
+        await newSession.save();
+        console.log('Session Creation: Session created successfully for user ID:', userId);
 
-      res.status(201).json(newSession);
-   } catch (error) {
-      console.error('Error creating session:', error);
-      res.status(500).send('Server error: Unable to create session');
-   }
+        res.status(201).json(newSession);
+    } catch (error) {
+        console.error('Session Creation: Error creating session:', error);
+        res.status(500).json({ message: 'Server error: Unable to create session' });
+    }
 });
 
 /**
@@ -44,25 +46,26 @@ router.post('/:id', authenticate, async (req, res) => {
  * @access  Private (Authentication required)
  */
 router.get('/validate_token', authenticate, async (req, res) => {
-   console.log('Validating session token for user:', req.user._id);
+    console.log('Validating session token for user ID:', req.user.userId);
 
-   try {
-      const user = await User.findById(req.user._id);
-      if (!user) {
-         console.log('User not found for validation:', req.user._id);
-         return res.status(404).send('User not found');
-      }
+    try {
+        const user = await User.findById(req.user.userId);
+        if (!user) {
+            console.error('Token Validation: User not found for user ID:', req.user.userId);
+            return res.status(404).json({ message: 'User not found' });
+        }
 
-      res.status(200).json({
-         _id: user._id,
-         email: user.email,
-         firstName: user.firstName,
-         lastName: user.lastName
-      });
-   } catch (error) {
-      console.error('Error validating token:', error);
-      res.status(500).send('Server error: Unable to validate token');
-   }
+        console.log('Token Validation: User validated successfully for user ID:', req.user.userId);
+        res.status(200).json({
+            userId: user._id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+        });
+    } catch (error) {
+        console.error('Token Validation: Error validating token:', error);
+        res.status(500).json({ message: 'Server error: Unable to validate token' });
+    }
 });
 
 /**
@@ -71,22 +74,22 @@ router.get('/validate_token', authenticate, async (req, res) => {
  * @access  Private (Authentication required)
  */
 router.post('/end', authenticate, async (req, res) => {
-   console.log('Ending session for user:', req.user._id);
+    console.log('Ending session for user ID:', req.user.userId);
 
-   try {
-      // Find and delete the session for the authenticated user
-      const endSession = await Session.findOneAndDelete({ user: req.user._id });
-      if (!endSession) {
-         console.log('No session found for user:', req.user._id);
-         return res.status(404).send('Session not found');
-      }
+    try {
+        // Find and delete the session for the authenticated user
+        const endSession = await Session.findOneAndDelete({ user: req.user.userId });
+        if (!endSession) {
+            console.error('Session End: No session found for user ID:', req.user.userId);
+            return res.status(404).json({ message: 'Session not found' });
+        }
 
-      console.log('Session ended successfully:', endSession);
-      res.status(200).send('Session ended');
-   } catch (error) {
-      console.error('Error ending session:', error);
-      res.status(500).send('Server error: Unable to end session');
-   }
+        console.log('Session End: Session ended successfully for user ID:', req.user.userId);
+        res.status(200).json({ message: 'Session ended' });
+    } catch (error) {
+        console.error('Session End: Error ending session:', error);
+        res.status(500).json({ message: 'Server error: Unable to end session' });
+    }
 });
 
 export default router;

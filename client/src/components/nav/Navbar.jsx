@@ -1,18 +1,24 @@
-import {
-    fetchPostById,
-    HamburgerMenu,
-    Logger,
-    NavbarButtons,
-    PageInfo,
-    usePrivateModalContext,
-    UserDropdown,
-    useUserUpdate,
-    Button
-} from '@components';
+import { HamburgerMenu, NavbarButtons, PageInfo, UserDropdown } from '@components';
+import { usePrivateModalContext, useUserUpdate } from '@contexts';
+import { fetchPostById } from '@services/api';
+import { logger } from '@utils';
 import { motion } from "framer-motion";
-import React, { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+
+const categories = [
+    "Lifestyle",
+    "Philosophy",
+    "Productivity",
+    "Health & Fitness",
+    "Technology",
+    "Cooking",
+    "Art",
+    "Music",
+    "Business",
+];
+
 const Navbar = ({ toggleSidebar, toggleButtonRef }) => {
     const { togglePrivateModal } = usePrivateModalContext();
     const [, removeCookie] = useCookies();
@@ -22,62 +28,51 @@ const Navbar = ({ toggleSidebar, toggleButtonRef }) => {
     const [showUserDropdown, setShowUserDropdown] = useState(false);
     const userIconRef = useRef(null);
     const { id } = useParams();
+
     const [postTitle, setPostTitle] = useState("");
     const [postExcerpt, setPostExcerpt] = useState("");
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(!!id);
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const categories = [
-        "Lifestyle",
-        "Philosophy",
-        "Productivity",
-        "Health & Fitness",
-        "Technology",
-        "Cooking",
-        "Art",
-        "Music",
-        "Business",
-    ];
 
-    const [dropdownPosition, setDropdownPosition] = useState({
-        top: 0,
-        right: 0,
-    });
+    const [dropdownPosition, setDropdownPosition] = useState({ top: 0, right: 0 });
 
-    useEffect(() => {
-        if (id) {
-            fetchPostTitleAndExcerpt(id);
-        } else {
-            setLoading(false);
-        }
-    }, [id]);
+    // Memoized categories
+    const memoizedCategories = useMemo(() => categories, []);
 
-    const fetchPostTitleAndExcerpt = async (postId) => {
+    // Function to fetch post data
+    const fetchPostTitleAndExcerpt = useCallback(async (postId) => {
         try {
             const post = await fetchPostById(postId);
             setPostTitle(post.title || "");
             setPostExcerpt(generateExcerpt(post.content));
-            setLoading(false);
         } catch (error) {
-            Logger.error("Error fetching post title and excerpt:", error);
+            logger.error("Error fetching post title and excerpt:", error);
+        } finally {
             setLoading(false);
         }
-    };
+    }, []);
 
-    const generateExcerpt = (content) => {
-        const temp = document.createElement("div");
-        temp.innerHTML = content;
-        const text = temp.textContent || temp.innerText;
-        const words = text.split(" ");
-        return words.slice(0, 30).join(" ") + "...";
-    };
+    // Effect for fetching post data
+    useEffect(() => {
+        if (id) {
+            fetchPostTitleAndExcerpt(id);
+        }
+    }, [id, fetchPostTitleAndExcerpt]);
 
-    const getPageWelcomeText = () => {
+    const generateExcerpt = useCallback((content) => {
+        return content
+            .replace(/<[^>]+>/g, '') // Strip HTML tags
+            .split(/\s+/)
+            .slice(0, 30)
+            .join(" ") + "...";
+    }, []);
+
+    const getPageWelcomeText = useMemo(() => {
         switch (location.pathname) {
             case "/":
                 return {
                     title: "Welcome to Blogd.",
-                    subtitle:
-                        "Discover blogs that inspire and educate. Blow your mind, expand your horizons.",
+                    subtitle: "Discover blogs that inspire and educate. Blow your mind, expand your horizons.",
                 };
             case "/admin":
                 return {
@@ -95,12 +90,10 @@ const Navbar = ({ toggleSidebar, toggleButtonRef }) => {
                     subtitle: postExcerpt || "",
                 };
         }
-    };
-
-    const welcomeText = getPageWelcomeText();
+    }, [location.pathname, postTitle, postExcerpt]);
 
     useEffect(() => {
-        Logger.info("Navbar initialized");
+        logger.info("Navbar initialized");
     }, []);
 
     useEffect(() => {
@@ -114,8 +107,8 @@ const Navbar = ({ toggleSidebar, toggleButtonRef }) => {
     }, [showUserDropdown]);
 
     const handleLogout = () => {
-        Logger.info("Logging out user");
-        removeCookie("PassBloggs", { path: "/" });
+        logger.info("Logging out user");
+        removeCookie("BlogdPass", { path: "/" });
         removeCookie("userID", { path: "/" });
         setUser(null);
         setTimeout(() => navigate("/login", { replace: true }), 1000);
@@ -123,16 +116,10 @@ const Navbar = ({ toggleSidebar, toggleButtonRef }) => {
 
     const handleSidebarToggle = () => {
         toggleSidebar();
-        setSidebarOpen(!sidebarOpen);
+        setSidebarOpen((prev) => !prev);
     };
 
-    if (
-        location.pathname === "/login" ||
-        location.pathname === "/register"
-    )
-        return null;
-
-    if (loading) return null;
+    if (["/login", "/register"].includes(location.pathname) || loading) return null;
 
     // Animation Variants
     const navbarVariants = {
@@ -174,8 +161,8 @@ const Navbar = ({ toggleSidebar, toggleButtonRef }) => {
             </nav>
 
             <PageInfo
-                welcomeText={welcomeText}
-                categories={categories}
+                welcomeText={getPageWelcomeText}
+                categories={memoizedCategories}
                 location={location}
             />
         </motion.header>

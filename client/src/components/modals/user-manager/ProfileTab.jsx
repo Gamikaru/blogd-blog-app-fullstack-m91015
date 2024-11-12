@@ -1,10 +1,10 @@
-// ProfileTab.jsx
+// src/components/modals/user-manager/ProfileTab.jsx
+
+import { UserService } from '@services/api';
+import { logger } from '@utils';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { motion } from 'framer-motion';
-import React from 'react';
 import * as Yup from 'yup';
-import UserService from '../../../services/api/UserService';
-import Logger from '../../../utils/Logger';
 
 const ProfileTab = ({ user, setUser, showNotification, loading, setLoading }) => {
     const profileInitialValues = {
@@ -49,11 +49,11 @@ const ProfileTab = ({ user, setUser, showNotification, loading, setLoading }) =>
                 formData.profilePicture = await filePromise;
             }
 
-            const updatedUser = await UserService.updateProfile(user._id, formData);
+            const updatedUser = await UserService.updateProfile(user.userId, formData);
             setUser(updatedUser);
             showNotification('Settings updated successfully!', 'success');
         } catch (error) {
-            Logger.error('Error updating settings:', error);
+            logger.error('Error updating settings:', error);
             const errorMessage = error.response?.data?.message || 'Failed to update settings';
             showNotification(errorMessage, 'error');
             setFieldError('general', errorMessage);

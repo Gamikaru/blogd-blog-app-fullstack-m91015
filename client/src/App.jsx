@@ -1,28 +1,27 @@
 // App.jsx
+import {
+    Admin,
+    AppLayout,
+    ErrorBoundary,
+    FullBlogView,
+    HomePage,
+    LoginPage,
+    ModalManager,
+    Network,
+    PrivateRoute,
+    PublicRoute,
+    UserProfile
+} from '@components';
+import { logger } from '@utils';
 import { AnimatePresence } from 'framer-motion';
-import React from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import 'swiper/css';
 import 'swiper/css/autoplay';
 import 'swiper/css/effect-cube';
-import {
-    LoginPage,
-    RedirectIfLoggedIn,
-    ErrorBoundary,
-    AppLayout,
-    PrivateRoute,
-    PublicRoute,
-    ModalManager,
-    Admin,
-    FullBlogView,
-    HomePage,
-    Network,
-    UserProfile,
-    Logger
-} from '@components';
+
 
 const App = () => {
-    Logger.info('App component rendered');
+    logger.info('App component rendered');
     const location = useLocation();
 
     return (
@@ -35,9 +34,7 @@ const App = () => {
                             path="/login"
                             element={
                                 <PublicRoute>
-                                    <RedirectIfLoggedIn>
-                                        <LoginPage />
-                                    </RedirectIfLoggedIn>
+                                    <LoginPage />
                                 </PublicRoute>
                             }
                         />

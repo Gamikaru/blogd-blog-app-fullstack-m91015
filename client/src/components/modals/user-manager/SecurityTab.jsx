@@ -1,8 +1,8 @@
 // SecurityTab.jsx
-import { Logger, UserService } from '@components';
+import { UserService } from '@services/api';
+import { logger } from '@utils';
 import { Field, Form, Formik } from 'formik';
 import { motion } from 'framer-motion';
-import React from 'react';
 
 const SecurityTab = ({ user, setUser, showNotification, loading, setLoading }) => {
     const securityInitialValues = {
@@ -17,11 +17,11 @@ const SecurityTab = ({ user, setUser, showNotification, loading, setLoading }) =
         const formData = { ...values };
 
         try {
-            const updatedUser = await UserService.updateProfile(user._id, formData);
+            const updatedUser = await UserService.updateProfile(user.userId, formData);
             setUser(updatedUser);
             showNotification('Settings updated successfully!', 'success');
         } catch (error) {
-            Logger.error('Error updating settings:', error);
+            logger.error('Error updating settings:', error);
             const errorMessage = error.response?.data?.message || 'Failed to update settings';
             showNotification(errorMessage, 'error');
             setFieldError('general', errorMessage);
@@ -72,9 +72,7 @@ const SecurityTab = ({ user, setUser, showNotification, loading, setLoading }) =
                         <label>Two-Factor Authentication</label>
                         <motion.button
                             type="button"
-                            className="security-button"
-                            whileHover={{ y: -2 }}
-                            whileTap={{ scale: 0.98 }}
+                            className="button swiper-button-next"
                         >
                             Enable 2FA
                         </motion.button>
@@ -84,9 +82,7 @@ const SecurityTab = ({ user, setUser, showNotification, loading, setLoading }) =
                         <label>Active Sessions</label>
                         <motion.button
                             type="button"
-                            className="security-button"
-                            whileHover={{ y: -2 }}
-                            whileTap={{ scale: 0.98 }}
+                            className="button button-general"
                         >
                             Manage Sessions
                         </motion.button>
@@ -94,9 +90,6 @@ const SecurityTab = ({ user, setUser, showNotification, loading, setLoading }) =
 
                     <motion.button className="button button-delete" type="button">
                         Delete Account
-                    </motion.button>
-                    <motion.button className="button button-submit" type="button">
-                        Update Security
                     </motion.button>
 
                 </Form>

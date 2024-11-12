@@ -1,10 +1,10 @@
 // FullBlogView.jsx
 // Desc: Full blog view component
-
-import { Button, fetchPostById, Logger, Spinner } from '@components';
-import React, { useEffect, useState } from "react";
+import { Button, Spinner } from '@components';
+import { fetchPostById } from '@services/api';
+import { logger } from '@utils';
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
 const FullBlogView = () => {
     const { id } = useParams();
     const [post, setPost] = useState(null);
@@ -13,7 +13,7 @@ const FullBlogView = () => {
     const [commentTexts, setCommentTexts] = useState({});
 
     useEffect(() => {
-        Logger.info(`Fetching post with ID: ${id}`);
+        logger.info(`Fetching post with ID: ${id}`);
         fetchPost();
     }, [id]);
 
@@ -23,7 +23,7 @@ const FullBlogView = () => {
             setPost(fetchedPost);
             setLoading(false);
         } catch (error) {
-            Logger.error("Error fetching post:", error);
+            logger.error("Error fetching post:", error);
             setError("Failed to fetch post");
             setLoading(false);
         }
@@ -42,11 +42,11 @@ const FullBlogView = () => {
             // Handle comment submit
             // Example:
             // await submitComment(postId, commentText);
-            Logger.info(`Submitting comment for post ${postId}: ${commentText}`);
+            logger.info(`Submitting comment for post ${postId}: ${commentText}`);
             // Reset comment text after submission
             setCommentTexts((prev) => ({ ...prev, [postId]: "" }));
         } catch (error) {
-            Logger.error("Error submitting comment:", error);
+            logger.error("Error submitting comment:", error);
         }
     };
 
@@ -86,21 +86,21 @@ const FullBlogView = () => {
                     className="comment-form"
                     onSubmit={(e) => {
                         e.preventDefault();
-                        handleCommentSubmit(post._id);
+                        handleCommentSubmit(post.postId);
                     }}
                 >
                     <textarea
                         rows={3}
                         placeholder="Write a comment..."
-                        value={commentTexts[post._id] || ""}
-                        onChange={(e) => handleCommentChange(post._id, e.target.value)}
+                        value={commentTexts[post.postId] || ""}
+                        onChange={(e) => handleCommentChange(post.postId, e.target.value)}
                         maxLength={500}
                     />
                     <Button
                         type="submit"
                         variant="submit" // Use 'submit' variant for FiCheck icon
-                        className="submit-comment-button"
-                        disabled={!commentTexts[post._id]}
+                        className="button button-submit"
+                        disabled={!commentTexts[post.postId]}
                         // Optionally, you can set showIcon={false} if you don't want the icon
                         // showIcon={false}
                     >

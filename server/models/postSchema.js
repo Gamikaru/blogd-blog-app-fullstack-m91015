@@ -1,94 +1,119 @@
+// models/postSchema.js
+
 import mongoose from 'mongoose';
 
 const { Schema, model } = mongoose;
 
-const postSchema = new Schema({
-    title: {
-        type: String,
-        maxlength: 100 // Limit title to 100 characters
-    },
-    slug: {
-        type: String,
-        unique: true,
-        index: true
-    },
-    content: {
-        type: String,
-        required: true,
-        minlength: 1,
-        maxlength: 10000 // Increase maximum size for posts
-    },
-    excerpt: {
-        type: String,
-        maxlength: 300 // Short summary of the post
-    },
-    userId: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true,
-        index: true
-    },
-    likes: {
-        type: Number,
-        default: 0,
-        min: 0 // Ensure likes can't go negative
-    },
-    views: {
-        type: Number,
-        default: 0,
-        min: 0 // Ensure views can't go negative
-    },
-    category: {
-        type: String,
-        required: true,
-        enum: ['Health and Fitness', 'Lifestyle', 'Technology', 'Cooking', 'Other'] // Define allowed categories
-    },
-    tags: [{
-        type: String
-    }],
-    status: {
-        type: String,
-        enum: ['draft', 'published', 'archived'],
-        default: 'draft'
-    },
-    scheduledAt: {
-        type: Date
-    },
-    timeStamp: {
-        type: Date,
-        default: Date.now
-    },
-    comments: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Comment'
-    }],
-    imageUrls: [{
-        type: String
-    }],
-    images: [{
-        data: {
-            type: String // Base64-encoded image data
+const postSchema = new Schema(
+    {
+        title: {
+            type: String,
+            required: true,
+            maxlength: 100,
+            trim: true,
         },
-        isLink: {
-            type: Boolean,
-            default: false // Flag to indicate if the image is from a link or an upload
-        }
-    }],
-    editHistory: [{
-        editedAt: {
+        slug: {
+            type: String,
+            unique: true,
+            index: true,
+        },
+        content: {
+            type: String,
+            required: true,
+            minlength: 1,
+            maxlength: 10000,
+        },
+        // Removed the `excerpt` field from the schema
+        userId: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true,
+            index: true,
+        },
+        likes: {
+            type: Number,
+            default: 0,
+            min: 0,
+        },
+        likesBy: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+        views: {
+            type: Number,
+            default: 0,
+            min: 0,
+        },
+        category: {
+            type: String,
+            required: true,
+            enum: ['Health and Fitness', 'Lifestyle', 'Technology', 'Cooking', 'Other'],
+        },
+        tags: [{ type: String }],
+        status: {
+            type: String,
+            enum: ['draft', 'published', 'archived'],
+            default: 'draft',
+        },
+        scheduledAt: {
             type: Date,
-            default: Date.now
         },
-        content: String
-    }]
-}, { timestamps: true }); // Adds createdAt and updatedAt timestamps
-
-// Middleware to generate slug from title
-postSchema.pre('save', function(next) {
-    if (this.isModified('title')) {
-        this.slug = this.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+        comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
+        imageUrls: [{ type: String }],
+        images: [
+            {
+                data: {
+                    type: String,
+                },
+                isLink: {
+                    type: Boolean,
+                    default: false,
+                },
+            },
+        ],
+        editHistory: [
+            {
+                editedAt: {
+                    type: Date,
+                    default: Date.now,
+                },
+                content: String,
+            },
+        ],
+    },
+    {
+        timestamps: true,
+        toJSON: { virtuals: true }, // Include virtuals when converting to JSON
+        toObject: { virtuals: true },
     }
+);
+
+/**
+ * Middleware to generate slug.
+ */
+postSchema.pre('save', async function (next) {
+    if (this.isModified('title')) {
+        // Generate slug based on title
+        this.slug = this.title
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/(^-|-$)+/g, '');
+
+        // Ensure slug is unique
+        const existingPost = await this.constructor.findOne({
+            slug: this.slug,
+            _id: { $ne: this._id },
+        });
+        if (existingPost) {
+            this.slug = `${this.slug}-${Date.now()}`;
+        }
+    }
+
     next();
+});
+
+// Virtual field for excerpt
+postSchema.virtual('excerpt').get(function () {
+    const strippedContent = this.content.replace(/(<([^>]+)>)/gi, ''); // Strip HTML tags
+    const words = strippedContent.split(' ').slice(0, 40).join(' ');
+    return words + (strippedContent.split(' ').length > 40 ? '...' : '');
 });
 
 export default model('Post', postSchema);

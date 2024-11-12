@@ -1,5 +1,5 @@
-// components/common/ErrorBoundary.jsx
-import { Button, Logger } from '@components';
+import { Button } from '@components';
+import { logger } from '@utils';
 import React from 'react';
 
 class ErrorBoundary extends React.Component {
@@ -8,7 +8,7 @@ class ErrorBoundary extends React.Component {
         this.state = {
             hasError: false,
             error: null,
-            errorInfo: null
+            errorInfo: null,
         };
     }
 
@@ -17,37 +17,38 @@ class ErrorBoundary extends React.Component {
     }
 
     componentDidCatch(error, errorInfo) {
-        this.setState({
-            error: error,
-            errorInfo: errorInfo
-        });
-        Logger.error('Error Boundary caught an error:', error, errorInfo);
+        this.setState({ error, errorInfo });
+        logger.error('Error Boundary caught an error:', { error, errorInfo });
     }
 
     handleRetry = () => {
         this.setState({
             hasError: false,
             error: null,
-            errorInfo: null
+            errorInfo: null,
         });
-    }
+    };
 
     render() {
-        if (this.state.hasError) {
+        const { hasError, error, errorInfo } = this.state;
+
+        if (hasError) {
             return (
                 <div className="error-boundary">
                     <h3>Something went wrong</h3>
                     <Button
+                        variant="submit"
                         className="button button-retry"
                         onClick={this.handleRetry}
                     >
-                        Try Again
+                        Retry
                     </Button>
                     {process.env.NODE_ENV === 'development' && (
-                        <details style={{ whiteSpace: 'pre-wrap' }}>
-                            {this.state.error && this.state.error.toString()}
+                        <details style={{ whiteSpace: 'pre-wrap', marginTop: '1rem' }}>
+                            <summary>Error Details</summary>
+                            {error && error.toString()}
                             <br />
-                            {this.state.errorInfo && this.state.errorInfo.componentStack}
+                            {errorInfo?.componentStack}
                         </details>
                     )}
                 </div>

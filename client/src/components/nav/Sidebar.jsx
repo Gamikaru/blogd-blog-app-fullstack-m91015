@@ -1,8 +1,10 @@
-// src/components/Sidebar/Sidebar.jsx
-import { Button, Logger, Portal, useUserUpdate } from '@components';
-import React, { useEffect, useRef } from "react";
+// src/components/nav/Sidebar.jsx
+import { Button } from '@components';
+import {Portal} from '@components';
+import { useUserUpdate } from '@contexts';
+import { logger } from '@utils';
+import { useEffect, useRef } from "react";
 import { FaCog, FaSignOutAlt } from "react-icons/fa";
-
 const Sidebar = ({ sidebarOpen, toggleSidebar, toggleButtonRef }) => {
     const sidebarRef = useRef(null);
     const setUser = useUserUpdate();
@@ -19,7 +21,7 @@ const Sidebar = ({ sidebarOpen, toggleSidebar, toggleButtonRef }) => {
     }, [sidebarOpen, toggleSidebar, toggleButtonRef]);
 
     const handleLogout = () => {
-        Logger.info("Logging out user");
+        logger.info("Logging out user");
         setUser(null);
         toggleSidebar(false);
     };

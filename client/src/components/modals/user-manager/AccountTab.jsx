@@ -1,8 +1,9 @@
 // AccountTab.jsx
 // Desc: A tab component for the user account settings
-import { Button, Logger, UserService } from '@components';
+import { Button } from '@components';
+import { UserService } from '@services/api';
+import { logger } from '@utils';
 import { Field, Form, Formik } from 'formik';
-import React from 'react';
 
 const AccountTab = ({ user, setUser, showNotification, loading, setLoading }) => {
     const accountInitialValues = {
@@ -17,11 +18,11 @@ const AccountTab = ({ user, setUser, showNotification, loading, setLoading }) =>
         const formData = { ...values };
 
         try {
-            const updatedUser = await UserService.updateProfile(user._id, formData);
+            const updatedUser = await UserService.updateProfile(user.userId, formData);
             setUser(updatedUser);
             showNotification('Settings updated successfully!', 'success');
         } catch (error) {
-            Logger.error('Error updating settings:', error);
+            logger.error('Error updating settings:', error);
             const errorMessage = error.response?.data?.message || 'Failed to update settings';
             showNotification(errorMessage, 'error');
             setFieldError('general', errorMessage);
@@ -29,6 +30,14 @@ const AccountTab = ({ user, setUser, showNotification, loading, setLoading }) =>
             setLoading(false);
             setSubmitting(false);
         }
+    };
+
+    const handleUpgrade = () => {
+        // Handle account upgrade logic here
+    };
+
+    const handleDeleteAccount = () => {
+        // Handle account deletion logic here
     };
 
     return (
@@ -63,21 +72,35 @@ const AccountTab = ({ user, setUser, showNotification, loading, setLoading }) =>
                         <label>Account Type: Basic</label>
                         <Button
                             type="button"
-                            className="upgrade-button"
-                            whileHover={{ y: -2 }}
-                            whileTap={{ scale: 0.98 }}
+                            className="button button-upgrade"
                             variant="upgrade"
                         >
-                            Upgrade to Premium
+                            Upgrade Your Account
                         </Button>
                     </div>
+
+                    {/* <Button
+                        type="button"
+                        variant="upgrade"
+                        className="button button-upgrade"
+                        onClick={handleUpgrade}
+                    >
+                        Upgrade Account
+                    </Button> */}
+
+                    {/* <Button
+                        variant="delete"
+                        className="button button-delete"
+                        onClick={handleDeleteAccount}
+                        showIcon={false}
+                    >
+                        Delete Account
+                    </Button> */}
 
                     <Button
                         type="submit"
                         className="usermanager-content__submit"
                         disabled={isSubmitting || loading}
-                        whileHover={{ y: -2 }}
-                        whileTap={{ scale: 0.98 }}
                         variant="submit"
                     >
                         Save Account Settings

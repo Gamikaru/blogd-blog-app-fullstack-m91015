@@ -1,110 +1,64 @@
 // NetworkUserCard.jsx
 import { Button } from '@components';
-import { motion, useAnimation } from "framer-motion";
-import React from "react";
+import { motion } from "framer-motion";
+import { memo, useMemo, useState } from 'react';
 import { Card } from "react-bootstrap";
 import { FaBriefcase, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 
-const NetworkCard = ({ user, getUserLatestPost, truncatePostContent }) => {
-    // Animation controls for bubbles
-    const smallBubbleControls = useAnimation();
-    const mediumBubbleControls = useAnimation();
-    const statusBubbleControls = useAnimation();
+const NetworkCard = memo(({ user, latestPost, truncatePostContent }) => {
+    const [showBubbles, setShowBubbles] = useState(false);
 
     const getInitials = (firstName, lastName) => {
         return `${firstName.charAt(0)}${lastName.charAt(0)}`;
     };
 
-    // Bubbles Animation Variants
-    const smallBubbleVariants = {
-        hidden: { opacity: 0, scale: 0, y: 0 },
-        visible: {
-            opacity: [0, 1, 1, 0],
-            scale: [0, 1, 1, 0.8],
-            y: [0, -20, -20, -30],
-            transition: {
-                duration: 7, // Total duration
-                times: [0, 0.1, 0.85, 1],
-            },
-        },
+    const memoizedInitials = useMemo(() =>
+        getInitials(user.firstName, user.lastName),
+        [user.firstName, user.lastName]
+    );
+
+    const memoizedTruncatedContent = useMemo(() =>
+        latestPost ? truncatePostContent(latestPost.content) : "No posts yet",
+        [latestPost, truncatePostContent]
+    );
+
+    const handleEditNetwork = () => {
+        // Add your edit network handler here
     };
 
-    const mediumBubbleVariants = {
-        hidden: { opacity: 0, scale: 0, y: 0 },
-        visible: {
-            opacity: [0, 1, 1, 0],
-            scale: [0, 1.2, 1.2, 0.8],
-            y: [0, -40, -40, -60],
-            transition: {
-                duration: 7,
-                times: [0, 0.1, 0.85, 1],
-                delay: 0.2, // Slight delay for staggered effect
-            },
-        },
-    };
-
-    const statusBubbleVariants = {
-        hidden: { opacity: 0, scale: 0, y: 0 },
-        visible: {
-            opacity: [0, 1, 1, 0],
-            scale: [0, 1, 1, 0.8],
-            y: [0, -60, -60, -90],
-            transition: {
-                duration: 7,
-                times: [0, 0.1, 0.85, 1],
-                delay: 0.4, // Slight delay for staggered effect
-            },
-        },
-    };
-
-    // Handle hover start
-    const handleHoverStart = () => {
-        if (user.status) {
-            smallBubbleControls.start("visible");
-            mediumBubbleControls.start("visible");
-            statusBubbleControls.start("visible");
-        }
-    };
-
-    // Handle hover end
-    const handleHoverEnd = () => {
-        smallBubbleControls.stop();
-        mediumBubbleControls.stop();
-        statusBubbleControls.stop();
-        smallBubbleControls.set("hidden");
-        mediumBubbleControls.set("hidden");
-        statusBubbleControls.set("hidden");
+    const handleSendMessage = () => {
+        // Add your send message handler here
     };
 
     return (
         <Card className="network-card">
             <Card.Body
                 className="network-card-body"
-                onMouseEnter={handleHoverStart}
-                onMouseLeave={handleHoverEnd}
+                onMouseEnter={() => setShowBubbles(true)}
+                onMouseLeave={() => setShowBubbles(false)}
             >
                 <div className="top-section">
                     <div className="initials-circle">
-                        {getInitials(user.firstName, user.lastName)}
-                        {user.status && (
+                        {memoizedInitials}
+                        {user.status && showBubbles && (
                             <div className="bubble-container">
                                 <motion.div
                                     className="bubble small-bubble"
-                                    variants={smallBubbleVariants}
-                                    initial="hidden"
-                                    animate={smallBubbleControls}
+                                    initial={{ opacity: 0, scale: 0, y: 0 }}
+                                    animate={{ opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0.8], y: [0, -20, -20, -30] }}
+                                    transition={{ duration: 7, times: [0, 0.1, 0.85, 1] }}
                                 />
                                 <motion.div
                                     className="bubble medium-bubble"
-                                    variants={mediumBubbleVariants}
-                                    initial="hidden"
-                                    animate={mediumBubbleControls}
+                                    initial={{ opacity: 0, scale: 0, y: 0 }}
+                                    animate={{ opacity: [0, 1, 1, 0], scale: [0, 1.2, 1.2, 0.8], y: [0, -40, -40, -60] }}
+                                    transition={{ duration: 7, times: [0, 0.1, 0.85, 1], delay: 0.2 }}
                                 />
                                 <motion.div
                                     className="bubble status-bubble"
-                                    variants={statusBubbleVariants}
-                                    initial="hidden"
-                                    animate={statusBubbleControls}
+                                    initial={{ opacity: 0, scale: 0, y: 0 }}
+                                    animate={{ opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0.8], y: [0, -60, -60, -90] }}
+                                    transition={{ duration: 7, times: [0, 0.1, 0.85, 1], delay: 0.4 }}
                                 >
                                     <span>{user.status}</span>
                                 </motion.div>
@@ -131,34 +85,21 @@ const NetworkCard = ({ user, getUserLatestPost, truncatePostContent }) => {
                 </div>
                 <h6>Latest Post</h6>
                 <div className="recent-post">
-                    {getUserLatestPost(user._id) ? (
-                        <p className="post-content">
-                            {truncatePostContent(getUserLatestPost(user._id).content)}
-                        </p>
-                    ) : (
-                        <p>No posts yet</p>
-                    )}
+                    <p className="post-content">
+                        {memoizedTruncatedContent}
+                    </p>
                 </div>
                 <Button
-                    variant="edit"
-                    showIcon={false} // Toggle icon off if desired
-                    onClick={() => {/* Add your edit profile handler here */}}
-                    className="network-card-edit-button"
-                >
-                    Edit Profile
-                </Button>
-                {/* Example of a button with an icon */}
-                <Button
                     variant="send"
-                    showIcon={true} // Icon is shown
-                    onClick={() => {/* Add your send message handler here */}}
-                    className="network-card-send-button"
+                    className="button"
+                    onClick={handleSendMessage}
+                    showIcon={true}
                 >
-                    Send Message
+                    Message
                 </Button>
             </Card.Body>
         </Card>
     );
-};
+});
 
 export default NetworkCard;

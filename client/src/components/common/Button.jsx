@@ -1,11 +1,11 @@
-// client/src/components/common/Button.jsx
-import { motion } from 'framer-motion';
+import clsx from 'clsx'; // Utility for dynamic classNames
+import { motion, useReducedMotion } from 'framer-motion';
 import PropTypes from 'prop-types';
-import React from 'react';
+
+// Import icons
 import {
     FiArrowUpCircle,
     FiBook,
-    FiCheck,
     FiEdit,
     FiFeather,
     FiFileText,
@@ -20,7 +20,7 @@ import {
     FiShare2,
     FiTrash,
     FiUser,
-    FiX,
+    FiX
 } from 'react-icons/fi';
 
 import {
@@ -30,7 +30,7 @@ import {
     FaInstagram,
     FaLinkedinIn,
     FaPaperPlane,
-    FaTwitter,
+    FaTwitter
 } from 'react-icons/fa';
 
 import {
@@ -39,11 +39,12 @@ import {
     MdOutlineChat,
 } from 'react-icons/md';
 
+// Centralized variant-to-icon mapping
 const variantIcons = {
     // Feather Icons
     edit: FiEdit,
     delete: FiTrash,
-    submit: FiCheck,
+    submit: null,
     login: FiLogIn,
     logout: FiLogOut,
     create: FiPlus,
@@ -76,83 +77,53 @@ const variantIcons = {
 
     // Additional Variants
     noIcon: null,
-    iconButton: null, // For unique or rare icons
+    iconButton: null,
 };
 
 const Button = ({
-    variant,
+    variant = 'submit',
     children,
     icon,
     showIcon = true,
-    theme,
-    as,
+    theme = 'light',
+    as: Component = 'button',
+    iconOnly = false,
+    filled = false,
     ...props
 }) => {
+    const shouldReduceMotion = useReducedMotion();
     const IconComponent = icon || variantIcons[variant];
-    const Component = as || 'button'; // Allows rendering as different elements (e.g., 'a')
 
     return (
-        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Component className={`button button-${variant} ${theme}`} {...props}>
-                {showIcon && IconComponent && (
-                    <IconComponent className="button-icon" />
+        <motion.div
+            whileHover={!shouldReduceMotion ? { scale: 1.02 } : undefined}
+            whileTap={!shouldReduceMotion ? { scale: 0.98 } : undefined}
+        >
+            <Component
+                className={clsx(
+                    'button',
+                    `button-${variant}`,
+                    theme,
+                    { 'icon-only': iconOnly, filled }
                 )}
-                {children}
+                {...props}
+            >
+                {showIcon && IconComponent && <IconComponent className="button-icon" />}
+                {!iconOnly && children && <span className="button-text">{children}</span>}
             </Component>
         </motion.div>
     );
 };
 
 Button.propTypes = {
-    variant: PropTypes.oneOf([
-        // Feather Icons
-        'edit',
-        'delete',
-        'submit',
-        'login',
-        'logout',
-        'create',
-        'close',
-        'like',
-        'search',
-        'feather',
-        'user',
-        'upgrade',
-        'share',
-        'link',
-        'message',
-        'send',
-        'book',
-        'fileText',
-
-        // Font Awesome Icons
-        'twitter',
-        'facebook',
-        'instagram',
-        'linkedin',
-        'blog',
-        'bookOpen',
-        'paperPlane',
-
-        // Material Design Icons
-        'notifications',
-        'chat',
-        'connect',
-
-        // Additional Variants
-        'noIcon',
-        'iconButton',
-    ]).isRequired,
+    variant: PropTypes.oneOf(Object.keys(variantIcons)).isRequired,
     children: PropTypes.node,
-    icon: PropTypes.elementType, // Allows overriding the default icon
-    showIcon: PropTypes.bool, // Allows toggling the icon on or off
+    icon: PropTypes.elementType,
+    showIcon: PropTypes.bool,
     theme: PropTypes.oneOf(['light', 'dark']),
-    as: PropTypes.elementType, // Allows rendering as a different element
-};
-
-Button.defaultProps = {
-    theme: 'light',
-    showIcon: true, // Default to showing the icon
+    as: PropTypes.elementType,
+    iconOnly: PropTypes.bool,
+    filled: PropTypes.bool,
 };
 
 export default Button;

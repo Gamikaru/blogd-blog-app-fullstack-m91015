@@ -1,7 +1,14 @@
-import { NotificationProvider, PostProvider, PrivateModalProvider, PublicModalProvider, UserProvider } from '@components';
-import React from 'react';
+// src/Providers.jsx
 
-export const Providers = ({ children }) => (
+import {
+    NotificationProvider,
+    PostProvider,
+    PrivateModalProvider,
+    PublicModalProvider,
+    UserProvider,
+} from '@contexts'; // Adjust the import path if necessary
+
+const Providers = ({ children }) => (
     <PublicModalProvider>
         <UserProvider>
             <PostProvider>
@@ -14,3 +21,5 @@ export const Providers = ({ children }) => (
         </UserProvider>
     </PublicModalProvider>
 );
+
+export default Providers;

@@ -28,7 +28,7 @@
 //   }, [userId]);
 
 //   const fetchUser = async (id) => {
-//     const token = cookie.PassBloggs;
+//     const token = cookie.BlogdPass;
 //     if (!token) {
 //       console.error("Token not found");
 //       return;
@@ -55,7 +55,7 @@
 
 //   const handleEdit = async (e) => {
 //     e.preventDefault();
-//     const token = cookie.PassBloggs;
+//     const token = cookie.BlogdPass;
 //     if (!token) {
 //       console.error("Token not found");
 //       return;

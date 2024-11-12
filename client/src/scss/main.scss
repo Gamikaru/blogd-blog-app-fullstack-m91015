@@ -1,7 +1,6 @@
 // Import sass modules
 @use "sass:math";
 
-
 // Import abstracts
 @import "abstracts/variables";
 @import "abstracts/functions";
@@ -17,15 +16,14 @@
 // Import component styles
 @import "components/buttons";
 @import "components/carousel";
-@import "components/cubeslider";
-@import 'components/nav/navbar-header';
-@import 'components/nav/navbar-left';
-@import 'components/nav/navbar-center';
-@import 'components/nav/navbar-right';
-@import 'components/nav/navbar-info-message';
-@import 'components/nav/user-dropdown';
-@import 'components/nav/explore-links';
-@import 'components/nav/navbar-responsive';
+@import "components/nav/navbar-header";
+@import "components/nav/navbar-left";
+@import "components/nav/navbar-center";
+@import "components/nav/navbar-right";
+@import "components/nav/navbar-info-message";
+@import "components/nav/user-dropdown";
+@import "components/nav/explore-links";
+@import "components/nav/navbar-responsive";
 @import "components/sidebar";
 @import "components/modals/postmodal.variables";
 @import "components/modals/postmodal.layout";
@@ -35,16 +33,16 @@
 @import "components/toast";
 @import "components/error-boundary";
 
+
+@import "./layout/footer";
+
 // Import page-specific styles
 @import "pages/blog_fullview";
-@import "pages/bloggs";
-@import "pages/home";
+@import "pages/home/index";
 @import "pages/login";
 @import "pages/network";
-@import "pages/profile";
+@import "pages/profile/index";
 
 // Import vendor styles
 @import "vendors/bootstrap";
 @import "vendors/jquery-ui";
-
-

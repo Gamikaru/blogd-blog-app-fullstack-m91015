@@ -4,20 +4,20 @@
 
 **Introduction**
 
-This analysis compares the Lighthouse reports of two home pages: Stack Overflow's home page and Codeblogg's home page. The comparison focuses on four key areas evaluated by Lighthouse—Performance, Accessibility, Best Practices, and SEO—to identify where Codeblogg performs better or worse than Stack Overflow. The goal is to highlight areas for improvement and recognize strengths in Codeblogg's home page.
+This analysis compares the Lighthouse reports of two home pages: Stack Overflow's home page and Codeblog's home page. The comparison focuses on four key areas evaluated by Lighthouse—Performance, Accessibility, Best Practices, and SEO—to identify where Codeblog performs better or worse than Stack Overflow. The goal is to highlight areas for improvement and recognize strengths in Codeblog's home page.
 
 ---
 
 **Performance Comparison**
 
 - **Stack Overflow:** **69**
-- **Codeblogg:** **40**
+- **Codeblog:** **40**
 
 **Analysis:**
 
-Codeblogg's home page significantly underperforms in the Performance category compared to Stack Overflow. Key performance metrics indicate areas where optimization is urgently needed.
+Codeblog's home page significantly underperforms in the Performance category compared to Stack Overflow. Key performance metrics indicate areas where optimization is urgently needed.
 
-**Codeblogg's Key Metrics:**
+**Codeblog's Key Metrics:**
 
 - **First Contentful Paint (FCP):** 6.7 s
 - **Largest Contentful Paint (LCP):** 11.8 s
@@ -33,7 +33,7 @@ Codeblogg's home page significantly underperforms in the Performance category co
 - **Cumulative Layout Shift (CLS):** 0
 - **Speed Index:** 1.4 s
 
-**Issues and Recommendations for Codeblogg:**
+**Issues and Recommendations for Codeblog:**
 
 1. **Enable Text Compression:**
 
@@ -106,13 +106,13 @@ Codeblogg's home page significantly underperforms in the Performance category co
 **Accessibility Comparison**
 
 - **Stack Overflow:** **86**
-- **Codeblogg:** **89**
+- **Codeblog:** **89**
 
 **Analysis:**
 
-Both sites perform well in Accessibility, but Codeblogg slightly outperforms Stack Overflow.
+Both sites perform well in Accessibility, but Codeblog slightly outperforms Stack Overflow.
 
-**Codeblogg's Strengths:**
+**Codeblog's Strengths:**
 
 - **Higher Accessibility Score:** Indicates better adherence to accessibility guidelines.
 - **Fewer ARIA Issues:** Proper use of ARIA roles and labels.
@@ -134,13 +134,13 @@ Both sites perform well in Accessibility, but Codeblogg slightly outperforms Sta
 **Best Practices Comparison**
 
 - **Stack Overflow:** **74**
-- **Codeblogg:** **96**
+- **Codeblog:** **96**
 
 **Analysis:**
 
-Codeblogg outperforms Stack Overflow in Best Practices, demonstrating stronger adherence to modern web development standards.
+Codeblog outperforms Stack Overflow in Best Practices, demonstrating stronger adherence to modern web development standards.
 
-**Strengths in Codeblogg:**
+**Strengths in Codeblog:**
 
 - **Minimal Deprecated APIs:** Reduces potential compatibility issues.
 - **No Console Errors:** Indicates clean code execution without runtime errors.
@@ -163,7 +163,7 @@ Codeblogg outperforms Stack Overflow in Best Practices, demonstrating stronger a
 **SEO Comparison**
 
 - **Stack Overflow:** **92**
-- **Codeblogg:** **83**
+- **Codeblog:** **83**
 
 **Analysis:**
 
@@ -174,7 +174,7 @@ Stack Overflow has a higher SEO score, indicating better optimization for search
 - **Higher SEO Score:** Reflects better compliance with SEO best practices.
 - **Fewer Content Issues:** Only minor issues with link descriptions.
 
-**Codeblogg's Issues:**
+**Codeblog's Issues:**
 
 1. **Missing Meta Description:**
 
@@ -186,7 +186,7 @@ Stack Overflow has a higher SEO score, indicating better optimization for search
    - *Issue:* **37 errors found**, which may hinder search engine crawling.
    - *Recommendation:* Validate and correct the `robots.txt` file to ensure proper indexing.
 
-**Recommendations for Codeblogg:**
+**Recommendations for Codeblog:**
 
 - **Add Descriptive Meta Tags:** Improve search engine snippets and user engagement.
 - **Fix `robots.txt` Errors:** Ensure the file is correctly formatted and doesn't block important resources.
@@ -196,19 +196,19 @@ Stack Overflow has a higher SEO score, indicating better optimization for search
 
 **Conclusion**
 
-The comparative analysis reveals that while Codeblogg's home page excels in Accessibility and Best Practices compared to Stack Overflow's home page, it significantly lags in Performance and SEO.
+The comparative analysis reveals that while Codeblog's home page excels in Accessibility and Best Practices compared to Stack Overflow's home page, it significantly lags in Performance and SEO.
 
-**Areas Where Codeblogg Performs Better:**
+**Areas Where Codeblog Performs Better:**
 
 - **Accessibility:** Slightly higher score, indicating better inclusivity.
 - **Best Practices:** Strong adherence to modern web standards and security practices.
 
-**Areas Where Codeblogg Performs Worse:**
+**Areas Where Codeblog Performs Worse:**
 
 - **Performance:** Lower score and slower key metrics suggest a need for optimization.
 - **SEO:** Lower score due to missing meta descriptions and `robots.txt` errors.
 
-**Recommendations for Codeblogg:**
+**Recommendations for Codeblog:**
 
 1. **Performance Optimization:**
 
@@ -236,4 +236,4 @@ The comparative analysis reveals that while Codeblogg's home page excels in Acce
 
 ---
 
-By addressing the performance and SEO issues while maintaining strengths in accessibility and best practices, Codeblogg can enhance its home page to provide a faster, more user-friendly experience that is both accessible and easily discoverable through search engines.
+By addressing the performance and SEO issues while maintaining strengths in accessibility and best practices, Codeblog can enhance its home page to provide a faster, more user-friendly experience that is both accessible and easily discoverable through search engines.

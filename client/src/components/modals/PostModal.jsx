@@ -1,7 +1,8 @@
 // PostModal.jsx
-
-import { calculateReadingTime, countWords, Logger, useNotificationContext, usePostContext, usePrivateModalContext, useUser, validatePostContent } from '@components';
-import React, { useRef, useState } from "react";
+import { Button } from '@components';
+import { useNotificationContext, usePostContext, usePrivateModalContext, useUser } from '@contexts';
+import { calculateReadingTime, countWords, logger, validatePostContent } from '@utils';
+import { useRef, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -14,7 +15,7 @@ export default function PostModal() {
     const [imageUrls, setImageUrls] = useState("");
     const [selectedFiles, setSelectedFiles] = useState([]);
     const { user } = useUser();
-    const { handleNewPost } = usePostContext();
+    const { handleCreatePost } = usePostContext();
     const { showModal, togglePrivateModal, modalType } = usePrivateModalContext();
     const { showNotification } = useNotificationContext();
     const quillRef = useRef(null);
@@ -25,7 +26,7 @@ export default function PostModal() {
             container: [
                 [{ 'header': [1, 2, false] }],
                 ['bold', 'italic', 'underline'],
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
                 ['link', 'clean']
             ]
         },
@@ -51,7 +52,7 @@ export default function PostModal() {
         if (imageUrls) formData.append('imageUrls', imageUrls);
         selectedFiles.forEach((file, index) => formData.append('images', file, `image${index}`));
 
-        await handleNewPost(formData);
+        await handleCreatePost(formData);
         setPostContent("");
         setPostTitle("");
         setCategory("Other");
@@ -59,7 +60,7 @@ export default function PostModal() {
         setSelectedFiles([]);
         togglePrivateModal();
         showNotification("Post submitted successfully!", "success", { top: '40%', left: '50%' });
-        Logger.info("Post submitted", { user, postContent, postTitle, category, imageUrls, selectedFiles });
+        logger.info("Post submitted", { user, postContent, postTitle, category, imageUrls, selectedFiles });
     };
 
     return (
@@ -171,7 +172,7 @@ export default function PostModal() {
                             />
                             <div className="tags-container">
                                 {/* Render tags here */}
-                            {/* </div>
+                    {/* </div>
                         </div>
                     </div> */}
 
@@ -188,12 +189,15 @@ export default function PostModal() {
                             <Button
                                 className="button button-submit"
                                 onClick={handlePostSubmit}
+                                variant="submit"
                             >
                                 Save Post
                             </Button>
                             <Button
                                 className="button button-delete"
                                 onClick={togglePrivateModal}
+                                variant="noIcon"
+
                             >
                                 Discard
                             </Button>

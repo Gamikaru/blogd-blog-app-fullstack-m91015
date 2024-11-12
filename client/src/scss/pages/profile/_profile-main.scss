@@ -1,0 +1,125 @@
+.profile-main {
+    .user-card {
+        background: $secondary-bg-color;
+        border-radius: $border-radius;
+        overflow: hidden;
+        margin-bottom: $spacing-lg;
+        box-shadow: $box-shadow-medium;
+
+        .user-card-header {
+            background: linear-gradient(135deg, $accent-color-1, $accent-color-2);
+            padding: $spacing-lg;
+            display: flex;
+            align-items: center;
+            gap: $spacing-md;
+
+            .initials-avatar {
+                width: 80px;
+                height: 80px;
+                background: rgba(255, 255, 255, 0.2);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: $heading-font-size-lg;
+                color: $secondary-bg-color;
+            }
+
+            .user-info {
+                flex: 1;
+
+                h2 {
+                    color: $secondary-bg-color;
+                    font-size: $heading-font-size-md;
+                    margin-bottom: $spacing-xs;
+                }
+
+                .user-role {
+                    color: rgba(255, 255, 255, 0.8);
+                    font-size: $sub-heading-font-size;
+                }
+            }
+        }
+
+        .user-details {
+            padding: $spacing-lg;
+
+            .detail-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: $spacing-md;
+
+                .detail-item {
+                    display: flex;
+                    align-items: center;
+                    gap: $spacing-sm;
+
+                    .detail-icon {
+                        color: $accent-color-1;
+                        font-size: $heading-font-size-md;
+                    }
+
+                    .detail-content {
+                        .detail-label {
+                            font-size: $small-font-size;
+                            color: $secondary-text-color;
+                        }
+
+                        .detail-value {
+                            font-size: $body-font-size;
+                            color: $primary-text-color;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .activity-section,
+    .posts-section,
+    .connections-section {
+        background: $secondary-bg-color;
+        border-radius: $border-radius;
+        padding: $spacing-lg;
+        margin-bottom: $spacing-lg;
+        box-shadow: $box-shadow-medium;
+
+        h3 {
+            font-size: $sub-heading-font-size;
+            color: $primary-text-color;
+            margin-bottom: $spacing-md;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .section-action {
+                font-size: $small-font-size;
+                color: $accent-color-2;
+                cursor: pointer;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        .placeholder-content {
+            height: 200px;
+            background: $primary-bg-color;
+            border-radius: $border-radius;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: $secondary-text-color;
+            font-size: $sub-heading-font-size;
+        }
+    }
+}
+
+.loading-spinner,
+.error-message {
+    text-align: center;
+    padding: $spacing-xl;
+    color: $secondary-text-color;
+    font-size: $sub-heading-font-size;
+}

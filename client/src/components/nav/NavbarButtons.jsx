@@ -1,6 +1,5 @@
 // client/src/components/nav/NavbarButtons.jsx
 import { Button } from '@components';
-import React from "react";
 import { FaFeather, FaSearch, FaUser } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 
@@ -25,9 +24,6 @@ const NavbarButtons = ({ togglePrivateModal, showUserDropdown, setShowUserDropdo
             </div>
             <Button
                 className="search-icon"
-                whileHover="hover"
-                whileTap="tap"
-                variants={iconVariants}
                 aria-label="Search"
                 variant="iconButton"
                 icon={FaSearch}
@@ -35,9 +31,6 @@ const NavbarButtons = ({ togglePrivateModal, showUserDropdown, setShowUserDropdo
             <Button
                 className="create-post-icon"
                 onClick={() => togglePrivateModal("post")}
-                whileHover="hover"
-                whileTap="tap"
-                variants={iconVariants}
                 aria-label="Create Post"
                 variant="iconButton"
                 icon={FaFeather}
@@ -45,9 +38,6 @@ const NavbarButtons = ({ togglePrivateModal, showUserDropdown, setShowUserDropdo
             <Button
                 className="user-icon"
                 onClick={() => setShowUserDropdown(!showUserDropdown)}
-                whileHover="hover"
-                whileTap="tap"
-                variants={iconVariants}
                 aria-label="User menu"
                 variant="iconButton"
                 icon={FaUser}

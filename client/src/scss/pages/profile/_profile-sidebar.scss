@@ -1,0 +1,61 @@
+.profile-sidebar {
+    .user-stats-card {
+        background: $secondary-bg-color;
+        border-radius: $border-radius;
+        padding: $spacing-lg;
+        margin-bottom: $spacing-lg;
+        box-shadow: $box-shadow-medium;
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: $spacing-md;
+
+            .stat-item {
+                text-align: center;
+                padding: $spacing-md;
+
+                .stat-value {
+                    font-size: $heading-font-size-md;
+                    color: $primary-text-color;
+                    font-weight: bold;
+                }
+
+                .stat-label {
+                    font-size: $small-font-size;
+                    color: $secondary-text-color;
+                    margin-top: $spacing-xs;
+                }
+            }
+        }
+    }
+
+    .quick-actions {
+        background: $secondary-bg-color;
+        border-radius: $border-radius;
+        padding: $spacing-lg;
+        margin-bottom: $spacing-lg;
+        box-shadow: $box-shadow-medium;
+
+        h3 {
+            font-size: $sub-heading-font-size;
+            color: $primary-text-color;
+            margin-bottom: $spacing-md;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: $spacing-sm;
+
+            .button {
+                width: 100%;
+                justify-content: center;
+
+                .icon {
+                    margin-right: $spacing-sm;
+                }
+            }
+        }
+    }
+}

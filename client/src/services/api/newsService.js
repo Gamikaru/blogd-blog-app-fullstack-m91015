@@ -1,4 +1,6 @@
 // src/services/newsService.js
+import { logger } from '@utils'; // Add this import
+
 const NEWS_API_KEY = '3afd5da4debb40b29e42bc06f59637f1'; // Temporary direct reference
 const BASE_URL = 'https://newsapi.org/v2';
 
@@ -27,7 +29,7 @@ export const fetchTrendingArticles = async () => {
             url: article.url
         }));
     } catch (error) {
-        Logger.error('Error fetching news:', error);
+        logger.error('Error fetching news:', error);
         return [];
     }
 };

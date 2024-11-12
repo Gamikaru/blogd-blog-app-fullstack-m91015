@@ -1,24 +1,36 @@
-// main.jsx
-import 'bootstrap/scss/bootstrap.scss';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom/client';
+// src/main.jsx
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import 'swiper/css'; // Global swiper styles
 import App from './App';
-import { Providers } from './Providers';
+import Providers from './Providers'; // Adjust the import path if necessary
+
+// Import styles
+import 'bootstrap/scss/bootstrap.scss';
+import 'swiper/css'; // Global swiper styles
 import './scss/main.scss';
-// CubeSlider.jsx (local to CubeSlider)
 
+// Select the root container
+const container = document.getElementById('root');
 
+// Create a root.
+const root = ReactDOM.createRoot(container);
 
+// In your main index.js or App.jsx
+navigator.serviceWorker.getRegistrations().then((registrations) => {
+    registrations.forEach((registration) => {
+        registration.unregister();
+    });
+});
 
-
-
-ReactDOM.createRoot(document.getElementById('root')).render(
-    <BrowserRouter>
+// Initial render: Render the <App /> wrapped with providers.
+root.render(
+    <React.StrictMode>
         <Providers>
-            <App />
+            <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+                <App />
+            </BrowserRouter>
         </Providers>
-    </BrowserRouter>
+    </React.StrictMode>
 );
-

@@ -1,7 +1,10 @@
 // src/components/UserProfile/UserProfile.jsx
 
-import { Button, fetchPostsByUser, Logger, PostCard, UserService, useUser } from '@components';
-import React, { useEffect, useState } from 'react';
+import { Button, PostCard } from '@components';
+import { useUser } from '@contexts';
+import { UserService, fetchPostsByUser } from '@services/api';
+import { logger } from '@utils';
+import { useEffect, useState } from 'react';
 import {
     FiBook, FiCalendar, FiEdit, FiMail, FiMapPin,
     FiPhone,
@@ -32,10 +35,10 @@ const UserProfile = () => {
                 }
 
                 // Fetch posts for the selected user or current user
-                const posts = await fetchPostsByUser(userId || user._id);
+                const posts = await fetchPostsByUser(userId || user.userId);
                 setUserPosts(posts);
             } catch (error) {
-                Logger.error('Error loading profile:', error);
+                logger.error('Error loading profile:', error);
             } finally {
                 setLoading(false);
             }
@@ -87,7 +90,7 @@ const UserProfile = () => {
                         <h3>Quick Actions</h3>
                         <div className="action-buttons">
                             {/* Show Edit and Settings only if viewing own profile */}
-                            {(!userId || userId === user._id) && (
+                            {(!userId || userId === user.userId) && (
                                 <>
                                     <Button className="button button-edit">
                                         <FiEdit className="icon" />Edit Profile

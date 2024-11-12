@@ -1,10 +1,10 @@
-# CodeBloggs
+# Codeblogs
 
-CodeBloggs is a full-stack web application designed for users to create, share, and interact with blog posts. It features a React frontend and an Express.js backend with MongoDB as the database.
+Codeblogs is a full-stack web application designed for users to create, share, and interact with blog posts. It features a React frontend and an Express.js backend with MongoDB as the database.
 
 ## Table of Contents
 
-- [CodeBloggs](#codebloggs)
+- [Codeblogs](#codeblogs)
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
   - [Technologies Used](#technologies-used)
@@ -66,8 +66,8 @@ CodeBloggs is a full-stack web application designed for users to create, share, 
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/CodeBloggs.git
-cd CodeBloggs
+git clone https://github.com/yourusername/Codeblogs.git
+cd Codeblogs
 ```
 
 ### Backend Setup
@@ -137,7 +137,7 @@ cd CodeBloggs
 ## Project Structure
 
 ```bash
-CodeBloggs/
+Codeblogs/
 ├── backend/
 │   ├── db/
 │   │   └── connection.js

@@ -1,8 +1,10 @@
-// AppLayout.jsx
-// Desc: Main layout component for the app
-import { Logger, Navbar, Sidebar, useNotificationContext } from '@components';
+// src/layouts/AppLayout.jsx
+
+import { Footer, Navbar, Sidebar } from '@components'; // Adjust the import path if necessary
+import { useNotificationContext } from '@contexts';
+import { logger } from '@utils'; // Adjust the import path if necessary
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
 const AppLayout = () => {
@@ -11,44 +13,35 @@ const AppLayout = () => {
     const { setPosition, notification } = useNotificationContext();
     const location = useLocation();
 
+    const pageVariants = useMemo(
+        () => ({
+            initial: { opacity: 0, y: 20 },
+            in: { opacity: 1, y: 0 },
+            out: { opacity: 0, y: -20 },
+        }),
+        []
+    );
+
+    const pageTransition = useMemo(
+        () => ({
+            type: 'tween',
+            ease: 'easeInOut',
+            duration: 0.8,
+        }),
+        []
+    );
+
     const toggleSidebar = useCallback(() => {
-        Logger.info(`Toggling sidebar to ${!sidebarOpen}`);
-        setSidebarOpen((prevState) => !prevState);
-    }, [sidebarOpen]);
+        logger.info('[AppLayout] Toggling sidebar');
+        setSidebarOpen((prev) => !prev);
+    }, []);
 
     useEffect(() => {
-        Logger.info(
-            'AppLayout mounted and setting toast position based on notification type'
-        );
         setPosition(notification.type, true);
-
         return () => {
-            Logger.info('AppLayout unmounted');
+            logger.info('[AppLayout] Component unmounted');
         };
     }, [setPosition, notification.type]);
-
-    // Animation variants for page transitions
-    const pageVariants = {
-        initial: {
-            opacity: 0,
-            y: 20,
-        },
-        in: {
-            opacity: 1,
-            y: 0,
-        },
-        out: {
-            opacity: 0,
-            y: -20,
-        },
-    };
-
-    // Transition settings
-    const pageTransition = {
-        type: 'tween',
-        ease: 'easeInOut',
-        duration: 0.8,
-    };
 
     return (
         <div className="app-layout">
@@ -58,19 +51,22 @@ const AppLayout = () => {
                 toggleSidebar={toggleSidebar}
                 toggleButtonRef={toggleButtonRef}
             />
-            <AnimatePresence mode="wait">
-                <motion.div
-                    key={location.pathname}
-                    variants={pageVariants}
-                    initial="initial"
-                    animate="in"
-                    exit="out"
-                    transition={pageTransition}
-                    style={{ position: 'relative' }}
-                >
-                    <Outlet />
-                </motion.div>
-            </AnimatePresence>
+            <main className="main-content">
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={location.pathname}
+                        variants={pageVariants}
+                        initial="initial"
+                        animate="in"
+                        exit="out"
+                        transition={pageTransition}
+                        className="page-container"
+                    >
+                        <Outlet />
+                    </motion.div>
+                </AnimatePresence>
+            </main>
+            <Footer />
         </div>
     );
 };

@@ -1,48 +1,53 @@
-// // layout/_footer.scss
+// _footer.scss
 
-// @import "../abstracts/variables";
-// @import "../abstracts/mixins"; // Flex and grid mixins
+.footer {
+    background-color: $primary-bg-color;
+    padding: $spacing-lg;
+    text-align: center;
+    border-top: 1px solid $border-color;
+    position: relative;
+    z-index: -3;
+    margin-top: auto;
 
-// .footer {
-//    background-color: $charcoal-light;
-//    color: $white;
-//    padding: $spacing-l;
-//    // margin-top: $spacing-l;
-//    text-align: center;
+    .footer-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: $spacing-md;
 
-//    .footer-container {
-//       @include flex-container(center, center);
-//       flex-wrap: wrap;
+        .footer-links {
+            display: flex;
+            gap: $spacing-md;
 
-//       .footer-section {
-//          flex: 1;
-//          min-width: 200px;
-//          @include padding($spacing-m);
+            a {
+                color: $primary-text-color;
+                text-decoration: none;
+                font-size: $body-font-size;
 
-//          h4 {
-//             color: $primary-purple;
-//             margin-bottom: $spacing-s;
-//          }
+                &:hover {
+                    color: $highlight-color;
+                    text-decoration: underline;
+                }
+            }
+        }
 
-//          p,
-//          a {
-//             color: $white;
-//             font-size: $font-size-small;
-//             text-decoration: none;
-//          }
+        .footer-social {
+            display: flex;
+            gap: $spacing-md;
 
-//          a:hover {
-//             color: $primary-purple-light;
-//          }
-//       }
-//    }
+            a {
+                color: $primary-text-color;
+                font-size: $heading-font-size-md;
 
-//    @media (max-width: $breakpoint-md) {
-//       padding: $spacing-m;
+                &:hover {
+                    color: $highlight-color;
+                }
+            }
+        }
 
-//       .footer-section {
-//          min-width: 100%;
-//          @include padding($spacing-s);
-//       }
-//    }
-// }
+        .footer-copy {
+            color: $secondary-text-color;
+            font-size: $small-font-size;
+        }
+    }
+}

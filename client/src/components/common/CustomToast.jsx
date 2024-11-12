@@ -1,11 +1,11 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { FiAlertCircle, FiCheckCircle, FiInfo, FiX } from 'react-icons/fi';
 
 const CustomToast = ({
     message,
     show,
-    type,
+    type = "info",
     onClose,
     delay = 5000,
     position = "top-right",
@@ -21,13 +21,10 @@ const CustomToast = ({
     };
 
     useEffect(() => {
-        let timeout;
         if (show && autoClose) {
-            timeout = setTimeout(onClose, delay);
+            const timeout = setTimeout(onClose, delay);
+            return () => clearTimeout(timeout);
         }
-        return () => {
-            if (timeout) clearTimeout(timeout);
-        };
     }, [show, delay, onClose, autoClose]);
 
     const toastVariants = {
@@ -59,9 +56,11 @@ const CustomToast = ({
         tap: { scale: 0.98 }
     };
 
-    const positionStyle = position === "top-right"
-        ? { top: "5rem", right: "2rem" }
-        : { top: "50%", left: "50%", x: "-50%", y: "-50%" };
+    const positionStyle = useMemo(() => (
+        position === "top-right"
+            ? { top: "5rem", right: "2rem" }
+            : { top: "50%", left: "50%", transform: "translate(-50%, -50%)" }
+    ), [position]);
 
     return (
         <AnimatePresence>
@@ -83,6 +82,8 @@ const CustomToast = ({
                         ...positionStyle,
                         zIndex: 3060,
                     }}
+                    role="alert" // Adds role for screen readers
+                    aria-live="assertive"
                 >
                     <div className="custom-toast-content">
                         <div className="toast-icon-wrapper">
@@ -97,6 +98,7 @@ const CustomToast = ({
                             variants={ButtonVariants}
                             whileHover="hover"
                             whileTap="tap"
+                            aria-label="Close notification"
                         >
                             <FiX />
                         </motion.button>
@@ -127,9 +129,6 @@ const CustomToast = ({
                             )}
                         </div>
                     )}
-                    <motion.button className="Button Button-post" variants={ButtonVariants}>
-                        {/* Button Content */}
-                    </motion.button>
                 </motion.div>
             )}
         </AnimatePresence>

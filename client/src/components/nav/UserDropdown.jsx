@@ -1,9 +1,9 @@
+// src/components/nav/UserDropdown.jsx
 
-// UserDropdown.jsx
-// Desc: User dropdown component
-import { Portal, usePrivateModalContext, useUser } from '@components';
+import { Portal } from '@components';
+import { usePrivateModalContext, useUser } from '@contexts';
 import { motion } from 'framer-motion';
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { FaBirthdayCake, FaBriefcase, FaCog, FaEnvelope, FaMapMarkerAlt, FaUser } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 
@@ -32,8 +32,6 @@ const UserDropdown = ({ showDropdown, setShowDropdown, handleLogout, position })
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [showDropdown, setShowDropdown]);
-
-
 
     const dropdownVariants = {
         hidden: {

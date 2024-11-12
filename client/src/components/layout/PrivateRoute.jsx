@@ -1,7 +1,7 @@
 // PrivateRoute.jsx
-// Desc: PrivateRoute component to protect routes and redirect unauthenticated users
-import { Logger, Spinner, useUser } from '@components';
-import React from 'react';
+import { Spinner } from '@components';
+import { useUser } from '@contexts';
+import { logger } from '@utils';
 import { useCookies } from 'react-cookie';
 import { Navigate } from 'react-router-dom';
 
@@ -9,23 +9,21 @@ import { Navigate } from 'react-router-dom';
  * PrivateRoute: A component wrapper to protect routes and redirect unauthenticated users.
  */
 const PrivateRoute = ({ children }) => {
-    const [cookies] = useCookies(['PassBloggs']);
-    const token = cookies.PassBloggs; // Get the token from cookies
-    const { user, loading } = useUser() || {}; // Add fallback empty object in case of null
+    const [cookies] = useCookies(['BlogdPass']);
+    const token = cookies.BlogdPass;
+    const { user, loading } = useUser();
 
-    // If data is still loading, show the spinner
     if (loading) {
-        Logger.info('PrivateRoute: Loading user data...');
+        logger.info('[PrivateRoute] Loading user data...');
         return <Spinner />;
     }
 
-    // If no token or user is found, redirect to login
     if (!token || !user) {
-        Logger.info('User not authenticated. Redirecting to login...');
+        logger.info('[PrivateRoute] User not authenticated. Redirecting to login...');
         return <Navigate to="/login" replace />;
     }
 
-    // If user is authenticated, render the children (protected content)
+    logger.info('[PrivateRoute] User authenticated. Rendering children...');
     return children;
 };
 

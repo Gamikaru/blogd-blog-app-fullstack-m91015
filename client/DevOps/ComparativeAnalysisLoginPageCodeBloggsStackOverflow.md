@@ -4,20 +4,20 @@
 
 **Introduction**
 
-This analysis compares the Lighthouse reports of two login pages: Stack Overflow's login page and Codeblogg's login page. The comparison focuses on four key areas evaluated by Lighthouse—Performance, Accessibility, Best Practices, and SEO—to identify where Codeblogg performs better or worse than Stack Overflow. The goal is to highlight areas for improvement and recognize strengths in Codeblogg's login page.
+This analysis compares the Lighthouse reports of two login pages: Stack Overflow's login page and Codeblog's login page. The comparison focuses on four key areas evaluated by Lighthouse—Performance, Accessibility, Best Practices, and SEO—to identify where Codeblog performs better or worse than Stack Overflow. The goal is to highlight areas for improvement and recognize strengths in Codeblog's login page.
 
 ---
 
 **Performance Comparison**
 
 - **Stack Overflow:** **83**
-- **Codeblogg:** **56**
+- **Codeblog:** **56**
 
 **Analysis:**
 
-Codeblogg's login page underperforms in the Performance category compared to Stack Overflow. Key performance metrics indicate areas where optimization is needed.
+Codeblog's login page underperforms in the Performance category compared to Stack Overflow. Key performance metrics indicate areas where optimization is needed.
 
-**Codeblogg's Key Metrics:**
+**Codeblog's Key Metrics:**
 
 - **First Contentful Paint (FCP):** 3.1 s
 - **Largest Contentful Paint (LCP):** 5.6 s
@@ -25,7 +25,7 @@ Codeblogg's login page underperforms in the Performance category compared to Sta
 - **Cumulative Layout Shift (CLS):** 0.103
 - **Speed Index:** 3.2 s
 
-**Issues and Recommendations for Codeblogg:**
+**Issues and Recommendations for Codeblog:**
 
 1. **Reduce Unused JavaScript:**
 
@@ -72,13 +72,13 @@ Codeblogg's login page underperforms in the Performance category compared to Sta
 **Accessibility Comparison**
 
 - **Stack Overflow:** **87**
-- **Codeblogg:** **100**
+- **Codeblog:** **100**
 
 **Analysis:**
 
-Codeblogg excels in Accessibility, achieving a perfect score. This indicates a strong commitment to inclusive design, ensuring that users with disabilities can navigate the login page effectively.
+Codeblog excels in Accessibility, achieving a perfect score. This indicates a strong commitment to inclusive design, ensuring that users with disabilities can navigate the login page effectively.
 
-**Strengths in Codeblogg:**
+**Strengths in Codeblog:**
 
 - Proper use of ARIA attributes.
 - Sufficient color contrast ratios.
@@ -96,13 +96,13 @@ Codeblogg excels in Accessibility, achieving a perfect score. This indicates a s
 **Best Practices Comparison**
 
 - **Stack Overflow:** **74**
-- **Codeblogg:** **96**
+- **Codeblog:** **96**
 
 **Analysis:**
 
-Codeblogg outperforms Stack Overflow in adhering to web development best practices.
+Codeblog outperforms Stack Overflow in adhering to web development best practices.
 
-**Strengths in Codeblogg:**
+**Strengths in Codeblog:**
 
 - Minimal use of deprecated APIs.
 - No browser errors logged to the console.
@@ -120,13 +120,13 @@ Codeblogg outperforms Stack Overflow in adhering to web development best practic
 **SEO Comparison**
 
 - **Stack Overflow:** **45**
-- **Codeblogg:** **83**
+- **Codeblog:** **83**
 
 **Analysis:**
 
-Codeblogg demonstrates better optimization for search engines.
+Codeblog demonstrates better optimization for search engines.
 
-**Strengths in Codeblogg:**
+**Strengths in Codeblog:**
 
 - Presence of a meta description, enhancing search result snippets.
 - Valid `robots.txt` file, facilitating proper crawling and indexing.
@@ -143,19 +143,19 @@ Codeblogg demonstrates better optimization for search engines.
 
 **Conclusion**
 
-The comparative analysis reveals that Codeblogg's login page excels in Accessibility, Best Practices, and SEO compared to Stack Overflow's login page. However, it lags behind in Performance.
+The comparative analysis reveals that Codeblog's login page excels in Accessibility, Best Practices, and SEO compared to Stack Overflow's login page. However, it lags behind in Performance.
 
-**Areas Where Codeblogg Performs Better:**
+**Areas Where Codeblog Performs Better:**
 
 - **Accessibility:** Perfect score reflects an inclusive user experience.
 - **Best Practices:** High adherence to modern web development standards.
 - **SEO:** Better optimization enhances discoverability in search engines.
 
-**Areas Where Codeblogg Performs Worse:**
+**Areas Where Codeblog Performs Worse:**
 
 - **Performance:** Lower score indicates the need for optimization to improve load times and user experience.
 
-**Recommendations for Codeblogg:**
+**Recommendations for Codeblog:**
 
 1. **Performance Optimization:**
 
@@ -176,4 +176,4 @@ The comparative analysis reveals that Codeblogg's login page excels in Accessibi
 
 ---
 
-By addressing the performance issues while maintaining strengths in other areas, Codeblogg can enhance its login page to provide a faster, more user-friendly experience that is both accessible and easy to discover through search engines.
+By addressing the performance issues while maintaining strengths in other areas, Codeblog can enhance its login page to provide a faster, more user-friendly experience that is both accessible and easy to discover through search engines.

@@ -5,8 +5,8 @@ const Logo = () => (
     <div className="navbar-logo">
         <Link to="/">
             <img
-                alt="CodeBloggs Website Logo"
-                aria-label="CodeBloggs Logo"
+                alt="Codeblogs Website Logo"
+                aria-label="Codeblogs Logo"
                 className="nav-logo-image"
                 src="/assets/images/Icon-Only-Black.png"
                 loading="lazy"

@@ -1,8 +1,10 @@
 // EditPostModal.jsx
 // Desc: A modal component to edit a post
-
-import { Logger, updatePostById, useNotificationContext, usePostContext, usePrivateModalContext, validatePostContent } from '@components';
-import React, { useEffect, useRef, useState } from "react";
+import { Button } from '@components';
+import { useNotificationContext, usePostContext, usePrivateModalContext } from '@contexts';
+import { deletePostById, updatePostById } from '@services/api';
+import { logger, validatePostContent } from '@utils';
+import { useEffect, useRef, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import ReactQuill from 'react-quill';
@@ -22,13 +24,13 @@ export default function EditPostModal() {
 
     useEffect(() => {
         if (selectedPost) {
-            Logger.info("Setting post content in modal:", selectedPost.content);
+            logger.info("Setting post content in modal:", selectedPost.content);
             setPostContent(selectedPost.content);
             setPostTitle(selectedPost.title || "");
             setCategory(selectedPost.category || "Other");
             setImageUrls(selectedPost.imageUrls ? selectedPost.imageUrls.join(",") : "");
         } else {
-            Logger.warn("Post data is not available for setting content in modal.");
+            logger.warn("Post data is not available for setting content in modal.");
         }
     }, [selectedPost]);
 
@@ -56,7 +58,7 @@ export default function EditPostModal() {
 
     const handlePostEditSubmit = async (e) => {
         e.preventDefault();
-        Logger.info("Submitting edited post with content:", postContent);
+        logger.info("Submitting edited post with content:", postContent);
 
         const validationErrors = validatePostContent(postContent);
         if (validationErrors) {
@@ -64,7 +66,7 @@ export default function EditPostModal() {
             return;
         }
 
-        if (!selectedPost || !selectedPost._id) {
+        if (!selectedPost || !selectedPost.postId) {
             showNotification("Invalid post data. Please try again.", "error");
             return;
         }
@@ -82,15 +84,15 @@ export default function EditPostModal() {
             });
 
             // Optimistic UI Update
-            const tempPosts = posts.map((p) => p._id === selectedPost._id ? { ...p, content: postContent, title: postTitle, category, imageUrls: imageUrls.split(",") } : p);
+            const tempPosts = posts.map((p) => p.postId === selectedPost.postId ? { ...p, content: postContent, title: postTitle, category, imageUrls: imageUrls.split(",") } : p);
             setPosts(tempPosts);
 
-            const updatedPost = await updatePostById(selectedPost._id, formData);
-            Logger.info("Post updated successfully:", updatedPost);
+            const updatedPost = await updatePostById(selectedPost.postId, formData);
+            logger.info("Post updated successfully:", updatedPost);
 
             setPosts((prevPosts) =>
                 prevPosts.map((p) =>
-                    p._id === updatedPost._id ? { ...p, ...updatedPost } : p
+                    p.postId === updatedPost.postId ? { ...p, ...updatedPost } : p
                 )
             );
 
@@ -113,12 +115,29 @@ export default function EditPostModal() {
         setSelectedFiles(Array.from(e.target.files));
     };
 
+    const handleDeletePost = async () => {
+        if (!selectedPost || !selectedPost.postId) {
+            showNotification("Invalid post data. Please try again.", "error");
+            return;
+        }
+
+        try {
+            await deletePostById(selectedPost.postId);
+            setPosts((prevPosts) => prevPosts.filter((post) => post.postId !== selectedPost.postId));
+            showNotification('Post deleted successfully!', 'success');
+            handleModalClose();
+        } catch (error) {
+            logger.error("Error deleting post:", error);
+            showNotification('Failed to delete the post. Please try again.', 'error');
+        }
+    };
+
     // Custom Quill modules config
     const modules = {
         toolbar: [
             [{ 'header': [1, 2, false] }],
             ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
             ['link', 'image', 'video'],
             ['clean']
         ]
@@ -208,11 +227,17 @@ export default function EditPostModal() {
                     <div className="toolbar-group toolbar-group__actions">
                         <div className="toolbar-group__content">
                             <Button
-                                type="submit"
-                                className="button button-submit"
-                                form="edit-post-form"
+                                variant="button button-submit"
+                                onClick={handlePostEditSubmit}
                             >
                                 Save Changes
+                            </Button>
+                            <Button
+                                variant="delete"
+                                type="button button-delete"
+                                onClick={handleDeletePost}
+                            >
+                                Delete Post
                             </Button>
                             <Button
                                 type="button"

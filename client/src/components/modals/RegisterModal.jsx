@@ -1,7 +1,10 @@
 //RegisterModal.jsx
-
-import { InputField, Logger, SelectField, UserService, capitalizeFirstLetter, useNotificationContext, usePublicModalContext, useUserUpdate, validateRegForm } from '@components';
-import React, { useEffect, useRef, useState } from "react";
+import { InputField, SelectField } from '@components';
+import { useNotificationContext, usePublicModalContext, useUserUpdate } from '@contexts';
+import { UserService } from '@services/api';
+import { capitalizeFirstLetter, logger, validateRegForm } from '@utils';
+import { useEffect, useRef, useState } from "react";
+import { Button, Form, Modal } from "react-bootstrap";
 import { useCookies } from "react-cookie";
 
 const initialFormState = {
@@ -22,7 +25,7 @@ export default function RegisterModal() {
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
     const setUser = useUserUpdate();
-    const [cookies, setCookie] = useCookies(["PassBloggs", "userID"]);
+    const [cookies, setCookie] = useCookies(["BlogdPass", "userID"]);
     const { showModal, togglePublicModal } = usePublicModalContext();
     const { showNotification, setPosition } = useNotificationContext();
 
@@ -39,7 +42,7 @@ export default function RegisterModal() {
     });
 
     function updateRegisterForm(value) {
-        Logger.info("Updating register form", value);
+        logger.info("Updating register form", value);
         setRegisterForm((prev) => ({ ...prev, ...value }));
     }
 
@@ -57,7 +60,7 @@ export default function RegisterModal() {
 
     async function handleRegister(e) {
         e.preventDefault();
-        Logger.info("Form submitted", registerForm);
+        logger.info("Form submitted", registerForm);
 
         const { errors: formErrors, allFieldsEmpty } = validateRegForm(registerForm);
         setErrors(formErrors);
@@ -91,7 +94,7 @@ export default function RegisterModal() {
 
                 const userData = response.user;
                 if (userData) {
-                    setCookie("PassBloggs", response.token, { path: "/", maxAge: 24 * 60 * 60 });
+                    setCookie("BlogdPass", response.token, { path: "/", maxAge: 24 * 60 * 60 });
                     setCookie("userID", userData._id, { path: "/", maxAge: 24 * 60 * 60 });
                     setUser(userData);
                 }
@@ -217,8 +220,13 @@ export default function RegisterModal() {
                     </div>
 
                     <div className="submit-container">
-                        <Button type="submit" className="button button-submit" disabled={loading}>
-                            {loading ? "Submitting..." : "Register"}
+                        <Button
+                            type="submit"
+                            variant="submit"
+                            disabled={loading}
+                            className="button button-submit"
+                        >
+                            {loading ? 'Registering...' : 'REGISTER'}
                         </Button>
                     </div>
                 </Form>

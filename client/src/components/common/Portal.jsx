@@ -1,14 +1,15 @@
-// components/common/Portal.jsx
+import { memo, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
 const Portal = ({ children }) => {
-    const portalRoot = document.getElementById('portal-root');
+    const portalRoot = useMemo(() => document.getElementById('portal-root'), []);
+
     if (!portalRoot) {
         console.error("portal-root not found!");
-        return null; // Return nothing if portal-root is missing
+        return null;
     }
+
     return createPortal(children, portalRoot);
 };
 
-
-export default Portal;
+export default memo(Portal);

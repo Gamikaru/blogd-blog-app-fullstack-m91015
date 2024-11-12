@@ -1,91 +1,158 @@
-// _buttons.scss
-
 // Base Button Styles
 .button {
-    background-color: rgba(0, 0, 0, 0); // Transparent background
-    color: $primary-text-color; // Default text color
-    padding: map-get($button-padding, md); // Medium padding
-    border-radius: $button-border-radius; // Rounded corners
-    font-family: $font-family-primary; // Consistent font family
-    font-size: $base-font-size; // Base font size
-    font-weight: 500; // Medium font weight for prominence
-    letter-spacing: 0.1px; // Subtle letter spacing for readability
-    text-transform: none; // No text transformation for a modern feel
-    border: none; // No border for minimalism
-    box-shadow: none; // Remove box-shadow for a clean look
-    display: flex; // Flex layout for icon and text alignment
-    align-items: center; // Vertically center items
-    justify-content: center; // Center align text and icons
-    transition: background-color $transitions-base, color $transitions-base, opacity $transitions-base; // Smooth transitions
-    max-width: 100%; // Allow buttons to take full width of their container
-    cursor: pointer; // Pointer cursor on hover
-    height: 38.4px; // Fixed height for consistency
-    width: auto; // Adjust width based on content
+    background-color: transparent;
+    color: $primary-text-color;
+    padding: map-get($button-padding, md);
+    border-radius: $button-border-radius;
+    font-family: $font-family-primary;
+    font-size: $base-font-size;
+    font-weight: 500;
+    letter-spacing: 0.1px;
+    text-transform: none;
+    border: none;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+        background-color $transitions-base,
+        color $transitions-base,
+        opacity $transitions-base;
+    max-width: 50%;
+    cursor: pointer;
+    height: 38.4px;
+    width: auto;
 
     &:hover {
-        opacity: $button-opacity-default; // Slightly more opaque on hover
+        opacity: $button-opacity-default;
     }
 
     &:disabled,
     &.button-disabled {
-        background-color: rgba(0, 0, 0, 0); // Maintain transparent background
-        color: lighten($primary-text-color, 30%); // Lighter text color when disabled
-        cursor: not-allowed; // Indicate disabled state
-        opacity: $button-opacity-disabled; // Reduced opacity when disabled
+        background-color: transparent;
+        color: lighten($primary-text-color, 30%);
+        cursor: not-allowed;
+        opacity: $button-opacity-disabled;
     }
 
     .button-icon {
-        margin-right: 0.5rem; // Space between icon and text
+        margin-right: 0.5rem;
         display: inline-flex;
         align-items: center;
+
+        &.icon-only {
+            margin-right: 0;
+        }
     }
 }
 
-// Button Variants
+// Variant Mixin for Consistency
+@mixin button-variant($bg-color, $hover-opacity: 0.9, $hover-bg-darken: 0.1) {
+    background-color: $bg-color;
+    color: #ffffff;
 
+    &:hover {
+        background-color: darken($bg-color, $hover-bg-darken);
+        opacity: $hover-opacity;
+    }
+}
+
+// Existing and New Variants
 .button-edit {
     @include button-variant($highlight-color);
 }
-
 .button-create {
     @include button-variant($success-color);
 }
-
 .button-post {
     @include button-variant($accent-color-1);
 }
-
 .button-submit {
     @include button-variant($highlight-color);
 }
-
 .button-login {
     @include button-variant($primary-bg-color, 0.1, 0.2);
-    color: $primary-text-color; // Override text color if different
+    color: $primary-text-color;
 }
-
 .button-delete {
     @include button-variant($error-color);
 }
+.button-upgrade {
+    @include button-variant($success-color);
+}
+.button-general {
+    @include button-variant($primary-bg-color);
+}
 
-// Responsive adjustments for mobile
-@media (max-width: $breakpoint-md) {
-    .button {
-        padding: map-get($button-padding, sm); // Small padding for smaller screens
-        font-size: $base-font-size;
-        height: 38.4px; // Consistent height
-        width: 100%; // Full width on mobile
-        justify-content: center; // Center align text and icons
+// New Variants
+.button-warning {
+    @include button-variant($warning-color, 0.1, 0.3);
+}
+
+.button-info {
+    @include button-variant($info-color, 0.1, 0.2);
+}
+
+.button-outline {
+    color: $primary-bg-color;
+    background-color: transparent;
+    border: 1px solid $primary-bg-color;
+
+    &:hover {
+        background-color: $primary-bg-color;
+        color: #ffffff;
+    }
+}
+
+// Like Button
+.button-like {
+    color: $error-color;
+    background-color: transparent;
+
+    &.filled {
+        color: $error-color;
+        background-color: lighten($error-color, 40%);
+
+        .button-icon {
+            fill: $error-color;
+        }
     }
 
-    // Ensure all button variants take full width on mobile
+    &:hover {
+        opacity: 1;
+    }
+}
+
+// Icon-Only Buttons
+.icon-only {
+    padding: 0.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    justify-content: center;
+    background-color: transparent;
+
+    &:hover {
+        background-color: lighten($primary-bg-color, 20%);
+    }
+}
+
+// Responsive Adjustments
+@media (max-width: $breakpoint-md) {
+    .button {
+        padding: map-get($button-padding, sm);
+        font-size: $small-font-size;
+        height: 38.4px;
+        width: 100%;
+        justify-content: center;
+    }
+
     .button-edit,
     .button-create,
     .button-post,
     .button-submit,
     .button-login,
     .button-delete {
-        max-width: 100%; // Override any max-width restrictions
-        justify-content: center; // Center align text and icons
+        max-width: 50%;
+        justify-content: center;
     }
 }

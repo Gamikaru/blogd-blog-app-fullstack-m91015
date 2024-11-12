@@ -1,67 +1,91 @@
-import { CustomToast, Logger } from '@components';
-import { createContext, useContext, useState } from 'react';
+// src/contexts/NotificationContext.jsx
 
-const NotificationContext = createContext();
+import { CustomToast } from '@components';
+import { logger } from '@utils';
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
-const useNotificationContext = () => useContext(NotificationContext);
+export const NotificationContext = createContext();
 
-const NotificationProvider = ({ children }) => {
+export const useNotificationContext = () => {
+    const context = useContext(NotificationContext);
+    if (!context) {
+        throw new Error('useNotificationContext must be used within a NotificationProvider');
+    }
+    return context;
+};
+
+export const NotificationProvider = ({ children }) => {
     const [notification, setNotification] = useState({
         message: '',
         type: 'info',
         show: false,
         position: { top: '40%', left: '50%' },
         delay: 5000,
+        onConfirm: null,
+        onCancel: null,
     });
 
-    const setPosition = (type = 'success', isPrivateRoute = true) => {
+    const setPosition = useCallback((type = 'success', isPrivateRoute = true) => {
         let newPosition = { top: '40%', left: '50%' };
 
         if (isPrivateRoute) {
-            newPosition = type === 'success'
-                ? { top: '70px', right: '20px' }
-                : { top: '40%', left: '50%' };
+            newPosition =
+                type === 'success'
+                    ? { top: '70px', right: '20px' }
+                    : { top: '40%', left: '50%' };
         }
-
-        if (!notification.position) {
-            notification.position = {};
-        }
-
-        if (
-            notification.position.top !== newPosition.top ||
-            notification.position.left !== newPosition.left ||
-            notification.position.right !== newPosition.right
-        ) {
-            setNotification((prev) => ({
-                ...prev,
-                position: newPosition,
-            }));
-            Logger.info(`Toast position set to ${type} on ${isPrivateRoute ? 'private' : 'public'} route`);
-        }
-    };
-
-    const showNotification = (message, type = 'success', autoClose = true, onConfirm = null, onCancel = null) => {
-        Logger.info(`Showing notification: ${message} (${type})`);
-        const delay = type === 'success' ? 2000 : 5000;
 
         setNotification((prev) => ({
             ...prev,
-            message,
-            type,
-            show: true,
-            delay,
-            onConfirm,
-            onCancel
+            position: newPosition,
         }));
-    };
 
-    const hideNotification = () => {
-        Logger.info('Hiding notification');
+        logger.info(
+            `Toast position set to ${type} on ${isPrivateRoute ? 'private' : 'public'} route`
+        );
+    }, []);
+
+    const showNotification = useCallback(
+        (
+            message,
+            type = 'success',
+            autoClose = true,
+            onConfirm = null,
+            onCancel = null
+        ) => {
+            logger.info(`Showing notification: ${message} (${type})`);
+            const delay = type === 'success' ? 2000 : 5000;
+
+            setNotification((prev) => ({
+                ...prev,
+                message,
+                type,
+                show: true,
+                delay,
+                onConfirm,
+                onCancel,
+            }));
+        },
+        []
+    );
+
+    const hideNotification = useCallback(() => {
+        logger.info('Hiding notification');
         setNotification((prev) => ({ ...prev, message: '', show: false }));
-    };
+    }, []);
+
+    const contextValue = useMemo(
+        () => ({
+            notification,
+            showNotification,
+            hideNotification,
+            setPosition,
+        }),
+        [notification, showNotification, hideNotification, setPosition]
+    );
 
     return (
-        <NotificationContext.Provider value={{ notification, showNotification, hideNotification, setPosition }}>
+        <NotificationContext.Provider value={contextValue}>
             {children}
             <CustomToast
                 message={notification.message}
@@ -76,6 +100,3 @@ const NotificationProvider = ({ children }) => {
         </NotificationContext.Provider>
     );
 };
-
-export default NotificationProvider;
-export { useNotificationContext };
