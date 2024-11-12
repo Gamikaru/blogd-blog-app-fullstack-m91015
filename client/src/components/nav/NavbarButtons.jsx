@@ -1,13 +1,22 @@
 // client/src/components/nav/NavbarButtons.jsx
 import { Button } from '@components';
-import { FaFeather, FaSearch, FaUser } from "react-icons/fa";
-import { NavLink } from "react-router-dom";
+import React, { useCallback } from 'react';
+import { FaFeather, FaSearch, FaUser } from 'react-icons/fa';
+import { NavLink } from 'react-router-dom';
 
-const NavbarButtons = ({ togglePrivateModal, showUserDropdown, setShowUserDropdown }) => {
+const NavbarButtons = React.memo(({ togglePrivateModal, showUserDropdown, setShowUserDropdown }) => {
     const iconVariants = {
         hover: { scale: 1.1 },
         tap: { scale: 0.95 },
     };
+
+    const handleCreatePost = useCallback(() => {
+        togglePrivateModal('post');
+    }, [togglePrivateModal]);
+
+    const toggleUserDropdown = useCallback(() => {
+        setShowUserDropdown((prev) => !prev);
+    }, [setShowUserDropdown]);
 
     return (
         <>
@@ -30,20 +39,20 @@ const NavbarButtons = ({ togglePrivateModal, showUserDropdown, setShowUserDropdo
             />
             <Button
                 className="create-post-icon"
-                onClick={() => togglePrivateModal("post")}
+                onClick={handleCreatePost}
                 aria-label="Create Post"
                 variant="iconButton"
                 icon={FaFeather}
             />
             <Button
                 className="user-icon"
-                onClick={() => setShowUserDropdown(!showUserDropdown)}
+                onClick={toggleUserDropdown}
                 aria-label="User menu"
                 variant="iconButton"
                 icon={FaUser}
             />
         </>
     );
-};
+});
 
 export default NavbarButtons;

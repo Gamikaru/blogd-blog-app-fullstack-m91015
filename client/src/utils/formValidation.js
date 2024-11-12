@@ -177,8 +177,8 @@ export const validatePostContent = (postContent) => {
     }
 
     // Validate maximum length
-    if (trimmedContent.length > 5000) {
-        return 'Post content cannot exceed 5000 characters.';
+    if (trimmedContent.length > 10000) {
+        return 'Post content cannot exceed 10000 characters.';
     }
 
     // List of restricted words (commonly blocked words)

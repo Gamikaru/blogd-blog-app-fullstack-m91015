@@ -23,7 +23,6 @@ const postSchema = new Schema(
             minlength: 1,
             maxlength: 10000,
         },
-        // Removed the `excerpt` field from the schema
         userId: {
             type: Schema.Types.ObjectId,
             ref: 'User',
@@ -44,7 +43,7 @@ const postSchema = new Schema(
         category: {
             type: String,
             required: true,
-            enum: ['Health and Fitness', 'Lifestyle', 'Technology', 'Cooking', 'Other'],
+            enum: ['Health and Fitness', 'Lifestyle', 'Technology', 'Cooking', 'Philosophy', 'Productivity', 'Art', 'Music', 'Business', 'Other'],
         },
         tags: [{ type: String }],
         status: {
@@ -57,17 +56,6 @@ const postSchema = new Schema(
         },
         comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
         imageUrls: [{ type: String }],
-        images: [
-            {
-                data: {
-                    type: String,
-                },
-                isLink: {
-                    type: Boolean,
-                    default: false,
-                },
-            },
-        ],
         editHistory: [
             {
                 editedAt: {

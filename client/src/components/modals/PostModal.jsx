@@ -3,10 +3,10 @@ import { Button } from '@components';
 import { useNotificationContext, usePostContext, usePrivateModalContext, useUser } from '@contexts';
 import { calculateReadingTime, countWords, logger, validatePostContent } from '@utils';
 import { useRef, useState } from "react";
+import Form from 'react-bootstrap/Form';
 import Modal from "react-bootstrap/Modal";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-
 
 export default function PostModal() {
     const [postContent, setPostContent] = useState("");
@@ -15,7 +15,7 @@ export default function PostModal() {
     const [imageUrls, setImageUrls] = useState("");
     const [selectedFiles, setSelectedFiles] = useState([]);
     const { user } = useUser();
-    const { handleCreatePost } = usePostContext();
+    const { addPost } = usePostContext();
     const { showModal, togglePrivateModal, modalType } = usePrivateModalContext();
     const { showNotification } = useNotificationContext();
     const quillRef = useRef(null);
@@ -50,17 +50,22 @@ export default function PostModal() {
         formData.append('content', postContent);
         formData.append('category', category);
         if (imageUrls) formData.append('imageUrls', imageUrls);
-        selectedFiles.forEach((file, index) => formData.append('images', file, `image${index}`));
+        selectedFiles.forEach((file) => formData.append('images', file)); // Ensure 'images' field
 
-        await handleCreatePost(formData);
-        setPostContent("");
-        setPostTitle("");
-        setCategory("Other");
-        setImageUrls("");
-        setSelectedFiles([]);
-        togglePrivateModal();
-        showNotification("Post submitted successfully!", "success", { top: '40%', left: '50%' });
-        logger.info("Post submitted", { user, postContent, postTitle, category, imageUrls, selectedFiles });
+        try {
+            await addPost(formData);
+            setPostContent("");
+            setPostTitle("");
+            setCategory("Other");
+            setImageUrls("");
+            setSelectedFiles([]);
+            togglePrivateModal();
+            showNotification("Post submitted successfully!", "success", { top: '40%', left: '50%' });
+            logger.info("Post submitted", { user, postContent, postTitle, category, imageUrls, selectedFiles });
+        } catch (error) {
+            showNotification("Error submitting post.", "error", { top: '40%', left: '50%' });
+            logger.error("Error submitting post", { error });
+        }
     };
 
     return (
@@ -72,7 +77,7 @@ export default function PostModal() {
             backdropClassName="post-modal__backdrop"
             container={document.body}
         >
-            <div className="post-modal__container">
+            <Form onSubmit={handlePostSubmit} className="post-modal__form" id="post-form">
                 <div className="post-modal__preview">
                     <Modal.Header closeButton />
                     <input
@@ -106,7 +111,12 @@ export default function PostModal() {
                                 <option value="Health and Fitness">Health and Fitness</option>
                                 <option value="Lifestyle">Lifestyle</option>
                                 <option value="Technology">Technology</option>
+                                <option value="Philosophy">Philosophy</option>
                                 <option value="Cooking">Cooking</option>
+                                <option value="Art">Art</option>
+                                <option value="Business & Finance">Business & Finance</option>
+                                <option value="Productivity">Productivity</option>
+                                <option value="Music">Music</option>
                                 <option value="Other">Other</option>
                             </select>
                         </div>
@@ -125,6 +135,7 @@ export default function PostModal() {
                             <input
                                 type="file"
                                 multiple
+                                accept="image/*" // Ensure only images can be selected
                                 onChange={(e) => setSelectedFiles(Array.from(e.target.files))}
                                 className="toolbar-input toolbar-input--file"
                             />
@@ -162,20 +173,6 @@ export default function PostModal() {
                         </div>
                     </div>
 
-                    {/* <div className="toolbar-group toolbar-group__tags">
-                        <h6 className="toolbar-group__title">Tags</h6>
-                        <div className="toolbar-group__content">
-                            <input
-                                type="text"
-                                placeholder="Add tags (press Enter)"
-                                className="toolbar-input"
-                            />
-                            <div className="tags-container">
-                                {/* Render tags here */}
-                    {/* </div>
-                        </div>
-                    </div> */}
-
                     <div className="toolbar-group toolbar-group__meta">
                         <h6 className="toolbar-group__title">Text Analytics</h6>
                         <div className="toolbar-group__content">
@@ -187,24 +184,24 @@ export default function PostModal() {
                     <div className="toolbar-group toolbar-group__actions">
                         <div className="toolbar-group__content">
                             <Button
+                                type="submit"
                                 className="button button-submit"
-                                onClick={handlePostSubmit}
                                 variant="submit"
                             >
                                 Save Post
                             </Button>
                             <Button
+                                type="button"
                                 className="button button-delete"
                                 onClick={togglePrivateModal}
-                                variant="noIcon"
-
+                                variant="delete"
                             >
                                 Discard
                             </Button>
                         </div>
                     </div>
                 </div>
-            </div>
+            </Form>
         </Modal>
     );
 }

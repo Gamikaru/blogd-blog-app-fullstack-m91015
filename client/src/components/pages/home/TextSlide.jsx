@@ -134,7 +134,7 @@ TextSlide.propTypes = {
                 lastName: PropTypes.string,
             }),
             title: PropTypes.string,
-            excerpt: PropTypes.string.isRequired,
+            excerpt: PropTypes.string, // Made optional
         })
     ).isRequired,
     swiperProps: PropTypes.object.isRequired,

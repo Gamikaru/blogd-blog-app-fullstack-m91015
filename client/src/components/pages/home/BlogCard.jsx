@@ -1,6 +1,6 @@
 // src/components/BlogCard.jsx
 
-import { Button, CustomTagIcon } from '@components';
+import { Button, CustomTagIcon, LazyImage } from '@components'; // Import the LazyImage component
 import { usePostContext } from '@contexts/PostContext';
 import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
@@ -72,18 +72,16 @@ const BlogCard = memo(({ post, author, cookie }) => {
             onClick={navigateToPost}
         >
             {post.imageUrls?.length ? (
-                <img
+                <LazyImage
                     src={post.imageUrls[0]}
                     alt="Blog cover"
                     className="blog-cover-image"
-                    loading="lazy"
                 />
             ) : post.images?.length ? (
-                <img
+                <LazyImage
                     src={`data:image/jpeg;base64,${post.images[0].data}`}
                     alt="Blog cover"
                     className="blog-cover-image"
-                    loading="lazy"
                 />
             ) : (
                 <div className="blog-cover-placeholder">No Image</div>

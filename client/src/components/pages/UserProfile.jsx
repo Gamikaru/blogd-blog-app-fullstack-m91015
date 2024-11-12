@@ -35,10 +35,12 @@ const UserProfile = () => {
                 }
 
                 // Fetch posts for the selected user or current user
-                const posts = await fetchPostsByUser(userId || user.userId);
-                setUserPosts(posts);
+                const response = await fetchPostsByUser(userId || user.userId);
+                // Ensure that 'response.posts' is an array
+                setUserPosts(Array.isArray(response.posts) ? response.posts : []);
             } catch (error) {
                 logger.error('Error loading profile:', error);
+                setUserPosts([]); // Fallback to empty array on error
             } finally {
                 setLoading(false);
             }

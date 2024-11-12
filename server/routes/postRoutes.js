@@ -1,13 +1,10 @@
 // routes/postRoutes.js
-
 import express from 'express';
+import { uploadToCloudinary } from '../config/cloudinaryConfig.js'; // Correct import
 import { authenticate } from '../middleware/authMiddleware.js';
 import { sanitizePostContent } from '../middleware/sanitizeMiddleware.js';
-import upload from '../middleware/uploadMiddleware.js';
-import {
-    validatePostCreation,
-    validatePostUpdate,
-} from '../middleware/validationMiddleware.js';
+import { upload } from '../middleware/uploadMiddleware.js'; // Removed processImages
+import { validatePostCreation, validatePostUpdate } from '../middleware/validationMiddleware.js';
 import Post from '../models/postSchema.js';
 import logger from '../utils/logger.js';
 
@@ -151,7 +148,7 @@ router.get('/', async (req, res) => {
 router.post(
     '/',
     authenticate,
-    upload.array('images', 5),
+    upload.array('images', 5), // Multer middleware to handle file uploads
     validatePostCreation,
     sanitizePostContent,
     async (req, res) => {
@@ -162,10 +159,22 @@ router.post(
         logger.info('Creating a new post', { userId, title });
 
         try {
-            const images = files.map((file) => ({
-                data: file.buffer.toString('base64'),
-                isLink: false,
-            }));
+            let uploadedImageUrls = [];
+
+            // Upload each image to Cloudinary with unique filenames
+            if (files && files.length > 0) {
+                uploadedImageUrls = await Promise.all(
+                    files.map((file) => {
+                        const uniqueFilename = `post_image_${Date.now()}_${file.originalname}`;
+                        return uploadToCloudinary(file.buffer, uniqueFilename);
+                    })
+                );
+            }
+
+            // Combine any existing image URLs with the newly uploaded ones
+            const finalImageUrls = imageUrls
+                ? imageUrls.split(',').map((url) => url.trim()).concat(uploadedImageUrls)
+                : uploadedImageUrls;
 
             const newPost = new Post({
                 title,
@@ -175,16 +184,16 @@ router.post(
                 likes: 0,
                 views: 0,
                 comments: [],
-                imageUrls: imageUrls
-                    ? imageUrls.split(',').map((url) => url.trim())
-                    : [],
-                images,
+                imageUrls: finalImageUrls,
                 tags: tags ? tags.split(',').map((tag) => tag.trim()) : [],
                 status: status || 'draft',
                 scheduledAt: scheduledAt ? new Date(scheduledAt) : null,
             });
 
             await newPost.save();
+
+            // Populate userId
+            await newPost.populate('userId', 'firstName lastName occupation aboutAuthor');
 
             logger.info('Post created successfully', { postId: newPost._id });
 
@@ -201,10 +210,9 @@ router.post(
                     category: postObject.category,
                     likes: postObject.likes,
                     views: postObject.views,
-                    userId: postObject.userId,
+                    userId: postObject.userId, // Now populated
                     comments: postObject.comments,
                     imageUrls: postObject.imageUrls,
-                    images: postObject.images,
                     tags: postObject.tags,
                     status: postObject.status,
                     scheduledAt: postObject.scheduledAt,
@@ -263,11 +271,13 @@ router.patch(
             if (status) post.status = status;
             if (scheduledAt) post.scheduledAt = new Date(scheduledAt);
             if (files && files.length > 0) {
-                const images = files.map((file) => ({
-                    data: file.buffer.toString('base64'),
-                    isLink: false,
-                }));
-                post.images = images;
+                const uploadedImageUrls = await Promise.all(
+                    files.map((file) => {
+                        const uniqueFilename = `post_image_${Date.now()}_${file.originalname}`;
+                        return uploadToCloudinary(file.buffer, uniqueFilename);
+                    })
+                );
+                post.imageUrls = post.imageUrls.concat(uploadedImageUrls);
             }
 
             // Add to edit history

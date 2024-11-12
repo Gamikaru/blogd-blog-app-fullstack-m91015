@@ -6,10 +6,13 @@ import dotenv from 'dotenv';
 import express from 'express';
 import { body, validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
+import { uploadToCloudinary } from '../config/cloudinaryConfig.js';
 import { authenticate } from '../middleware/authMiddleware.js';
+import { upload } from '../middleware/uploadMiddleware.js';
 import Session from '../models/sessionSchema.js';
 import User from '../models/userSchema.js';
 import { sendResetPasswordEmail, sendVerificationEmail } from '../services/emailService.js';
+import logger from '../utils/logger.js';
 
 dotenv.config();
 
@@ -17,11 +20,15 @@ const router = express.Router();
 
 /**
  * @route   POST /register
- * @desc    Register a new user
+ * @desc    Register a new user with profile and cover photos
  * @access  Public
  */
 router.post(
     '/register',
+    upload.fields([
+        { name: 'profilePicture', maxCount: 1 },
+        { name: 'coverPhoto', maxCount: 1 },
+    ]),
     [
         body('firstName').notEmpty().withMessage('First Name is required'),
         body('lastName').notEmpty().withMessage('Last Name is required'),
@@ -33,10 +40,9 @@ router.post(
         body('authLevel').optional().isIn(['basic', 'admin']).withMessage('Invalid Auth Level'),
     ],
     async (req, res) => {
-        console.log('User Registration: Received data:', req.body);
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            console.error('User Registration: Validation errors:', errors.array());
+            logger.error('User Registration: Validation errors', { errors: errors.array() });
             return res.status(400).json({ errors: errors.array() });
         }
 
@@ -55,8 +61,25 @@ router.post(
             // Check if user already exists
             const existingUser = await User.findOne({ email });
             if (existingUser) {
-                console.error('User Registration: User already exists with email:', email);
+                logger.error('User Registration: User already exists with email', { email });
                 return res.status(400).json({ message: 'User with this email already exists.' });
+            }
+
+            let profilePictureUrl = '';
+            let coverPhotoUrl = '';
+
+            // Handle profile picture upload
+            if (req.files['profilePicture'] && req.files['profilePicture'][0]) {
+                const profilePicture = req.files['profilePicture'][0];
+                const profileFilename = `profile_${Date.now()}_${profilePicture.originalname}`;
+                profilePictureUrl = await uploadToCloudinary(profilePicture.buffer, profileFilename);
+            }
+
+            // Handle cover photo upload
+            if (req.files['coverPhoto'] && req.files['coverPhoto'][0]) {
+                const coverPhoto = req.files['coverPhoto'][0];
+                const coverFilename = `cover_${Date.now()}_${coverPhoto.originalname}`;
+                coverPhotoUrl = await uploadToCloudinary(coverPhoto.buffer, coverFilename);
             }
 
             const user = new User({
@@ -68,19 +91,22 @@ router.post(
                 location,
                 occupation,
                 authLevel,
+                profilePicture: profilePictureUrl,
+                coverPhoto: coverPhotoUrl, // Ensure 'coverPhoto' is defined in the User schema
             });
+
             const token = crypto.randomBytes(32).toString('hex');
             user.verificationToken = token;
             await user.save();
 
             await sendVerificationEmail(user, token);
 
-            console.log('User Registration: User registered successfully with ID:', user._id);
+            logger.info('User Registration: User registered successfully', { userId: user._id });
             res.status(201).json({
                 message: 'User registered successfully. Please check your email to verify your account.',
             });
         } catch (error) {
-            console.error('User Registration: Error during registration:', error);
+            logger.error('User Registration: Error during registration', { error: error.message });
             res.status(500).json({ error: 'Server error during registration' });
         }
     }
@@ -89,13 +115,13 @@ router.post(
 // Verify email
 router.get('/verify-email', async (req, res) => {
     const { token } = req.query;
-    console.log('Email Verification: Received token:', token);
+    logger.info('Email Verification: Received token', { token });
 
     try {
         const user = await User.findOne({ verificationToken: token });
 
         if (!user) {
-            console.error('Email Verification: Invalid or expired token:', token);
+            logger.error('Email Verification: Invalid or expired token', { token });
             return res.status(400).json({ error: 'Invalid or expired token' });
         }
 
@@ -103,10 +129,10 @@ router.get('/verify-email', async (req, res) => {
         user.verificationToken = undefined;
         await user.save();
 
-        console.log('Email Verification: Email verified successfully for user ID:', user._id);
+        logger.info('Email Verification: Email verified successfully', { userId: user._id });
         res.status(200).json({ message: 'Email verified successfully' });
     } catch (error) {
-        console.error('Email Verification: Error during email verification:', error);
+        logger.error('Email Verification: Error during email verification', { error: error.message });
         res.status(500).json({ error: 'Server error during email verification' });
     }
 });
@@ -123,10 +149,10 @@ router.post(
         body('password').notEmpty().withMessage('Password is required'),
     ],
     async (req, res) => {
-        console.log('User Login: Received credentials:', { email: req.body.email });
+        logger.info('User Login: Attempting login', { email: req.body.email });
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            console.error('User Login: Validation errors:', errors.array());
+            logger.error('User Login: Validation errors', { errors: errors.array() });
             return res.status(400).json({ errors: errors.array() });
         }
 
@@ -135,13 +161,13 @@ router.post(
         try {
             const user = await User.findOne({ email });
             if (!user) {
-                console.error('User Login: User not found with email:', email);
+                logger.error('User Login: User not found', { email });
                 return res.status(404).json({ message: 'No user found with this email.' });
             }
 
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) {
-                console.error('User Login: Incorrect password for user ID:', user._id);
+                logger.error('User Login: Incorrect password', { userId: user._id });
                 return res.status(401).json({ message: 'Incorrect password for this user.' });
             }
 
@@ -151,7 +177,7 @@ router.post(
                 { expiresIn: '24h' }
             );
 
-            console.log('User Login: Token generated successfully for user ID:', user._id);
+            logger.info('User Login: Token generated successfully', { userId: user._id });
             res.status(200).json({
                 token,
                 user: {
@@ -162,11 +188,13 @@ router.post(
                     lastName: user.lastName,
                     location: user.location,
                     occupation: user.occupation,
+                    profilePicture: user.profilePicture,
+                    coverPhoto: user.coverPhoto,
                 },
                 message: 'Login successful',
             });
         } catch (error) {
-            console.error('User Login: Error during login:', error);
+            logger.error('User Login: Error during login', { error: error.message });
             return res.status(500).json({ message: 'Server error: ' + error.message });
         }
     }
@@ -181,10 +209,10 @@ router.post(
     '/forgot-password',
     [body('email').isEmail().withMessage('Valid Email is required')],
     async (req, res) => {
-        console.log('Password Reset Request: Received email:', req.body.email);
+        logger.info('Password Reset Request: Received email', { email: req.body.email });
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            console.error('Password Reset Request: Validation errors:', errors.array());
+            logger.error('Password Reset Request: Validation errors', { errors: errors.array() });
             return res.status(400).json({ errors: errors.array() });
         }
 
@@ -194,7 +222,7 @@ router.post(
             const user = await User.findOne({ email });
 
             if (!user) {
-                console.error('Password Reset Request: User not found with email:', email);
+                logger.error('Password Reset Request: User not found', { email });
                 return res.status(404).json({ error: 'User not found' });
             }
 
@@ -205,10 +233,10 @@ router.post(
 
             await sendResetPasswordEmail(user, token);
 
-            console.log('Password Reset Request: Password reset email sent to user ID:', user._id);
+            logger.info('Password Reset Request: Password reset email sent', { userId: user._id });
             res.status(200).json({ message: 'Password reset email sent' });
         } catch (error) {
-            console.error('Password Reset Request: Error sending password reset email:', error);
+            logger.error('Password Reset Request: Error sending password reset email', { error: error.message });
             res.status(500).json({ error: 'Server error during password reset request' });
         }
     }
@@ -226,10 +254,10 @@ router.post(
         body('newPassword').isLength({ min: 6 }).withMessage('New password must be at least 6 characters'),
     ],
     async (req, res) => {
-        console.log('Password Reset: Received token:', req.body.token);
+        logger.info('Password Reset: Received token', { token: req.body.token });
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            console.error('Password Reset: Validation errors:', errors.array());
+            logger.error('Password Reset: Validation errors', { errors: errors.array() });
             return res.status(400).json({ errors: errors.array() });
         }
 
@@ -242,7 +270,7 @@ router.post(
             });
 
             if (!user) {
-                console.error('Password Reset: Invalid or expired token:', token);
+                logger.error('Password Reset: Invalid or expired token', { token });
                 return res.status(400).json({ error: 'Invalid or expired token' });
             }
 
@@ -251,10 +279,10 @@ router.post(
             user.resetPasswordExpires = undefined;
             await user.save();
 
-            console.log('Password Reset: Password reset successfully for user ID:', user._id);
+            logger.info('Password Reset: Password reset successfully', { userId: user._id });
             res.status(200).json({ message: 'Password reset successfully' });
         } catch (error) {
-            console.error('Password Reset: Error resetting password:', error);
+            logger.error('Password Reset: Error resetting password', { error: error.message });
             res.status(500).json({ error: 'Server error during password reset' });
         }
     }
@@ -267,30 +295,34 @@ router.post(
  */
 router.get('/:userId', authenticate, async (req, res) => {
     const { userId } = req.params;
-    console.log('Fetching user data for user ID:', userId);
+    logger.info('Fetching user data', { userId });
     try {
         // Find user by ID and exclude password
         const user = await User.findById(userId).select('-password');
         if (!user) {
-            console.error('Get User: User not found with ID:', userId);
+            logger.error('Get User: User not found', { userId });
             return res.status(404).json({ message: 'User not found' });
         }
-        console.log('Get User: User data retrieved successfully for user ID:', userId);
+        logger.info('Get User: User data retrieved successfully', { userId });
         res.status(200).json(user);
     } catch (error) {
-        console.error('Get User: Error fetching user:', error);
+        logger.error('Get User: Error fetching user', { error: error.message });
         return res.status(500).json({ message: 'Server error: ' + error.message });
     }
 });
 
 /**
  * @route   PATCH /:userId
- * @desc    Update user by ID (protected)
+ * @desc    Update user by ID with profile and cover photos
  * @access  Private
  */
 router.patch(
     '/:userId',
     authenticate,
+    upload.fields([
+        { name: 'profilePicture', maxCount: 1 },
+        { name: 'coverPhoto', maxCount: 1 },
+    ]),
     [
         body('firstName').optional().isString().withMessage('First name must be a string'),
         body('lastName').optional().isString().withMessage('Last name must be a string'),
@@ -306,25 +338,23 @@ router.patch(
         const { userId } = req.params;
         const { authLevel, userId: authUserId } = req.user; // Assuming authenticate middleware adds user info to req.user
 
-        console.log('Update User: Attempting to update user ID:', userId);
-
         // Authorization Check: Only the user themselves or an admin can update the profile
         if (String(authUserId) !== String(userId) && authLevel !== 'admin') {
-            console.error('Update User: Forbidden - User ID:', authUserId, 'cannot update user ID:', userId);
+            logger.warn('Update User: Forbidden access attempt', { authUserId, targetUserId: userId });
             return res.status(403).json({ message: 'Forbidden: You can only update your own profile.' });
         }
 
         // Validation Check
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            console.error('Update User: Validation errors:', errors.array());
+            logger.error('Update User: Validation errors', { errors: errors.array() });
             return res.status(400).json({ errors: errors.array() });
         }
 
         try {
             const user = await User.findById(userId);
             if (!user) {
-                console.error('Update User: User not found with ID:', userId);
+                logger.error('Update User: User not found', { userId });
                 return res.status(404).json({ message: 'User not found' });
             }
 
@@ -347,11 +377,25 @@ router.patch(
                 }
             });
 
+            // Handle profile picture upload
+            if (req.files['profilePicture'] && req.files['profilePicture'][0]) {
+                const profilePicture = req.files['profilePicture'][0];
+                const profileFilename = `profile_${Date.now()}_${profilePicture.originalname}`;
+                user.profilePicture = await uploadToCloudinary(profilePicture.buffer, profileFilename);
+            }
+
+            // Handle cover photo upload
+            if (req.files['coverPhoto'] && req.files['coverPhoto'][0]) {
+                const coverPhoto = req.files['coverPhoto'][0];
+                const coverFilename = `cover_${Date.now()}_${coverPhoto.originalname}`;
+                user.coverPhoto = await uploadToCloudinary(coverPhoto.buffer, coverFilename);
+            }
+
             await user.save(); // Save the updated user data
-            console.log('Update User: User updated successfully for user ID:', userId);
+            logger.info('Update User: User updated successfully', { userId: user._id });
             res.status(200).json(user); // Send updated user back to front-end
         } catch (error) {
-            console.error('Update User: Error updating user:', error);
+            logger.error('Update User: Error updating user', { error: error.message, userId });
             res.status(500).json({ message: 'Error updating user', error: error.message });
         }
     }
@@ -360,17 +404,17 @@ router.patch(
 /**
  * @route   GET /list/:userId
  * @desc    Get all users except the current user (protected)
- * @access  Private
+ * @access  Public
  */
-router.get('/list/:userId', authenticate, async (req, res) => {
+router.get('/list/:userId', async (req, res) => {
     const { userId } = req.params;
-    console.log('Fetching all users except for user ID:', userId);
+    logger.info('Fetching all users except for user', { userId });
     try {
         const users = await User.find({ _id: { $ne: userId } }).select('-password');
-        console.log('Get Users List: Retrieved users excluding user ID:', userId);
+        logger.info('Get Users List: Retrieved users excluding user', { userId });
         res.status(200).json(users);
     } catch (error) {
-        console.error('Get Users List: Error fetching users:', error);
+        logger.error('Get Users List: Error fetching users', { error: error.message });
         return res.status(500).json({ message: 'Server error: ' + error.message });
     }
 });
@@ -381,13 +425,13 @@ router.get('/list/:userId', authenticate, async (req, res) => {
  * @access  Private
  */
 router.get('/', authenticate, async (_, res) => {
-    console.log('Fetching all users.');
+    logger.info('Fetching all users');
     try {
         const users = await User.find().select('-password');
-        console.log('Get All Users: Retrieved all users successfully.');
+        logger.info('Get All Users: Retrieved all users successfully');
         res.status(200).json(users);
     } catch (error) {
-        console.error('Get All Users: Error fetching users:', error);
+        logger.error('Get All Users: Error fetching users', { error: error.message });
         return res.status(500).json({ message: 'Server error: ' + error.message });
     }
 });
@@ -399,18 +443,18 @@ router.get('/', authenticate, async (_, res) => {
  */
 router.delete('/:userId', authenticate, async (req, res) => {
     const { userId } = req.params;
-    console.log('Deleting user with ID:', userId);
+    logger.info('Deleting user', { userId });
     try {
         const user = await User.findById(userId);
         if (!user) {
-            console.error('Delete User: User not found with ID:', userId);
+            logger.error('Delete User: User not found', { userId });
             return res.status(404).json({ message: 'User not found' });
         }
         await user.deleteOne();
-        console.log('Delete User: User deleted successfully with ID:', userId);
+        logger.info('Delete User: User deleted successfully', { userId });
         res.status(200).json({ message: 'User deleted successfully' });
     } catch (error) {
-        console.error('Delete User: Error deleting user:', error);
+        logger.error('Delete User: Error deleting user', { error: error.message });
         return res.status(500).json({ message: 'Server error: ' + error.message });
     }
 });
@@ -422,18 +466,18 @@ router.delete('/:userId', authenticate, async (req, res) => {
  */
 router.delete('/email/:email', authenticate, async (req, res) => {
     const { email } = req.params;
-    console.log('Deleting user with email:', email);
+    logger.info('Deleting user', { email });
     try {
         const user = await User.findOne({ email });
         if (!user) {
-            console.error('Delete User: User not found with email:', email);
+            logger.error('Delete User: User not found', { email });
             return res.status(404).json({ message: 'User not found' });
         }
         await user.deleteOne();
-        console.log('Delete User: User deleted successfully with email:', email);
+        logger.info('Delete User: User deleted successfully', { email });
         return res.status(200).json({ message: 'User deleted successfully' });
     } catch (error) {
-        console.error('Delete User: Error deleting user:', error);
+        logger.error('Delete User: Error deleting user', { error: error.message });
         return res.status(500).json({ message: 'Server error: ' + error.message });
     }
 });
@@ -451,36 +495,31 @@ router.put(
         const { userId } = req.params;
         const { status } = req.body;
 
-        console.log('Update Status: Attempting to update status for user ID:', userId);
+        logger.info('Update Status: Attempting to update status', { userId });
 
         // Authorization Check: Only the user themselves or an admin can update the status
         if (String(req.user.userId) !== String(userId) && req.user.authLevel !== 'admin') {
-            console.error(
-                'Update Status: Forbidden - User ID:',
-                req.user.userId,
-                'cannot update status for user ID:',
-                userId
-            );
+            logger.warn('Update Status: Forbidden access attempt', { authUserId: req.user.userId, targetUserId: userId });
             return res.status(403).json({ message: 'Forbidden: You can only update your own status.' });
         }
 
         // Validation Check
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            console.error('Update Status: Validation errors:', errors.array());
+            logger.error('Update Status: Validation errors', { errors: errors.array() });
             return res.status(400).json({ errors: errors.array() });
         }
 
         try {
             const user = await User.findByIdAndUpdate(userId, { status }, { new: true });
             if (!user) {
-                console.error('Update Status: User not found with ID:', userId);
+                logger.error('Update Status: User not found', { userId });
                 return res.status(404).json({ message: 'User not found' });
             }
-            console.log('Update Status: Status updated successfully for user ID:', userId);
+            logger.info('Update Status: Status updated successfully', { userId });
             res.json(user);
         } catch (error) {
-            console.error('Update Status: Error updating user status:', error);
+            logger.error('Update Status: Error updating user status', { error: error.message });
             res.status(500).json({ message: 'Error updating status', error: error.message });
         }
     }
@@ -492,17 +531,17 @@ router.put(
  * @access  Private
  */
 router.post('/logout', authenticate, async (req, res) => {
-    console.log('Logging out user with ID:', req.user.userId);
+    logger.info('Logging out user', { userId: req.user.userId });
     try {
         const endSession = await Session.findOneAndDelete({ user: req.user.userId });
         if (!endSession) {
-            console.error('Logout: No active session found for user ID:', req.user.userId);
+            logger.error('Logout: No active session found', { userId: req.user.userId });
             return res.status(404).json({ message: 'No active session found' });
         }
-        console.log('Logout: Session ended successfully for user ID:', req.user.userId);
+        logger.info('Logout: Session ended successfully', { userId: req.user.userId });
         res.status(200).json({ message: 'Session ended: User logged out' });
     } catch (error) {
-        console.error('Logout: Error ending session:', error);
+        logger.error('Logout: Error ending session', { error: error.message });
         res.status(500).json({ message: 'Error ending session', error: error.message });
     }
 });

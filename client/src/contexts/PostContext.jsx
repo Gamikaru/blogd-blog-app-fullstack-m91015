@@ -104,7 +104,9 @@ export const PostProvider = ({ children }) => {
             const data = await likePost(postId);
             setPosts((prevPosts) =>
                 prevPosts.map((post) =>
-                    post.postId === postId ? { ...post, likes: data.likes, likesBy: data.likesBy } : post
+                    post.postId === postId
+                        ? { ...post, likes: data.likes, likesBy: data.likesBy }
+                        : post
                 )
             );
         } catch (error) {
@@ -117,7 +119,9 @@ export const PostProvider = ({ children }) => {
             const data = await unlikePost(postId);
             setPosts((prevPosts) =>
                 prevPosts.map((post) =>
-                    post.postId === postId ? { ...post, likes: data.likes, likesBy: data.likesBy } : post
+                    post.postId === postId
+                        ? { ...post, likes: data.likes, likesBy: data.likesBy }
+                        : post
                 )
             );
         } catch (error) {

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-const PageInfo = ({ welcomeText, categories, location }) => {
+const PageInfo = React.memo(({ welcomeText, categories, location }) => {
     const pageInfoVariants = {
         hidden: { opacity: 0, x: -20 },
         visible: { opacity: 1, x: 0 },
@@ -39,6 +39,6 @@ const PageInfo = ({ welcomeText, categories, location }) => {
             )}
         </div>
     );
-};
+});
 
 export default PageInfo;

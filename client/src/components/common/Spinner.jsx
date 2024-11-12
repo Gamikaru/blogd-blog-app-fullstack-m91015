@@ -1,7 +1,8 @@
+import React from 'react';
 import { motion } from 'framer-motion';
 import BlogdGraphic from '../../../public/assets/images/Icon-Only-Black.png';
 
-const Spinner = ({ size = '60px', message = '' }) => {
+const Spinner = React.memo(({ size = '60px', message = '' }) => {
     return (
         <div className="spinner-container" style={spinnerContainerStyle}>
             <motion.img
@@ -22,7 +23,7 @@ const Spinner = ({ size = '60px', message = '' }) => {
             {message && <p style={{ marginTop: '10px' }}>{message}</p>}
         </div>
     );
-};
+});
 
 // Inline styles retained for full-screen centering
 const spinnerContainerStyle = {

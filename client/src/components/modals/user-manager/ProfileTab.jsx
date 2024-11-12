@@ -4,9 +4,12 @@ import { UserService } from '@services/api';
 import { logger } from '@utils';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import * as Yup from 'yup';
 
 const ProfileTab = ({ user, setUser, showNotification, loading, setLoading }) => {
+    const navigate = useNavigate(); // Initialize useNavigate
+
     const profileInitialValues = {
         firstName: user?.firstName || '',
         lastName: user?.lastName || '',
@@ -61,6 +64,10 @@ const ProfileTab = ({ user, setUser, showNotification, loading, setLoading }) =>
             setLoading(false);
             setSubmitting(false);
         }
+    };
+
+    const handleViewProfile = () => {
+        navigate('/profile'); // Navigate to the profile page
     };
 
     return (
@@ -121,19 +128,32 @@ const ProfileTab = ({ user, setUser, showNotification, loading, setLoading }) =>
                         <ErrorMessage name="profilePicture" component="div" className="error" />
                     </div>
 
-                    <motion.button
-                        type="submit"
-                        className="button button-edit"
-                        disabled={isSubmitting || loading}
-                        whileHover={{ y: -2 }}
-                        whileTap={{ scale: 0.98 }}
-                    >
-                        {loading ? 'Updating...' : 'Update Profile'}
-                    </motion.button>
+                    <div className="form-actions">
+                        <motion.button
+                            type="submit"
+                            className="button button-edit"
+                            disabled={isSubmitting || loading}
+                            whileHover={{ y: -2 }}
+                            whileTap={{ scale: 0.98 }}
+                        >
+                            {loading ? 'Updating...' : 'Update Profile'}
+                        </motion.button>
+
+                        <motion.button
+                            type="button"
+                            className="button button-view-profile"
+                            onClick={handleViewProfile}
+                            whileHover={{ y: -2 }}
+                            whileTap={{ scale: 0.98 }}
+                        >
+                            View Profile
+                        </motion.button>
+                    </div>
                 </Form>
             )}
         </Formik>
     );
+
 };
 
 export default ProfileTab;

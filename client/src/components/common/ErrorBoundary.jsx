@@ -2,7 +2,7 @@ import { Button } from '@components';
 import { logger } from '@utils';
 import React from 'react';
 
-class ErrorBoundary extends React.Component {
+class ErrorBoundary extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -13,11 +13,11 @@ class ErrorBoundary extends React.Component {
     }
 
     static getDerivedStateFromError(error) {
-        return { hasError: true };
+        return { hasError: true, error };
     }
 
     componentDidCatch(error, errorInfo) {
-        this.setState({ error, errorInfo });
+        this.setState({ errorInfo });
         logger.error('Error Boundary caught an error:', { error, errorInfo });
     }
 

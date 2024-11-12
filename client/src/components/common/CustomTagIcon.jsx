@@ -1,5 +1,6 @@
+import React from 'react';
 
-const CustomTagIcon = ({ className = '', text = '' }) => {
+const CustomTagIcon = React.memo(({ className = '', text = '' }) => {
     if (!text) return null;
 
     const textLength = text.length;
@@ -8,7 +9,7 @@ const CustomTagIcon = ({ className = '', text = '' }) => {
     const padding = 9;
     const width = baseWidth + textLength * charWidth;
 
-    const textXPosition = baseWidth / 2; // Dynamic positioning for better centering.
+    const textXPosition = baseWidth / 2;
 
     return (
         <svg
@@ -18,7 +19,7 @@ const CustomTagIcon = ({ className = '', text = '' }) => {
             viewBox={`0 0 ${width} 24`}
             width={width}
             height="24"
-            role="img" // Accessibility
+            role="img"
             aria-labelledby="custom-tag-icon-title"
         >
             <title id="custom-tag-icon-title">{`Custom Tag: ${text}`}</title>
@@ -30,12 +31,12 @@ const CustomTagIcon = ({ className = '', text = '' }) => {
                 y="16"
                 fill="#fff"
                 fontSize="12"
-                textAnchor="middle" // Centers the text horizontally
+                textAnchor="middle"
             >
                 {text}
             </text>
         </svg>
     );
-};
+});
 
 export default CustomTagIcon;

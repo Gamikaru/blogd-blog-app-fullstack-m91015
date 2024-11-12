@@ -3,60 +3,76 @@
 import { Portal } from '@components';
 import { usePrivateModalContext, useUser } from '@contexts';
 import { motion } from 'framer-motion';
-import { useEffect, useRef } from "react";
-import { FaBirthdayCake, FaBriefcase, FaCog, FaEnvelope, FaMapMarkerAlt, FaUser } from "react-icons/fa";
-import { FiLogOut } from "react-icons/fi";
+import React, { useCallback, useEffect, useRef } from 'react';
+import {
+    FaBirthdayCake,
+    FaBriefcase,
+    FaCog,
+    FaEnvelope,
+    FaMapMarkerAlt,
+    FaUser,
+} from 'react-icons/fa';
+import { FiLogOut } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
-const UserDropdown = ({ showDropdown, setShowDropdown, handleLogout, position }) => {
+const UserDropdown = React.memo(({ showDropdown, setShowDropdown, handleLogout, position }) => {
     const dropdownRef = useRef(null);
     const { user } = useUser();
-    const { togglePrivateModal } = usePrivateModalContext(); // Add this
+    const { togglePrivateModal } = usePrivateModalContext();
+    const navigate = useNavigate(); // Initialize useNavigate
 
-    const handleSettingsClick = () => {
-        togglePrivateModal("userSettings"); // Changed to userSettings
+    const handleSettingsClick = useCallback(() => {
+        togglePrivateModal('userSettings');
         setShowDropdown(false);
-    };
+    }, [togglePrivateModal, setShowDropdown]);
 
-    useEffect(() => {
-        const handleClickOutside = (event) => {
+    const handleProfileClick = useCallback(() => {
+        navigate('/profile');
+        setShowDropdown(false);
+    }, [navigate, setShowDropdown]);
+
+    const handleClickOutside = useCallback(
+        (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
                 setShowDropdown(false);
             }
-        };
+        },
+        [setShowDropdown]
+    );
 
+    useEffect(() => {
         if (showDropdown) {
-            document.addEventListener("mousedown", handleClickOutside);
+            document.addEventListener('mousedown', handleClickOutside);
+            return () => {
+                document.removeEventListener('mousedown', handleClickOutside);
+            };
         }
-
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [showDropdown, setShowDropdown]);
+    }, [showDropdown, handleClickOutside]);
 
     const dropdownVariants = {
         hidden: {
             opacity: 0,
             y: -20,
-            scale: 0.95
+            scale: 0.95,
         },
         visible: {
             opacity: 1,
             y: 0,
             scale: 1,
             transition: {
-                type: "spring",
+                type: 'spring',
                 stiffness: 300,
-                damping: 30
-            }
+                damping: 30,
+            },
         },
         exit: {
             opacity: 0,
             y: -20,
             scale: 0.95,
             transition: {
-                duration: 0.2
-            }
-        }
+                duration: 0.2,
+            },
+        },
     };
 
     if (!showDropdown) return null;
@@ -121,6 +137,15 @@ const UserDropdown = ({ showDropdown, setShowDropdown, handleLogout, position })
                         </div>
                         <div className="dropdown-actions">
                             <motion.button
+                                className="button button-profile"
+                                onClick={handleProfileClick}
+                                whileHover={{ y: -1 }}
+                                whileTap={{ scale: 0.98 }}
+                            >
+                                <FaUser className="button-icon" />
+                                Profile
+                            </motion.button>
+                            <motion.button
                                 className="button button-edit"
                                 onClick={handleSettingsClick}
                                 whileHover={{ y: -1 }}
@@ -144,6 +169,6 @@ const UserDropdown = ({ showDropdown, setShowDropdown, handleLogout, position })
             </motion.div>
         </Portal>
     );
-};
+});
 
 export default UserDropdown;

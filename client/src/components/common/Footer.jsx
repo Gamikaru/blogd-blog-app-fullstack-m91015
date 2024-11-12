@@ -1,16 +1,15 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
-const socialLinks = [
-    { href: 'https://facebook.com', label: 'Facebook', Icon: FaFacebookF },
-    { href: 'https://twitter.com', label: 'Twitter', Icon: FaTwitter },
-    { href: 'https://instagram.com', label: 'Instagram', Icon: FaInstagram },
-    { href: 'https://linkedin.com', label: 'LinkedIn', Icon: FaLinkedinIn },
-];
-
-const Footer = () => {
-    const currentYear = React.useMemo(() => new Date().getFullYear(), []);
+const Footer = React.memo(() => {
+    const currentYear = useMemo(() => new Date().getFullYear(), []);
+    const socialLinks = useMemo(() => [
+        { href: 'https://facebook.com', label: 'Facebook', Icon: FaFacebookF },
+        { href: 'https://twitter.com', label: 'Twitter', Icon: FaTwitter },
+        { href: 'https://instagram.com', label: 'Instagram', Icon: FaInstagram },
+        { href: 'https://linkedin.com', label: 'LinkedIn', Icon: FaLinkedinIn },
+    ], []);
 
     return (
         <footer className="footer">
@@ -40,6 +39,6 @@ const Footer = () => {
             </div>
         </footer>
     );
-};
+});
 
 export default Footer;

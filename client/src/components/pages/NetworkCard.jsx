@@ -5,7 +5,7 @@ import { memo, useMemo, useState } from 'react';
 import { Card } from "react-bootstrap";
 import { FaBriefcase, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 
-const NetworkCard = memo(({ user, latestPost, truncatePostContent }) => {
+const NetworkCard = memo(({ user }) => {
     const [showBubbles, setShowBubbles] = useState(false);
 
     const getInitials = (firstName, lastName) => {
@@ -16,15 +16,6 @@ const NetworkCard = memo(({ user, latestPost, truncatePostContent }) => {
         getInitials(user.firstName, user.lastName),
         [user.firstName, user.lastName]
     );
-
-    const memoizedTruncatedContent = useMemo(() =>
-        latestPost ? truncatePostContent(latestPost.content) : "No posts yet",
-        [latestPost, truncatePostContent]
-    );
-
-    const handleEditNetwork = () => {
-        // Add your edit network handler here
-    };
 
     const handleSendMessage = () => {
         // Add your send message handler here
@@ -83,12 +74,16 @@ const NetworkCard = memo(({ user, latestPost, truncatePostContent }) => {
                         </div>
                     </div>
                 </div>
-                <h6>Latest Post</h6>
-                <div className="recent-post">
-                    <p className="post-content">
-                        {memoizedTruncatedContent}
-                    </p>
-                </div>
+                {/* Profile Picture */}
+                {user.profilePicture && (
+                    <div className="profile-picture-container">
+                        <img
+                            src={user.profilePicture}
+                            alt={`${user.firstName} ${user.lastName}`}
+                            className="profile-picture"
+                        />
+                    </div>
+                )}
                 <Button
                     variant="send"
                     className="button"

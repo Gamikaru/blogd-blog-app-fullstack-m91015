@@ -9,11 +9,12 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 import { Button, InputField, Spinner } from '@components';
-import { useNotificationContext, usePublicModalContext, useUserUpdate } from '@contexts';
+import { useNotificationContext, usePublicModalContext } from '@contexts';
+import { useUserUpdate } from '@contexts/UserContext'; // Adjust import path if necessary
 import { UserService } from '@services/api';
 import { logger, validateLoginForm } from '@utils';
 
-export default function LoginPage() {
+const LoginPage = () => {
     const [loginForm, setLoginForm] = useState({ email: "", password: "" });
     const [, setCookie] = useCookies(["BlogdPass", "userID"]);
     const [loading, setLoading] = useState(false);
@@ -163,3 +164,5 @@ export default function LoginPage() {
         </div>
     );
 }
+
+export default LoginPage;

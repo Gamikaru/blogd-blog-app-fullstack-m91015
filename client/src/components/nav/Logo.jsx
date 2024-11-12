@@ -1,7 +1,7 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Logo = () => (
+const Logo = React.memo(() => (
     <div className="navbar-logo">
         <Link to="/">
             <img
@@ -13,6 +13,6 @@ const Logo = () => (
             />
         </Link>
     </div>
-);
+));
 
 export default Logo;

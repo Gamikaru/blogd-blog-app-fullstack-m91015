@@ -1,6 +1,7 @@
 import clsx from 'clsx'; // Utility for dynamic classNames
 import { motion, useReducedMotion } from 'framer-motion';
 import PropTypes from 'prop-types';
+import React from 'react';
 
 // Import icons
 import {
@@ -80,40 +81,42 @@ const variantIcons = {
     iconButton: null,
 };
 
-const Button = ({
-    variant = 'submit',
-    children,
-    icon,
-    showIcon = true,
-    theme = 'light',
-    as: Component = 'button',
-    iconOnly = false,
-    filled = false,
-    ...props
-}) => {
-    const shouldReduceMotion = useReducedMotion();
-    const IconComponent = icon || variantIcons[variant];
+const Button = React.memo(
+    ({
+        variant = 'submit',
+        children,
+        icon,
+        showIcon = true,
+        theme = 'light',
+        as: Component = 'button',
+        iconOnly = false,
+        filled = false,
+        ...props
+    }) => {
+        const shouldReduceMotion = useReducedMotion();
+        const IconComponent = icon || variantIcons[variant];
 
-    return (
-        <motion.div
-            whileHover={!shouldReduceMotion ? { scale: 1.02 } : undefined}
-            whileTap={!shouldReduceMotion ? { scale: 0.98 } : undefined}
-        >
-            <Component
-                className={clsx(
-                    'button',
-                    `button-${variant}`,
-                    theme,
-                    { 'icon-only': iconOnly, filled }
-                )}
-                {...props}
+        return (
+            <motion.div
+                whileHover={!shouldReduceMotion ? { scale: 1.02 } : undefined}
+                whileTap={!shouldReduceMotion ? { scale: 0.98 } : undefined}
             >
-                {showIcon && IconComponent && <IconComponent className="button-icon" />}
-                {!iconOnly && children && <span className="button-text">{children}</span>}
-            </Component>
-        </motion.div>
-    );
-};
+                <Component
+                    className={clsx(
+                        'button',
+                        `button-${variant}`,
+                        theme,
+                        { 'icon-only': iconOnly, filled }
+                    )}
+                    {...props}
+                >
+                    {showIcon && IconComponent && <IconComponent className="button-icon" />}
+                    {!iconOnly && children && <span className="button-text">{children}</span>}
+                </Component>
+            </motion.div>
+        );
+    }
+);
 
 Button.propTypes = {
     variant: PropTypes.oneOf(Object.keys(variantIcons)).isRequired,

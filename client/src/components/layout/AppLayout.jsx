@@ -1,35 +1,29 @@
 // src/layouts/AppLayout.jsx
 
-import { Footer, Navbar, Sidebar } from '@components'; // Adjust the import path if necessary
+import { Footer, Navbar, Sidebar } from '@components';
 import { useNotificationContext } from '@contexts';
-import { logger } from '@utils'; // Adjust the import path if necessary
+import { logger } from '@utils';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
+
+const pageVariants = {
+    initial: { opacity: 0, y: 20 },
+    in: { opacity: 1, y: 0 },
+    out: { opacity: 0, y: -20 },
+};
+
+const pageTransition = {
+    type: 'tween',
+    ease: 'easeInOut',
+    duration: 0.8,
+};
 
 const AppLayout = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const toggleButtonRef = useRef(null);
     const { setPosition, notification } = useNotificationContext();
     const location = useLocation();
-
-    const pageVariants = useMemo(
-        () => ({
-            initial: { opacity: 0, y: 20 },
-            in: { opacity: 1, y: 0 },
-            out: { opacity: 0, y: -20 },
-        }),
-        []
-    );
-
-    const pageTransition = useMemo(
-        () => ({
-            type: 'tween',
-            ease: 'easeInOut',
-            duration: 0.8,
-        }),
-        []
-    );
 
     const toggleSidebar = useCallback(() => {
         logger.info('[AppLayout] Toggling sidebar');
@@ -38,9 +32,6 @@ const AppLayout = () => {
 
     useEffect(() => {
         setPosition(notification.type, true);
-        return () => {
-            logger.info('[AppLayout] Component unmounted');
-        };
     }, [setPosition, notification.type]);
 
     return (

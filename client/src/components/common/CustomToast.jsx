@@ -1,24 +1,24 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { FiAlertCircle, FiCheckCircle, FiInfo, FiX } from 'react-icons/fi';
 
-const CustomToast = ({
+const CustomToast = React.memo(({
     message,
     show,
-    type = "info",
+    type = 'info',
     onClose,
     delay = 5000,
-    position = "top-right",
+    position = 'top-right',
     autoClose = true,
     onConfirm,
-    onCancel
+    onCancel,
 }) => {
-    const iconMap = {
+    const iconMap = useMemo(() => ({
         success: <FiCheckCircle className="toast-icon" />,
         error: <FiAlertCircle className="toast-icon" />,
         info: <FiInfo className="toast-icon" />,
         warning: <FiAlertCircle className="toast-icon" />,
-    };
+    }), []);
 
     useEffect(() => {
         if (show && autoClose) {
@@ -29,38 +29,42 @@ const CustomToast = ({
 
     const toastVariants = {
         initial: {
-            x: position === "top-right" ? 100 : 0,
-            opacity: 0
+            x: position === 'top-right' ? 100 : 0,
+            opacity: 0,
         },
         animate: {
             x: 0,
             opacity: 1,
             transition: {
-                type: "spring",
+                type: 'spring',
                 damping: 20,
-                stiffness: 300
-            }
+                stiffness: 300,
+            },
         },
         exit: {
-            x: position === "top-right" ? 100 : 0,
+            x: position === 'top-right' ? 100 : 0,
             opacity: 0,
             transition: {
-                duration: 0.2
-            }
-        }
+                duration: 0.2,
+            },
+        },
     };
 
     const ButtonVariants = {
         initial: { scale: 1 },
         hover: { scale: 1.02 },
-        tap: { scale: 0.98 }
+        tap: { scale: 0.98 },
     };
 
     const positionStyle = useMemo(() => (
-        position === "top-right"
-            ? { top: "5rem", right: "2rem" }
-            : { top: "50%", left: "50%", transform: "translate(-50%, -50%)" }
+        position === 'top-right'
+            ? { top: '5rem', right: '2rem' }
+            : { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }
     ), [position]);
+
+    const handleDragEnd = useCallback((_, info) => {
+        if (info.offset.x > 100) onClose();
+    }, [onClose]);
 
     return (
         <AnimatePresence>
@@ -71,18 +75,16 @@ const CustomToast = ({
                     initial="initial"
                     animate="animate"
                     exit="exit"
-                    drag={position === "top-right" ? "x" : false}
+                    drag={position === 'top-right' ? 'x' : false}
                     dragConstraints={{ left: 0, right: 20 }}
                     dragElastic={0.7}
-                    onDragEnd={(_, info) => {
-                        if (info.offset.x > 100) onClose();
-                    }}
+                    onDragEnd={handleDragEnd}
                     style={{
-                        position: "fixed",
+                        position: 'fixed',
                         ...positionStyle,
                         zIndex: 3060,
                     }}
-                    role="alert" // Adds role for screen readers
+                    role="alert"
                     aria-live="assertive"
                 >
                     <div className="custom-toast-content">
@@ -133,6 +135,6 @@ const CustomToast = ({
             )}
         </AnimatePresence>
     );
-};
+});
 
 export default CustomToast;
