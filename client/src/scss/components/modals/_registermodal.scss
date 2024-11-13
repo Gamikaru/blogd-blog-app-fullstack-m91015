@@ -1,0 +1,209 @@
+// _registermodal.scss
+
+// Ensure consistent z-index usage by using the same method as other modals
+.register-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: get-z-index(modal-backdrop); // Use get-z-index consistently
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    animation: backdropFadeIn $transitions-base;
+}
+
+// Backdrop to capture clicks outside the modal
+.register-modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: $modal-backdrop-color;
+    cursor: pointer;
+}
+
+// Modal container
+.register-modal-container {
+    position: relative;
+    background-color: $secondary-bg-color;
+    border-radius: $border-radius;
+    width: 90%;
+    max-width: map-get($container-max-widths, md);
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: $spacing-lg;
+    box-shadow: $box-shadow-medium;
+    z-index: get-z-index(modal); // Use get-z-index consistently
+    animation: modalFadeIn $transitions-base;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+// Modal Header
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $spacing-md;
+
+    .modal-title {
+        margin: 0;
+        font-size: $heading-font-size-md;
+        color: $primary-text-color;
+    }
+
+    &__close {
+        background: none;
+        border: none;
+        color: $secondary-text-color;
+        cursor: pointer;
+        font-size: 1.5rem;
+        transition: color $transitions-base;
+
+        &:hover {
+            color: $accent-color-1;
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+}
+
+// Modal Body
+.modal-body {
+    flex: 1;
+    padding: $spacing-md;
+    background-color: $primary-bg-color;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow-medium;
+}
+
+// Register Form Styling
+.register-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-md;
+
+    .form-row {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-md;
+    }
+
+    .form-column {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-xs;
+    }
+
+    .register-modal-input {
+        padding: $input-padding;
+        border: 1px solid $border-color;
+        border-radius: $border-radius;
+        font-size: $body-font-size;
+        color: $primary-text-color;
+        background-color: $input-bg-color;
+        transition:
+            border-color $transitions-base,
+            box-shadow $transitions-base;
+
+        &:focus {
+            border-color: $highlight-color;
+            box-shadow: 0 0 0 3px rgba($highlight-color, 0.25);
+            outline: none;
+        }
+    }
+
+    .error {
+        color: $error-color;
+        font-size: $xsmall-font-size;
+        margin-top: 2px;
+    }
+
+    .submit-container {
+        grid-column: span 2;
+        display: flex;
+        justify-content: flex-end;
+        margin-top: $spacing-md;
+
+        .button-submit {
+            padding: map-get($button-padding, sm);
+            background-color: $accent-color-1;
+            color: #fff;
+            border: none;
+            border-radius: $border-radius;
+            font-size: $body-font-size;
+            cursor: pointer;
+            transition:
+                background-color $transitions-base,
+                transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &:hover {
+                background-color: darken($accent-color-1, 5%);
+                transform: translateY(-1px);
+            }
+
+            &:disabled {
+                background-color: lighten($accent-color-1, 20%);
+                cursor: not-allowed;
+            }
+        }
+    }
+}
+
+// Animations
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes backdropFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+// Responsive Design
+@media (max-width: $breakpoint-md) {
+    .register-form {
+        grid-template-columns: 1fr;
+
+        .submit-container {
+            grid-column: 1;
+            justify-content: center;
+
+            .button-submit {
+                width: 100%;
+            }
+        }
+    }
+
+    .register-modal-container {
+        padding: $spacing-lg;
+    }
+
+    .modal-header {
+        .modal-title {
+            font-size: $heading-font-size-lg;
+        }
+    }
+}

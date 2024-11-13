@@ -125,6 +125,8 @@ export default function RegisterModal() {
             onHide={togglePublicModal}
             centered
             className="register-modal"
+            backdrop="static" // Prevents closing on backdrop click
+            keyboard={false} // Prevents closing on ESC key
         >
             <Modal.Header closeButton className="modal-header">
                 <Modal.Title className="modal-title">REGISTER</Modal.Title>
