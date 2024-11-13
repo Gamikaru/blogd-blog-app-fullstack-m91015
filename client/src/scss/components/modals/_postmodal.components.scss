@@ -40,7 +40,6 @@
                 font-size: $small-font-size;
                 color: $secondary-text-color;
                 margin-bottom: map-get($modal-spacing, input-gap);
-                font-weight: 500;
             }
 
             &__buttons {
@@ -200,7 +199,8 @@
         .post-modal__title-input,
         .edit-post-modal__title-input {
             width: 100%;
-            padding: 2rem 1.5rem 1rem; // Increased padding
+            max-width: 52vw; // Set a maximum width of 52vw
+            padding: 2rem 10rem 1rem 1rem; // Increased padding
             font-size: $heading-font-size-lg; // Larger font size
             font-family: $font-family-heading;
             font-weight: 500;
@@ -209,6 +209,15 @@
             background: transparent;
             color: $primary-text-color;
             margin-bottom: 0.5rem;
+            text-overflow: hidden;
+            overflow: hidden;
+            text-wrap: normal;
+            word-wrap: break-word; // Allow wrapping of long words
+            overflow-wrap: break-word; // Ensure compatibility across browsers
+            white-space: normal; // Allow normal wrapping behavior
+            display: block; // Ensure it behaves as a block element
+            max-height: calc($heading-font-size-lg * 3); // Limit to 3 lines based on font size
+            line-height: 1.2; // Adjust line height for better readability
 
             &::placeholder {
                 color: $secondary-text-color;

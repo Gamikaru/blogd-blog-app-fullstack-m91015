@@ -1,5 +1,6 @@
 // routes/postRoutes.js
 import express from 'express';
+import path from 'path';
 import { uploadToCloudinary } from '../config/cloudinaryConfig.js'; // Correct import
 import { authenticate } from '../middleware/authMiddleware.js';
 import { sanitizePostContent } from '../middleware/sanitizeMiddleware.js';
@@ -241,84 +242,103 @@ router.patch(
     sanitizePostContent,
     async (req, res) => {
         const { postId } = req.params;
-        logger.info('Updating post', { postId, userId: req.user.userId });
+        const files = req.files;
 
         try {
             const post = await Post.findById(postId);
             if (!post) {
                 logger.warn('Post not found for update', { postId });
-                return res.status(404).json({ success: false, message: 'Post not found.' });
+                return res.status(404).json({ success: false, message: 'Post not found' });
             }
 
-            const {
-                title,
-                content,
-                category,
-                imageUrls,
-                tags,
-                status,
-                scheduledAt,
-            } = req.body;
-            const files = req.files;
+            // Before processing files
+            logger.info('Starting to process image uploads', { postId, fileCount: files.length });
 
-            // Update fields if provided
-            if (title) post.title = title;
-            if (content) post.content = content;
-            if (category) post.category = category;
-            if (imageUrls)
-                post.imageUrls = imageUrls.split(',').map((url) => url.trim());
-            if (tags) post.tags = tags.split(',').map((tag) => tag.trim());
-            if (status) post.status = status;
-            if (scheduledAt) post.scheduledAt = new Date(scheduledAt);
+            // Handle image uploads
             if (files && files.length > 0) {
-                const uploadedImageUrls = await Promise.all(
-                    files.map((file) => {
-                        const uniqueFilename = `post_image_${Date.now()}_${file.originalname}`;
-                        return uploadToCloudinary(file.buffer, uniqueFilename);
-                    })
-                );
-                post.imageUrls = post.imageUrls.concat(uploadedImageUrls);
+                try {
+                    const uploadedImageUrls = await Promise.all(
+                        files.map(async (file, index) => {
+                            const timestamp = Date.now();
+                            const extension = file.mimetype === 'image/webp' ? '.webp' : path.extname(file.originalname);
+                            const filename = `post_${postId}_${timestamp}_${index}${extension}`;
+
+                            // Inside the image upload loop
+                            logger.info('Processing file:', { index, originalName: file.originalname });
+
+                            logger.info('Uploading image', {
+                                filename,
+                                mimetype: file.mimetype,
+                                size: file.size
+                            });
+
+                            const imageUrl = await uploadToCloudinary(file.buffer, filename);
+
+                            // After uploading each image
+                            logger.info('Uploaded image', { filename, url: imageUrl });
+
+                            return imageUrl;
+                        })
+                    );
+
+
+                 // After image(s) are uploaded, update the post's imageUrls
+                    post.imageUrls = uploadedImageUrls;
+                    logger.info('Images uploaded successfully', {
+                        postId,
+                        newImages: uploadedImageUrls.length,
+                        totalImages: post.imageUrls.length
+                    });
+                } catch (uploadError) {
+                    logger.error('Image upload failed', uploadError);
+                    return res.status(500).json({
+                        success: false,
+                        message: 'Failed to upload images'
+                    });
+                }
             }
 
-            // Add to edit history
-            post.editHistory = post.editHistory || [];
-            post.editHistory.push({
-                editedAt: new Date(),
-                content: post.content,
-            });
+            // Update other fields
+            if (req.body.title) post.title = req.body.title;
+            if (req.body.content) post.content = req.body.content;
+            if (req.body.category) post.category = req.body.category;
+            if (req.body.imageUrls) {
+                const newUrls = req.body.imageUrls.split(',').map(url => url.trim()).filter(Boolean);
+                post.imageUrls = [...(post.imageUrls || []), ...newUrls];
+            }
+            if (req.body.tags) post.tags = req.body.tags;
+            if (req.body.status) post.status = req.body.status;
+            if (req.body.scheduledAt) post.scheduledAt = new Date(req.body.scheduledAt);
 
+            // Before saving the post
+            logger.info('Saving the updated post to the database', { postId });
+
+            // Save the updated post
             await post.save();
 
+            // After saving the post
+            logger.info('Post saved successfully', { postId });
+
+            // Return populated post data
+            const updatedPost = await Post.findById(postId)
+                .populate('userId', 'firstName lastName')
+                .lean({ virtuals: true });
+
+            // Before sending the response
+            logger.info('Sending response to the client', { postId });
+
             logger.info('Post updated successfully', { postId });
-
-            // Convert post to an object including virtuals
-            const postObject = post.toObject({ virtuals: true });
-
-            res.status(200).json({
+            res.json({
                 success: true,
-                post: {
-                    postId: postObject._id,
-                    title: postObject.title,
-                    slug: postObject.slug,
-                    content: postObject.content,
-                    category: postObject.category,
-                    likes: postObject.likes,
-                    views: postObject.views,
-                    userId: postObject.userId,
-                    comments: postObject.comments,
-                    imageUrls: postObject.imageUrls,
-                    images: postObject.images,
-                    tags: postObject.tags,
-                    status: postObject.status,
-                    scheduledAt: postObject.scheduledAt,
-                    createdAt: postObject.createdAt,
-                    updatedAt: postObject.updatedAt,
-                    excerpt: postObject.excerpt, // Include the virtual excerpt
-                },
+                post: updatedPost,
+                message: 'Post updated successfully'
             });
         } catch (error) {
-            logger.error('Error updating post', { error: error.message, postId });
-            res.status(500).json({ success: false, message: 'Server error: ' + error.message });
+            logger.error('Error updating post:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Server error: ' + error.message
+            });
         }
     }
 );

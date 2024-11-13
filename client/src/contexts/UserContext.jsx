@@ -20,7 +20,12 @@ export const useUserUpdate = () => {
     if (!context) {
         throw new Error('useUserUpdate must be used within a UserProvider');
     }
-    return context.setUser;
+    return {
+        login: context.login,
+        logout: context.logout,
+        register: context.register,
+        updateUser: context.updateUser,
+    };
 };
 
 export const UserProvider = ({ children }) => {
@@ -43,8 +48,6 @@ export const UserProvider = ({ children }) => {
             logger.error('UserContext: Error fetching user data', error);
             setUser(null);
             // Optionally handle token invalidation here
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -52,7 +55,7 @@ export const UserProvider = ({ children }) => {
         const initializeUser = async () => {
             const cookies = new Cookies();
             const token = cookies.get('BlogdPass');
-            const userId = cookies.get('userID');
+            const userId = cookies.get('userId');
 
             if (!token || !userId) {
                 setLoading(false);
@@ -60,6 +63,7 @@ export const UserProvider = ({ children }) => {
             }
 
             await fetchUserData(userId, token);
+            setLoading(false);
         };
 
         initializeUser();
@@ -69,7 +73,6 @@ export const UserProvider = ({ children }) => {
         const fetchData = async () => {
             if (!user) {
                 setError("User not authenticated");
-                setLoading(false);
                 return;
             }
 
@@ -79,15 +82,18 @@ export const UserProvider = ({ children }) => {
                 const currentUserId = user.userId || user._id;
                 const usersData = await UserService.fetchUsersExcept(currentUserId);
                 setUsers(usersData);
+                logger.info('UserContext: Fetched users excluding current user');
             } catch (error) {
                 setError("Failed to fetch users");
-                console.error('Fetch Error:', error);
+                logger.error('UserContext: FetchData error', error);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchData();
+        if (user) {
+            fetchData();
+        }
     }, [user]);
 
     const login = async (loginData) => {
@@ -96,8 +102,11 @@ export const UserProvider = ({ children }) => {
             const { token, user: userData } = response;
             const cookies = new Cookies();
             cookies.set('BlogdPass', token, { path: '/' });
-            cookies.set('userID', userData.userId || userData._id, { path: '/' });
-            setUser(userData);
+            cookies.set('userId', userData.userId || userData._id, { path: '/' });
+            setUser({
+                ...userData,
+                userId: userData.userId || userData._id,
+            });
             logger.info('UserContext: User logged in successfully');
             return { success: true };
         } catch (error) {
@@ -111,7 +120,7 @@ export const UserProvider = ({ children }) => {
             await UserService.logoutUser();
             const cookies = new Cookies();
             cookies.remove('BlogdPass', { path: '/' });
-            cookies.remove('userID', { path: '/' });
+            cookies.remove('userId', { path: '/' });
             setUser(null);
             logger.info('UserContext: User logged out successfully');
         } catch (error) {

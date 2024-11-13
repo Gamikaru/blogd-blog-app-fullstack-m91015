@@ -18,6 +18,18 @@ const logger = {
             console.error(`[ERROR] ${message}`, data || '');
         }
     },
+
+    debug: (message, data = null) => {
+        if (isLoggingEnabled) {
+            console.debug(`[DEBUG] ${message}`, data || '');
+        }
+    },
+    trace: (message, data = null) => {
+        if (isLoggingEnabled) {
+            console.trace(`[TRACE] ${message}`, data || '');
+        }
+    }
+
 };
 
 export default logger;

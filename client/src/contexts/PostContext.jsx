@@ -10,6 +10,7 @@ import {
     unlikePost,
     updatePostById,
 } from '../services/api/PostService';
+import logger from '../utils/logger'; // Ensure logger is imported
 
 export const PostContext = createContext();
 
@@ -30,6 +31,7 @@ export const PostProvider = ({ children }) => {
         totalPages: 1,
     });
     const [loading, setLoading] = useState(false);
+    const [selectedPost, setSelectedPost] = useState(null); // Added selectedPost state
 
     const loadPosts = useCallback(async (page = 1, limit = 10) => {
         setLoading(true);
@@ -46,11 +48,15 @@ export const PostProvider = ({ children }) => {
                 totalPages: data.totalPages,
             });
         } catch (error) {
-            console.error('Error loading posts:', error);
+            logger.error('Error loading posts:', error);
         } finally {
             setLoading(false);
         }
     }, []);
+
+    const refreshPosts = useCallback(async () => {
+        await loadPosts();
+    }, [loadPosts]);
 
     const loadTopLikedPosts = useCallback(async () => {
         setLoading(true);
@@ -62,7 +68,7 @@ export const PostProvider = ({ children }) => {
             }));
             setTopLikedPosts(postsWithId);
         } catch (error) {
-            console.error('Error loading top liked posts:', error);
+            logger.error('Error loading top liked posts:', error);
         } finally {
             setLoading(false);
         }
@@ -74,7 +80,7 @@ export const PostProvider = ({ children }) => {
             const postWithId = { ...newPost, postId: newPost.postId || newPost._id };
             setPosts((prevPosts) => [postWithId, ...prevPosts]);
         } catch (error) {
-            console.error('Error adding post:', error);
+            logger.error('Error adding post:', error);
         }
     }, []);
 
@@ -86,7 +92,7 @@ export const PostProvider = ({ children }) => {
                 prevPosts.map((post) => (post.postId === postId ? postWithId : post))
             );
         } catch (error) {
-            console.error('Error updating post:', error);
+            logger.error('Error updating post:', error);
         }
     }, []);
 
@@ -95,7 +101,7 @@ export const PostProvider = ({ children }) => {
             await deletePostById(postId);
             setPosts((prevPosts) => prevPosts.filter((post) => post.postId !== postId));
         } catch (error) {
-            console.error('Error deleting post:', error);
+            logger.error('Error deleting post:', error);
         }
     }, []);
 
@@ -110,7 +116,7 @@ export const PostProvider = ({ children }) => {
                 )
             );
         } catch (error) {
-            console.error('Error liking post:', error);
+            logger.error('Error liking post:', error);
         }
     }, []);
 
@@ -125,13 +131,14 @@ export const PostProvider = ({ children }) => {
                 )
             );
         } catch (error) {
-            console.error('Error unliking post:', error);
+            logger.error('Error unliking post:', error);
         }
     }, []);
 
     const contextValue = useMemo(
         () => ({
             posts,
+            setPosts,
             topLikedPosts,
             paginationInfo,
             loading,
@@ -142,9 +149,14 @@ export const PostProvider = ({ children }) => {
             removePost,
             like,
             unlike,
+            selectedPost,       // Provided selectedPost
+            setSelectedPost,    // Provided setSelectedPost
+            refreshPosts,       // Provided refreshPosts
         }),
         [
             posts,
+            selectedPost,
+            refreshPosts,
             topLikedPosts,
             paginationInfo,
             loading,

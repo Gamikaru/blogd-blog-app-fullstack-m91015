@@ -57,6 +57,9 @@ const UserProfile = () => {
         return `${firstName?.[0] || ''}${lastName?.[0] || ''}`.toUpperCase();
     };
 
+    // Determine if the viewed profile belongs to the current user
+    const isOwnProfile = user.userId === profileUser.userId;
+
     return (
         <div className="profile-page-container">
             <div className="profile-header">
@@ -92,7 +95,7 @@ const UserProfile = () => {
                         <h3>Quick Actions</h3>
                         <div className="action-buttons">
                             {/* Show Edit and Settings only if viewing own profile */}
-                            {(!userId || userId === user.userId) && (
+                            {isOwnProfile && (
                                 <>
                                     <Button className="button button-edit">
                                         <FiEdit className="icon" />Edit Profile
@@ -158,14 +161,14 @@ const UserProfile = () => {
                         </div>
                     </div>
 
-                    {/* Updated to pass userPosts instead of user.posts */}
+                    {/* Updated to pass userPosts and isOwnProfile */}
                     <div className="posts-section">
                         <h3>
                             <span><FiBook /> Recent Posts</span>
                             <span className="section-action">View All</span>
                         </h3>
-                        {/* Pass posts array directly instead of wrapping in an object */}
-                        <PostCard posts={userPosts} />
+                        {/* Pass posts array and isOwnProfile prop */}
+                        <PostCard posts={userPosts} isOwnProfile={isOwnProfile} />
                     </div>
 
                     {/* Placeholder for Connections */}

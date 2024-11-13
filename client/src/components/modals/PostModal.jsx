@@ -80,7 +80,7 @@ export default function PostModal() {
             <Form onSubmit={handlePostSubmit} className="post-modal__form" id="post-form">
                 <div className="post-modal__preview">
                     <Modal.Header closeButton />
-                    <input
+                    <textarea
                         type="text"
                         value={postTitle}
                         onChange={(e) => setPostTitle(e.target.value)}

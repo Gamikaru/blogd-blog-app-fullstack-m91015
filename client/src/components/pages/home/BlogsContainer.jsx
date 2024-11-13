@@ -91,21 +91,40 @@ const BlogsContainer = () => {
         if (!posts) return [];
         const searchLower = search.toLowerCase();
 
-        return posts.filter((post) => {
+        logger.info('Filtering posts:', {
+            totalPosts: posts.length,
+            filters,
+            search: searchLower
+        });
+
+        const filtered = posts.filter((post) => {
             const postAuthor = getAuthor(post).toLowerCase();
-            const matchesAuthor = filters.author
-                ? postAuthor.includes(filters.author.toLowerCase())
-                : true;
-            const matchesCategory = filters.category
-                ? post.category === filters.category
-                : true;
-            const matchesSearch = search
-                ? post.title?.toLowerCase().includes(searchLower) ||
-                postAuthor.includes(searchLower)
-                : true;
+            const matchesAuthor = !filters.author ||
+                postAuthor.includes(filters.author.toLowerCase());
+            const matchesCategory = !filters.category ||
+                post.category === filters.category;
+            const matchesSearch = !search ||
+                (post.title?.toLowerCase().includes(searchLower) ||
+                    post.content?.toLowerCase().includes(searchLower) ||
+                    postAuthor.includes(searchLower));
+
+            logger.debug('Post filter results:', {
+                postId: post._id,
+                author: postAuthor,
+                category: post.category,
+                matchesAuthor,
+                matchesCategory,
+                matchesSearch
+            });
 
             return matchesAuthor && matchesCategory && matchesSearch;
         });
+
+        logger.info('Filtered results:', {
+            filteredCount: filtered.length
+        });
+
+        return filtered;
     }, [posts, filters, search, getAuthor]);
 
     const sortedPosts = useMemo(() => {
@@ -118,12 +137,22 @@ const BlogsContainer = () => {
         return sorted;
     }, [filteredPosts, filters.sortBy, getAuthor]);
 
+    const resetFilters = useCallback(() => {
+        setFilters({
+            author: "",
+            category: "",
+            sortBy: "",
+        });
+        setSearch("");
+    }, []);
+
     if (loading) return <Spinner message="Loading blog posts..." />;
     if (!posts) return <div className="error-message">No posts available</div>;
 
     return (
         <div className="blogs-container">
             <div className="filter-search-container">
+                {/* Search Functionality */}
                 <div className="search-container" ref={searchRef}>
                     <Button
                         className="search-icon"
@@ -151,6 +180,7 @@ const BlogsContainer = () => {
                     </AnimatePresence>
                 </div>
 
+                {/* Filter Functionality */}
                 <div className="filter-container" ref={filterRef}>
                     <Button
                         className="filter-icon"
@@ -195,6 +225,12 @@ const BlogsContainer = () => {
                                         <option value="Lifestyle">Lifestyle</option>
                                         <option value="Technology">Technology</option>
                                         <option value="Cooking">Cooking</option>
+                                        <option value="Philosophy">Philosophy</option>
+                                        <option value="Productivity">Productivity</option>
+                                        <option value="Art">Art</option>
+                                        <option value="Music">Music</option>
+                                        <option value="Business">Business</option>
+                                        <option value="Business & Finance">Business & Finance</option>
                                         <option value="Other">Other</option>
                                     </select>
                                 </div>
@@ -212,12 +248,23 @@ const BlogsContainer = () => {
                                         <option value="title">Title</option>
                                     </select>
                                 </div>
+                                {/* Reset Filters Button */}
+                                <div className="filter-option filter-actions">
+                                    <Button
+                                        onClick={resetFilters}
+                                        variant="secondary"
+                                        className="reset-filters-btn"
+                                    >
+                                        Reset Filters
+                                    </Button>
+                                </div>
                             </motion.div>
                         )}
                     </AnimatePresence>
                 </div>
             </div>
 
+            {/* Blog Posts Grid */}
             <AnimatePresence>
                 <LayoutGroup>
                     <motion.div
@@ -228,7 +275,6 @@ const BlogsContainer = () => {
                         exit="hidden"
                         layout
                     >
-
                         {sortedPosts.length > 0 ? (
                             sortedPosts.map((post) => (
                                 <BlogCard
@@ -241,7 +287,6 @@ const BlogsContainer = () => {
                         ) : (
                             <p className="no-posts-message">No blog posts available.</p>
                         )}
-
                     </motion.div>
                 </LayoutGroup>
             </AnimatePresence>

@@ -1,8 +1,9 @@
 // src/services/api/UserService.js
 
-import Cookies from 'universal-cookie';
-import logger from '../../utils/logger';
+import { logger } from '@utils/';
+import Cookies from 'universal-cookie'; // Add this line
 import ApiClient from './ApiClient';
+
 
 class UserService {
     static getAuthHeaders() {
@@ -14,9 +15,9 @@ class UserService {
     /**
      * Update user status by user ID
      * @param {string} userId
-     * @param {string} status
+     * @param. {string} status
      */
-    static async updateUserStatus(userId, status) {
+    static async updateUserStatus(userId, status)  {
         logger.info(`UserService: Updating status for user ID: ${userId}`);
         try {
             const response = await ApiClient.put(
@@ -42,12 +43,14 @@ class UserService {
             const formData = new FormData();
             Object.keys(userData).forEach((key) => {
                 if (userData[key]) {
-                    formData.append(key, userData[key]);
+                    formData.append(key,
+                     userData[key]);
                 }
             });
             if (userData.profilePicture) {
                 formData.append('profilePicture', userData.profilePicture);
             }
+
             if (userData.coverPhoto) {
                 formData.append('coverPhoto', userData.coverPhoto);
             }
@@ -72,7 +75,7 @@ class UserService {
         try {
             const response = await ApiClient.post("/user/login", loginData);
             logger.info('UserService: User logged in successfully');
-            return response.data;
+            return response.data; // Expected to return { token, user }
         } catch (error) {
             logger.error('UserService: Error logging in user', error);
             throw error.response?.data || new Error('Login failed');

@@ -1,4 +1,5 @@
 // PublicRoute.jsx
+import { Spinner } from '@components';
 import { useNotificationContext, useUser } from '@contexts';
 import { logger } from '@utils';
 import { useEffect } from 'react';
@@ -8,7 +9,7 @@ import { Navigate } from 'react-router-dom';
  * PublicRoute: A component wrapper to redirect authenticated users away from public routes.
  */
 const PublicRoute = ({ children }) => {
-    const { user, loading } = useUser() || {};
+    const { user, loading } = useUser();
     const { setPosition } = useNotificationContext();
 
     useEffect(() => {
@@ -18,7 +19,7 @@ const PublicRoute = ({ children }) => {
 
     if (loading) {
         logger.info('[PublicRoute] Loading user data...');
-        return <div>Loading...</div>;
+        return <Spinner />;
     }
 
     if (user) {

@@ -25,7 +25,7 @@ export default function RegisterModal() {
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
     const setUser = useUserUpdate();
-    const [cookies, setCookie] = useCookies(["BlogdPass", "userID"]);
+    const [cookies, setCookie] = useCookies(["BlogdPass", "userId"]);
     const { showModal, togglePublicModal } = usePublicModalContext();
     const { showNotification, setPosition } = useNotificationContext();
 
@@ -95,7 +95,7 @@ export default function RegisterModal() {
                 const userData = response.user;
                 if (userData) {
                     setCookie("BlogdPass", response.token, { path: "/", maxAge: 24 * 60 * 60 });
-                    setCookie("userID", userData._id, { path: "/", maxAge: 24 * 60 * 60 });
+                    setCookie("userId", userData._id, { path: "/", maxAge: 24 * 60 * 60 });
                     setUser(userData);
                 }
 

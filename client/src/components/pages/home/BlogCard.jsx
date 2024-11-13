@@ -70,21 +70,29 @@ const BlogCard = memo(({ post, author, cookie }) => {
             whileHover="hover"
             layout
             onClick={navigateToPost}
+            role="button"
+            tabIndex={0}
+            onKeyPress={(e) => {
+                if (e.key === 'Enter') navigateToPost();
+            }}
+            aria-label={`Go to blog post titled ${post.title || 'Untitled'}`}
         >
             {post.imageUrls?.length ? (
                 <LazyImage
                     src={post.imageUrls[0]}
-                    alt="Blog cover"
+                    alt={`Cover image for ${post.title || 'Untitled'}`}
                     className="blog-cover-image"
                 />
             ) : post.images?.length ? (
                 <LazyImage
                     src={`data:image/jpeg;base64,${post.images[0].data}`}
-                    alt="Blog cover"
+                    alt={`Cover image for ${post.title || 'Untitled'}`}
                     className="blog-cover-image"
                 />
             ) : (
-                <div className="blog-cover-placeholder">No Image</div>
+                <div className="blog-cover-placeholder" aria-label="No cover image available">
+                    No Image
+                </div>
             )}
 
             <div className="post-header">
@@ -114,6 +122,7 @@ const BlogCard = memo(({ post, author, cookie }) => {
                         className={`heart-icon ${isLiked ? 'liked' : ''}`}
                         variants={likeButtonVariants}
                         whileTap="tap"
+                        aria-hidden="true"
                     ></motion.span>
                     <span className="likes-count">{post.likes}</span>
                 </Button>

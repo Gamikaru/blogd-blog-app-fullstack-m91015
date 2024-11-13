@@ -1,29 +1,26 @@
-//LoginPage.jsx
-//Desc: Login page for the application
+// src/components/LoginPage.jsx
+// Desc: Login page for the application
 
 import debounce from 'lodash.debounce'; // Optimize form validations
 import { useCallback, useMemo, useState } from 'react';
 import { Card } from 'react-bootstrap';
-import { useCookies } from 'react-cookie';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 import { Button, InputField, Spinner } from '@components';
 import { useNotificationContext, usePublicModalContext } from '@contexts';
 import { useUserUpdate } from '@contexts/UserContext'; // Adjust import path if necessary
-import { UserService } from '@services/api';
 import { logger, validateLoginForm } from '@utils';
 
 const LoginPage = () => {
     const [loginForm, setLoginForm] = useState({ email: "", password: "" });
-    const [, setCookie] = useCookies(["BlogdPass", "userID"]);
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [errors, setErrors] = useState({});
     const { showNotification, hideNotification } = useNotificationContext();
     const { togglePublicModal } = usePublicModalContext();
     const navigate = useNavigate();
-    const setUser = useUserUpdate();
+    const { login } = useUserUpdate(); // Now correctly retrieves the login function
 
     const updateLoginForm = useCallback((value) => {
         setLoginForm((prevForm) => ({ ...prevForm, ...value }));
@@ -58,27 +55,19 @@ const LoginPage = () => {
 
         setLoading(true);
         try {
-            const response = await UserService.loginUser(loginForm);
+            const result = await login(loginForm);
 
-            if (!response || !response.token || !response.user?.userId) {
-                const errorMsg = response?.user
-                    ? "Incorrect password for this user."
-                    : "No user found with this email.";
+            if (!result.success) {
+                const errorMsg = result.message || "Login failed. Please try again.";
                 showNotification(errorMsg, "error");
-                logger.error("Login failed", response);
+                logger.error("Login failed", result);
                 setLoading(false);
                 return;
             }
 
-            setCookie("BlogdPass", response.token, { path: "/", maxAge: 24 * 60 * 60 });
-            setCookie("userID", response.user.userId, { path: "/", maxAge: 24 * 60 * 60 });
-
-            logger.info("Cookies set successfully.");
-            setTimeout(() => {
-                setUser(response.user);
-                hideNotification();
-                navigate("/");
-            }, 2000);
+            logger.info("Login successful.");
+            hideNotification();
+            navigate("/");
         } catch (error) {
             logger.error("Login error", error);
             showNotification(error.message || "An error occurred. Please try again.", "error");
@@ -111,6 +100,7 @@ const LoginPage = () => {
                                         placeholder="Enter your email"
                                         className={`login-input-field ${errors.email ? "invalid-input" : ""}`}
                                         error={errors.email}
+                                        type="email"
                                     />
                                 </div>
 
@@ -139,6 +129,7 @@ const LoginPage = () => {
                                         type="submit"
                                         variant="submit"
                                         className="button button-submit"
+                                        disabled={loading}
                                     >
                                         {loading ? "Logging in..." : "LOGIN"}
                                     </Button>

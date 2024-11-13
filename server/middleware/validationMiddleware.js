@@ -3,6 +3,23 @@
 import { body, validationResult } from 'express-validator';
 
 /**
+ * Define all valid categories here to maintain consistency.
+ */
+export const validCategories = [
+    'Health and Fitness',
+    'Lifestyle',
+    'Technology',
+    'Cooking',
+    'Philosophy',
+    'Productivity',
+    'Art',
+    'Music',
+    'Business',
+    'Business & Finance',
+    'Other'
+];
+
+/**
  * Middleware to validate post creation data.
  */
 export const validatePostCreation = [
@@ -16,7 +33,7 @@ export const validatePostCreation = [
         .isLength({ max: 10000 }).withMessage('Content cannot exceed 10,000 characters'),
     body('category')
         .notEmpty().withMessage('Category is required')
-        .isIn(['Health and Fitness', 'Lifestyle', 'Technology', 'Cooking', 'Other']).withMessage('Invalid category'),
+        .isIn(validCategories).withMessage('Invalid category'),
     body('tags')
         .optional()
         .isArray().withMessage('Tags must be an array')
@@ -48,7 +65,7 @@ export const validatePostUpdate = [
     body('category')
         .optional()
         .notEmpty().withMessage('Category cannot be empty')
-        .isIn(['Health and Fitness', 'Lifestyle', 'Technology', 'Cooking', 'Other']).withMessage('Invalid category'),
+        .isIn(validCategories).withMessage('Invalid category'),
     body('tags')
         .optional()
         .isArray().withMessage('Tags must be an array')

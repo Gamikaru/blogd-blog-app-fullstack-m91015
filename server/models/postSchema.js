@@ -1,6 +1,7 @@
 // models/postSchema.js
 
 import mongoose from 'mongoose';
+import { validCategories } from '../middleware/validationMiddleware.js'; // Import the centralized categories
 
 const { Schema, model } = mongoose;
 
@@ -43,7 +44,7 @@ const postSchema = new Schema(
         category: {
             type: String,
             required: true,
-            enum: ['Health and Fitness', 'Lifestyle', 'Technology', 'Cooking', 'Philosophy', 'Productivity', 'Art', 'Music', 'Business', 'Other'],
+            enum: validCategories,
         },
         tags: [{ type: String }],
         status: {

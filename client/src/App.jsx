@@ -1,4 +1,5 @@
-// App.jsx
+// src/App.jsx
+
 import {
     Admin,
     AppLayout,
@@ -18,7 +19,6 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import 'swiper/css';
 import 'swiper/css/autoplay';
 import 'swiper/css/effect-cube';
-
 
 const App = () => {
     logger.info('App component rendered');

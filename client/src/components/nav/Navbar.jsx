@@ -101,7 +101,7 @@ const Navbar = React.memo(({ toggleSidebar, toggleButtonRef }) => {
   const handleLogout = useCallback(() => {
     logger.info('Logging out user');
     removeCookie('BlogdPass', { path: '/' });
-    removeCookie('userID', { path: '/' });
+    removeCookie('userId', { path: '/' });
     setUser(null);
     setTimeout(() => navigate('/login', { replace: true }), 1000);
   }, [removeCookie, setUser, navigate]);

@@ -2,10 +2,8 @@
 
 import multer from 'multer';
 import path from 'path';
+import logger from '../utils/logger.js';
 
-/**
- * Configure multer to store files in memory with specific limits.
- */
 const storage = multer.memoryStorage();
 
 const upload = multer({
@@ -14,17 +12,43 @@ const upload = multer({
         fileSize: 5 * 1024 * 1024, // 5 MB file size limit
     },
     fileFilter: (req, file, cb) => {
-        const filetypes = /jpeg|jpg|png|gif|webp/; // Added 'webp'
-        const mimetype = filetypes.test(file.mimetype);
-        const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-
-        console.log(`MIME Type: ${file.mimetype}, Extension: ${path.extname(file.originalname).toLowerCase()}`);
-
-        if (mimetype && extname) {
+        // Only check MIME type for webp files
+        if (file.mimetype === 'image/webp') {
+            logger.info('WebP file detected, allowing upload', {
+                filename: file.originalname,
+                mimetype: file.mimetype
+            });
             return cb(null, true);
         }
-        cb(new Error('Only images are allowed'));
-    },
+
+        // For other formats, check both MIME type and extension
+        const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+        const allowedExtensions = /\.(jpeg|jpg|png|gif)$/i;
+
+        const extension = path.extname(file.originalname).toLowerCase();
+
+        logger.info('Processing file upload:', {
+            filename: file.originalname,
+            mimetype: file.mimetype,
+            extension: extension
+        });
+
+        if (allowedMimeTypes.includes(file.mimetype) && allowedExtensions.test(extension)) {
+            logger.info('File validation passed');
+            return cb(null, true);
+        }
+
+        // Log detailed error information
+        logger.error('Invalid file type', {
+            filename: file.originalname,
+            mimetype: file.mimetype,
+            extension: extension,
+            allowedMimeTypes: allowedMimeTypes.join(', '),
+            allowedExtensions: allowedExtensions.toString()
+        });
+
+        cb(new Error('Only images (JPEG, JPG, PNG, GIF, WEBP) are allowed'));
+    }
 });
 
 export { upload };
