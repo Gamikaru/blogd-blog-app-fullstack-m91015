@@ -45,7 +45,7 @@ const BlogCard = memo(({ post, author, cookie }) => {
         (e) => {
             e.stopPropagation(); // Prevent card click
             const postId = post.postId || post._id;
-            if (post.likesBy?.includes(cookie)) {
+            if (post.likesBy?.map(id => id.toString()).includes(cookie)) { // Ensure consistent ID types
                 unlike(postId);
             } else {
                 like(postId);
@@ -59,7 +59,10 @@ const BlogCard = memo(({ post, author, cookie }) => {
         post,
     ]);
 
-    const isLiked = post.likesBy?.includes(cookie);
+    const isLiked = post.likesBy?.map(id => id.toString()).includes(cookie); // Ensure consistent ID types
+
+    // Debugging: Log post.category
+    console.log(`Rendering BlogCard for category: ${post.category}`);
 
     return (
         <motion.div

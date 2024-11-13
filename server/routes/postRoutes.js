@@ -122,7 +122,7 @@ router.get('/', async (req, res) => {
             .sort({ createdAt: -1 })
             .skip((page - 1) * limit)
             .limit(Number(limit))
-            .select('title slug userId createdAt likes content imageUrls images')
+            .select('title slug userId createdAt likes content imageUrls images category') // Added 'category'
             .populate('userId', 'firstName lastName')
             .lean({ virtuals: true });
 

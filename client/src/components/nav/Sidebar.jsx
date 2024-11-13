@@ -1,78 +1,97 @@
-// src/components/nav/Sidebar.jsx
 import { Button, Portal } from '@components';
 import { useUserUpdate } from '@contexts';
 import { logger } from '@utils';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { FaCog, FaSignOutAlt } from 'react-icons/fa';
 
-const Sidebar = React.memo(({ sidebarOpen, toggleSidebar, toggleButtonRef }) => {
-    const sidebarRef = useRef(null);
-    const setUser = useUserUpdate();
-    const [closeButtonAnimated, setCloseButtonAnimated] = useState(false); // State to control button animation
+const Sidebar = React.memo(
+    ({ sidebarOpen, toggleSidebar, handleSidebarClose, hamburgerRef }) => {
+        const sidebarRef = useRef(null);
+        const setUser = useUserUpdate();
 
-    const handleSidebarToggle = useCallback(
-        (isOpen) => {
-            setCloseButtonAnimated(true); // Trigger button animation
-            toggleSidebar(isOpen);
+        const handleClickOutside = useCallback(
+            (event) => {
+                const clickedInsideSidebar = sidebarRef.current?.contains(
+                    event.target
+                );
+                const clickedOnHamburger =
+                    hamburgerRef.current?.contains(
+                        event.target
+                    );
 
-            // Reset button animation after the sidebar animation finishes
-            setTimeout(() => setCloseButtonAnimated(false), 500);
-        },
-        [toggleSidebar]
-    );
+                if (
+                    !clickedInsideSidebar &&
+                    !clickedOnHamburger
+                ) {
+                    handleSidebarClose();
+                }
+            },
+            [handleSidebarClose, hamburgerRef]
+        );
 
-    const handleClickOutside = useCallback(
-        (event) => {
-            if (toggleButtonRef.current && toggleButtonRef.current.contains(event.target)) return;
-            if (sidebarRef.current && !sidebarRef.current.contains(event.target) && sidebarOpen) {
-                handleSidebarToggle(false); // Use unified toggle logic
+        useEffect(() => {
+            if (sidebarOpen) {
+                document.addEventListener(
+                    'mousedown',
+                    handleClickOutside
+                );
+            } else {
+                document.removeEventListener(
+                    'mousedown',
+                    handleClickOutside
+                );
             }
-        },
-        [sidebarOpen, handleSidebarToggle, toggleButtonRef]
-    );
+            return () => {
+                document.removeEventListener(
+                    'mousedown',
+                    handleClickOutside
+                );
+            };
+        }, [sidebarOpen, handleClickOutside]);
 
-    useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [handleClickOutside]);
+        const handleLogout = useCallback(() => {
+            logger.info('Logging out user');
+            setUser(null);
+            handleSidebarClose();
+        }, [setUser, handleSidebarClose]);
 
-    const handleLogout = useCallback(() => {
-        logger.info('Logging out user');
-        setUser(null);
-        handleSidebarToggle(false);
-    }, [setUser, handleSidebarToggle]);
-
-    const sidebarContent = (
-        <div className={`sidebar ${sidebarOpen ? 'open' : ''}`} ref={sidebarRef}>
-            <div className="sidebar-content">
-                <div className="account-options">
-                    <Button className="button button-edit" variant="edit">
-                        <FaCog className="icon" /> Settings
-                    </Button>
-                    <Button
-                        className="button button-delete"
-                        variant="delete"
-                        onClick={handleLogout}
-                    >
-                        <FaSignOutAlt className="icon" /> Logout
-                    </Button>
+        const sidebarContent = (
+            <div
+                className={`sidebar ${
+                    sidebarOpen ? 'open' : ''
+                }`}
+                ref={sidebarRef}
+            >
+                <div className="sidebar-content">
+                    <div className="account-options">
+                        <Button
+                            className="button button-edit"
+                            variant="edit"
+                        >
+                            <FaCog className="icon" /> Settings
+                        </Button>
+                        <Button
+                            className="button button-delete"
+                            variant="delete"
+                            onClick={handleLogout}
+                        >
+                            <FaSignOutAlt className="icon" /> Logout
+                        </Button>
+                    </div>
                 </div>
             </div>
-        </div>
-    );
+        );
 
-    return (
-        <Portal>
-            {sidebarContent}
-            <Button
-                ref={toggleButtonRef}
-                className={`sidebar-close-button ${closeButtonAnimated ? 'animated' : ''}`}
-                onClick={() => handleSidebarToggle(!sidebarOpen)}
-            >
-                Toggle Sidebar
-            </Button>
-        </Portal>
-    );
-});
+        return <Portal>{sidebarContent}</Portal>;
+    }
+);
+
+Sidebar.propTypes = {
+    sidebarOpen: PropTypes.bool.isRequired,
+    toggleSidebar: PropTypes.func.isRequired,
+    handleSidebarClose: PropTypes.func.isRequired,
+    hamburgerRef: PropTypes.object.isRequired, // New prop
+};
 
 export default Sidebar;

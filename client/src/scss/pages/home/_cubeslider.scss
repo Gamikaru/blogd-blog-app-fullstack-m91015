@@ -9,7 +9,7 @@
     padding-bottom: 5rem;
     overflow: visible;
     z-index: 2;
-    background-color: $primary-bg-color;
+    // background-color: $primary-bg-color;
 
     .cube-slider-container {
         position: relative;
@@ -135,11 +135,9 @@
         font-size: 1rem;
     }
 
-    /* Optimize performance by minimizing box-shadow complexity */
-    // .cube-slider-container,
-    // .cube-slide-text {
-    //     // box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    // }
+    .cube-slide-text {
+        // box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
     // /* Ensure smooth transitions */
     // .cube-slide,

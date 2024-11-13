@@ -3,9 +3,10 @@
 .image-slider-container {
     position: relative;
     width: 100%;
-    margin-top: 0;
-    margin-left: -5%; // Adjust to center or spill over
+    margin-top: 2rem;
+    margin-left: -10%; // Adjust to center or spill over
     z-index: 2;
+    left: 3.5rem;
 
     .cube-slider {
         width: 100%;
