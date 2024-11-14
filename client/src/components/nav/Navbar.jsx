@@ -1,6 +1,6 @@
 // src/components/nav/Navbar.jsx
 import { HamburgerMenu, NavbarButtons, PageInfo, UserDropdown } from '@components';
-import { usePrivateModalContext, useUserUpdate } from '@contexts';
+import { usePrivateModalContext, useUser, useUserUpdate } from '@contexts';
 import { fetchPostById } from '@services/api';
 import { logger } from '@utils';
 import { motion } from 'framer-motion';
@@ -22,31 +22,33 @@ const categories = [
 ];
 
 const Navbar = React.memo(() => {
-    const { togglePrivateModal } =
-        usePrivateModalContext();
+    const { togglePrivateModal } = usePrivateModalContext();
     const [, removeCookie] = useCookies();
     const location = useLocation();
     const navigate = useNavigate();
     const setUser = useUserUpdate();
-    const [showUserDropdown, setShowUserDropdown] =
-        useState(false);
+    const { user } = useUser();
+    const { userId: profileUserId } = useParams();
+    const [profileUserName, setProfileUserName] = useState('');
+    const [showUserDropdown, setShowUserDropdown] = useState(false);
     const userIconRef = useRef(null);
-    const { id } = useParams();
 
     // Create a ref for HamburgerMenu
     const hamburgerRef = useRef(null);
 
+    // Extract postId from URL
+    const postId = useMemo(() => {
+        const match = location.pathname.match(/\/blog\/([^\/]+)/);
+        return match ? match[1] : null;
+    }, [location.pathname]);
+
     const [postTitle, setPostTitle] = useState('');
     const [postExcerpt, setPostExcerpt] = useState('');
-    const [loading, setLoading] = useState(!!id);
+    const [loading, setLoading] = useState(!!postId);
 
-    const [dropdownPosition, setDropdownPosition] =
-        useState({ top: 0, right: 0 });
+    const [dropdownPosition, setDropdownPosition] = useState({ top: 0, right: 0 });
 
-    const memoizedCategories = useMemo(
-        () => categories,
-        []
-    );
+    const memoizedCategories = useMemo(() => categories, []);
 
     const fetchPostTitleAndExcerpt = useCallback(
         async (postId) => {
@@ -55,10 +57,7 @@ const Navbar = React.memo(() => {
                 setPostTitle(post.title || '');
                 setPostExcerpt(generateExcerpt(post.content));
             } catch (error) {
-                logger.error(
-                    'Error fetching post title and excerpt:',
-                    error
-                );
+                logger.error('Error fetching post title and excerpt:', error);
             } finally {
                 setLoading(false);
             }
@@ -80,12 +79,49 @@ const Navbar = React.memo(() => {
     );
 
     useEffect(() => {
-        if (id) {
-            fetchPostTitleAndExcerpt(id);
+        if (postId) {
+            fetchPostTitleAndExcerpt(postId);
         }
-    }, [id, fetchPostTitleAndExcerpt]);
+    }, [postId, fetchPostTitleAndExcerpt]);
+
+    const isProfilePage = useMemo(
+        () => location.pathname.startsWith('/profile'),
+        [location.pathname]
+    );
+
+    useEffect(() => {
+        const fetchProfileUserName = async () => {
+            if (isProfilePage) {
+                try {
+                    let profileUser;
+                    if (profileUserId && profileUserId !== user.userId) {
+                        profileUser = await UserService.fetchUserById(profileUserId);
+                        setProfileUserName(`${profileUser.firstName} ${profileUser.lastName}`);
+                    } else {
+                        // Viewing own profile
+                        setProfileUserName(`${user.firstName} ${user.lastName}`);
+                    }
+                } catch (error) {
+                    logger.error('Error fetching profile user:', error);
+                    setProfileUserName('User');
+                }
+            }
+        };
+
+        fetchProfileUserName();
+    }, [isProfilePage, profileUserId, user]);
 
     const getPageWelcomeText = useMemo(() => {
+        if (isProfilePage) {
+            const isOwnProfile = !profileUserId || profileUserId === user.userId;
+            return {
+                title: isOwnProfile ? 'Your Profile' : `${profileUserName}'s Profile`,
+                subtitle: isOwnProfile
+                    ? 'Manage your profile information'
+                    : `Viewing ${profileUserName}'s profile`,
+            };
+        }
+
         switch (location.pathname) {
             case '/':
                 return {
@@ -113,7 +149,7 @@ const Navbar = React.memo(() => {
                         postExcerpt || '',
                 };
         }
-    }, [location.pathname, postTitle, postExcerpt]);
+    }, [location.pathname, postTitle, postExcerpt, isProfilePage, profileUserId, profileUserName, user]);
 
     useEffect(() => {
         if (
