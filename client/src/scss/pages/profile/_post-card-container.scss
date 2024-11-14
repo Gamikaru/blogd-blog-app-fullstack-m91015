@@ -45,24 +45,15 @@
             .action-buttons {
                 display: flex;
                 gap: $spacing-sm;
-                padding: $spacing-sm;
+
                 .button {
-                    width: 100%;
-                    max-width: 100%; // Override default max-width
-                    margin-bottom: $spacing-sm;
+                    max-width: 100%;
                     justify-content: flex-start;
                     padding: $spacing-md;
-                    //to make the buttons in the same line, we need to add display: flex and gap: $spacing-sm;
-                    // display: flex;
-                    // gap: $spacing-sm;
 
                     .icon {
                         margin-right: $spacing-sm;
                         font-size: 1.1em;
-                    }
-
-                    &:last-child {
-                        margin-bottom: 0;
                     }
                 }
             }

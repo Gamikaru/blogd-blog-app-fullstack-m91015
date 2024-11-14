@@ -59,6 +59,9 @@ const userSchema = new Schema({
     },
     profilePicture: {
         type: String
+    },
+    coverPicture: {
+        type: String
     }
 }, { timestamps: true });
 

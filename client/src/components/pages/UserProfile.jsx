@@ -6,48 +6,45 @@ import { UserService, fetchPostsByUser } from '@services/api';
 import { logger } from '@utils';
 import { useEffect, useState } from 'react';
 import {
-    FiBook, FiCalendar, FiEdit, FiMail, FiMapPin,
+    FiBook,
+    FiCalendar,
+    FiEdit,
+    FiMail,
+    FiMapPin,
     FiPhone,
     FiUsers
 } from 'react-icons/fi';
 import { useParams } from 'react-router-dom';
 
 const UserProfile = () => {
-    const { userId } = useParams(); // Correct parameter name based on route
+    const { userId } = useParams();
     const { user } = useUser();
-    const [profileUser, setProfileUser] = useState(user); // State for the profile being viewed
+    const [profileUser, setProfileUser] = useState(user);
     const [userPosts, setUserPosts] = useState([]);
     const [loading, setLoading] = useState(true);
-
-    console.log('UserId from useParams:', userId, typeof userId);
-    console.log('Current user from context:', user);
 
     useEffect(() => {
         const loadProfile = async () => {
             try {
                 if (userId) {
-                    // Fetch selected user's data if userId is present
                     const fetchedUser = await UserService.fetchUserById(userId);
                     setProfileUser(fetchedUser);
                 } else {
-                    // Default to current user if no userId is provided
                     setProfileUser(user);
                 }
 
-                // Fetch posts for the selected user or current user
                 const response = await fetchPostsByUser(userId || user.userId);
-                // Ensure that 'response.posts' is an array
                 setUserPosts(Array.isArray(response.posts) ? response.posts : []);
             } catch (error) {
                 logger.error('Error loading profile:', error);
-                setUserPosts([]); // Fallback to empty array on error
+                setUserPosts([]);
             } finally {
                 setLoading(false);
             }
         };
 
         loadProfile();
-    }, [userId, user]); // Dependencies include userId and user
+    }, [userId, user]);
 
     if (loading) {
         return <div className="loading-spinner">Loading profile...</div>;
@@ -57,7 +54,6 @@ const UserProfile = () => {
         return `${firstName?.[0] || ''}${lastName?.[0] || ''}`.toUpperCase();
     };
 
-    // Determine if the viewed profile belongs to the current user
     const isOwnProfile = user.userId === profileUser.userId;
 
     return (
@@ -109,10 +105,21 @@ const UserProfile = () => {
                 <div className="profile-main">
                     <div className="user-card">
                         <div className="user-card-header">
-                            <div className="initials-avatar">
-                                {getInitials(profileUser.firstName, profileUser.lastName)}
+                            <div className="user-avatar">
+                                {profileUser.profilePicture ? (
+                                    <img src={profileUser.profilePicture} alt="Profile" className="avatar-image" />
+                                ) : (
+                                    <div className="initials-avatar">
+                                        {getInitials(profileUser.firstName, profileUser.lastName)}
+                                    </div>
+                                )}
                             </div>
-                            <div className="user-info"></div>
+                            <div className="user-info">
+                                <h2>
+                                    {profileUser.firstName} {profileUser.lastName}
+                                </h2>
+                                <div className="user-role">{profileUser.role || 'User'}</div>
+                            </div>
                         </div>
                         <div className="user-details">
                             <div className="detail-grid">

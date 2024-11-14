@@ -44,7 +44,7 @@ export { default as HomePage } from './pages/home/HomePage';
 export { default as ImageSlide } from './pages/home/ImageSlide';
 export { default as PostCard } from './pages/home/PostCard';
 export { default as TextSlide } from './pages/home/TextSlide';
-export { default as UserCard } from './pages/home/UserCard';
+// export { default as UserCard } from './pages/home/UserCard';
 export { default as Network } from './pages/Network';
 export { default as NetworkCard } from './pages/NetworkCard';
 export { default as UserProfile } from './pages/UserProfile';

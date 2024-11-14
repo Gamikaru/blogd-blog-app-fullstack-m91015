@@ -1,6 +1,6 @@
 // UserManager.jsx
 import { Button } from '@components';
-import { useNotificationContext, useUser } from '@contexts';
+import { useNotificationContext, useUser, useUserUpdate } from '@contexts';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import { FiLock, FiMail, FiSettings, FiUser } from 'react-icons/fi';
@@ -17,10 +17,10 @@ const tabs = [
 ];
 
 const UserManager = ({ onClose }) => {
-    const [activeTab, setActiveTab] = useState('profile');
-    const { user, setUser } = useUser();
+    const { user, loading } = useUser();
+    const { setUser } = useUserUpdate();
     const { showNotification } = useNotificationContext();
-    const [loading, setLoading] = useState(false);
+    const [activeTab, setActiveTab] = useState('profile');
 
     const renderTabContent = () => {
         switch (activeTab) {
@@ -30,8 +30,6 @@ const UserManager = ({ onClose }) => {
                         user={user}
                         setUser={setUser}
                         showNotification={showNotification}
-                        loading={loading}
-                        setLoading={setLoading}
                     />
                 );
             case 'account':
@@ -41,7 +39,7 @@ const UserManager = ({ onClose }) => {
                         setUser={setUser}
                         showNotification={showNotification}
                         loading={loading}
-                        setLoading={setLoading}
+                        // Pass setLoading if AccountTab requires it
                     />
                 );
             case 'security':
@@ -51,7 +49,7 @@ const UserManager = ({ onClose }) => {
                         setUser={setUser}
                         showNotification={showNotification}
                         loading={loading}
-                        setLoading={setLoading}
+                        // Pass setLoading if SecurityTab requires it
                     />
                 );
             case 'notifications':
@@ -61,7 +59,7 @@ const UserManager = ({ onClose }) => {
                         setUser={setUser}
                         showNotification={showNotification}
                         loading={loading}
-                        setLoading={setLoading}
+                        // Pass setLoading if NotificationsTab requires it
                     />
                 );
             default:

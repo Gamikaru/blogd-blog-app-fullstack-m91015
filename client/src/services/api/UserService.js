@@ -280,7 +280,8 @@ class UserService {
             let headers = this.getAuthHeaders();
             let data = profileData;
 
-            if (profileData.profilePicture || profileData.coverPhoto) {
+            // Check if profilePicture is included
+            if (profileData.profilePicture) {
                 data = new FormData();
                 Object.keys(profileData).forEach((key) => {
                     if (profileData[key]) {

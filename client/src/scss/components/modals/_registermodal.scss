@@ -10,7 +10,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: get-z-index(modal-backdrop); // Use get-z-index consistently
+    z-index: 4000; // Use get-z-index consistently
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
     animation: backdropFadeIn $transitions-base;
@@ -38,7 +38,7 @@
     overflow-y: auto;
     padding: $spacing-lg;
     box-shadow: $box-shadow-medium;
-    z-index: get-z-index(modal); // Use get-z-index consistently
+    z-index: get-z-index(40001); // Use get-z-index consistently
     animation: modalFadeIn $transitions-base;
     display: flex;
     flex-direction: column;
@@ -83,6 +83,7 @@
     background-color: $primary-bg-color;
     border-radius: $border-radius;
     box-shadow: $box-shadow-medium;
+
 }
 
 // Register Form Styling

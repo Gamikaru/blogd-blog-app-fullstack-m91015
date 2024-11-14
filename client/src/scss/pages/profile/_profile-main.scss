@@ -13,30 +13,47 @@
             align-items: center;
             gap: $spacing-md;
 
-            .initials-avatar {
-                width: 80px;
-                height: 80px;
-                background: rgba(255, 255, 255, 0.2);
+            .user-avatar {
+                width: 100px;
+                height: 100px;
                 border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: $heading-font-size-lg;
-                color: $secondary-bg-color;
+                overflow: hidden;
+                box-shadow: $box-shadow-small;
+                background-color: $accent-color-1;
+
+                img.avatar-image {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+
+                .initials-avatar {
+                    font-size: $heading-font-size-lg;
+                    color: $secondary-bg-color;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100%;
+                    text-transform: uppercase;
+                }
             }
 
             .user-info {
                 flex: 1;
 
-                h2 {
+                h1 {
                     color: $secondary-bg-color;
-                    font-size: $heading-font-size-md;
+                    font-size: $heading-font-size-lg;
                     margin-bottom: $spacing-xs;
                 }
 
                 .user-role {
                     color: rgba(255, 255, 255, 0.8);
                     font-size: $sub-heading-font-size;
+                }
+
+                .button-edit {
+                    margin-top: $spacing-sm;
                 }
             }
         }
@@ -114,6 +131,14 @@
             font-size: $sub-heading-font-size;
         }
     }
+}
+
+.loading-spinner,
+.error-message {
+    text-align: center;
+    padding: $spacing-xl;
+    color: $secondary-text-color;
+    font-size: $sub-heading-font-size;
 }
 
 .loading-spinner,

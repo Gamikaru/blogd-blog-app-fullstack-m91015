@@ -27,7 +27,7 @@ router.post(
     '/register',
     upload.fields([
         { name: 'profilePicture', maxCount: 1 },
-        { name: 'coverPhoto', maxCount: 1 },
+        { name: 'coverPicture', maxCount: 1 },
     ]),
     [
         body('firstName').notEmpty().withMessage('First Name is required'),
@@ -66,20 +66,28 @@ router.post(
             }
 
             let profilePictureUrl = '';
-            let coverPhotoUrl = '';
+            let coverPictureUrl = '';
 
             // Handle profile picture upload
             if (req.files['profilePicture'] && req.files['profilePicture'][0]) {
                 const profilePicture = req.files['profilePicture'][0];
                 const profileFilename = `profile_${Date.now()}_${profilePicture.originalname}`;
-                profilePictureUrl = await uploadToCloudinary(profilePicture.buffer, profileFilename);
+                profilePictureUrl = await uploadToCloudinary(
+                    profilePicture.buffer,
+                    profileFilename,
+                    'blogd-users'
+                );
             }
 
             // Handle cover photo upload
-            if (req.files['coverPhoto'] && req.files['coverPhoto'][0]) {
-                const coverPhoto = req.files['coverPhoto'][0];
-                const coverFilename = `cover_${Date.now()}_${coverPhoto.originalname}`;
-                coverPhotoUrl = await uploadToCloudinary(coverPhoto.buffer, coverFilename);
+            if (req.files['coverPicture'] && req.files['coverPicture'][0]) {
+                const coverPicture = req.files['coverPicture'][0];
+                const coverFilename = `cover_${Date.now()}_${coverPicture.originalname}`;
+                coverPictureUrl = await uploadToCloudinary(
+                    coverPicture.buffer,
+                    coverFilename,
+                    'blogd-users'
+                );
             }
 
             const user = new User({
@@ -92,7 +100,7 @@ router.post(
                 occupation,
                 authLevel,
                 profilePicture: profilePictureUrl,
-                coverPhoto: coverPhotoUrl, // Ensure 'coverPhoto' is defined in the User schema
+                coverPicture: coverPictureUrl, // Ensure 'coverPicture' is defined in the User schema
             });
 
             const token = crypto.randomBytes(32).toString('hex');
@@ -189,7 +197,7 @@ router.post(
                     location: user.location,
                     occupation: user.occupation,
                     profilePicture: user.profilePicture,
-                    coverPhoto: user.coverPhoto,
+                    coverPicture: user.coverPicture,
                 },
                 message: 'Login successful',
             });
@@ -295,6 +303,10 @@ router.post(
  */
 router.get('/:userId', authenticate, async (req, res) => {
     const { userId } = req.params;
+    if (!userId) {
+        logger.error('Get User: userId is undefined');
+        return res.status(400).json({ message: 'User ID is required' });
+    }
     logger.info('Fetching user data', { userId });
     try {
         // Find user by ID and exclude password
@@ -321,7 +333,7 @@ router.patch(
     authenticate,
     upload.fields([
         { name: 'profilePicture', maxCount: 1 },
-        { name: 'coverPhoto', maxCount: 1 },
+        { name: 'coverPicture', maxCount: 1 },
     ]),
     [
         body('firstName').optional().isString().withMessage('First name must be a string'),
@@ -332,19 +344,17 @@ router.patch(
         body('occupation').optional().isString().withMessage('Occupation must be a string'),
         body('authLevel').optional().isIn(['basic', 'admin']).withMessage('Invalid auth level'),
         body('status').optional().isString().withMessage('Status must be a string'),
-        body('profilePicture').optional().isString().withMessage('Profile picture must be a valid URL or base64 string'),
+        // Removed profilePicture string validation to handle file upload
     ],
     async (req, res) => {
         const { userId } = req.params;
-        const { authLevel, userId: authUserId } = req.user; // Assuming authenticate middleware adds user info to req.user
+        const { authLevel, userId: authUserId } = req.user;
 
-        // Authorization Check: Only the user themselves or an admin can update the profile
         if (String(authUserId) !== String(userId) && authLevel !== 'admin') {
             logger.warn('Update User: Forbidden access attempt', { authUserId, targetUserId: userId });
             return res.status(403).json({ message: 'Forbidden: You can only update your own profile.' });
         }
 
-        // Validation Check
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             logger.error('Update User: Validation errors', { errors: errors.array() });
@@ -358,7 +368,6 @@ router.patch(
                 return res.status(404).json({ message: 'User not found' });
             }
 
-            // Update only allowed fields
             const fieldsToUpdate = req.body;
             const allowedUpdates = [
                 'firstName',
@@ -370,6 +379,7 @@ router.patch(
                 'authLevel',
                 'status',
                 'profilePicture',
+                'coverPicture', // Ensure coverPicture is allowed
             ];
             allowedUpdates.forEach((field) => {
                 if (fieldsToUpdate[field] !== undefined) {
@@ -381,14 +391,22 @@ router.patch(
             if (req.files['profilePicture'] && req.files['profilePicture'][0]) {
                 const profilePicture = req.files['profilePicture'][0];
                 const profileFilename = `profile_${Date.now()}_${profilePicture.originalname}`;
-                user.profilePicture = await uploadToCloudinary(profilePicture.buffer, profileFilename);
+                user.profilePicture = await uploadToCloudinary(
+                    profilePicture.buffer,
+                    profileFilename,
+                    'blogd-users'
+                );
             }
 
             // Handle cover photo upload
-            if (req.files['coverPhoto'] && req.files['coverPhoto'][0]) {
-                const coverPhoto = req.files['coverPhoto'][0];
-                const coverFilename = `cover_${Date.now()}_${coverPhoto.originalname}`;
-                user.coverPhoto = await uploadToCloudinary(coverPhoto.buffer, coverFilename);
+            if (req.files['coverPicture'] && req.files['coverPicture'][0]) {
+                const coverPicture = req.files['coverPicture'][0];
+                const coverFilename = `cover_${Date.now()}_${coverPicture.originalname}`;
+                user.coverPicture = await uploadToCloudinary(
+                    coverPicture.buffer,
+                    coverFilename,
+                    'blogd-users'
+                );
             }
 
             await user.save(); // Save the updated user data

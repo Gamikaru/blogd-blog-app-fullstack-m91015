@@ -9,11 +9,12 @@
 
     .cube-slider {
         width: 100%;
-        height: 25rem;
+        height: 27rem;
+        background-color: $primary-bg-color;
 
         &.text-slider {
             height: 25rem; // Adjusted to take more vertical room
-            background-color: $secondary-bg-color;
+            background-color: $primary-bg-color;
         }
 
         .swiper-slide {
@@ -32,7 +33,8 @@
                 justify-content: flex-start;
                 text-align: left;
                 overflow: visible;
-                // box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                //to add a top shadow, add the following line
+                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
 
                 .post-title {
                     font-size: clamp(1.7rem, 2.5vw, $heading-font-size-md);

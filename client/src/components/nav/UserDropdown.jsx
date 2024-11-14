@@ -13,13 +13,13 @@ import {
     FaUser,
 } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 
 const UserDropdown = React.memo(({ showDropdown, setShowDropdown, handleLogout, position }) => {
     const dropdownRef = useRef(null);
     const { user } = useUser();
     const { togglePrivateModal } = usePrivateModalContext();
-    const navigate = useNavigate(); // Initialize useNavigate
+    const navigate = useNavigate();
 
     const handleSettingsClick = useCallback(() => {
         togglePrivateModal('userSettings');
@@ -50,29 +50,14 @@ const UserDropdown = React.memo(({ showDropdown, setShowDropdown, handleLogout, 
     }, [showDropdown, handleClickOutside]);
 
     const dropdownVariants = {
-        hidden: {
-            opacity: 0,
-            y: -20,
-            scale: 0.95,
-        },
+        hidden: { opacity: 0, y: -20, scale: 0.95 },
         visible: {
             opacity: 1,
             y: 0,
             scale: 1,
-            transition: {
-                type: 'spring',
-                stiffness: 300,
-                damping: 30,
-            },
+            transition: { type: 'spring', stiffness: 300, damping: 30 },
         },
-        exit: {
-            opacity: 0,
-            y: -20,
-            scale: 0.95,
-            transition: {
-                duration: 0.2,
-            },
-        },
+        exit: { opacity: 0, y: -20, scale: 0.95, transition: { duration: 0.2 } },
     };
 
     if (!showDropdown) return null;
@@ -100,36 +85,30 @@ const UserDropdown = React.memo(({ showDropdown, setShowDropdown, handleLogout, 
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                             >
-                                <FaUser className="avatar-icon" />
+                                {user.profilePicture ? (
+                                    <img src={user.profilePicture} alt="Profile" className="avatar-image" />
+                                ) : (
+                                    <div className="initials-avatar">
+                                        {`${user.firstName[0]}${user.lastName[0]}`.toUpperCase()}
+                                    </div>
+                                )}
                             </motion.div>
                             <div className="user-details">
-                                <motion.div
-                                    className="detail-item"
-                                    whileHover={{ x: 4 }}
-                                >
+                                <motion.div className="detail-item" whileHover={{ x: 4 }}>
                                     <FaEnvelope className="detail-icon" />
                                     <span className="detail-text">{user?.email}</span>
                                 </motion.div>
-                                <motion.div
-                                    className="detail-item"
-                                    whileHover={{ x: 4 }}
-                                >
+                                <motion.div className="detail-item" whileHover={{ x: 4 }}>
                                     <FaBirthdayCake className="detail-icon" />
                                     <span className="detail-text">
                                         {user?.birthDate ? new Date(user.birthDate).toLocaleDateString() : 'Not set'}
                                     </span>
                                 </motion.div>
-                                <motion.div
-                                    className="detail-item"
-                                    whileHover={{ x: 4 }}
-                                >
+                                <motion.div className="detail-item" whileHover={{ x: 4 }}>
                                     <FaBriefcase className="detail-icon" />
                                     <span className="detail-text">{user?.occupation || 'Not set'}</span>
                                 </motion.div>
-                                <motion.div
-                                    className="detail-item"
-                                    whileHover={{ x: 4 }}
-                                >
+                                <motion.div className="detail-item" whileHover={{ x: 4 }}>
                                     <FaMapMarkerAlt className="detail-icon" />
                                     <span className="detail-text">{user?.location || 'Not set'}</span>
                                 </motion.div>
@@ -155,7 +134,7 @@ const UserDropdown = React.memo(({ showDropdown, setShowDropdown, handleLogout, 
                                 Settings
                             </motion.button>
                             <motion.button
-                                className="dropdown-button delete"
+                                className="button button-delete"
                                 onClick={handleLogout}
                                 whileHover={{ y: -1 }}
                                 whileTap={{ scale: 0.98 }}

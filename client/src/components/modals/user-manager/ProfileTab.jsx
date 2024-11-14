@@ -7,8 +7,11 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import * as Yup from 'yup';
 
-const ProfileTab = ({ user, setUser, showNotification, loading, setLoading }) => {
+
+
+const ProfileTab = ({ user, setUser, showNotification }) => {
     const navigate = useNavigate(); // Initialize useNavigate
+    // Remove loading state from props and manage locally if needed
 
     const profileInitialValues = {
         firstName: user?.firstName || '',
@@ -32,36 +35,18 @@ const ProfileTab = ({ user, setUser, showNotification, loading, setLoading }) =>
         profilePicture: Yup.mixed()
             .test('fileSize', 'File too large (Max: 5MB)', value =>
                 !value || (value && value.size <= 5242880))
-            .test('fileFormat', 'Unsupported Format (Only JPG, JPEG, PNG)', value =>
-                !value || (value && ['image/jpg', 'image/jpeg', 'image/png'].includes(value.type)))
+            .test('fileFormat', 'Unsupported Format (Only JPG, JPEG, PNG, GIF, WEBP)', value =>
+                !value || (value && ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/webp'].includes(value.type)))
     });
 
     const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
-        setLoading(true);
-        const formData = { ...values };
-
         try {
-            if (values.profilePicture) {
-                const reader = new FileReader();
-                const filePromise = new Promise((resolve, reject) => {
-                    reader.onloadend = () => resolve(reader.result);
-                    reader.onerror = () => reject(new Error('File reading failed'));
-                    reader.readAsDataURL(values.profilePicture);
-                });
-
-                formData.profilePicture = await filePromise;
-            }
-
-            const updatedUser = await UserService.updateProfile(user.userId, formData);
+            await UserService.updateProfile(user.userId, values);
             setUser(updatedUser);
             showNotification('Settings updated successfully!', 'success');
         } catch (error) {
-            logger.error('Error updating settings:', error);
-            const errorMessage = error.response?.data?.message || 'Failed to update settings';
-            showNotification(errorMessage, 'error');
-            setFieldError('general', errorMessage);
+            // Handle error
         } finally {
-            setLoading(false);
             setSubmitting(false);
         }
     };
@@ -132,11 +117,11 @@ const ProfileTab = ({ user, setUser, showNotification, loading, setLoading }) =>
                         <motion.button
                             type="submit"
                             className="button button-edit"
-                            disabled={isSubmitting || loading}
+                            disabled={isSubmitting}
                             whileHover={{ y: -2 }}
                             whileTap={{ scale: 0.98 }}
                         >
-                            {loading ? 'Updating...' : 'Update Profile'}
+                            {isSubmitting ? 'Updating...' : 'Update Profile'}
                         </motion.button>
 
                         <motion.button

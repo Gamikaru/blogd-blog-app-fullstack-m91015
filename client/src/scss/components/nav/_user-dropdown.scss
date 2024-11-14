@@ -11,23 +11,19 @@
     align-items: flex-start;
     justify-content: flex-end;
     padding: $spacing-md;
-    z-index: map-get($z-indices, modal); // Ensure it appears above other elements
+    z-index: get-z-index(modal); // Ensure it appears above other elements
 
     .user-dropdown {
-        background-color: $primary-bg-color;
+        background-color: $secondary-bg-color;
         border-radius: $border-radius;
-        // box-shadow: $box-shadow-medium;
         min-width: 280px;
         width: 25%;
         overflow: hidden;
         pointer-events: auto; // Enable interactions
-        transition: opacity $transitions-base, transform $transitions-base;
-        opacity: 0;
-        transform: translateY(-10px);
-        animation: dropdownFadeIn $transitions-base forwards;
         position: relative;
         top: 3rem;
         right: 2rem;
+        box-shadow: $box-shadow-medium;
 
         &__content {
             padding: $spacing-lg;
@@ -37,48 +33,51 @@
 
             .user-info {
                 display: flex;
+                flex-direction: column;
                 align-items: center;
                 gap: $spacing-md;
                 padding-bottom: $spacing-md;
                 border-bottom: 1px solid $border-color;
 
                 .user-avatar {
-                    width: 50px;
-                    height: 50px;
-                    background-color: $primary-bg-color;
+                    width: 80px;
+                    height: 80px;
                     border-radius: 50%;
+                    overflow: hidden;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     box-shadow: $box-shadow-small;
-                    cursor: pointer;
-                    transition: transform 0.2s ease;
+                    background-color: $accent-color-1;
 
-                    &:hover {
-                        transform: scale(1.05);
+                    img.avatar-image {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
                     }
 
-                    .avatar-icon {
-                        font-size: 1.5rem;
-                        color: $primary-text-color;
+                    .initials-avatar {
+                        font-size: $heading-font-size-lg;
+                        color: $secondary-bg-color;
+                        text-transform: uppercase;
                     }
                 }
 
                 .user-details {
-                    display: flex;
-                    flex-direction: column;
-                    gap: $spacing-xs;
+                    width: 100%;
 
                     .detail-item {
                         display: flex;
                         align-items: center;
-                        gap: $spacing-xs;
+                        gap: $spacing-sm;
+                        padding: $spacing-xs 0;
                         color: $primary-text-color;
-                        transition: color 0.2s ease;
+                        cursor: pointer;
+                        transition: color $transitions-base;
 
                         .detail-icon {
-                            font-size: 1rem;
-                            color: $accent-color-1;
+                            font-size: $sub-heading-font-size;
+                            color: $highlight-color;
                         }
 
                         .detail-text {
@@ -86,10 +85,10 @@
                         }
 
                         &:hover {
-                            color: $accent-color-1;
+                            color: $highlight-color;
 
                             .detail-icon {
-                                color: darken($accent-color-1, 10%);
+                                color: darken($highlight-color, 10%);
                             }
                         }
                     }
@@ -102,49 +101,17 @@
                 gap: $spacing-sm;
                 padding-top: $spacing-md;
 
-                .dropdown-button {
-                    display: flex;
-                    align-items: center;
-                    gap: $spacing-sm;
-                    padding: map-get($button-padding, sm);
-                    background-color: transparent;
-                    border: none;
-                    border-radius: $button-border-radius;
-                    cursor: pointer;
-                    font-size: $body-font-size;
-                    color: $secondary-text-color;
-                    transition: background-color $transitions-base, transform 0.2s ease;
+                .button {
+                    @extend .button;
+                    width: 100%;
+                    justify-content: center;
 
-                    .button-icon {
-                        font-size: 1rem;
-                        color: inherit;
+                    &.button-profile {
+                        @extend .button-edit;
                     }
 
-                    &:hover {
-                        background-color: $button-hover-bg-color;
-                        transform: translateY(-2px);
-                        color: $highlight-color;
-
-                        .button-icon {
-                            color: $highlight-color;
-                        }
-                    }
-
-                    &.delete {
-                        color: $error-color;
-
-                        .button-icon {
-                            color: $error-color;
-                        }
-
-                        &:hover {
-                            background-color: lighten($error-color, 40%);
-                            color: $error-color;
-
-                            .button-icon {
-                                color: $error-color;
-                            }
-                        }
+                    &.button-delete {
+                        @extend .button-delete;
                     }
                 }
             }
@@ -178,32 +145,28 @@
 
         .user-dropdown__content {
             padding: $spacing-md;
-        }
 
-        .user-info {
-            flex-direction: column;
-            align-items: center;
-            gap: $spacing-sm;
-            border-bottom: none;
+            .user-info {
+                .user-avatar {
+                    width: 70px;
+                    height: 70px;
+                }
 
-            .user-avatar {
-                margin-bottom: $spacing-sm;
+                .user-details {
+                    .detail-item {
+                        justify-content: center;
+                    }
+                }
             }
 
-            .user-details {
-                align-items: center;
-                text-align: center;
+            .dropdown-actions {
+                flex-direction: row;
+                justify-content: space-around;
+
+                .button {
+                    width: 45%;
+                }
             }
-        }
-
-        .dropdown-actions {
-            flex-direction: row;
-            justify-content: space-around;
-        }
-
-        .dropdown-button {
-            width: 45%;
-            justify-content: center;
         }
     }
 }

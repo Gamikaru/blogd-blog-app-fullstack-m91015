@@ -25,6 +25,7 @@ export const useUserUpdate = () => {
         logout: context.logout,
         register: context.register,
         updateUser: context.updateUser,
+        setUser: context.setUser,
     };
 };
 
@@ -142,17 +143,14 @@ export const UserProvider = ({ children }) => {
     const updateUser = async (userId, updatedData) => {
         try {
             const updatedUser = await UserService.updateUserById(userId, updatedData);
-            // Map _id to userId if necessary
-            const userWithId = {
+            setUser({
                 ...updatedUser,
                 userId: updatedUser.userId || updatedUser._id,
-            };
-            setUser(userWithId);
+            });
             logger.info('UserContext: User updated successfully');
             return { success: true };
         } catch (error) {
-            logger.error('UserContext: Update user failed', error);
-            return { success: false, message: error.message };
+            // Handle error
         }
     };
 
