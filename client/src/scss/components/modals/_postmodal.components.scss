@@ -5,7 +5,6 @@
 
 .post-modal,
 .edit-post-modal {
-    // Sidebar Styles
     &__sidebar {
         position: absolute;
         top: var(--sidebar-top);
@@ -21,6 +20,7 @@
         flex-direction: column;
         gap: map-get($modal-spacing, content-gap);
         overflow-y: auto;
+        background-color: $secondary-bg-color;
 
         .toolbar-section {
             display: flex;
@@ -32,13 +32,13 @@
 
         .toolbar-group {
             &:not(:last-child) {
-                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                border-bottom: 1px solid $border-color;
                 padding-bottom: map-get($modal-spacing, input-gap);
             }
 
             &__title {
                 font-size: $small-font-size;
-                color: $secondary-text-color;
+                color: $primary-text-color;
                 margin-bottom: map-get($modal-spacing, input-gap);
             }
 
@@ -69,7 +69,8 @@
                 padding: 0.5rem;
                 font-size: $small-font-size;
                 color: $primary-text-color;
-                background: transparent;
+                background: $secondary-bg-color;
+                border: 1px solid $border-color;
                 @include subtle-border;
                 transition: all 0.2s ease;
 
@@ -167,7 +168,7 @@
         height: 100%;
         padding-top: var(--sidebar-top);
         padding-left: calc(var(--sidebar-left) + #{map-get($modal-dimensions, sidebar-width)} + 2rem);
-        background-color: white;
+        background-color: $secondary-bg-color;
         overflow-y: auto;
 
         .ql-container {
@@ -182,6 +183,7 @@
             border-radius: $border-radius;
             border: none;
             box-shadow: none;
+            color: $primary-text-color;
 
             &:focus {
                 outline: none;
@@ -198,6 +200,7 @@
         // Title Input Styles
         .post-modal__title-input,
         .edit-post-modal__title-input {
+            background-color: $secondary-bg-color;
             width: 100%;
             max-width: 52vw; // Set a maximum width of 52vw
             padding: 2rem 10rem 1rem 1rem; // Increased padding

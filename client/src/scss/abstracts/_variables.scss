@@ -4,27 +4,65 @@
 $base-font-size: 16px;
 $base-line-height: 1.6;
 
+// Theme variable
+$theme: light; // Set to 'light' or 'dark' to switch themes
+
+// Light theme colors
+$light-theme: (
+    primary-bg-color: #f3f0ed,
+    secondary-bg-color: #ffffff,
+    primary-text-color: #3d3d3d,
+    secondary-text-color: #9c9c9c,
+    accent-color-1: #e2e3d5,
+    accent-color-2: #f1f1f1,
+    highlight-color:#119ea6,
+    success-color: #28a745,
+    error-color: #e74c3c,
+    warning-color: #f39c12,
+    hover-color: darken(#f1f1f1, 10%),
+    modal-backdrop-color: rgba(0, 0, 0, 0.2),
+    border-color: rgba(0, 0, 0, 0.1)
+);
+
+// Dark theme colors
+$dark-theme: (
+    primary-bg-color: #5e6758,
+    secondary-bg-color: #232323,
+    primary-text-color: #f0f0f0,
+    secondary-text-color: #bfbfbf,
+    accent-color-1: #2a2a2a,
+    accent-color-2: #333333,
+    highlight-color: #75a2a4,
+    success-color: #28a745,
+    error-color: #e74c3c,
+    warning-color: #f39c12,
+    hover-color: lighten(#333333, 10%),
+    modal-backdrop-color: rgba(255, 255, 255, 0.2),
+    border-color: rgba(255, 255, 255, 0.1)
+);
+
+// Choose theme colors based on $theme variable
+$theme-colors: if($theme == "dark", $dark-theme, $light-theme);
+
+// Assign colors
+$primary-bg-color: map-get($theme-colors, primary-bg-color);
+$secondary-bg-color: map-get($theme-colors, secondary-bg-color);
+$primary-text-color: map-get($theme-colors, primary-text-color);
+$secondary-text-color: map-get($theme-colors, secondary-text-color);
+$accent-color-1: map-get($theme-colors, accent-color-1);
+$accent-color-2: map-get($theme-colors, accent-color-2);
+$highlight-color: map-get($theme-colors, highlight-color);
+$success-color: map-get($theme-colors, success-color);
+$error-color: map-get($theme-colors, error-color);
+$warning-color: map-get($theme-colors, warning-color);
+$hover-color: map-get($theme-colors, hover-color);
+$modal-backdrop-color: map-get($theme-colors, modal-backdrop-color);
+$border-color: map-get($theme-colors, border-color);
+
 // Fluid Typography Function
 @function fluid-type($min-vw, $max-vw, $min-size, $max-size) {
     @return clamp(#{$min-size}rem, #{($max-size - $min-size) * 100}vw, #{$max-size}rem);
 }
-
-// Colors
-$primary-bg-color: #f3f0ed;
-$secondary-bg-color: #ffffff;
-$primary-text-color: #3d3d3d;
-$secondary-text-color: #9c9c9c;
-$accent-color-1: #e2e3d5;
-$accent-color-2: #f1f1f1;
-$highlight-color: #007bff;
-$success-color: #28a745;
-$error-color: #e74c3c;
-$warning-color: #f39c12;
-$hover-color: darken($accent-color-2, 10%);
-$modal-backdrop-color: rgba(0, 0, 0, 0.2);
-
-// Border Color (single definition to avoid conflicts)
-$border-color: rgba(0, 0, 0, 0.1);
 
 // Typography - Fluid Responsive
 $font-family-primary: "Inter", sans-serif;
@@ -84,8 +122,8 @@ $container-max-widths: (
 );
 
 // Additional Button and Input Focus Styles
-$input-bg-color: #f3f0ed; // Added based on usage in UserManager.scss
-$transitions-base: 0.3s ease-out; // Added based on usage in UserManager.scss
+$input-bg-color: #f3f0ed; // Adjust if needed for dark theme
+$transitions-base: 0.3s ease-out;
 
 // Transitions
 $transitions: (
@@ -118,8 +156,8 @@ $button-opacity-disabled: 0.6;
 $button-grey: #6c757d;
 $button-grey-hover: #5a6268;
 $button-grey-disabled: #343a40;
-$button-primary: #007bff;
-$button-primary-hover: #0069d9;
+$button-primary: $highlight-color;
+$button-primary-hover: darken($highlight-color, 10%);
 $button-primary-disabled: #343a40;
 $button-secondary: #6c757d;
 $button-secondary-hover: #5a6268;
@@ -142,10 +180,9 @@ $button-light-disabled: #343a40;
 $button-dark: #343a40;
 $button-dark-hover: #212529;
 $button-dark-disabled: #212529;
-$button-link: #007bff;
-$button-link-hover: #0056b3;
+$button-link: $highlight-color;
+$button-link-hover: darken($highlight-color, 10%);
 $button-link-disabled: #343a40;
 $info-color: #17a2b8;
-
 
 // If needed, other variables can be added here

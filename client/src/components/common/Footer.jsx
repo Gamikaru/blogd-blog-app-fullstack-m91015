@@ -26,7 +26,7 @@ const Footer = React.memo(() => {
                             key={label}
                             href={href}
                             target="_blank"
-                            rel="noopener noreferrer"
+                            rel="noopener noreferrer nofollow"
                             aria-label={`Follow us on ${label}`}
                         >
                             <Icon />

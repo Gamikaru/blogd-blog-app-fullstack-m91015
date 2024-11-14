@@ -1,23 +1,18 @@
 // src/components/CustomTagIcon.jsx
 
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 const CustomTagIcon = React.memo(({ className = '', text = '' }) => {
     if (!text) return null;
 
     const textLength = text.length;
-    const baseWidth = 50;
-    const charWidth = 8;
-    const padding = 9;
-    const width = baseWidth + textLength * charWidth;
-
-    const textXPosition = width / 2; // Center the text
+    const width = useMemo(() => Math.min(200, 50 + textLength * 8), [textLength]);
+    const textXPosition = width / 2;
 
     return (
         <svg
             className={className}
-            style={{ verticalAlign: 'middle' }}
             xmlns="http://www.w3.org/2000/svg"
             viewBox={`0 0 ${width} 24`}
             width={width}
@@ -26,8 +21,8 @@ const CustomTagIcon = React.memo(({ className = '', text = '' }) => {
             aria-labelledby={`custom-tag-icon-title-${text}`}
         >
             <title id={`custom-tag-icon-title-${text}`}>{`Custom Tag: ${text}`}</title>
-            <rect x="0" y="0" width={width - padding} height="24" fill="#afacaa" rx="4" ry="4" />
-            <polygon points={`${width - padding},0 ${width},12 ${width - padding},24`} fill="#afacaa" />
+            <rect x="0" y="0" width={width - 9} height="24" fill="#afacaa" rx="4" ry="4" />
+            <polygon points={`${width - 9},0 ${width},12 ${width - 9},24`} fill="#afacaa" />
             <circle cx="12" cy="12" r="3" fill="#fff" />
             <text
                 x={textXPosition}
@@ -37,7 +32,7 @@ const CustomTagIcon = React.memo(({ className = '', text = '' }) => {
                 textAnchor="middle"
                 dominantBaseline="middle"
             >
-                {text}
+                {text.length > 20 ? `${text.slice(0, 17)}...` : text}
             </text>
         </svg>
     );

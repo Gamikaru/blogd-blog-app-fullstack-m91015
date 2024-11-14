@@ -1,38 +1,43 @@
-import React from 'react';
+// src/components/Spinner/Spinner.jsx
+
 import { motion } from 'framer-motion';
+import React from 'react';
 import BlogdGraphic from '../../../public/assets/images/Icon-Only-Black.png';
 
-const Spinner = React.memo(({ size = '60px', message = '' }) => {
+const Spinner = React.memo(({ size = '60px', message = 'Loading...' }) => {
     return (
-        <div className="spinner-container" style={spinnerContainerStyle}>
+        <div className="spinner-container">
             <motion.img
                 src={BlogdGraphic}
                 alt="Loading spinner"
                 className="spinner"
                 style={{ width: size, height: size }}
-                animate={{
-                    rotate: [-15, 15, -15],
-                    y: [0, -5, 0],
-                }}
+                initial={{ rotate: 0, y: 0, opacity: 0 }}
+                animate={{ rotate: 360, y: [-10, 0, -10], opacity: 1 }}
                 transition={{
-                    duration: 1,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
+                    rotate: {
+                        repeat: Infinity,
+                        duration: 2,
+                        ease: 'linear',
+                    },
+                    y: {
+                        repeat: Infinity,
+                        duration: 3,
+                        ease: 'easeInOut',
+                        yoyo: Infinity, // Deprecated in newer versions, use repeatType
+                        repeatType: 'mirror',
+                    },
+                    opacity: {
+                        duration: 1.5,
+                        ease: 'easeInOut',
+                        repeat: Infinity,
+                        repeatType: 'mirror',
+                    },
                 }}
             />
-            {message && <p style={{ marginTop: '10px' }}>{message}</p>}
+            {message && <p className="spinner-message">{message}</p>}
         </div>
     );
 });
-
-// Inline styles retained for full-screen centering
-const spinnerContainerStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100vh', // Full viewport height
-    textAlign: 'center',
-};
 
 export default Spinner;

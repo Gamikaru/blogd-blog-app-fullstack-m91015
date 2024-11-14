@@ -2,7 +2,7 @@
 
 // Auth Components
 export { default as LoginPage } from './auth/LoginPage';
-export { default as RedirectIfLoggedIn } from './auth/RedirectIfLoggedIn';
+// export { default as RedirectIfLoggedIn } from './auth/RedirectIfLoggedIn';
 
 // Common Components
 export { default as Button } from './common/Button';

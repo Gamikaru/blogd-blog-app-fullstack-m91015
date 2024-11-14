@@ -96,7 +96,6 @@
         }
 
         .cube-slide-text {
-            padding: 1rem;
 
             .post-title {
                 margin: 1rem 1rem;
@@ -107,6 +106,7 @@
                 margin-left: 1rem;
                 padding-right: 1rem;
                 font-size: $base-font-size - 1px;
+                max-width: 90%;
             }
 
             .post-meta {

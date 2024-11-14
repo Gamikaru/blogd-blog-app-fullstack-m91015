@@ -1,0 +1,45 @@
+// src/components/Spinner/_spinner.scss
+
+$spinner-size: 5rem;
+.spinner-container {
+    @include flex-center;
+    flex-direction: column;
+    height: 100vh; // Full viewport height
+    text-align: center;
+    background-color: $secondary-bg-color; // Ensures spinner stands out against the background
+}
+
+.spinner {
+    width: $spinner-size;
+    height: $spinner-size;
+    animation:
+        spin 1s linear infinite,
+        float 3s ease-in-out infinite;
+}
+
+.spinner-message {
+    margin-top: map-get($spacing-scale, sm);
+    font-size: $body-font-size;
+    color: $secondary-text-color;
+    opacity: 0.8;
+}
+
+/* Keyframes for additional animations */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}

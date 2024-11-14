@@ -1,51 +1,66 @@
 // src/components/LoginPage.jsx
 // Desc: Login page for the application
 
-import debounce from 'lodash.debounce'; // Optimize form validations
-import { useCallback, useMemo, useState } from 'react';
+import debounce from 'lodash.debounce';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 import { Button, InputField, Spinner } from '@components';
 import { useNotificationContext, usePublicModalContext } from '@contexts';
-import { useUserUpdate } from '@contexts/UserContext'; // Adjust import path if necessary
+import { useUserUpdate } from '@contexts/UserContext';
 import { logger, validateLoginForm } from '@utils';
 
 const LoginPage = () => {
-    const [loginForm, setLoginForm] = useState({ email: "", password: "" });
+    const [loginForm, setLoginForm] = useState({ email: '', password: '' });
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [errors, setErrors] = useState({});
     const { showNotification, hideNotification } = useNotificationContext();
     const { togglePublicModal } = usePublicModalContext();
     const navigate = useNavigate();
-    const { login } = useUserUpdate(); // Now correctly retrieves the login function
+    const { login } = useUserUpdate();
 
     const updateLoginForm = useCallback((value) => {
         setLoginForm((prevForm) => ({ ...prevForm, ...value }));
     }, []);
 
+    const handleChange = useCallback(
+        (field) => (e) => {
+            updateLoginForm({ [field]: e.target.value });
+        },
+        [updateLoginForm]
+    );
+
     const debouncedValidation = useMemo(
-        () => debounce((fieldName, form) => {
-            const validationErrors = validateLoginForm(form);
-            setErrors((prevErrors) => ({
-                ...prevErrors,
-                [fieldName]: validationErrors[fieldName] || undefined
-            }));
-        }, 300),
+        () =>
+            debounce((fieldName, form) => {
+                const validationErrors = validateLoginForm(form);
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    [fieldName]: validationErrors[fieldName] || undefined,
+                }));
+            }, 300),
         []
     );
 
-    const handleBlur = useCallback((fieldName) => {
-        if (fieldName === "email") {
-            debouncedValidation("email", loginForm);
-        }
-    }, [debouncedValidation, loginForm]);
+    useEffect(() => {
+        return () => {
+            debouncedValidation.cancel();
+        };
+    }, [debouncedValidation]);
+
+    const handleBlur = useCallback(
+        (fieldName) => {
+            debouncedValidation(fieldName, loginForm);
+        },
+        [debouncedValidation, loginForm]
+    );
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        logger.info("Login form submitted", loginForm);
+        logger.info('Login form submitted', loginForm);
 
         const validationErrors = validateLoginForm(loginForm);
         if (Object.keys(validationErrors).length > 0) {
@@ -58,25 +73,26 @@ const LoginPage = () => {
             const result = await login(loginForm);
 
             if (!result.success) {
-                const errorMsg = result.message || "Login failed. Please try again.";
-                showNotification(errorMsg, "error");
-                logger.error("Login failed", result);
-                setLoading(false);
+                const errorMsg = result.message || 'Login failed. Please try again.';
+                showNotification(errorMsg, 'error');
+                logger.error('Login failed', result);
                 return;
             }
 
-            logger.info("Login successful.");
+            logger.info('Login successful.');
             hideNotification();
-            navigate("/");
+            navigate('/');
         } catch (error) {
-            logger.error("Login error", error);
-            showNotification(error.message || "An error occurred. Please try again.", "error");
+            logger.error('Login error', error);
+            showNotification(error.message || 'An error occurred. Please try again.', 'error');
         } finally {
             setLoading(false);
         }
     };
 
-    if (loading) return <Spinner message="Logging you in..." />;
+    if (loading) {
+        return <Spinner message="Logging you in..." />;
+    }
 
     return (
         <div className="login-page">
@@ -95,10 +111,10 @@ const LoginPage = () => {
                                 <div className="login-input-container">
                                     <InputField
                                         value={loginForm.email}
-                                        onChange={(e) => updateLoginForm({ email: e.target.value })}
-                                        onBlur={() => handleBlur("email")}
+                                        onChange={handleChange('email')}
+                                        onBlur={() => handleBlur('email')}
                                         placeholder="Enter your email"
-                                        className={`login-input-field ${errors.email ? "invalid-input" : ""}`}
+                                        className={`login-input-field ${errors.email ? 'invalid-input' : ''}`}
                                         error={errors.email}
                                         type="email"
                                     />
@@ -107,10 +123,10 @@ const LoginPage = () => {
                                 <div className="login-input-container password-container">
                                     <InputField
                                         value={loginForm.password}
-                                        onChange={(e) => updateLoginForm({ password: e.target.value })}
+                                        onChange={handleChange('password')}
                                         placeholder="Enter your password"
-                                        type={showPassword ? "text" : "password"}
-                                        className={`login-input-field ${errors.password ? "invalid-input" : ""}`}
+                                        type={showPassword ? 'text' : 'password'}
+                                        className={`login-input-field ${errors.password ? 'invalid-input' : ''}`}
                                         error={errors.password}
                                     />
                                     <Button
@@ -121,6 +137,7 @@ const LoginPage = () => {
                                         variant="iconButton"
                                         icon={showPassword ? FaEye : FaEyeSlash}
                                         showIcon={true}
+                                        aria-pressed={showPassword}
                                     />
                                 </div>
 
@@ -131,17 +148,17 @@ const LoginPage = () => {
                                         className="button button-submit"
                                         disabled={loading}
                                     >
-                                        {loading ? "Logging in..." : "LOGIN"}
+                                        LOGIN
                                     </Button>
                                 </div>
                             </form>
 
                             <div className="text-center">
                                 <p className="register-text">
-                                    Not yet registered?{" "}
+                                    Not yet registered?{' '}
                                     <span
                                         className="register-link"
-                                        onClick={() => togglePublicModal("register")}
+                                        onClick={() => togglePublicModal('register')}
                                         aria-label="Sign up now!"
                                     >
                                         Sign up now!
@@ -154,6 +171,6 @@ const LoginPage = () => {
             </div>
         </div>
     );
-}
+};
 
 export default LoginPage;

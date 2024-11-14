@@ -26,7 +26,7 @@ const Navbar = React.memo(() => {
     const [, removeCookie] = useCookies();
     const location = useLocation();
     const navigate = useNavigate();
-    const setUser = useUserUpdate();
+    const { setUser } = useUserUpdate();
     const { user } = useUser();
     const { userId: profileUserId } = useParams();
     const [profileUserName, setProfileUserName] = useState('');
