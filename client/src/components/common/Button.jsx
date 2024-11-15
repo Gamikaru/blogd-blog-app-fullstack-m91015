@@ -24,16 +24,18 @@ import {
     FiTrash,
     FiUser,
     FiX,
+    FiXCircle
 } from 'react-icons/fi';
 
 import {
     FaBlog,
     FaBookOpen,
+    FaCog,
     FaFacebookF,
     FaInstagram,
     FaLinkedinIn,
     FaPaperPlane,
-    FaTwitter,
+    FaTwitter
 } from 'react-icons/fa';
 
 import {
@@ -63,6 +65,8 @@ const variantIcons = {
     send: FiSend,
     book: FiBook,
     fileText: FiFileText,
+    reset: FiXCircle,
+    // settings: FiCog,
 
     // Font Awesome Icons
     twitter: FaTwitter,
@@ -72,6 +76,7 @@ const variantIcons = {
     blog: FaBlog,
     bookOpen: FaBookOpen,
     paperPlane: FaPaperPlane,
+    settings: FaCog,
 
     // Material Design Icons
     notifications: MdNotifications,

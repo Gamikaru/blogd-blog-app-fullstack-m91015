@@ -1,13 +1,14 @@
 // _navbar-header.scss
 
 .nav-header {
+    position: fixed;
     background-color: $primary-bg-color;
     padding-bottom: 10rem;
     padding-inline: $navbar-padding;
     margin-right: 2rem;
-    border-bottom: 1px solid lighten($primary-bg-color, 10%);
     position: relative;
-    border-radius: 0 0 1.5rem 0;
+    border-radius: 0 0 5rem 0;
+    height:70vh;
 }
 
 .navbar {
@@ -16,5 +17,6 @@
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
-    height: 60px;
 }
+
+

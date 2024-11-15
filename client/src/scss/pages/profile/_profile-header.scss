@@ -4,10 +4,18 @@
     border-radius: $border-radius;
     margin-bottom: $spacing-lg;
     box-shadow: $box-shadow-medium;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
+    position: relative; // To contain the absolute positioned avatar
+    width:50vw;
+    left: 20vw;
 
-    .profile-subtitle {
-        font-size: $sub-heading-font-size;
-        color: $secondary-text-color;
+    h1 {
+        color: $primary-text-color;
+        font-size: $heading-font-size-lg;
+        margin: 0;
+        text-align: center;
     }
 }

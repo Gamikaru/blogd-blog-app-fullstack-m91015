@@ -2,18 +2,16 @@
 
 .home-page-container {
     padding: 2rem;
-    background-color: $secondary-bg-color;
+    background-color: $primary-bg-color;
     color: #d2d2d2;
     min-height: 100vh;
     margin-top: -8rem;
+    width: 80vw;
+    margin: 0 auto;
+    overflow: visible;
 
-    .cube-slider-wrapper,
-    .blogs-container {
-        width: 100%;
-        max-width: 80vw;
-        margin: 0 auto;
-        height: 100%;
-    }
+
+
 
     .carousel-section {
         margin-top: 5rem; // Negative margin to overlay the navbar

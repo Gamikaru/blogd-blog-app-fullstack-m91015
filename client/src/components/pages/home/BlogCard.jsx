@@ -110,7 +110,15 @@ const BlogCard = memo(function BlogCard({ post, author, cookie }) {
                 {post.category && <CustomTagIcon className="category-icon" text={post.category} />}
             </div>
 
-            <div className="post-content">{truncatedContent}</div>
+            <div className="post-content">
+                <span className="blog-quote">
+                    <span className="blog-opening-quote">"</span>
+                    {truncatedContent}
+                    <span className="blog-closing-group">
+                        <span className="blog-closing-quote">"</span>
+                    </span>
+                </span>
+            </div>
 
             <div className="post-interactions">
                 <Button

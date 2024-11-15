@@ -2,7 +2,7 @@
     padding: $spacing-lg;
     max-width: map-get($container-max-widths, xl);
     margin: 0 auto;
-    margin-top: -8rem;
+    margin-top: -4rem; // Adjusted from -8rem to accommodate larger avatar
     position: relative;
     z-index: 10;
 }

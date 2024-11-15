@@ -1,16 +1,21 @@
 // blogs.scss
 
+
+
+
 .blogs-container {
     padding: $spacing-unit * 1;
-    padding-top:30rem;
+    padding-top: 20rem;
     background-color: $primary-bg-color;
     color: $primary-text-color;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+    width: 80vw;
     z-index: 0; // Ensure it overlays the navbar
     position: relative; // Required for z-index to take effect
-    top: -5rem;
+    // to ensur th blogs cntainer is centered, we need to add the following styles:
+    justify-self: center;
+
+
+
 
     .filter-search-container {
         display: flex;
@@ -203,6 +208,40 @@
             max-height: 80px; // Limit content height for consistency
             overflow: hidden; // Hide overflow text
             text-overflow: ellipsis; // Add ellipsis for overflow text
+
+            .blog-quote {
+                font-size: $body-font-size * 1.1;
+                color: $secondary-text-color;
+                font-style: italic;
+                line-height: 1.6rem;
+                overflow: visible;
+                display: inline;
+
+                .blog-opening-quote {
+                    font-size: 2rem;
+                    font-weight: bold;
+                    color: $primary-text-color;
+                    margin-right: 0.5rem;
+                    vertical-align: text-top;
+                    font-family: $font-family-heading;
+                }
+
+                .blog-closing-group {
+                    display: inline-flex;
+                    align-items: center;
+                    margin-left: 0.25rem;
+                    position: relative;
+                    top: 0.3rem;
+
+                    .blog-closing-quote {
+                        font-size: 2rem;
+                        font-weight: bold;
+                        color: $primary-text-color;
+                        vertical-align: baseline;
+                        font-family: $font-family-heading;
+                    }
+                }
+            }
         }
 
         .post-interactions {

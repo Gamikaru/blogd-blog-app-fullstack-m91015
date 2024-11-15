@@ -252,11 +252,12 @@ const BlogsContainer = () => {
                                 <div className="filter-option filter-actions">
                                     <Button
                                         onClick={resetFilters}
-                                        variant="secondary"
-                                        className="reset-filters-btn"
+                                        variant="reset"
+                                        aria-label="Reset Filters"
                                     >
                                         Reset Filters
                                     </Button>
+
                                 </div>
                             </motion.div>
                         )}

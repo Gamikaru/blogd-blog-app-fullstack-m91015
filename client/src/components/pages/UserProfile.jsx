@@ -1,7 +1,6 @@
 // src/components/UserProfile/UserProfile.jsx
-
 import { Button, PostCard } from '@components';
-import { useUser } from '@contexts';
+import { useUser, useUserUpdate } from '@contexts';
 import { UserService, fetchPostsByUser } from '@services/api';
 import { logger } from '@utils';
 import { useEffect, useState } from 'react';
@@ -18,10 +17,13 @@ import { useParams } from 'react-router-dom';
 
 const UserProfile = () => {
     const { userId } = useParams();
-    const { user } = useUser();
+    const { user, loading: userLoading } = useUser();
+    const { updateUser } = useUserUpdate();
     const [profileUser, setProfileUser] = useState(user);
     const [userPosts, setUserPosts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [status, setStatus] = useState(user.status || '');
+    const [statusLoading, setStatusLoading] = useState(false);
 
     useEffect(() => {
         const loadProfile = async () => {
@@ -46,21 +48,34 @@ const UserProfile = () => {
         loadProfile();
     }, [userId, user]);
 
-    if (loading) {
+    if (loading || userLoading) {
         return <div className="loading-spinner">Loading profile...</div>;
     }
 
-    const getInitials = (firstName, lastName) => {
-        return `${firstName?.[0] || ''}${lastName?.[0] || ''}`.toUpperCase();
+    const isOwnProfile = user.userId === profileUser.userId;
+
+    const handleStatusChange = (e) => {
+        setStatus(e.target.value);
     };
 
-    const isOwnProfile = user.userId === profileUser.userId;
+    const handleStatusSubmit = async () => {
+        if (!isOwnProfile) return;
+        try {
+            setStatusLoading(true);
+            await updateUser(profileUser.userId, { status });
+            logger.info('Status updated successfully');
+        } catch (error) {
+            logger.error('Error updating status:', error);
+        } finally {
+            setStatusLoading(false);
+        }
+    };
 
     return (
         <div className="profile-page-container">
             <div className="profile-header">
-                <h1>Profile</h1>
-                <div className="profile-subtitle">View and manage your profile information</div>
+
+                <h1>{isOwnProfile ? 'Your Status' : `${profileUser.firstName}'s Status`}</h1>
             </div>
 
             <div className="profile-grid">
@@ -87,39 +102,12 @@ const UserProfile = () => {
                         </div>
                     </div>
 
-                    <div className="quick-actions">
-                        <h3>Quick Actions</h3>
-                        <div className="action-buttons">
-                            {/* Show Edit and Settings only if viewing own profile */}
-                            {isOwnProfile && (
-                                <>
-                                    <Button className="button button-edit">
-                                        <FiEdit className="icon" />Edit Profile
-                                    </Button>
-                                </>
-                            )}
-                        </div>
-                    </div>
-                </div>
-
-                <div className="profile-main">
                     <div className="user-card">
-                        <div className="user-card-header">
-                            <div className="user-avatar">
-                                {profileUser.profilePicture ? (
-                                    <img src={profileUser.profilePicture} alt="Profile" className="avatar-image" />
-                                ) : (
-                                    <div className="initials-avatar">
-                                        {getInitials(profileUser.firstName, profileUser.lastName)}
-                                    </div>
-                                )}
-                            </div>
-                            <div className="user-info">
-                                <h2>
-                                    {profileUser.firstName} {profileUser.lastName}
-                                </h2>
-                                <div className="user-role">{profileUser.role || 'User'}</div>
-                            </div>
+                        <div className="user-info">
+                            <h2>
+                                {profileUser.firstName} {profileUser.lastName}
+                            </h2>
+                            <div className="user-role">{profileUser.role || 'User'}</div>
                         </div>
                         <div className="user-details">
                             <div className="detail-grid">
@@ -157,7 +145,39 @@ const UserProfile = () => {
                         </div>
                     </div>
 
-                    {/* Placeholder for Recent Activity */}
+                    <div className="quick-actions">
+                        <h3>Quick Actions</h3>
+                        <div className="action-buttons">
+                            {isOwnProfile && (
+                                <Button className="button button-edit">
+                                    <FiEdit className="icon" />Edit Profile
+                                </Button>
+                            )}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="profile-main">
+                    {isOwnProfile && (
+                        <div className="status-section">
+                            <h3>Your Status</h3>
+                            <textarea
+                                className="status-textarea"
+                                value={status}
+                                onChange={handleStatusChange}
+                                placeholder="What's on your mind?"
+                                disabled={statusLoading}
+                            />
+                            <Button
+                                className="button button-submit-status"
+                                onClick={handleStatusSubmit}
+                                disabled={statusLoading}
+                            >
+                                {statusLoading ? 'Updating...' : 'Update Status'}
+                            </Button>
+                        </div>
+                    )}
+
                     <div className="activity-section">
                         <h3>
                             Recent Activity
@@ -168,17 +188,14 @@ const UserProfile = () => {
                         </div>
                     </div>
 
-                    {/* Updated to pass userPosts and isOwnProfile */}
                     <div className="posts-section">
                         <h3>
                             <span><FiBook /> Recent Posts</span>
                             <span className="section-action">View All</span>
                         </h3>
-                        {/* Pass posts array and isOwnProfile prop */}
                         <PostCard posts={userPosts} isOwnProfile={isOwnProfile} />
                     </div>
 
-                    {/* Placeholder for Connections */}
                     <div className="connections-section">
                         <h3>
                             <span><FiUsers /> Connections</span>

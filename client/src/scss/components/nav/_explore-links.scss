@@ -1,21 +1,50 @@
+//explore-links.scss
+
 .info-and-explore-container {
     display: flex;
-    flex-direction: column; // Stack welcome message and explore links vertically
-    align-items: flex-start; // Align items to the left
-    margin-left: 7rem; // Maintain the previous left margin for alignment
-    margin-top: $spacing-lg;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 7rem;
+    // margin-top: $spacing-lg;
 
     .page-info-message {
-        text-align: left; // Ensure welcome message remains left-aligned
-        margin-bottom: $spacing-md;
-        width: 100%; // Take the full width for proper layout
+        text-align: left;
+        width: 100%;
+        margin-top: $spacing-xxl;
+
+        &.profile-info {
+            display: flex;
+            align-items: center;
+            gap: $spacing-xxl;
+            margin-left: 5rem;
+
+            .profile-avatar {
+                width: 20vw;
+                height: 20vw;
+                border-radius: 50%;
+                overflow: hidden;
+
+
+                .profile-image {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+
+            .profile-user-name {
+                font-size: $heading-font-size-xxlg;
+                color: $primary-text-color;
+                font-weight: 800;
+            }
+        }
 
         .page-title {
             font-size: $heading-font-size-xxlg;
             font-weight: bold;
             color: $primary-text-color;
             margin: 0;
-            margin-left: 5rem; // Maintain the previous left margin for alignment
+            margin-left: 5rem;
         }
 
         .page-subtitle {
@@ -28,12 +57,11 @@
 
     .explore-links {
         display: flex;
-        justify-content: flex-start; // Align links to the left
+        justify-content: flex-start;
         gap: $spacing-md;
         margin-top: $spacing-sm;
         padding-top: $spacing-sm;
-        margin-left: 5rem; // Maintain the previous left margin for alignment
-        // border-top: 1px solid $border-color;
+        margin-left: 5rem;
 
         .explore-link {
             font-size: $small-font-size;
@@ -44,6 +72,45 @@
             &:hover {
                 color: $accent-color-1;
             }
+        }
+    }
+}
+@media (max-width: $breakpoint-md) {
+    .navbar {
+        padding: $spacing-sm $spacing-md;
+
+        .navbar-right {
+            gap: 0.5rem;
+        }
+    }
+
+    .info-and-explore-container {
+        margin-left: 2rem;
+
+        .page-info-message {
+            &.profile-info {
+                margin-left: 2rem;
+                .profile-avatar {
+                    width: 40px;
+                    height: 40px;
+                }
+
+                .profile-user-name {
+                    font-size: $small-font-size;
+                }
+            }
+
+            .page-title,
+            .page-subtitle {
+                margin-left: 2rem;
+            }
+        }
+
+        .explore-links {
+            flex-wrap: wrap;
+            gap: $spacing-sm;
+            padding: $spacing-xs $spacing-sm;
+            margin-left: 2rem;
         }
     }
 }

@@ -1,10 +1,10 @@
 // NetworkUserCard.jsx
-import PropTypes from 'prop-types'; // Import PropTypes
 import { Button } from '@components';
 import { motion } from "framer-motion";
+import PropTypes from 'prop-types'; // Import PropTypes
 import { memo, useMemo, useState } from 'react';
 import { Card } from "react-bootstrap";
-import { FaBriefcase, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
+import { FaBriefcase, FaMapMarkerAlt } from "react-icons/fa";
 
 const NetworkCard = memo(({ user }) => {
     const [showBubbles, setShowBubbles] = useState(false);
@@ -31,7 +31,15 @@ const NetworkCard = memo(({ user }) => {
             >
                 <div className="top-section">
                     <div className="initials-circle">
-                        {memoizedInitials}
+                        {user.profilePicture ? (
+                            <img
+                                src={user.profilePicture}
+                                alt={`${user.firstName} ${user.lastName}`}
+                                className="profile-picture"
+                            />
+                        ) : (
+                            memoizedInitials
+                        )}
                         {user.status && showBubbles && (
                             <div className="bubble-container">
                                 <motion.div
@@ -61,10 +69,6 @@ const NetworkCard = memo(({ user }) => {
                         <h5 className="card-title">{`${user.firstName} ${user.lastName}`}</h5>
                         <div className="user-details">
                             <div className="detail-item">
-                                <FaEnvelope />
-                                <span>{user.email}</span>
-                            </div>
-                            <div className="detail-item">
                                 <FaBriefcase />
                                 <span>{user.occupation}</span>
                             </div>
@@ -75,16 +79,6 @@ const NetworkCard = memo(({ user }) => {
                         </div>
                     </div>
                 </div>
-                {/* Profile Picture */}
-                {user.profilePicture && (
-                    <div className="profile-picture-container">
-                        <img
-                            src={user.profilePicture}
-                            alt={`${user.firstName} ${user.lastName}`}
-                            className="profile-picture"
-                        />
-                    </div>
-                )}
                 <Button
                     variant="send"
                     className="button"
@@ -106,7 +100,6 @@ NetworkCard.propTypes = {
     user: PropTypes.shape({
         firstName: PropTypes.string.isRequired,
         lastName: PropTypes.string.isRequired,
-        email: PropTypes.string.isRequired,
         occupation: PropTypes.string.isRequired,
         location: PropTypes.string.isRequired,
         status: PropTypes.string,

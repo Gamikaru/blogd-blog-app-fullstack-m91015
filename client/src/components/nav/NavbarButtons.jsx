@@ -5,12 +5,12 @@ import React, { useCallback } from 'react';
 import { FaFeather, FaSearch, FaUser } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 
-const NavbarButtons = React.memo(({ togglePrivateModal, setShowUserDropdown }) => {
+const NavbarButtons = ({ togglePrivateModal, setShowUserDropdown }) => {
     const handleCreatePost = useCallback(() => {
         togglePrivateModal('post');
     }, [togglePrivateModal]);
 
-    const toggleUserDropdown = useCallback(() => {
+    const toggleUserDropdownHandler = useCallback(() => {
         setShowUserDropdown((prev) => !prev);
     }, [setShowUserDropdown]);
 
@@ -20,9 +20,6 @@ const NavbarButtons = React.memo(({ togglePrivateModal, setShowUserDropdown }) =
                 <NavLink to="/" className="nav-link" end>
                     Home
                 </NavLink>
-                {/* <NavLink to="/admin" className="nav-link">
-                    Admin
-                </NavLink> */}
                 <NavLink to="/network" className="nav-link">
                     Network
                 </NavLink>
@@ -42,20 +39,18 @@ const NavbarButtons = React.memo(({ togglePrivateModal, setShowUserDropdown }) =
             />
             <Button
                 className="user-icon"
-                onClick={toggleUserDropdown}
+                onClick={toggleUserDropdownHandler}
                 aria-label="User menu"
                 variant="iconButton"
                 icon={FaUser}
             />
         </>
     );
-});
-
-NavbarButtons.displayName = 'NavbarButtons';
+};
 
 NavbarButtons.propTypes = {
     togglePrivateModal: PropTypes.func.isRequired,
     setShowUserDropdown: PropTypes.func.isRequired,
 };
 
-export default NavbarButtons;
+export default React.memo(NavbarButtons);

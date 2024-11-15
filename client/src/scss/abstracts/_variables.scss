@@ -78,6 +78,7 @@ $line-height: $base-line-height;
 
 // Responsive Spacing Scale
 $spacing-scale: (
+    xxs: 0.125rem,
     xs: 0.25rem,
     sm: 0.5rem,
     md: 1rem,
@@ -138,6 +139,7 @@ $z-indices: (
 );
 
 // Utility Variables for Responsive Design
+$spacing-xxs: map-get($spacing-scale, xxs);
 $spacing-xs: map-get($spacing-scale, xs);
 $spacing-sm: map-get($spacing-scale, sm);
 $spacing-md: map-get($spacing-scale, md);

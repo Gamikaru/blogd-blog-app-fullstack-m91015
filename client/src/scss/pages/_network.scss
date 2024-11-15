@@ -1,20 +1,109 @@
-// network.scss
-
-@import "../abstracts/_variables.scss";
-@import "../abstracts/_mixins.scss";
-
 /* --------------------------------------------------------------------------
    Network Page Container
 -------------------------------------------------------------------------- */
 .network-page-container {
     padding: $spacing-xxl $spacing-lg;
-    background-color: $secondary-bg-color;
-    min-height: 100vh;
-    margin-top: -6rem; // Adjust as necessary
+    background-color: $primary-bg-color;
     color: $primary-text-color;
+    width: 80vw;
+    margin: 0 auto;
+
+    .filter-search-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: $spacing-lg;
+        margin-bottom: $spacing-lg;
+        margin-top: -15rem;
+
+        .search-container,
+        .filter-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            width: 200px;
+            padding: $spacing-xs $spacing-sm;
+            border: 1px solid $border-color;
+            border-radius: $border-radius;
+            outline: none;
+            transition: width 0.3s ease, opacity 0.3s ease;
+            font-size: $body-font-size;
+            color: $primary-text-color;
+            background-color: $input-bg-color;
+
+            &:focus {
+                border-color: $accent-color-2;
+                box-shadow: 0 0 0 2px rgba($accent-color-2, 0.5);
+            }
+        }
+
+        .filter-dropdown {
+            position: absolute;
+            top: 40px;
+            right: 0;
+            width: 250px;
+            background-color: $secondary-bg-color; // Replaced $dropdown-bg-color
+            border: 1px solid $border-color;
+            border-radius: $border-radius;
+            box-shadow: $box-shadow-medium;
+            padding: $spacing-sm;
+            z-index: 1000;
+
+            .filter-option {
+                margin-bottom: $spacing-xs;
+
+                label {
+                    display: block;
+                    margin-bottom: $spacing-xs;
+                    font-size: $body-font-size;
+                    color: $primary-text-color;
+                }
+
+                input,
+                select {
+                    width: 100%;
+                    padding: $spacing-xs;
+                    border: 1px solid $border-color;
+                    border-radius: $border-radius;
+                    font-size: $body-font-size;
+                    color: $primary-text-color;
+                    background-color: $input-bg-color;
+
+                    &:focus {
+                        border-color: $accent-color-2;
+                        box-shadow: 0 0 0 2px rgba($accent-color-2, 0.5);
+                        outline: none;
+                    }
+                }
+            }
+
+            .filter-actions {
+                display: flex;
+                justify-content: flex-end;
+
+                .button {
+                    padding: $spacing-xs $spacing-sm;
+                    font-size: $body-font-size;
+                    background-color: $button-secondary; // Replaced $reset-button-bg
+                    color: $primary-text-color; // Replaced $reset-button-text
+                    border: none;
+                    border-radius: $border-radius;
+                    cursor: pointer;
+                    transition: background-color 0.3s ease;
+
+                    &:hover {
+                        background-color: darken($button-secondary, 10%);
+                    }
+                }
+            }
+        }
+    }
 
     .grid-container.network-grid {
-        max-width: 1400px;
+        max-width: 80vw;
         margin: 0 auto;
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -28,7 +117,7 @@
 -------------------------------------------------------------------------- */
 .network-card {
     background: linear-gradient(145deg, $secondary-bg-color, darken($secondary-bg-color, 2%));
-    border-radius: clamp(12px, 2vw, 20px);
+    border-radius: 4rem 2rem 4rem 2rem;
     box-shadow:
         0 4px 6px rgba(0, 0, 0, 0.02),
         0 10px 15px rgba(0, 0, 0, 0.03);
@@ -52,13 +141,22 @@
 
         .top-section {
             display: flex;
+            align-items: center;
             gap: $spacing-md;
             margin-bottom: $spacing-lg;
+            position: relative; // Ensure positioning context
+
+            .initials-wrapper {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
 
             .initials-circle {
-                position: relative;
-                width: 70px;
-                height: 70px;
+                width: clamp(80px, 15vw, 120px);  // Responsive width
+                height: clamp(80px, 15vw, 120px); // Responsive height
+                flex-shrink: 0;
                 border-radius: 50%;
                 background: linear-gradient(135deg, $accent-color-2, darken($accent-color-2, 10%));
                 color: $primary-text-color;
@@ -67,10 +165,17 @@
                 justify-content: center;
                 font-size: $heading-font-size-md;
                 font-weight: 600;
-                margin-right: $spacing-md;
                 transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
                 border: 2px solid rgba(255, 255, 255, 0.1);
                 cursor: pointer;
+                overflow: hidden;
+
+                .profile-picture {
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
 
                 .bubble-container {
                     position: absolute;
@@ -79,6 +184,7 @@
                     transform: translateX(-50%);
                     pointer-events: none;
                     overflow: visible;
+                    z-index: 2; // Ensure bubbles are above other elements
                 }
 
                 .bubble {
@@ -108,7 +214,7 @@
                     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                     backdrop-filter: blur(4px);
                     white-space: nowrap;
-                    z-index: 2;
+                    z-index: 3;
                     position: absolute;
                     bottom: 90px;
 
@@ -180,6 +286,10 @@
                 line-height: 1.6;
             }
         }
+
+        .button {
+            margin-top: $spacing-md;
+        }
     }
 }
 
@@ -210,6 +320,12 @@
     .network-page-container {
         padding: $spacing-lg $spacing-md;
 
+        .filter-search-container {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: $spacing-md;
+        }
+
         .grid-container.network-grid {
             grid-template-columns: 1fr;
             gap: $spacing-lg;
@@ -226,9 +342,12 @@
                 align-items: center;
                 text-align: center;
 
+                .initials-wrapper {
+                    margin-bottom: $spacing-md;
+                }
+
                 .initials-circle {
                     margin-right: 0;
-                    margin-bottom: $spacing-md;
                 }
 
                 .user-info {

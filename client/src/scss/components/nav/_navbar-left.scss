@@ -3,7 +3,18 @@
 .navbar-left {
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: 1rem;
+    margin-left: -5rem;
+
+    .navbar-logo-container {
+        .nav-logo-image {
+            width: 2.5rem;
+
+
+
+        }
+
+    }
 
     .hamburger-icon {
         position: relative;
@@ -17,7 +28,7 @@
         background: none;
         border: none;
         padding: 0;
-        margin-left: -4rem;
+        margin-left: 1rem;
 
         .line {
             height: 2px;

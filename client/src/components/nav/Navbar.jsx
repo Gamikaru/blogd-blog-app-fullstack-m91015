@@ -1,27 +1,20 @@
 // src/components/nav/Navbar.jsx
-import { HamburgerMenu, NavbarButtons, PageInfo, UserDropdown } from '@components';
+import { HamburgerMenu, Logo, NavbarButtons, PageInfo, Sidebar, UserDropdown } from '@components';
 import { usePrivateModalContext, useUser, useUserUpdate } from '@contexts';
 import { fetchPostById, UserService } from '@services/api';
 import { logger } from '@utils';
-import { motion } from 'framer-motion';
+import { useAnimation } from 'framer-motion';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import Sidebar from './Sidebar'; // Ensure correct import
+import { CATEGORIES } from '../../constants/categories';
 
-const categories = [
-    'Lifestyle',
-    'Philosophy',
-    'Productivity',
-    'Health & Fitness',
-    'Technology',
-    'Cooking',
-    'Art',
-    'Music',
-    'Business',
-];
+const navbarVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: { opacity: 1, y: 0 },
+};
 
-const Navbar = React.memo(() => {
+const Navbar = () => {
     const { togglePrivateModal } = usePrivateModalContext();
     const [, removeCookie] = useCookies();
     const location = useLocation();
@@ -32,13 +25,20 @@ const Navbar = React.memo(() => {
     const [profileUserName, setProfileUserName] = useState('');
     const [showUserDropdown, setShowUserDropdown] = useState(false);
     const userIconRef = useRef(null);
-
-    // Create a ref for HamburgerMenu
     const hamburgerRef = useRef(null);
+
+    // Animation Controls
+    const controls = useAnimation();
+
+    // Trigger animation on mount only
+    useEffect(() => {
+        controls.start('visible');
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     // Extract postId from URL
     const postId = useMemo(() => {
-        const match = location.pathname.match(/\/blog\/([^/]+)/); // Removed unnecessary escape
+        const match = location.pathname.match(/\/blog\/([^/]+)/);
         return match ? match[1] : null;
     }, [location.pathname]);
 
@@ -48,20 +48,17 @@ const Navbar = React.memo(() => {
 
     const [dropdownPosition, setDropdownPosition] = useState({ top: 0, right: 0 });
 
-    const memoizedCategories = useMemo(() => categories, []);
+    const memoizedCategories = useMemo(() => CATEGORIES, []);
 
-    const generateExcerpt = useCallback(
-        (content) => {
-            return (
-                content
-                    .replace(/<[^>]+>/g, '')
-                    .split(/\s+/)
-                    .slice(0, 30)
-                    .join(' ') + '...'
-            );
-        },
-        []
-    );
+    const generateExcerpt = useCallback((content) => {
+        return (
+            content
+                .replace(/<[^>]+>/g, '')
+                .split(/\s+/)
+                .slice(0, 30)
+                .join(' ') + '...'
+        );
+    }, []);
 
     const fetchPostTitleAndExcerpt = useCallback(
         async (postId) => {
@@ -75,7 +72,7 @@ const Navbar = React.memo(() => {
                 setLoading(false);
             }
         },
-        [generateExcerpt] // Added generateExcerpt to dependencies
+        [generateExcerpt]
     );
 
     useEffect(() => {
@@ -84,10 +81,7 @@ const Navbar = React.memo(() => {
         }
     }, [postId, fetchPostTitleAndExcerpt]);
 
-    const isProfilePage = useMemo(
-        () => location.pathname.startsWith('/profile'),
-        [location.pathname]
-    );
+    const isProfilePage = useMemo(() => location.pathname.startsWith('/profile'), [location.pathname]);
 
     useEffect(() => {
         const fetchProfileUserName = async () => {
@@ -126,45 +120,27 @@ const Navbar = React.memo(() => {
             case '/':
                 return {
                     title: 'Welcome to Blogd.',
-                    subtitle:
-                        'Discover blogs that inspire and educate. Blow your mind, expand your horizons.',
+                    subtitle: 'Discover blogs that inspire and educate. Blow your mind, expand your horizons.',
                 };
-            // case '/admin':
-            //     return {
-            //         title: 'Admin',
-            //         subtitle: 'Manage users and content.',
-            //     };
             case '/network':
                 return {
                     title: 'Network',
-                    subtitle:
-                        'Connect and engage with others.',
+                    subtitle: 'Connect and engage with others.',
                 };
             default:
                 return {
-                    title:
-                        postTitle ||
-                        'Explore our platform',
-                    subtitle:
-                        postExcerpt || '',
+                    title: postTitle || 'Explore our platform',
+                    subtitle: postExcerpt || '',
                 };
         }
     }, [location.pathname, postTitle, postExcerpt, isProfilePage, profileUserId, profileUserName, user]);
 
     useEffect(() => {
-        if (
-            showUserDropdown &&
-            userIconRef.current
-        ) {
-            const rect =
-                userIconRef.current.getBoundingClientRect();
+        if (showUserDropdown && userIconRef.current) {
+            const rect = userIconRef.current.getBoundingClientRect();
             setDropdownPosition({
-                top:
-                    rect.bottom +
-                    window.scrollY,
-                right:
-                    window.innerWidth -
-                    rect.right,
+                top: rect.bottom + window.scrollY,
+                right: window.innerWidth - rect.right,
             });
         }
     }, [showUserDropdown]);
@@ -174,16 +150,10 @@ const Navbar = React.memo(() => {
         removeCookie('BlogdPass', { path: '/' });
         removeCookie('userId', { path: '/' });
         setUser(null);
-        setTimeout(
-            () =>
-                navigate('/login', {
-                    replace: true,
-                }),
-            1000
-        );
+        navigate('/login', { replace: true });
     }, [removeCookie, setUser, navigate]);
 
-    // Define toggle and close functions
+    // Sidebar State and Handlers
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     const handleSidebarToggle = useCallback(() => {
@@ -194,88 +164,62 @@ const Navbar = React.memo(() => {
         setSidebarOpen(false);
     }, []);
 
-    if (
-        ['/login', '/register'].includes(
-            location.pathname
-        ) ||
-        loading
-    )
-        return null;
+    // Close Navbar dropdown when Sidebar is opened
+    useEffect(() => {
+        if (sidebarOpen) {
+            setShowUserDropdown(false);
+        }
+    }, [sidebarOpen]);
 
-    const navbarVariants = {
-        hidden: { opacity: 0, y: -20 },
-        visible: { opacity: 1, y: 0 },
-    };
+    if (['/login', '/register'].includes(location.pathname) || loading) return null;
 
     return (
         <>
-            <motion.header
+            <header
                 className="nav-header"
                 variants={navbarVariants}
                 initial="hidden"
-                animate="visible"
+                animate={controls}
                 transition={{ duration: 0.5 }}
             >
                 <nav className="navbar">
                     <div className="navbar-left">
+
+                        <Logo/>
                         <HamburgerMenu
-                            ref={hamburgerRef} // Attach ref
+                            ref={hamburgerRef}
                             isOpen={sidebarOpen}
-                            handleSidebarToggle={
-                                handleSidebarToggle
-                            }
+                            handleSidebarToggle={handleSidebarToggle}
                         />
                     </div>
 
                     <div className="navbar-right">
                         <NavbarButtons
-                            togglePrivateModal={
-                                togglePrivateModal
-                            }
-                            showUserDropdown={
-                                showUserDropdown
-                            }
-                            setShowUserDropdown={
-                                setShowUserDropdown
-                            }
+                            togglePrivateModal={togglePrivateModal}
+                            setShowUserDropdown={setShowUserDropdown}
                         />
                         <UserDropdown
-                            showDropdown={
-                                showUserDropdown
-                            }
-                            setShowDropdown={
-                                setShowUserDropdown
-                            }
+                            showDropdown={showUserDropdown}
+                            setShowDropdown={setShowUserDropdown}
                             handleLogout={handleLogout}
-                            position={
-                                dropdownPosition
-                            }
+                            position={dropdownPosition}
                             userIconRef={userIconRef}
                         />
                     </div>
                 </nav>
 
-                <PageInfo
-                    welcomeText={
-                        getPageWelcomeText
-                    }
-                    categories={
-                        memoizedCategories
-                    }
-                    location={location}
-                />
-            </motion.header>
+                <PageInfo welcomeText={getPageWelcomeText} categories={memoizedCategories} location={location} />
+            </header>
 
             <Sidebar
                 sidebarOpen={sidebarOpen}
-                toggleSidebar={handleSidebarToggle}
-                handleSidebarClose={handleSidebarClose} // Pass close function
-                hamburgerRef={hamburgerRef} // Pass ref to Sidebar
+                handleSidebarClose={handleSidebarClose}
+                hamburgerRef={hamburgerRef}
             />
         </>
     );
-});
+};
 
 Navbar.displayName = 'Navbar';
 
-export default Navbar;
+export default React.memo(Navbar);
