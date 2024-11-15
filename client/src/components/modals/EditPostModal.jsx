@@ -3,7 +3,6 @@
 
 import { Button } from '@components';
 import { useNotificationContext, usePostContext, usePrivateModalContext } from '@contexts';
-import { deletePostById, updatePostById } from '@services/api';
 import { calculateReadingTime, countWords, logger, validatePostContent } from '@utils';
 import { useEffect, useRef, useState } from "react";
 import Form from "react-bootstrap/Form";
@@ -27,8 +26,8 @@ const categoryOptions = [
 
 export default function EditPostModal() {
     const { showModal, togglePrivateModal, modalType } = usePrivateModalContext();
-    const { posts, setPosts, selectedPost, setSelectedPost, refreshPosts } = usePostContext();
-    const { showNotification } = useNotificationContext(); // Removed 'hideNotification'
+    const { updatePost, selectedPost, setSelectedPost } = usePostContext();
+    const { showNotification } = useNotificationContext();
 
     const [postContent, setPostContent] = useState("");
     const [postTitle, setPostTitle] = useState("");
@@ -37,7 +36,6 @@ export default function EditPostModal() {
     const [selectedFiles, setSelectedFiles] = useState([]);
     const quillRef = useRef(null);
 
-    // **1. Load Existing Post Data into Modal Fields**
     useEffect(() => {
         if (selectedPost) {
             logger.info("Setting post content in modal:", selectedPost.content);
@@ -50,7 +48,6 @@ export default function EditPostModal() {
         }
     }, [selectedPost]);
 
-    // **2. Handle Modal Open/Close State**
     useEffect(() => {
         if (showModal) {
             document.body.classList.add('modal-open');
@@ -63,18 +60,16 @@ export default function EditPostModal() {
         };
     }, [showModal]);
 
-    // **3. Close Modal and Reset Fields**
     const handleModalClose = () => {
         setPostContent("");
         setPostTitle("");
         setCategory("Other");
         setImageUrls("");
         setSelectedFiles([]);
-        setTimeout(() => setSelectedPost(null), 300); // Delay to ensure modal closes first
+        setTimeout(() => setSelectedPost(null), 300);
         togglePrivateModal();
     };
 
-    // **4. Handle Form Submission for Editing Post**
     const handlePostEditSubmit = async (e) => {
         e.preventDefault();
         logger.info("Submitting edited post with content:", postContent);
@@ -85,7 +80,6 @@ export default function EditPostModal() {
             return;
         }
 
-        // **Determine the Correct Post Identifier (postId or _id)**
         const postId = selectedPost.postId || selectedPost._id;
 
         if (!selectedPost || !postId) {
@@ -98,84 +92,36 @@ export default function EditPostModal() {
             formData.append('title', postTitle);
             formData.append('content', postContent);
             formData.append('category', category);
-            formData.append('imageUrls', imageUrls); // If applicable
-            // Include other fields like 'tags', 'status', etc., as needed
+
+            const urlsArray = imageUrls.split(',').map(url => url.trim()).filter(url => url);
+            urlsArray.forEach((url) => {
+                formData.append('imageUrls', url);
+            });
+
             selectedFiles.forEach((file, index) => {
                 formData.append('images', file, `image${index}`);
             });
 
-            // **Optimistic UI Update**
-            const tempPosts = posts.map((p) =>
-                (p.postId === postId || p._id === postId)
-                    ? {
-                        ...p,
-                        content: postContent,
-                        title: postTitle,
-                        category,
-                        imageUrls: imageUrls.split(",").map(url => url.trim()).filter(url => url)
-                    }
-                    : p
-            );
-            setPosts(tempPosts);
+            const { success, message } = await updatePost(postId, formData);
 
-            // **Send Edit Request to Server**
-            const updatedPost = await updatePostById(postId, formData);
-            logger.info("Post updated successfully:", updatedPost);
+            if (success) {
+                showNotification(message || "Post edited successfully!", "success");
+            } else {
+                showNotification("Failed to edit post. Please try again.", "error");
+            }
 
-            // **Update Posts in Context with Server Response**
-            setPosts((prevPosts) =>
-                prevPosts.map((p) =>
-                    (p.postId === postId || p._id === postId)
-                        ? { ...p, ...updatedPost, imageUrls: updatedPost.imageUrls || [] }
-                        : p
-                )
-            );
-
-            // **Notification After Successful Edit**
-            showNotification("Post edited successfully!", "success");
-
-            // **Close the Modal**
             handleModalClose();
 
-            // **Re-fetch Posts to Ensure UI Sync with Server**
-            setTimeout(() => {
-                refreshPosts();  // Delay to avoid overwriting the optimistic update
-            }, 1000);
         } catch (error) {
             logger.error("Failed to edit post:", error);
             showNotification("Failed to edit post. Please try again.", "error");
-            // **Optionally Revert Optimistic Update Here if Needed**
         }
     };
 
-    // **5. Handle File Selection for Images**
     const handleFileChange = (e) => {
         setSelectedFiles(Array.from(e.target.files));
     };
 
-    // **6. Handle Deleting the Post**
-    const handleDeletePost = async () => {
-        if (!selectedPost || !(selectedPost.postId || selectedPost._id)) {
-            showNotification("Invalid post data. Please try again.", "error");
-            return;
-        }
-
-        const postId = selectedPost.postId || selectedPost._id;
-
-        try {
-            await deletePostById(postId);
-            setPosts((prevPosts) =>
-                prevPosts.filter((post) => !(post.postId === postId || post._id === postId))
-            );
-            showNotification('Post deleted successfully!', 'success');
-            handleModalClose();
-        } catch (error) {
-            logger.error("Error deleting post:", error);
-            showNotification('Failed to delete the post. Please try again.', "error");
-        }
-    };
-
-    // **7. Configure ReactQuill Modules and Formats**
     const modules = {
         toolbar: [
             [{ 'header': [1, 2, false] }],
@@ -206,7 +152,6 @@ export default function EditPostModal() {
                 <div className="edit-post-modal__preview">
                     <Modal.Header closeButton className="edit-post-modal__header" />
                     <Form onSubmit={handlePostEditSubmit} className="edit-post-modal__form" id="edit-post-form">
-                        {/* **8. TextArea for Post Title** */}
                         <textarea
                             type="text"
                             value={postTitle}
@@ -216,7 +161,6 @@ export default function EditPostModal() {
                             maxLength={100}
                             required
                         />
-                        {/* **9. ReactQuill Editor for Post Content** */}
                         <ReactQuill
                             ref={quillRef}
                             value={postContent}
@@ -232,7 +176,7 @@ export default function EditPostModal() {
                 <div className="edit-post-modal__sidebar">
                     <h2 className="edit-post-modal__sidebar-title">Edit Post Settings</h2>
 
-                    {/* **10. Category Selection Dropdown (Same as PostModal.jsx)** */}
+                    {/* Category Selection */}
                     <div className="toolbar-group toolbar-group__basics">
                         <h6 className="toolbar-group__title">Category</h6>
                         <div className="toolbar-group__content">
@@ -251,7 +195,7 @@ export default function EditPostModal() {
                         </div>
                     </div>
 
-                    {/* **11. Media Inputs: Image URLs and File Uploads (Same as PostModal.jsx)** */}
+                    {/* Media Inputs */}
                     <div className="toolbar-group toolbar-group__media">
                         <h6 className="toolbar-group__title">Media</h6>
                         <div className="toolbar-group__content">
@@ -321,23 +265,16 @@ export default function EditPostModal() {
                                 type="submit"
                                 className="button button-submit"
                                 form="edit-post-form"
-                                variant="submit" // **Added variant prop**
+                                variant="submit"
                             >
                                 Save Changes
                             </Button>
-                            <Button
-                                type="button"
-                                onClick={handleDeletePost}
-                                className="button button-delete"
-                                variant="delete" // **Added variant prop**
-                            >
-                                Delete Post
-                            </Button>
+
                             <Button
                                 type="button"
                                 onClick={handleModalClose}
                                 className="button button-secondary"
-                                variant="secondary" // **Added variant prop**
+                                variant="close"
                             >
                                 Discard
                             </Button>
@@ -347,4 +284,4 @@ export default function EditPostModal() {
             </div>
         </Modal>
     );
-};
+}

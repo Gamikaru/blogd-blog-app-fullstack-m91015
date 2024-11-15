@@ -42,9 +42,24 @@
 }
 
 // Button Variants
+.button-profile {
+    background-color: $secondary-bg-color;
+    color: $primary-text-color;
+    border: 1px solid $primary-bg-color;
+
+    &:hover {
+        background-color: darken($primary-bg-color, 10%);
+    }
+}
 
 .button-edit {
-    @include button-variant($highlight-color);
+    background-color: $highlight-color;
+    color: #fff;
+    border: 1px solid $highlight-color;
+
+    &:hover {
+        background-color: darken($highlight-color, 10%);
+    }
 }
 
 .button-create {
@@ -65,7 +80,43 @@
 }
 
 .button-delete {
-    @include button-variant($error-color);
+    background-color: $error-color;
+    color: #fff;
+    border: 1px solid $error-color;
+
+    &:hover {
+        background-color: darken($error-color, 10%);
+    }
+}
+
+.button-success {
+    background-color: $success-color;
+    color: #fff;
+    border: 1px solid $success-color;
+
+    &:hover {
+        background-color: darken($success-color, 10%);
+    }
+}
+
+.button-warning {
+    background-color: $warning-color;
+    color: #fff;
+    border: 1px solid $warning-color;
+
+    &:hover {
+        background-color: darken($warning-color, 10%);
+    }
+}
+
+.button-info {
+    background-color: $info-color;
+    color: #fff;
+    border: 1px solid $info-color;
+
+    &:hover {
+        background-color: darken($info-color, 10%);
+    }
 }
 
 // Responsive adjustments for mobile
@@ -79,12 +130,16 @@
     }
 
     // Ensure all button variants take full width on mobile
+    .button-profile,
     .button-edit,
     .button-create,
     .button-post,
     .button-submit,
     .button-login,
-    .button-delete {
+    .button-delete,
+    .button-success,
+    .button-warning,
+    .button-info {
         max-width: 100%; // Override any max-width restrictions
         justify-content: center; // Center align text and icons
     }

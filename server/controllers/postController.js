@@ -272,7 +272,12 @@ export const updatePost = async (req, res) => {
         if (req.body.content) post.content = req.body.content;
         if (req.body.category) post.category = req.body.category;
         if (req.body.imageUrls) {
-            const newUrls = req.body.imageUrls.map(url => url.trim()).filter(Boolean);
+            let newUrls = [];
+            if (Array.isArray(req.body.imageUrls)) {
+                newUrls = req.body.imageUrls.map(url => url.trim()).filter(Boolean);
+            } else if (typeof req.body.imageUrls === 'string') {
+                newUrls = req.body.imageUrls.split(',').map(url => url.trim()).filter(Boolean);
+            }
             post.imageUrls = [...(post.imageUrls || []), ...newUrls];
         }
         if (req.body.tags) post.tags = req.body.tags.map(tag => tag.trim());

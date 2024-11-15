@@ -4,7 +4,7 @@ import { useUserUpdate } from '@contexts';
 import { logger } from '@utils';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useRef } from 'react';
-import { FaCog, FaSignOutAlt } from 'react-icons/fa';
+import { FaSignOutAlt } from 'react-icons/fa';
 
 const Sidebar = React.memo(
     ({ sidebarOpen, handleSidebarClose, hamburgerRef }) => {
@@ -45,11 +45,12 @@ const Sidebar = React.memo(
                 <div className="sidebar-content">
                     <div className="account-options">
                         <Button
-                            className="button button-edit"
                             variant="edit"
+                            // icon={FaCog}
                         >
-                            <FaCog className="icon" /> Settings
+                            Settings
                         </Button>
+
                         <Button
                             className="button button-delete"
                             variant="delete"

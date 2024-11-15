@@ -143,12 +143,10 @@ const LoginPage = () => {
 
                                 <div className="login-submit-container">
                                     <Button
-                                        type="submit"
                                         variant="submit"
-                                        className="button button-submit"
-                                        disabled={loading}
+                                        type="submit"
                                     >
-                                        LOGIN
+                                        Log In
                                     </Button>
                                 </div>
                             </form>

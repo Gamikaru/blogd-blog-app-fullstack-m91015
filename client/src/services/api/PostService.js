@@ -85,13 +85,9 @@ export const createPost = async (formData) => {
 export const updatePostById = async (postId, formData) => {
     logger.info('Updating post with ID:', postId);
     try {
-        const response = await ApiClient.patch(`/post/${postId}`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
+        const response = await ApiClient.patch(`/post/${postId}`, formData);
         logger.info('Updated post successfully with ID:', postId);
-        return response.data.post;
+        return response.data; // Return the full response data
     } catch (error) {
         logger.error('Error updating post with ID:', postId, error);
         throw error;

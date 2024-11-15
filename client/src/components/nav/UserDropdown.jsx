@@ -1,6 +1,6 @@
 // src/components/nav/UserDropdown.jsx
 
-import { Portal } from '@components'; // Removed Button
+import { Button, Portal } from '@components';
 import { usePrivateModalContext, useUser } from '@contexts';
 import { motion } from 'framer-motion'; // Removed AnimatePresence
 import PropTypes from 'prop-types';
@@ -116,17 +116,15 @@ const UserDropdown = React.memo(({ showDropdown, setShowDropdown, handleLogout, 
                             </div>
                         </div>
                         <div className="dropdown-actions">
-                            <motion.button
-                                className="button button-profile"
+                            <Button
+                                variant="profile"
+                                icon={FaUser}
                                 onClick={handleProfileClick}
-                                whileHover={{ y: -1 }}
-                                whileTap={{ scale: 0.98 }}
                             >
-                                <FaUser className="button-icon" />
                                 Profile
-                            </motion.button>
+                            </Button>
                             <motion.button
-                                className="button button-edit"
+                                className="button button-edit" // Use button-profile for Settings
                                 onClick={handleSettingsClick}
                                 whileHover={{ y: -1 }}
                                 whileTap={{ scale: 0.98 }}

@@ -84,19 +84,19 @@ const PostCard = memo(({ posts = [], isOwnProfile }) => {
                                     <div className="action-buttons">
                                         <Button
                                             variant="edit"
-                                            className="button button-edit"
                                             onClick={() => handleEditPostModal(post)}
                                             showIcon={true}
                                             aria-label="Edit post"
+                                            className="button button-edit"
                                         >
                                             Edit
                                         </Button>
                                         <Button
                                             variant="delete"
-                                            className="button button-delete"
                                             onClick={() => confirmDeletePost(post.postId || post._id)}
                                             showIcon={true}
                                             aria-label="Delete post"
+                                            className="button button-delete"
                                         >
                                             Delete
                                         </Button>

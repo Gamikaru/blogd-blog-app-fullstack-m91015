@@ -87,13 +87,17 @@ export const PostProvider = ({ children }) => {
 
     const updatePost = useCallback(async (postId, formData) => {
         try {
-            const updatedPost = await updatePostById(postId, formData);
+            const response = await updatePostById(postId, formData);
+            const updatedPost = response.post;
             const postWithId = { ...updatedPost, postId: updatedPost.postId || updatedPost._id };
             setPosts((prevPosts) =>
                 prevPosts.map((post) => (post.postId === postId ? postWithId : post))
             );
+            // Optionally return success message or updated post
+            return { success: true, message: response.message };
         } catch (error) {
             logger.error('Error updating post:', error);
+            throw error;
         }
     }, []);
 

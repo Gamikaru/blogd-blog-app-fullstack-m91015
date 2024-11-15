@@ -15,12 +15,14 @@
             font-weight: bold;
             color: $primary-text-color;
             margin: 0;
+            margin-left: 5rem; // Maintain the previous left margin for alignment
         }
 
         .page-subtitle {
             font-size: $sub-heading-font-size;
             color: $secondary-text-color;
             margin-top: $spacing-sm;
+            margin-left: 5rem;
         }
     }
 
@@ -30,6 +32,7 @@
         gap: $spacing-md;
         margin-top: $spacing-sm;
         padding-top: $spacing-sm;
+        margin-left: 5rem; // Maintain the previous left margin for alignment
         // border-top: 1px solid $border-color;
 
         .explore-link {

@@ -1,3 +1,5 @@
+// Button.jsx
+
 import clsx from 'clsx';
 import { motion, useReducedMotion } from 'framer-motion';
 import PropTypes from 'prop-types';
@@ -81,6 +83,18 @@ const variantIcons = {
     iconButton: null,
 };
 
+// Mapping button variants to SCSS classes
+const variantClasses = {
+    profile: 'button-profile',
+    edit: 'button-edit',
+    delete: 'button-delete',
+    create: 'button-create',
+    submit: 'button-submit',
+    login: 'button-login',
+    logout: 'button-logout',
+    // Add more mappings as needed
+};
+
 const Button = React.memo(
     ({
         variant = 'submit',
@@ -96,6 +110,7 @@ const Button = React.memo(
     }) => {
         const shouldReduceMotion = useReducedMotion();
 
+        // Determine the icon component to use
         const IconComponent = useMemo(() => icon || variantIcons[variant], [icon, variant]);
 
         return (
@@ -104,10 +119,15 @@ const Button = React.memo(
                 whileTap={!shouldReduceMotion ? { scale: 0.98 } : undefined}
             >
                 <Component
-                    className={clsx('button', `button-${variant}`, theme, {
-                        'icon-only': iconOnly,
-                        filled,
-                    })}
+                    className={clsx(
+                        'button',
+                        variantClasses[variant],
+                        theme,
+                        {
+                            'icon-only': iconOnly,
+                            filled,
+                        }
+                    )}
                     aria-label={ariaLabel || variant}
                     {...props}
                 >
@@ -119,11 +139,10 @@ const Button = React.memo(
     }
 );
 
-//display name:
 Button.displayName = 'Button';
 
 Button.propTypes = {
-    variant: PropTypes.oneOf(Object.keys(variantIcons)),
+    variant: PropTypes.oneOf(Object.keys(variantClasses)),
     children: PropTypes.node,
     icon: PropTypes.elementType,
     showIcon: PropTypes.bool,
