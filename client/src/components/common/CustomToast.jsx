@@ -1,4 +1,6 @@
+// client/src/components/CustomToast.jsx
 import { AnimatePresence, motion } from 'framer-motion';
+import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { FiAlertCircle, FiCheckCircle, FiInfo, FiX } from 'react-icons/fi';
 
@@ -128,5 +130,19 @@ const CustomToast = React.memo(
         );
     }
 );
+
+CustomToast.displayName = 'CustomToast';
+
+CustomToast.propTypes = {
+    message: PropTypes.string.isRequired,
+    show: PropTypes.bool.isRequired,
+    type: PropTypes.oneOf(['success', 'error', 'info', 'warning']),
+    onClose: PropTypes.func.isRequired,
+    delay: PropTypes.number,
+    position: PropTypes.oneOf(['top-right', 'center']),
+    autoClose: PropTypes.bool,
+    onConfirm: PropTypes.func,
+    onCancel: PropTypes.func,
+};
 
 export default CustomToast;

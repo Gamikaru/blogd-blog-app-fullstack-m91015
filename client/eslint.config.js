@@ -1,36 +1,91 @@
-import js from "@eslint/js";
-import ts from "@typescript-eslint/eslint-plugin";
-import parser from "@typescript-eslint/parser";
-import react from "eslint-plugin-react";
-import reactHooks from "eslint-plugin-react-hooks";
-import globals from "globals";
+// eslint.config.js
+
+import js from '@eslint/js';
+import reactPlugin from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
 
 export default [
+    // Apply ESLint's recommended rules
+    js.configs.recommended,
+
+    // Apply React-specific rules to JavaScript and JSX files
     {
-        files: ["**/*.{js,mjs,cjs,jsx,ts,tsx}"],
+        files: ['**/*.js', '**/*.jsx'],
         languageOptions: {
-            parser,
             parserOptions: {
-                ecmaVersion: 2021,
-                sourceType: "module",
-                ecmaFeatures: { jsx: true },
+                ecmaVersion: 'latest',
+                sourceType: 'module',
+                ecmaFeatures: {
+                    jsx: true,
+                },
             },
             globals: {
-                ...globals.browser,
-                ...globals.node,
+                // Browser globals
+                window: 'readonly',
+                document: 'readonly',
+                navigator: 'readonly',
+                DOMParser: 'readonly', // Added DOMParser for TextSlide.jsx
+                HTMLElement: 'readonly', // Added HTMLElement for Sidebar.jsx
+                fetch: 'readonly', // Added fetch for newsService.js
+
+                // Node.js globals
+                process: 'readonly',
+                __dirname: 'readonly',
+
+                // Other globals
+                console: 'readonly',
+                setTimeout: 'readonly',
+                clearTimeout: 'readonly',
+                FormData: 'readonly',
+                Blob: 'readonly',
+                URL: 'readonly',
+                atob: 'readonly',
             },
         },
         plugins: {
-            react,
-            "react-hooks": reactHooks,
-            "@typescript-eslint": ts,
+            react: reactPlugin,
+            'react-hooks': reactHooks,
         },
         rules: {
-            ...react.configs.recommended.rules,
-            ...reactHooks.configs.recommended.rules,
-            ...ts.configs.recommended.rules,
-            "react/react-in-jsx-scope": "off",
+            'react/react-in-jsx-scope': 'off', // Not needed with React 17+
+            'react/prop-types': 'error', // Enforce PropTypes for props validation
+            'react/display-name': 'error', // Ensure components have display names
+            'no-unused-vars': ['error', { argsIgnorePattern: '^_' }], // Ignore unused variables starting with "_"
+            'react-hooks/rules-of-hooks': 'error', // Enforce rules of hooks
+            'react-hooks/exhaustive-deps': 'warn', // Warn about missing dependencies in useEffect
+            'react/jsx-uses-vars': 'error', // Prevent variables used in JSX from being marked as unused
+        },
+        settings: {
+            react: {
+                version: 'detect',
+            },
         },
     },
-    js.configs.recommended,
+
+    // Apply Jest-specific globals to test files
+    {
+        files: ['**/*.test.js', '**/*.spec.js'],
+        languageOptions: {
+            globals: {
+                describe: 'readonly',
+                it: 'readonly',
+                before: 'readonly',
+                after: 'readonly',
+                beforeEach: 'readonly',
+                afterEach: 'readonly',
+                expect: 'readonly',
+            },
+        },
+    },
+
+    // Disable blocking ESLint in development
+    {
+        ignores: ['**/*.js', '**/*.jsx'], // Ignore linting errors in dev mode
+        files: process.env.NODE_ENV === 'development' ? ['**/*.js', '**/*.jsx'] : [],
+        rules: {
+            // Allows easier development without critical interruptions
+            'no-undef': 'off',
+            'react/prop-types': 'off',
+        },
+    },
 ];

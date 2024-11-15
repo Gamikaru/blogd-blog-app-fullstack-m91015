@@ -1,8 +1,9 @@
 // PublicRoute.jsx
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { Spinner } from '@components';
 import { useNotificationContext, useUser } from '@contexts';
 import { logger } from '@utils';
-import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 
 /**
@@ -37,5 +38,11 @@ const PublicRoute = React.memo(({ children }) => {
     logger.info('[PublicRoute] Rendering public route content...');
     return children;
 });
+
+PublicRoute.displayName = 'PublicRoute';
+
+PublicRoute.propTypes = {
+    children: PropTypes.node.isRequired,
+};
 
 export default PublicRoute;

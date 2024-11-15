@@ -5,7 +5,7 @@ dotenv.config(); // Load environment variables first
 
 import mongoose from 'mongoose';
 import { uploadToCloudinary } from '../config/cloudinaryConfig.js'; // Import the function
-import Post from '../models/postSchema.js'; // Adjust the path if necessary
+import Post from '../models/post.js'; // Adjust the path if necessary
 
 /**
  * Process and migrate images from base64 to Cloudinary.

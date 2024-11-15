@@ -4,6 +4,8 @@ import { Button } from '@components';
 import { UserService } from '@services/api';
 import { logger } from '@utils';
 import { Field, Form, Formik } from 'formik';
+import PropTypes from 'prop-types';
+import * as Yup from 'yup';
 
 const NotificationsTab = ({ user, setUser, showNotification, loading, setLoading }) => {
     const notificationInitialValues = {
@@ -16,12 +18,20 @@ const NotificationsTab = ({ user, setUser, showNotification, loading, setLoading
         notificationFrequency: 'immediate'
     };
 
+    const validationSchema = Yup.object({
+        emailUpdates: Yup.boolean(),
+        emailMarketing: Yup.boolean(),
+        emailSecurity: Yup.boolean(),
+        pushComments: Yup.boolean(),
+        pushMessages: Yup.boolean(),
+        pushMentions: Yup.boolean(),
+        notificationFrequency: Yup.string().oneOf(['immediate', 'daily', 'weekly']).required('Notification Frequency is required'),
+    });
+
     const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
         setLoading(true);
-        const formData = { ...values };
-
         try {
-            const updatedUser = await UserService.updateProfile(user.userId, formData);
+            const updatedUser = await UserService.updateProfile(user.userId, values);
             setUser(updatedUser);
             showNotification('Settings updated successfully!', 'success');
         } catch (error) {
@@ -42,9 +52,10 @@ const NotificationsTab = ({ user, setUser, showNotification, loading, setLoading
     return (
         <Formik
             initialValues={notificationInitialValues}
+            validationSchema={validationSchema}
             onSubmit={handleSubmit}
         >
-            {({ isSubmitting }) => (
+            {({ isSubmitting, errors, touched }) => (
                 <Form className="usermanager-content__form">
                     <div className="form-group">
                         <label>Email Notifications</label>
@@ -89,20 +100,40 @@ const NotificationsTab = ({ user, setUser, showNotification, loading, setLoading
                             <option value="daily">Daily</option>
                             <option value="weekly">Weekly</option>
                         </Field>
+                        {errors.notificationFrequency && touched.notificationFrequency && (
+                            <div className="error">{errors.notificationFrequency}</div>
+                        )}
                     </div>
 
                     <Button
                         variant="submit"
                         onClick={handleEditNotifications}
                         className="button button-edit"
-
+                        disabled={isSubmitting || loading}
                     >
                         Save
                     </Button>
+
+                    {errors.general && (
+                        <div className="error general-error">{errors.general}</div>
+                    )}
                 </Form>
             )}
         </Formik>
     );
 };
+
+NotificationsTab.propTypes = {
+    user: PropTypes.shape({
+        userId: PropTypes.string.isRequired,
+        // Add other user properties as needed
+    }).isRequired,
+    setUser: PropTypes.func.isRequired,
+    showNotification: PropTypes.func.isRequired,
+    loading: PropTypes.bool.isRequired,
+    setLoading: PropTypes.func.isRequired,
+};
+
+NotificationsTab.displayName = 'NotificationsTab';
 
 export default NotificationsTab;

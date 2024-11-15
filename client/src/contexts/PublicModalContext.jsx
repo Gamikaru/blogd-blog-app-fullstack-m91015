@@ -1,7 +1,9 @@
 // src/contexts/PublicModalContext.jsx
 
+import PropTypes from 'prop-types';
 import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import logger from '../utils/logger';
+
 
 export const PublicModalContext = createContext();
 
@@ -41,3 +43,11 @@ export const PublicModalProvider = ({ children }) => {
         </PublicModalContext.Provider>
     );
 };
+
+// Define PropTypes for PublicModalProvider
+PublicModalProvider.propTypes = {
+    children: PropTypes.node.isRequired,
+};
+
+
+// src/contexts/PrivateModalContext.jsx

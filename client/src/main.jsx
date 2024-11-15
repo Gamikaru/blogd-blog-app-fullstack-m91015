@@ -1,10 +1,12 @@
 // src/main.jsx
 
-import React from 'react';
+// Remove the React import if it's not used directly
+// import React from 'react'; // Remove this line
+import React from 'react'; // Add this line
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-import Providers from './Providers'; // Adjust the import path if necessary
+import Providers from './Providers';
 
 // Import styles
 import 'bootstrap/scss/bootstrap.scss';
@@ -17,7 +19,7 @@ const container = document.getElementById('root');
 // Create a root.
 const root = ReactDOM.createRoot(container);
 
-// In your main index.js or App.jsx
+// Unregister any existing service workers
 navigator.serviceWorker.getRegistrations().then((registrations) => {
     registrations.forEach((registration) => {
         registration.unregister();

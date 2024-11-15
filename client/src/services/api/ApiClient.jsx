@@ -7,7 +7,7 @@ const cookies = new Cookies();
 
 // Create an Axios instance with a base URL for your API
 const ApiClient = axios.create({
-    baseURL: 'http://localhost:5050', // Ensure this is correct based on your environment (update for production)
+    baseURL: 'http://localhost:5050/api', // Ensure this is correct based on your environment (update for production)
     headers: {
         'Content-Type': 'application/json', // Set default headers for JSON API requests
     },

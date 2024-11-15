@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { forwardRef, memo, useMemo } from 'react';
 
 const InputField = forwardRef(
@@ -55,5 +56,19 @@ const InputField = forwardRef(
         );
     }
 );
+InputField.propTypes = {
+    label: PropTypes.string,
+    value: PropTypes.string,
+    onChange: PropTypes.func,
+    onBlur: PropTypes.func,
+    onKeyDown: PropTypes.func,
+    error: PropTypes.string,
+    helperText: PropTypes.string,
+    placeholder: PropTypes.string,
+    type: PropTypes.string,
+    className: PropTypes.string,
+    style: PropTypes.object,
+};
+InputField.displayName = 'InputField';
 
 export default memo(InputField);

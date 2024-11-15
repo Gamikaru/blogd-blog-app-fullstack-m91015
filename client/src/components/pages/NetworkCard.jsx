@@ -1,4 +1,5 @@
 // NetworkUserCard.jsx
+import PropTypes from 'prop-types'; // Import PropTypes
 import { Button } from '@components';
 import { motion } from "framer-motion";
 import { memo, useMemo, useState } from 'react';
@@ -96,5 +97,21 @@ const NetworkCard = memo(({ user }) => {
         </Card>
     );
 });
+
+// Define displayName for the memoized component
+NetworkCard.displayName = 'NetworkCard';
+
+// Define PropTypes for the component
+NetworkCard.propTypes = {
+    user: PropTypes.shape({
+        firstName: PropTypes.string.isRequired,
+        lastName: PropTypes.string.isRequired,
+        email: PropTypes.string.isRequired,
+        occupation: PropTypes.string.isRequired,
+        location: PropTypes.string.isRequired,
+        status: PropTypes.string,
+        profilePicture: PropTypes.string,
+    }).isRequired,
+};
 
 export default NetworkCard;

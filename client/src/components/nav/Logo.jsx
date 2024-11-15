@@ -16,3 +16,5 @@ const Logo = React.memo(() => (
 ));
 
 export default Logo;
+
+Logo.displayName = 'Logo';

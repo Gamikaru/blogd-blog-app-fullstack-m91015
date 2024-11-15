@@ -1,6 +1,7 @@
 // src/components/Spinner/Spinner.jsx
 
 import { motion } from 'framer-motion';
+import PropTypes from 'prop-types';
 import React from 'react';
 import BlogdGraphic from '../../../public/assets/images/Icon-Only-Black.png';
 
@@ -24,7 +25,6 @@ const Spinner = React.memo(({ size = '60px', message = 'Loading...' }) => {
                         repeat: Infinity,
                         duration: 3,
                         ease: 'easeInOut',
-                        yoyo: Infinity, // Deprecated in newer versions, use repeatType
                         repeatType: 'mirror',
                     },
                     opacity: {
@@ -39,5 +39,12 @@ const Spinner = React.memo(({ size = '60px', message = 'Loading...' }) => {
         </div>
     );
 });
+
+Spinner.displayName = 'Spinner';
+
+Spinner.propTypes = {
+    size: PropTypes.string,
+    message: PropTypes.string,
+};
 
 export default Spinner;

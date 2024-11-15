@@ -2,7 +2,7 @@
 
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import User from '../models/userSchema.js'; // Adjust the path if needed
+import User from '../models/user.js'; // Adjust the path if needed
 
 dotenv.config();
 

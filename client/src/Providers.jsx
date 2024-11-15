@@ -8,6 +8,10 @@ import {
     UserProvider,
 } from '@contexts';
 
+import PropTypes from 'prop-types';
+
+
+
 const Providers = ({ children }) => (
     <NotificationProvider>
         <PublicModalProvider>
@@ -19,5 +23,9 @@ const Providers = ({ children }) => (
         </PublicModalProvider>
     </NotificationProvider>
 );
+
+Providers.propTypes = {
+    children: PropTypes.node.isRequired,
+};
 
 export default Providers;

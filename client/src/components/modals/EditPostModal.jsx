@@ -4,7 +4,7 @@
 import { Button } from '@components';
 import { useNotificationContext, usePostContext, usePrivateModalContext } from '@contexts';
 import { deletePostById, updatePostById } from '@services/api';
-import { calculateReadingTime, countWords, logger, validatePostContent } from '@utils'; // **Added calculateReadingTime, countWords, sanitizeContent**
+import { calculateReadingTime, countWords, logger, validatePostContent } from '@utils';
 import { useEffect, useRef, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
@@ -28,7 +28,7 @@ const categoryOptions = [
 export default function EditPostModal() {
     const { showModal, togglePrivateModal, modalType } = usePrivateModalContext();
     const { posts, setPosts, selectedPost, setSelectedPost, refreshPosts } = usePostContext();
-    const { showNotification, hideNotification } = useNotificationContext();
+    const { showNotification } = useNotificationContext(); // Removed 'hideNotification'
 
     const [postContent, setPostContent] = useState("");
     const [postTitle, setPostTitle] = useState("");

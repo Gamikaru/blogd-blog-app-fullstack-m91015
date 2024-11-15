@@ -8,6 +8,8 @@ import AccountTab from './AccountTab';
 import NotificationsTab from './NotificationsTab';
 import ProfileTab from './ProfileTab';
 import SecurityTab from './SecurityTab';
+import PropTypes from 'prop-types';
+
 
 const tabs = [
     { id: 'profile', label: 'Profile', icon: <FiUser /> },
@@ -119,6 +121,10 @@ const UserManager = ({ onClose }) => {
             </motion.div>
         </AnimatePresence>
     );
+};
+
+UserManager.propTypes = {
+    onClose: PropTypes.func.isRequired, // Declare that onClose is a required function prop
 };
 
 export default UserManager;

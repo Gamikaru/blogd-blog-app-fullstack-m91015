@@ -1,5 +1,6 @@
 // src/contexts/PrivateModalContext.jsx
 
+import PropTypes from 'prop-types';
 import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import logger from '../utils/logger';
 
@@ -41,3 +42,9 @@ export const PrivateModalProvider = ({ children }) => {
         </PrivateModalContext.Provider>
     );
 };
+
+PrivateModalProvider.propTypes = {
+    children: PropTypes.node.isRequired,
+};
+
+

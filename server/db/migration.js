@@ -1,7 +1,7 @@
 // migratePosts.js
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import Post from '../models/postSchema.js'; // Adjust the path as needed
+import Post from '../models/post.js'; // Adjust the path as needed
 
 dotenv.config();
 

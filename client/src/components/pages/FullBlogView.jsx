@@ -3,7 +3,7 @@
 import { Button, Spinner } from '@components';
 import { fetchPostById } from '@services/api';
 import { logger } from '@utils';
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 const FullBlogView = () => {
     const { id } = useParams();
@@ -12,22 +12,22 @@ const FullBlogView = () => {
     const [error, setError] = useState(null);
     const [commentTexts, setCommentTexts] = useState({});
 
-    useEffect(() => {
-        logger.info(`Fetching post with ID: ${id}`);
-        fetchPost();
-    }, [id]);
-
-    const fetchPost = async () => {
+    const fetchPost = useCallback(async () => {
         try {
             const fetchedPost = await fetchPostById(id);
             setPost(fetchedPost);
             setLoading(false);
         } catch (error) {
-            logger.error("Error fetching post:", error);
-            setError("Failed to fetch post");
+            logger.error('Error fetching post:', error);
+            setError('Failed to fetch post');
             setLoading(false);
         }
-    };
+    }, [id]);
+
+    useEffect(() => {
+        logger.info(`Fetching post with ID: ${id}`);
+        fetchPost();
+    }, [id, fetchPost]);
 
     const handleCommentChange = (postId, commentText) => {
         setCommentTexts((prevCommentTexts) => ({

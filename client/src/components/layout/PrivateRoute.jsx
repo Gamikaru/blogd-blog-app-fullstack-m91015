@@ -1,8 +1,8 @@
 // src/components/PrivateRoute.jsx
-
 import { Spinner } from '@components';
 import { useUser } from '@contexts';
 import { logger } from '@utils';
+import PropTypes from 'prop-types';
 import { Navigate } from 'react-router-dom';
 
 /**
@@ -23,6 +23,12 @@ const PrivateRoute = ({ children }) => {
 
     logger.info('[PrivateRoute] User authenticated. Rendering children...');
     return children;
+};
+
+PrivateRoute.displayName = 'PrivateRoute';
+
+PrivateRoute.propTypes = {
+    children: PropTypes.node.isRequired,
 };
 
 export default PrivateRoute;

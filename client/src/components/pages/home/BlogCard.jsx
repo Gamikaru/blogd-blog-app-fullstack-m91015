@@ -17,20 +17,19 @@ const cardVariants = {
             ease: 'easeOut',
         },
     },
-};
-
-const likeButtonVariants = {
-    tap: { scale: 0.9 },
-};
-
-const hoverVariants = {
     hover: {
         scale: 1.02,
         boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.1)',
     },
 };
 
-const BlogCard = memo(({ post, author, cookie }) => {
+// Remove hoverVariants since it's merged into cardVariants
+
+const likeButtonVariants = {
+    tap: { scale: 0.9 },
+};
+
+const BlogCard = memo(function BlogCard({ post, author, cookie }) {
     const navigate = useNavigate();
     const { like, unlike } = usePostContext();
 
@@ -133,6 +132,8 @@ const BlogCard = memo(({ post, author, cookie }) => {
         </motion.div>
     );
 });
+
+BlogCard.displayName = 'BlogCard';
 
 BlogCard.propTypes = {
     post: PropTypes.shape({

@@ -1,17 +1,12 @@
 import { Blogs, CubeSlider, Spinner } from '@components';
 import { useUser } from '@contexts/UserContext';
-import { Suspense, useState } from 'react';
+import { Suspense } from 'react';
 
 const HomePage = () => {
-    const { user, loading: userLoading } = useUser();
-    const [error, setError] = useState(null);
+    const { loading: userLoading } = useUser();
 
     if (userLoading) {
         return <Spinner message="Loading..." />;
-    }
-
-    if (error) {
-        return <p className="error-message">{error}</p>;
     }
 
     return (
@@ -19,7 +14,7 @@ const HomePage = () => {
             <CubeSlider />
             <div className="page-container">
                 <section id="blogs-section" className="blogs-section">
-                    <Suspense fallback={<Spinner message="Loading blog posts..." />}>
+                    <Suspense fallback={<Spinner message="Loading blogs..." />}>
                         <Blogs />
                     </Suspense>
                 </section>

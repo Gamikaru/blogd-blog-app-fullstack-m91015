@@ -1,5 +1,6 @@
 // src/contexts/PostContext.jsx
 
+import PropTypes from 'prop-types'; // Import prop-Types
 import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import {
     createPost,
@@ -171,4 +172,8 @@ export const PostProvider = ({ children }) => {
     );
 
     return <PostContext.Provider value={contextValue}>{children}</PostContext.Provider>;
+};
+
+PostProvider.propTypes = {
+    children: PropTypes.node.isRequired,
 };

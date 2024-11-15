@@ -2,6 +2,7 @@
 
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
+import logger from '../utils/logger.js';
 
 dotenv.config();
 
@@ -12,13 +13,13 @@ export const authenticate = (req, res, next) => {
     const { authorization } = req.headers;
 
     if (!authorization) {
-        console.error('Authentication Failed: No token provided');
+        logger.error('Authentication Failed: No token provided', { ip: req.ip });
         return res.status(401).json({ message: 'No token provided' });
     }
 
     const parts = authorization.split(' ');
     if (parts[0] !== 'Bearer' || parts.length !== 2) {
-        console.error('Authentication Failed: Invalid token format');
+        logger.error('Authentication Failed: Invalid token format', { ip: req.ip, authorization });
         return res.status(401).json({ message: 'Invalid token format' });
     }
 
@@ -29,7 +30,7 @@ export const authenticate = (req, res, next) => {
 
         // Check if the decoded token has the required fields
         if (!decodedToken.userId || !decodedToken.email || !decodedToken.authLevel) {
-            console.error('Token payload missing required fields');
+            logger.error('Token payload missing required fields', { token: decodedToken, ip: req.ip });
             return res.status(400).json({ message: 'Invalid token payload' });
         }
 
@@ -39,15 +40,15 @@ export const authenticate = (req, res, next) => {
             authLevel: decodedToken.authLevel,
         };
 
-        console.log('User authenticated successfully with user ID:', req.user.userId);
+        logger.info('User authenticated successfully', { userId: req.user.userId, ip: req.ip });
 
         next();
     } catch (err) {
         if (err.name === 'TokenExpiredError') {
-            console.error('Token expired:', err.message);
+            logger.error('Token expired', { message: err.message, ip: req.ip });
             return res.status(403).json({ message: 'Token expired, please log in again' });
         }
-        console.error('Invalid token:', err.message);
+        logger.error('Invalid token', { message: err.message, ip: req.ip });
         return res.status(403).json({ message: 'Invalid token' });
     }
 };

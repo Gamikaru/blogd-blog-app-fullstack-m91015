@@ -144,9 +144,9 @@ Codeblogs/
 │   ├── middleware/
 │   │   └── authMiddleware.js
 │   ├── models/
-│   │   ├── userSchema.js
-│   │   ├── postSchema.js
-│   │   └── sessionSchema.js
+│   │   ├── user.js
+│   │   ├── post.js
+│   │   └── session.js
 │   ├── routes/
 │   │   ├── userRoutes.js
 │   │   ├── postRoutes.js

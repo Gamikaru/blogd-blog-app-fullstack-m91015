@@ -1,11 +1,11 @@
-// models/postSchema.js
+// models/post.js
 
 import mongoose from 'mongoose';
-import { validCategories } from '../middleware/validationMiddleware.js'; // Import the centralized categories
+import { validCategories } from '../validators/postValidators.js';
 
 const { Schema, model } = mongoose;
 
-const postSchema = new Schema(
+const post = new Schema(
     {
         title: {
             type: String,
@@ -69,23 +69,19 @@ const postSchema = new Schema(
     },
     {
         timestamps: true,
-        toJSON: { virtuals: true }, // Include virtuals when converting to JSON
+        toJSON: { virtuals: true },
         toObject: { virtuals: true },
     }
 );
 
-/**
- * Middleware to generate slug.
- */
-postSchema.pre('save', async function (next) {
+// Middleware to generate slug
+post.pre('save', async function (next) {
     if (this.isModified('title')) {
-        // Generate slug based on title
         this.slug = this.title
             .toLowerCase()
             .replace(/[^a-z0-9]+/g, '-')
             .replace(/(^-|-$)+/g, '');
 
-        // Ensure slug is unique
         const existingPost = await this.constructor.findOne({
             slug: this.slug,
             _id: { $ne: this._id },
@@ -99,10 +95,10 @@ postSchema.pre('save', async function (next) {
 });
 
 // Virtual field for excerpt
-postSchema.virtual('excerpt').get(function () {
-    const strippedContent = this.content.replace(/(<([^>]+)>)/gi, ''); // Strip HTML tags
+post.virtual('excerpt').get(function () {
+    const strippedContent = this.content.replace(/(<([^>]+)>)/gi, '');
     const words = strippedContent.split(' ').slice(0, 40).join(' ');
     return words + (strippedContent.split(' ').length > 40 ? '...' : '');
 });
 
-export default model('Post', postSchema);
+export default model('Post', post);

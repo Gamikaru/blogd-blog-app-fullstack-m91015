@@ -1,7 +1,7 @@
 // src/App.jsx
 
 import {
-    Admin,
+    // Admin,
     AppLayout,
     ErrorBoundary,
     FullBlogView,
@@ -49,7 +49,7 @@ const App = () => {
                             }
                         >
                             <Route path="/" element={<HomePage />} />
-                            <Route path="/admin" element={<Admin />} />
+                            {/* <Route path="/admin" element={<Admin />} /> */}
                             <Route path="/network" element={<Network />} />
                             <Route path="/blog/:id" element={<FullBlogView />} />
                             <Route path="/profile" element={<UserProfile />} />

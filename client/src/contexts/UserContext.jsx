@@ -1,5 +1,6 @@
 // src/contexts/UserContext.jsx
 
+import PropTypes from 'prop-types'; // Import PropTypes
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import Cookies from 'universal-cookie';
 import UserService from '../services/api/UserService';
@@ -35,10 +36,9 @@ export const UserProvider = ({ children }) => {
     const [users, setUsers] = useState([]);
     const [error, setError] = useState(null);
 
-    const fetchUserData = async (userId, token) => {
+    const fetchUserData = async (userId) => {
         try {
             const fetchedUser = await UserService.fetchUserById(userId);
-            // Map Mongoose _id to userId if userId doesn't exist
             const userWithId = {
                 ...fetchedUser,
                 userId: fetchedUser.userId || fetchedUser._id,
@@ -48,7 +48,6 @@ export const UserProvider = ({ children }) => {
         } catch (error) {
             logger.error('UserContext: Error fetching user data', error);
             setUser(null);
-            // Optionally handle token invalidation here
         }
     };
 
@@ -63,7 +62,7 @@ export const UserProvider = ({ children }) => {
                 return;
             }
 
-            await fetchUserData(userId, token);
+            await fetchUserData(userId);
             setLoading(false);
         };
 
@@ -79,12 +78,11 @@ export const UserProvider = ({ children }) => {
 
             try {
                 setLoading(true);
-                // Use userId or fallback to _id
                 const currentUserId = user.userId || user._id;
                 const usersData = await UserService.fetchUsersExcept(currentUserId);
                 setUsers(usersData);
                 logger.info('UserContext: Fetched users excluding current user');
-            } catch (error) {
+            } catch (error) { // Unused error, prefix or remove
                 setError("Failed to fetch users");
                 logger.error('UserContext: FetchData error', error);
             } finally {
@@ -149,8 +147,9 @@ export const UserProvider = ({ children }) => {
             });
             logger.info('UserContext: User updated successfully');
             return { success: true };
-        } catch (error) {
-            // Handle error
+        } catch {
+            logger.error('UserContext: Error updating user');
+            return { success: false };
         }
     };
 
@@ -170,4 +169,8 @@ export const UserProvider = ({ children }) => {
     );
 
     return <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>;
+};
+
+UserProvider.propTypes = {
+    children: PropTypes.node.isRequired,
 };

@@ -1,4 +1,4 @@
-// middleware/validationMiddleware.js
+// src/validators/postValidators.js
 
 import { body, validationResult } from 'express-validator';
 
@@ -20,6 +20,17 @@ export const validCategories = [
 ];
 
 /**
+ * Error handling middleware for validation.
+ */
+export const handleValidationErrors = (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+};
+
+/**
  * Middleware to validate post creation data.
  */
 export const validatePostCreation = [
@@ -38,14 +49,7 @@ export const validatePostCreation = [
         .optional()
         .isArray().withMessage('Tags must be an array')
         .custom((tags) => tags.every(tag => typeof tag === 'string')).withMessage('Each tag must be a string'),
-    // Add more validations as needed
-    (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
-        next();
-    },
+    handleValidationErrors,
 ];
 
 /**
@@ -70,12 +74,5 @@ export const validatePostUpdate = [
         .optional()
         .isArray().withMessage('Tags must be an array')
         .custom((tags) => tags.every(tag => typeof tag === 'string')).withMessage('Each tag must be a string'),
-    // Add more validations as needed
-    (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
-        next();
-    },
+    handleValidationErrors,
 ];

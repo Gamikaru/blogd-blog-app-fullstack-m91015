@@ -1,15 +1,11 @@
 // client/src/components/nav/NavbarButtons.jsx
 import { Button } from '@components';
+import PropTypes from 'prop-types';
 import React, { useCallback } from 'react';
 import { FaFeather, FaSearch, FaUser } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 
-const NavbarButtons = React.memo(({ togglePrivateModal, showUserDropdown, setShowUserDropdown }) => {
-    const iconVariants = {
-        hover: { scale: 1.1 },
-        tap: { scale: 0.95 },
-    };
-
+const NavbarButtons = React.memo(({ togglePrivateModal, setShowUserDropdown }) => {
     const handleCreatePost = useCallback(() => {
         togglePrivateModal('post');
     }, [togglePrivateModal]);
@@ -24,9 +20,9 @@ const NavbarButtons = React.memo(({ togglePrivateModal, showUserDropdown, setSho
                 <NavLink to="/" className="nav-link" end>
                     Home
                 </NavLink>
-                <NavLink to="/admin" className="nav-link">
+                {/* <NavLink to="/admin" className="nav-link">
                     Admin
-                </NavLink>
+                </NavLink> */}
                 <NavLink to="/network" className="nav-link">
                     Network
                 </NavLink>
@@ -54,5 +50,12 @@ const NavbarButtons = React.memo(({ togglePrivateModal, showUserDropdown, setSho
         </>
     );
 });
+
+NavbarButtons.displayName = 'NavbarButtons';
+
+NavbarButtons.propTypes = {
+    togglePrivateModal: PropTypes.func.isRequired,
+    setShowUserDropdown: PropTypes.func.isRequired,
+};
 
 export default NavbarButtons;

@@ -1,5 +1,7 @@
+// src/components/ErrorBoundary.jsx
 import { Button } from '@components';
 import { logger } from '@utils';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 class ErrorBoundary extends React.PureComponent {
@@ -31,6 +33,7 @@ class ErrorBoundary extends React.PureComponent {
 
     render() {
         const { hasError, error, errorInfo } = this.state;
+        const { children } = this.props;
 
         if (hasError) {
             return (
@@ -55,8 +58,14 @@ class ErrorBoundary extends React.PureComponent {
             );
         }
 
-        return this.props.children;
+        return children;
     }
 }
+
+ErrorBoundary.displayName = 'ErrorBoundary';
+
+ErrorBoundary.propTypes = {
+    children: PropTypes.node.isRequired,
+};
 
 export default ErrorBoundary;

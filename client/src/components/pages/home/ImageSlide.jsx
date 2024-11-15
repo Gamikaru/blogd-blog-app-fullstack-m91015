@@ -108,4 +108,6 @@ ImageSlide.propTypes = {
     swiperProps: PropTypes.object.isRequired,
 };
 
+ImageSlide.displayName = 'ImageSlide';
+
 export default ImageSlide;

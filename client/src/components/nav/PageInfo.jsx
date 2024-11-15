@@ -1,5 +1,6 @@
 // client/src/components/nav/PageInfo.jsx
 import { motion } from "framer-motion";
+import PropTypes from 'prop-types';
 import React from "react";
 import { NavLink } from "react-router-dom";
 
@@ -40,5 +41,18 @@ const PageInfo = React.memo(({ welcomeText, categories, location }) => {
         </div>
     );
 });
+
+PageInfo.displayName = 'PageInfo';
+
+PageInfo.propTypes = {
+    welcomeText: PropTypes.shape({
+        title: PropTypes.string.isRequired,
+        subtitle: PropTypes.string,
+    }).isRequired,
+    categories: PropTypes.arrayOf(PropTypes.string).isRequired,
+    location: PropTypes.shape({
+        pathname: PropTypes.string.isRequired,
+    }).isRequired,
+};
 
 export default PageInfo;

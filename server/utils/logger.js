@@ -1,17 +1,31 @@
 // src/utils/logger.js
 
 import fs from 'fs';
-import path from 'path';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
 import { createLogger, format, transports } from 'winston';
+import 'winston-daily-rotate-file';
+
+// Resolving __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Ensure log directory exists
-const logDir = path.join(process.cwd(), 'logs');
+const logDir = path.join(__dirname, '..', '..', 'logs');
 if (!fs.existsSync(logDir)) {
-    fs.mkdirSync(logDir);
+    fs.mkdirSync(logDir, { recursive: true });
 }
 
+const dailyRotateFileTransport = new transports.DailyRotateFile({
+    filename: path.join(logDir, '%DATE%-combined.log'),
+    datePattern: 'YYYY-MM-DD',
+    zippedArchive: true,
+    maxSize: '20m',
+    maxFiles: '14d',
+});
+
 const logger = createLogger({
-    level: process.env.NODE_ENV === 'production' ? 'error' : 'info',
+    level: process.env.LOG_LEVEL || (process.env.NODE_ENV === 'production' ? 'error' : 'info'),
     format: format.combine(
         format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
         format.errors({ stack: true }),
@@ -28,7 +42,7 @@ const logger = createLogger({
             ),
         }),
         new transports.File({ filename: path.join(logDir, 'error.log'), level: 'error' }),
-        new transports.File({ filename: path.join(logDir, 'combined.log') }),
+        dailyRotateFileTransport,
     ],
     exceptionHandlers: [
         new transports.File({ filename: path.join(logDir, 'exceptions.log') }),
@@ -36,6 +50,7 @@ const logger = createLogger({
     rejectionHandlers: [
         new transports.File({ filename: path.join(logDir, 'rejections.log') }),
     ],
+    exitOnError: false, // Do not exit on handled exceptions
 });
 
 export default logger;

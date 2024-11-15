@@ -1,3 +1,4 @@
+// client/src/components/nav/Sidebar.jsx
 import { Button, Portal } from '@components';
 import { useUserUpdate } from '@contexts';
 import { logger } from '@utils';
@@ -6,24 +7,16 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { FaCog, FaSignOutAlt } from 'react-icons/fa';
 
 const Sidebar = React.memo(
-    ({ sidebarOpen, toggleSidebar, handleSidebarClose, hamburgerRef }) => {
+    ({ sidebarOpen, handleSidebarClose, hamburgerRef }) => {
         const sidebarRef = useRef(null);
         const setUser = useUserUpdate();
 
         const handleClickOutside = useCallback(
             (event) => {
-                const clickedInsideSidebar = sidebarRef.current?.contains(
-                    event.target
-                );
-                const clickedOnHamburger =
-                    hamburgerRef.current?.contains(
-                        event.target
-                    );
+                const clickedInsideSidebar = sidebarRef.current?.contains(event.target);
+                const clickedOnHamburger = hamburgerRef.current?.contains(event.target);
 
-                if (
-                    !clickedInsideSidebar &&
-                    !clickedOnHamburger
-                ) {
+                if (!clickedInsideSidebar && !clickedOnHamburger) {
                     handleSidebarClose();
                 }
             },
@@ -32,21 +25,12 @@ const Sidebar = React.memo(
 
         useEffect(() => {
             if (sidebarOpen) {
-                document.addEventListener(
-                    'mousedown',
-                    handleClickOutside
-                );
+                document.addEventListener('mousedown', handleClickOutside);
             } else {
-                document.removeEventListener(
-                    'mousedown',
-                    handleClickOutside
-                );
+                document.removeEventListener('mousedown', handleClickOutside);
             }
             return () => {
-                document.removeEventListener(
-                    'mousedown',
-                    handleClickOutside
-                );
+                document.removeEventListener('mousedown', handleClickOutside);
             };
         }, [sidebarOpen, handleClickOutside]);
 
@@ -57,12 +41,7 @@ const Sidebar = React.memo(
         }, [setUser, handleSidebarClose]);
 
         const sidebarContent = (
-            <div
-                className={`sidebar ${
-                    sidebarOpen ? 'open' : ''
-                }`}
-                ref={sidebarRef}
-            >
+            <div className={`sidebar ${sidebarOpen ? 'open' : ''}`} ref={sidebarRef}>
                 <div className="sidebar-content">
                     <div className="account-options">
                         <Button
@@ -87,11 +66,14 @@ const Sidebar = React.memo(
     }
 );
 
+Sidebar.displayName = 'Sidebar';
+
 Sidebar.propTypes = {
     sidebarOpen: PropTypes.bool.isRequired,
-    toggleSidebar: PropTypes.func.isRequired,
     handleSidebarClose: PropTypes.func.isRequired,
-    hamburgerRef: PropTypes.object.isRequired, // New prop
+    hamburgerRef: PropTypes.shape({
+        current: PropTypes.instanceOf(window.HTMLElement),
+    }).isRequired,
 };
 
 export default Sidebar;

@@ -17,7 +17,7 @@ class UserService {
      * @param {string} userId
      * @param. {string} status
      */
-    static async updateUserStatus(userId, status)  {
+    static async updateUserStatus(userId, status) {
         logger.info(`UserService: Updating status for user ID: ${userId}`);
         try {
             const response = await ApiClient.put(
@@ -44,7 +44,7 @@ class UserService {
             Object.keys(userData).forEach((key) => {
                 if (userData[key]) {
                     formData.append(key,
-                     userData[key]);
+                        userData[key]);
                 }
             });
             if (userData.profilePicture) {
@@ -55,7 +55,7 @@ class UserService {
                 formData.append('coverPhoto', userData.coverPhoto);
             }
 
-            const response = await ApiClient.post("/user/register", formData, {
+            const response = await ApiClient.post("/auth/register", formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
             logger.info('UserService: User registered successfully');
@@ -73,7 +73,7 @@ class UserService {
     static async loginUser(loginData) {
         logger.info('UserService: Logging in user');
         try {
-            const response = await ApiClient.post("/user/login", loginData);
+            const response = await ApiClient.post("/auth/login", loginData);
             logger.info('UserService: User logged in successfully');
             return response.data; // Expected to return { token, user }
         } catch (error) {
@@ -89,7 +89,7 @@ class UserService {
     static async sendPasswordResetEmail(email) {
         logger.info(`UserService: Sending password reset email to ${email}`);
         try {
-            const response = await ApiClient.post("/user/forgot-password", { email });
+            const response = await ApiClient.post("/auth/forgot-password", { email });
             logger.info('UserService: Password reset email sent');
             return response.data;
         } catch (error) {
@@ -106,7 +106,7 @@ class UserService {
     static async resetPassword(token, newPassword) {
         logger.info('UserService: Resetting password');
         try {
-            const response = await ApiClient.post("/user/reset-password", { token, newPassword });
+            const response = await ApiClient.post("/auth/reset-password", { token, newPassword });
             logger.info('UserService: Password reset successfully');
             return response.data;
         } catch (error) {
@@ -240,7 +240,7 @@ class UserService {
     static async logoutUser() {
         logger.info('UserService: Logging out user');
         try {
-            const response = await ApiClient.post("/user/logout", {}, {
+            const response = await ApiClient.post("/auth/logout", {}, {
                 headers: this.getAuthHeaders(),
             });
             logger.info('UserService: User logged out successfully');

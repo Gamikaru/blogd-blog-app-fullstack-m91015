@@ -1,17 +1,17 @@
 // src/components/modals/user-manager/ProfileTab.jsx
 
+import { Button } from '@components';
 import { UserService } from '@services/api';
 import { logger } from '@utils';
-import { ErrorMessage, Field, Form, Formik } from 'formik';
-import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { Field, Form, Formik } from 'formik';
+import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
-
-
-const ProfileTab = ({ user, setUser, showNotification }) => {
+const ProfileTab = ({ user, setUser, showNotification, loading }) => {
     const navigate = useNavigate(); // Initialize useNavigate
-    // Remove loading state from props and manage locally if needed
+    const [localLoading, setLocalLoading] = useState(false);
 
     const profileInitialValues = {
         firstName: user?.firstName || '',
@@ -40,19 +40,32 @@ const ProfileTab = ({ user, setUser, showNotification }) => {
     });
 
     const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
+        setLocalLoading(true);
         try {
-            await UserService.updateProfile(user.userId, values);
+            const formData = new FormData();
+            formData.append('firstName', values.firstName);
+            formData.append('lastName', values.lastName);
+            formData.append('email', values.email);
+            formData.append('location', values.location);
+            formData.append('occupation', values.occupation);
+            formData.append('birthDate', values.birthDate);
+            if (values.profilePicture) {
+                formData.append('profilePicture', values.profilePicture);
+            }
+
+            const updatedUser = await UserService.updateProfile(user.userId, formData);
             setUser(updatedUser);
-            showNotification('Settings updated successfully!', 'success');
+            showNotification('Profile updated successfully!', 'success');
+            navigate('/profile');
         } catch (error) {
-            // Handle error
+            logger.error('Error updating profile:', error);
+            const errorMessage = error.response?.data?.message || 'Failed to update profile';
+            showNotification(errorMessage, 'error');
+            setFieldError('general', errorMessage);
         } finally {
+            setLocalLoading(false);
             setSubmitting(false);
         }
-    };
-
-    const handleViewProfile = () => {
-        navigate('/profile'); // Navigate to the profile page
     };
 
     return (
@@ -61,42 +74,54 @@ const ProfileTab = ({ user, setUser, showNotification }) => {
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
         >
-            {({ setFieldValue, isSubmitting, errors }) => (
+            {({ isSubmitting, errors, touched, setFieldValue }) => (
                 <Form className="usermanager-content__form">
                     <div className="form-group">
                         <label htmlFor="firstName">First Name</label>
-                        <Field type="text" id="firstName" name="firstName" />
-                        <ErrorMessage name="firstName" component="div" className="error" />
+                        <Field type="text" id="firstName" name="firstName" placeholder="Enter first name" />
+                        {errors.firstName && touched.firstName && (
+                            <div className="error">{errors.firstName}</div>
+                        )}
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="lastName">Last Name</label>
-                        <Field type="text" id="lastName" name="lastName" />
-                        <ErrorMessage name="lastName" component="div" className="error" />
+                        <Field type="text" id="lastName" name="lastName" placeholder="Enter last name" />
+                        {errors.lastName && touched.lastName && (
+                            <div className="error">{errors.lastName}</div>
+                        )}
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="email">Email</label>
-                        <Field type="email" id="email" name="email" />
-                        <ErrorMessage name="email" component="div" className="error" />
+                        <Field type="email" id="email" name="email" placeholder="Enter email" />
+                        {errors.email && touched.email && (
+                            <div className="error">{errors.email}</div>
+                        )}
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="location">Location</label>
-                        <Field type="text" id="location" name="location" />
-                        <ErrorMessage name="location" component="div" className="error" />
+                        <Field type="text" id="location" name="location" placeholder="Enter location" />
+                        {errors.location && touched.location && (
+                            <div className="error">{errors.location}</div>
+                        )}
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="occupation">Occupation</label>
-                        <Field type="text" id="occupation" name="occupation" />
-                        <ErrorMessage name="occupation" component="div" className="error" />
+                        <Field type="text" id="occupation" name="occupation" placeholder="Enter occupation" />
+                        {errors.occupation && touched.occupation && (
+                            <div className="error">{errors.occupation}</div>
+                        )}
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="birthDate">Birth Date</label>
                         <Field type="date" id="birthDate" name="birthDate" />
-                        <ErrorMessage name="birthDate" component="div" className="error" />
+                        {errors.birthDate && touched.birthDate && (
+                            <div className="error">{errors.birthDate}</div>
+                        )}
                     </div>
 
                     <div className="form-group">
@@ -107,38 +132,48 @@ const ProfileTab = ({ user, setUser, showNotification }) => {
                             type="file"
                             accept="image/*"
                             onChange={(event) => {
-                                setFieldValue("profilePicture", event.currentTarget.files[0]);
+                                setFieldValue('profilePicture', event.currentTarget.files[0]);
                             }}
                         />
-                        <ErrorMessage name="profilePicture" component="div" className="error" />
+                        {errors.profilePicture && touched.profilePicture && (
+                            <div className="error">{errors.profilePicture}</div>
+                        )}
                     </div>
 
-                    <div className="form-actions">
-                        <motion.button
-                            type="submit"
-                            className="button button-edit"
-                            disabled={isSubmitting}
-                            whileHover={{ y: -2 }}
-                            whileTap={{ scale: 0.98 }}
-                        >
-                            {isSubmitting ? 'Updating...' : 'Update Profile'}
-                        </motion.button>
+                    {errors.general && (
+                        <div className="error general-error">{errors.general}</div>
+                    )}
 
-                        <motion.button
-                            type="button"
-                            className="button button-view-profile"
-                            onClick={handleViewProfile}
-                            whileHover={{ y: -2 }}
-                            whileTap={{ scale: 0.98 }}
-                        >
-                            View Profile
-                        </motion.button>
-                    </div>
+                    <Button
+                        type="submit"
+                        className="usermanager-content__submit"
+                        disabled={isSubmitting || loading || localLoading}
+                        variant="submit"
+                    >
+                        {localLoading ? 'Saving...' : 'Save Profile Settings'}
+                    </Button>
                 </Form>
             )}
         </Formik>
     );
-
 };
+
+ProfileTab.propTypes = {
+    user: PropTypes.shape({
+        userId: PropTypes.string.isRequired,
+        username: PropTypes.string.isRequired,
+        firstName: PropTypes.string,
+        lastName: PropTypes.string,
+        email: PropTypes.string,
+        location: PropTypes.string,
+        occupation: PropTypes.string,
+        birthDate: PropTypes.string,
+    }).isRequired,
+    setUser: PropTypes.func.isRequired,
+    showNotification: PropTypes.func.isRequired,
+    loading: PropTypes.bool.isRequired,
+};
+
+ProfileTab.displayName = 'ProfileTab';
 
 export default ProfileTab;

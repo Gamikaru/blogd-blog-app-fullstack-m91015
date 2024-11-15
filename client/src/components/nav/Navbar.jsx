@@ -1,7 +1,7 @@
 // src/components/nav/Navbar.jsx
 import { HamburgerMenu, NavbarButtons, PageInfo, UserDropdown } from '@components';
 import { usePrivateModalContext, useUser, useUserUpdate } from '@contexts';
-import { fetchPostById } from '@services/api';
+import { fetchPostById, UserService } from '@services/api';
 import { logger } from '@utils';
 import { motion } from 'framer-motion';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -38,7 +38,7 @@ const Navbar = React.memo(() => {
 
     // Extract postId from URL
     const postId = useMemo(() => {
-        const match = location.pathname.match(/\/blog\/([^\/]+)/);
+        const match = location.pathname.match(/\/blog\/([^/]+)/); // Removed unnecessary escape
         return match ? match[1] : null;
     }, [location.pathname]);
 
@@ -49,6 +49,19 @@ const Navbar = React.memo(() => {
     const [dropdownPosition, setDropdownPosition] = useState({ top: 0, right: 0 });
 
     const memoizedCategories = useMemo(() => categories, []);
+
+    const generateExcerpt = useCallback(
+        (content) => {
+            return (
+                content
+                    .replace(/<[^>]+>/g, '')
+                    .split(/\s+/)
+                    .slice(0, 30)
+                    .join(' ') + '...'
+            );
+        },
+        []
+    );
 
     const fetchPostTitleAndExcerpt = useCallback(
         async (postId) => {
@@ -62,20 +75,7 @@ const Navbar = React.memo(() => {
                 setLoading(false);
             }
         },
-        []
-    );
-
-    const generateExcerpt = useCallback(
-        (content) => {
-            return (
-                content
-                    .replace(/<[^>]+>/g, '')
-                    .split(/\s+/)
-                    .slice(0, 30)
-                    .join(' ') + '...'
-            );
-        },
-        []
+        [generateExcerpt] // Added generateExcerpt to dependencies
     );
 
     useEffect(() => {
@@ -129,11 +129,11 @@ const Navbar = React.memo(() => {
                     subtitle:
                         'Discover blogs that inspire and educate. Blow your mind, expand your horizons.',
                 };
-            case '/admin':
-                return {
-                    title: 'Admin',
-                    subtitle: 'Manage users and content.',
-                };
+            // case '/admin':
+            //     return {
+            //         title: 'Admin',
+            //         subtitle: 'Manage users and content.',
+            //     };
             case '/network':
                 return {
                     title: 'Network',
@@ -275,5 +275,7 @@ const Navbar = React.memo(() => {
         </>
     );
 });
+
+Navbar.displayName = 'Navbar';
 
 export default Navbar;

@@ -1,72 +1,81 @@
+// models/user.js
+
 import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 
 const { Schema, model } = mongoose;
 
-const userSchema = new Schema({
+const user = new Schema({
     firstName: {
         type: String,
-        required: true
+        required: true,
+        trim: true,
     },
     lastName: {
         type: String,
-        required: true
+        required: true,
+        trim: true,
     },
     birthDate: {
         type: Date,
-        required: true
+        required: true,
     },
     email: {
         type: String,
         required: true,
         unique: true,
-        match: [/^\S+@\S+\.\S+$/, 'Invalid email format'], // Email validation with regex
-        index: true // Add an index for faster lookups
+        match: [/^\S+@\S+\.\S+$/, 'Invalid email format'],
+        index: true,
+        lowercase: true,
+        trim: true,
     },
     password: {
         type: String,
-        required: true
+        required: true,
     },
     location: {
         type: String,
-        required: true
+        required: true,
+        trim: true,
     },
     occupation: {
         type: String,
-        required: true
+        required: true,
+        trim: true,
     },
     authLevel: {
         type: String,
-        enum: ['basic', 'admin'], // Enum ensures only valid roles are stored
-        default: 'basic'
+        enum: ['basic', 'admin'],
+        default: 'basic',
     },
     status: {
         type: String,
-        default: ''
+        default: '',
+        trim: true,
     },
     emailVerified: {
         type: Boolean,
-        default: false
+        default: false,
     },
     verificationToken: {
-        type: String
+        type: String,
     },
     resetPasswordToken: {
-        type: String
+        type: String,
     },
     resetPasswordExpires: {
-        type: Date
+        type: Date,
     },
     profilePicture: {
-        type: String
+        type: String,
     },
     coverPicture: {
-        type: String
+        type: String,
     }
 }, { timestamps: true });
 
 // Password hashing middleware
-userSchema.pre('save', async function (next) {
+user.pre('save', async function (next) {
     if (!this.isModified('password')) {
         return next();
     }
@@ -79,4 +88,4 @@ userSchema.pre('save', async function (next) {
     }
 });
 
-export default model('User', userSchema);
+export default model('User', user);

@@ -2,6 +2,7 @@
 
 import { CustomToast } from '@components';
 import { logger } from '@utils';
+import PropTypes from 'prop-types'; // Import PropTypes
 import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
 export const NotificationContext = createContext();
@@ -49,7 +50,7 @@ export const NotificationProvider = ({ children }) => {
         (
             message,
             type = 'success',
-            autoClose = true,
+            _autoClose = true, // Prefixed with underscore
             onConfirm = null,
             onCancel = null
         ) => {
@@ -99,4 +100,8 @@ export const NotificationProvider = ({ children }) => {
             />
         </NotificationContext.Provider>
     );
+};
+
+NotificationProvider.propTypes = {
+    children: PropTypes.node.isRequired,
 };

@@ -1,30 +1,32 @@
+// models/comment.js
+
 import mongoose from 'mongoose';
 
 const { Schema, model } = mongoose;
 
-const commentSchema = new Schema({
+const comment = new Schema({
     content: {
         type: String,
         required: true,
-        minlength: 1, // Ensures a comment has at least one character
-        maxlength: 10000 // Limit comment length to a reasonable size
+        minlength: 1,
+        maxlength: 10000
     },
     postId: {
         type: Schema.Types.ObjectId,
         ref: 'Post',
         required: true,
-        index: true // Add index for faster queries on postId
+        index: true
     },
     userId: {
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true,
-        index: true // Add index for faster queries on userId
+        index: true
     },
     parentId: {
         type: Schema.Types.ObjectId,
         ref: 'Comment',
-        default: null // Default to null for top-level comments
+        default: null
     },
     likes: {
         type: Number,
@@ -38,6 +40,6 @@ const commentSchema = new Schema({
         type: Date,
         default: Date.now
     }
-}, { timestamps: true }); // Adds createdAt and updatedAt timestamps automatically
+}, { timestamps: true });
 
-export default model('Comment', commentSchema);
+export default model('Comment', comment);

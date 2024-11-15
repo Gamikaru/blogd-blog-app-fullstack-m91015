@@ -1,14 +1,13 @@
-// src/components/CustomTagIcon.jsx
-
+// client/src/components/CustomTagIcon.jsx
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 
 const CustomTagIcon = React.memo(({ className = '', text = '' }) => {
-    if (!text) return null;
-
     const textLength = text.length;
     const width = useMemo(() => Math.min(200, 50 + textLength * 8), [textLength]);
     const textXPosition = width / 2;
+
+    if (!text) return null;
 
     return (
         <svg
@@ -37,6 +36,8 @@ const CustomTagIcon = React.memo(({ className = '', text = '' }) => {
         </svg>
     );
 });
+
+CustomTagIcon.displayName = 'CustomTagIcon';
 
 CustomTagIcon.propTypes = {
     className: PropTypes.string,

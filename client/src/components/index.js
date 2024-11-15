@@ -31,7 +31,7 @@ export { default as Sidebar } from './nav/Sidebar';
 export { default as UserDropdown } from './nav/UserDropdown';
 
 // Page Components
-export { default as Admin } from './pages/Admin';
+// export { default as Admin } from './pages/Admin';
 // export { default as Comments } from './pages/Comments';
 // export { default as ContentManager } from './pages/ContentManager';
 // export { default as EditUser } from './pages/EditUser';

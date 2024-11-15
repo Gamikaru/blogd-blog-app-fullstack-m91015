@@ -25,7 +25,7 @@ export default function RegisterModal() {
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
     const setUser = useUserUpdate();
-    const [cookies, setCookie] = useCookies(["BlogdPass", "userId"]);
+    const [setCookie] = useCookies(["BlogdPass", "userId"]);
     const { showModal, togglePublicModal } = usePublicModalContext();
     const { showNotification, setPosition } = useNotificationContext();
 

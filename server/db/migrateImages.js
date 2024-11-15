@@ -6,7 +6,7 @@
 // import mongoose from 'mongoose';
 // import sharp from 'sharp';
 // import '../db/connection.js'; // Ensure the connection is established
-// import Post from '../models/postSchema.js'; // Adjust the path as needed
+// import Post from '../models/post.js'; // Adjust the path as needed
 
 // const processImage = async (imageData) => {
 //     try {

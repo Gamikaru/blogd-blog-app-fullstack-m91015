@@ -1,8 +1,9 @@
 // src/components/nav/UserDropdown.jsx
 
-import { Portal } from '@components';
+import { Portal } from '@components'; // Removed Button
 import { usePrivateModalContext, useUser } from '@contexts';
-import { motion } from 'framer-motion';
+import { motion } from 'framer-motion'; // Removed AnimatePresence
+import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useRef } from 'react';
 import {
     FaBirthdayCake,
@@ -10,9 +11,9 @@ import {
     FaCog,
     FaEnvelope,
     FaMapMarkerAlt,
-    FaUser,
+    FaUser
 } from 'react-icons/fa';
-import { FiLogOut } from 'react-icons/fi';
+import { FiLogOut } from 'react-icons/fi'; // Kept FiLogOut
 import { useNavigate } from 'react-router-dom';
 
 const UserDropdown = React.memo(({ showDropdown, setShowDropdown, handleLogout, position }) => {
@@ -22,7 +23,7 @@ const UserDropdown = React.memo(({ showDropdown, setShowDropdown, handleLogout, 
     const navigate = useNavigate();
 
     const handleSettingsClick = useCallback(() => {
-        togglePrivateModal('userSettings');
+        togglePrivateModal('userSettings'); // Ensure this matches ModalManager
         setShowDropdown(false);
     }, [togglePrivateModal, setShowDropdown]);
 
@@ -149,5 +150,17 @@ const UserDropdown = React.memo(({ showDropdown, setShowDropdown, handleLogout, 
         </Portal>
     );
 });
+
+UserDropdown.displayName = 'UserDropdown';
+
+UserDropdown.propTypes = {
+    showDropdown: PropTypes.bool.isRequired,
+    setShowDropdown: PropTypes.func.isRequired,
+    handleLogout: PropTypes.func.isRequired,
+    position: PropTypes.shape({
+        top: PropTypes.number,
+        right: PropTypes.number,
+    }).isRequired,
+};
 
 export default UserDropdown;
