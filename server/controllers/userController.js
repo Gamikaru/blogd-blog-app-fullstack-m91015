@@ -1,7 +1,7 @@
 // controllers/userController.js
 import dotenv from 'dotenv';
 import { validationResult } from 'express-validator';
-import { uploadToCloudinary } from '../config/cloudinaryConfig.js';
+import { deleteFromCloudinary, uploadToCloudinary } from '../config/cloudinaryConfig.js';
 import User from '../models/user.js';
 import logger from '../utils/logger.js';
 import sanitizeContent from '../utils/sanitizeContent.js';
@@ -251,5 +251,46 @@ export const updateUserStatus = async (req, res) => {
     } catch (error) {
         logger.error('Update Status: Error updating user status', { error: error.message });
         res.status(500).json({ message: 'Error updating status', error: error.message });
+    }
+};
+
+/**
+ * Delete user's profile picture.
+ */
+export const deleteProfilePicture = async (req, res) => {
+    const { userId } = req.params;
+    const { userId: authUserId, authLevel } = req.user;
+
+    if (String(authUserId) !== String(userId) && authLevel !== 'admin') {
+        logger.warn('Delete Profile Picture: Forbidden access attempt', { authUserId, targetUserId: userId });
+        return res.status(403).json({ message: 'Forbidden: You can only delete your own profile picture.' });
+    }
+
+    try {
+        const user = await User.findById(userId);
+
+        if (!user) {
+            logger.error('Delete Profile Picture: User not found', { userId });
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        if (!user.profilePicture) {
+            logger.info('Delete Profile Picture: No profile picture to delete', { userId });
+            return res.status(400).json({ message: 'No profile picture to delete' });
+        }
+
+        // Delete the image from Cloudinary
+        const result = await deleteFromCloudinary(user.profilePicture);
+        logger.info('Delete Profile Picture: Cloudinary deletion result', { result });
+
+        // Remove the profilePicture field from the user
+        user.profilePicture = undefined;
+        await user.save();
+
+        logger.info('Delete Profile Picture: Profile picture deleted successfully', { userId });
+        res.status(200).json({ message: 'Profile picture deleted successfully' });
+    } catch (error) {
+        logger.error('Delete Profile Picture: Error deleting profile picture', { error: error.message });
+        res.status(500).json({ message: 'Error deleting profile picture', error: error.message });
     }
 };

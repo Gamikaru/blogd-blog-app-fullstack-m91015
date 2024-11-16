@@ -97,7 +97,8 @@ const variantClasses = {
     submit: 'button-submit',
     login: 'button-login',
     logout: 'button-logout',
-    // Add more mappings as needed
+    replace: 'button-edit',
+
 };
 
 const Button = React.memo(

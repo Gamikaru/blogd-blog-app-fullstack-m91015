@@ -3,6 +3,7 @@
 import express from 'express';
 import { body } from 'express-validator';
 import {
+    deleteProfilePicture,
     deleteUserByEmail,
     deleteUserById,
     getAllUsers,
@@ -95,5 +96,13 @@ router.put(
     [body('status').isString().withMessage('Status must be a string')],
     updateUserStatus
 );
+
+/**
+ * @route   DELETE /user/:userId/profile-picture
+ * @desc    Delete user's profile picture
+ * @access  Private
+ */
+router.delete('/:userId/profile-picture', authenticate, deleteProfilePicture);
+
 
 export default router;

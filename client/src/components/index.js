@@ -53,6 +53,8 @@ export { default as UserProfile } from './pages/UserProfile';
 export { default as EditPostModal } from './modals/EditPostModal';
 export { default as ModalManager } from './modals/ModalManager';
 export { default as PostModal } from './modals/PostModal';
+export { default as ProfilePicModal } from './modals/ProfilePicModal';
 export { default as RegisterModal } from './modals/RegisterModal';
+
 export { default as UserManager } from './modals/user-manager/UserManager';
 

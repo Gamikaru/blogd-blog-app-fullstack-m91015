@@ -1,6 +1,6 @@
 // src/components/UserProfile/UserProfile.jsx
 import { Button, PostCard } from '@components';
-import { useUser, useUserUpdate } from '@contexts';
+import { useNotificationContext, useUser, useUserUpdate } from '@contexts';
 import { UserService, fetchPostsByUser } from '@services/api';
 import { logger } from '@utils';
 import { useEffect, useState } from 'react';
@@ -19,11 +19,13 @@ const UserProfile = () => {
     const { userId } = useParams();
     const { user, loading: userLoading } = useUser();
     const { updateUser } = useUserUpdate();
+    const { showNotification } = useNotificationContext();
     const [profileUser, setProfileUser] = useState(user);
     const [userPosts, setUserPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [status, setStatus] = useState(user.status || '');
     const [statusLoading, setStatusLoading] = useState(false);
+
 
     useEffect(() => {
         const loadProfile = async () => {
@@ -68,6 +70,10 @@ const UserProfile = () => {
             logger.error('Error updating status:', error);
         } finally {
             setStatusLoading(false);
+            showNotification({
+                message: 'Status updated successfully',
+                type:'success'
+            });
         }
     };
 

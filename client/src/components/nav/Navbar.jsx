@@ -22,7 +22,8 @@ const Navbar = () => {
     const { setUser } = useUserUpdate();
     const { user } = useUser();
     const { userId: profileUserId } = useParams();
-    const [profileUserName, setProfileUserName] = useState('');
+
+    const [profileUser, setProfileUser] = useState(null);
     const [showUserDropdown, setShowUserDropdown] = useState(false);
     const userIconRef = useRef(null);
     const hamburgerRef = useRef(null);
@@ -33,8 +34,7 @@ const Navbar = () => {
     // Trigger animation on mount only
     useEffect(() => {
         controls.start('visible');
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [controls]);
 
     // Extract postId from URL
     const postId = useMemo(() => {
@@ -84,35 +84,39 @@ const Navbar = () => {
     const isProfilePage = useMemo(() => location.pathname.startsWith('/profile'), [location.pathname]);
 
     useEffect(() => {
-        const fetchProfileUserName = async () => {
+        const fetchProfileUserData = async () => {
             if (isProfilePage) {
                 try {
-                    let profileUser;
+                    let profileUserData;
                     if (profileUserId && profileUserId !== user.userId) {
-                        profileUser = await UserService.fetchUserById(profileUserId);
-                        setProfileUserName(`${profileUser.firstName} ${profileUser.lastName}`);
+                        // Fetch the profile data of another user
+                        profileUserData = await UserService.fetchUserById(profileUserId);
                     } else {
                         // Viewing own profile
-                        setProfileUserName(`${user.firstName} ${user.lastName}`);
+                        profileUserData = user;
                     }
+                    setProfileUser(profileUserData);
                 } catch (error) {
                     logger.error('Error fetching profile user:', error);
-                    setProfileUserName('User');
+                    setProfileUser(null);
                 }
             }
         };
 
-        fetchProfileUserName();
+        fetchProfileUserData();
     }, [isProfilePage, profileUserId, user]);
 
     const getPageWelcomeText = useMemo(() => {
         if (isProfilePage) {
             const isOwnProfile = !profileUserId || profileUserId === user.userId;
             return {
-                title: isOwnProfile ? 'Your Profile' : `${profileUserName}'s Profile`,
+                title: isOwnProfile
+                    ? 'Your Profile'
+                    : `${profileUser?.firstName} ${profileUser?.lastName}'s Profile`,
                 subtitle: isOwnProfile
                     ? 'Manage your profile information'
-                    : `Viewing ${profileUserName}'s profile`,
+                    : `Viewing ${profileUser?.firstName} ${profileUser?.lastName}'s profile`,
+                avatarUrl: profileUser?.profilePicture || '/images/default-avatar.png',
             };
         }
 
@@ -133,7 +137,15 @@ const Navbar = () => {
                     subtitle: postExcerpt || '',
                 };
         }
-    }, [location.pathname, postTitle, postExcerpt, isProfilePage, profileUserId, profileUserName, user]);
+    }, [
+        location.pathname,
+        postTitle,
+        postExcerpt,
+        isProfilePage,
+        profileUserId,
+        profileUser,
+        user,
+    ]);
 
     useEffect(() => {
         if (showUserDropdown && userIconRef.current) {
@@ -184,8 +196,7 @@ const Navbar = () => {
             >
                 <nav className="navbar">
                     <div className="navbar-left">
-
-                        <Logo/>
+                        <Logo />
                         <HamburgerMenu
                             ref={hamburgerRef}
                             isOpen={sidebarOpen}
@@ -208,7 +219,11 @@ const Navbar = () => {
                     </div>
                 </nav>
 
-                <PageInfo welcomeText={getPageWelcomeText} categories={memoizedCategories} location={location} />
+                <PageInfo
+                    welcomeText={getPageWelcomeText}
+                    categories={memoizedCategories}
+                    location={location}
+                />
             </header>
 
             <Sidebar

@@ -1,7 +1,8 @@
 // client/src/components/nav/PageInfo.jsx
+import { ProfilePicModal } from '@components';
 import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 const PageInfo = ({ welcomeText, categories, location }) => {
@@ -11,6 +12,14 @@ const PageInfo = ({ welcomeText, categories, location }) => {
     };
 
     const isProfilePage = location.pathname.startsWith('/profile');
+
+    // State to control the lightbox visibility
+    const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
+    // Handler for clicking the profile picture
+    const handleProfilePictureClick = () => {
+        setIsLightboxOpen(true);
+    };
 
     return (
         <div className="info-and-explore-container">
@@ -22,8 +31,8 @@ const PageInfo = ({ welcomeText, categories, location }) => {
                     animate="visible"
                     transition={{ duration: 0.5, delay: 0.2 }}
                 >
-                    <div className="profile-avatar">
-                        <img src={welcomeText.avatarUrl} alt="Profile Avatar" className="profile-image" />
+                    <div className="profile-avatar" onClick={handleProfilePictureClick}>
+                        <img src={welcomeText.avatarUrl} alt="Profile Avatar" className="profile-image clickable" />
                     </div>
                     <h2 className="profile-user-name">{welcomeText.title}</h2>
                 </motion.div>
@@ -53,6 +62,14 @@ const PageInfo = ({ welcomeText, categories, location }) => {
                         <h2 className="cubes-title">Most Liked</h2>
                     </div> */}
                 </>
+            )}
+
+            {/* Render the Lightbox when isLightboxOpen is true */}
+            {isLightboxOpen && (
+                <ProfilePicModal
+                    imageUrl={welcomeText.avatarUrl}
+                    onClose={() => setIsLightboxOpen(false)}
+                />
             )}
         </div>
     );

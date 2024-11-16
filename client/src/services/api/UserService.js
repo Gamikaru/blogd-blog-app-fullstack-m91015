@@ -299,6 +299,24 @@ class UserService {
             throw error.response?.data || new Error('Failed to update profile');
         }
     }
+
+    /**
+     * Delete profile picture by user ID
+     * @param {string} userId
+     */
+    static async deleteProfilePicture(userId) {
+        logger.info(`UserService: Deleting profile picture for user ID: ${userId}`);
+        try {
+            const response = await ApiClient.delete(`/user/${userId}/profile-picture`, {
+                headers: this.getAuthHeaders(),
+            });
+            logger.info('UserService: Profile picture deleted successfully');
+            return response.data;
+        } catch (error) {
+            logger.error(`UserService: Error deleting profile picture for user ID: ${userId}`, error);
+            throw error.response?.data || new Error('Failed to delete profile picture');
+        }
+    }
 }
 
 export default UserService;
