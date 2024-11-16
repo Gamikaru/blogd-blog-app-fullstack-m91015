@@ -105,6 +105,7 @@
     }
 
     .register-modal-input {
+        @extend input;
         padding: $input-padding;
         border: 1px solid $border-color;
         border-radius: $border-radius;

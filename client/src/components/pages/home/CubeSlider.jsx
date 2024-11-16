@@ -72,6 +72,8 @@ const CubeSlider = () => {
 
     return (
         <ErrorBoundary>
+            <h2 className="cubes-title">Most Liked</h2>
+
             <motion.div
                 className="cube-slider-wrapper"
                 variants={containerVariants}

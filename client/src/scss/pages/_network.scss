@@ -1,6 +1,7 @@
 /* --------------------------------------------------------------------------
    Network Page Container
 -------------------------------------------------------------------------- */
+
 .network-page-container {
     padding: $spacing-xxl $spacing-lg;
     background-color: $primary-bg-color;
@@ -21,6 +22,18 @@
             position: relative;
             display: flex;
             align-items: center;
+        }
+
+        .filter-container {
+            .filter-icon {
+                @extend .filter-icon;
+            }
+        }
+
+        .search-container {
+            .search-icon {
+                @extend .search-icon;
+            }
         }
 
         .search-input {

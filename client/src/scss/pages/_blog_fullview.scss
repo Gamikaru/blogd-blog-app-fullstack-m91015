@@ -10,45 +10,39 @@
     position: relative; // Ensure positioning context for overlapping
     z-index: 14;
 
-    .blog-title {
-        font-size: $heading-font-size-lg; // Larger, bold title for document-style look
-        font-weight: bold;
-        color: $primary-text-color;
-        margin-bottom: $spacing-unit * 2;
-        text-align: center;
-    }
 
-    .blog-excerpt {
-        font-size: $sub-heading-font-size; // Slightly smaller than title, styled like a document excerpt
-        font-style: italic;
-        color: $secondary-text-color;
-        margin: $spacing-unit * 2 auto;
-        max-width: 90%;
-        padding-left: $spacing-unit;
-        border-left: 4px solid $accent-color-2;
-        position: relative;
-        font-weight: bold; // Make the excerpt bold
 
-        &::before {
-            content: "“"; // Opening quote mark
-            font-size: 3rem;
-            font-weight: bold;
-            color: $accent-color-2;
-            position: absolute;
-            left: -1.5rem;
-            top: -0.5rem;
-        }
+    // .blog-excerpt {
+    //     font-size: $sub-heading-font-size; // Slightly smaller than title, styled like a document excerpt
+    //     font-style: italic;
+    //     color: $secondary-text-color;
+    //     margin: $spacing-unit * 2 auto;
+    //     max-width: 90%;
+    //     padding-left: $spacing-unit;
+    //     border-left: 4px solid $accent-color-2;
+    //     position: relative;
+    //     font-weight: bold; // Make the excerpt bold
 
-        &::after {
-            content: "”"; // Closing quote mark
-            font-size: 3rem;
-            font-weight: bold;
-            color: $accent-color-2;
-            position: absolute;
-            right: -1.5rem;
-            bottom: -0.5rem;
-        }
-    }
+    //     &::before {
+    //         content: "“"; // Opening quote mark
+    //         font-size: 3rem;
+    //         font-weight: bold;
+    //         color: $accent-color-2;
+    //         position: absolute;
+    //         left: -1.5rem;
+    //         top: -0.5rem;
+    //     }
+
+    //     &::after {
+    //         content: "”"; // Closing quote mark
+    //         font-size: 3rem;
+    //         font-weight: bold;
+    //         color: $accent-color-2;
+    //         position: absolute;
+    //         right: -1.5rem;
+    //         bottom: -0.5rem;
+    //     }
+    // }
 
     .blog-images {
         float: left; // Float the image to the left

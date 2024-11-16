@@ -1,5 +1,7 @@
 // _cubeslider.scss
 
+
+
 .cube-slider-wrapper {
     max-width: 80vw;
     height: 100%;
@@ -14,7 +16,7 @@
 
     .cube-slider-container {
         position: relative;
-        margin-top: -8rem;
+        margin-top: -13rem;
 
         &.image-slider-container {
             @import "./_image-slide.scss";
@@ -25,6 +27,8 @@
         }
     }
 
+
+
     .cube-slider {
         width: 100%;
         height: 25rem;
@@ -32,8 +36,6 @@
         align-items: center;
         justify-content: center;
         margin-top: -2rem;
-
-
 
         .cube-slide {
             width: 100%;
@@ -43,8 +45,6 @@
             align-items: center;
             justify-content: center;
         }
-
-
     }
 
     @media (max-width: $breakpoint-md) {
@@ -110,10 +110,6 @@
         font-family: $font-family-primary;
         color: #ffffff;
         font-size: 1rem;
-    }
-
-    .cube-slide-text {
-        // box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
     // /* Ensure smooth transitions */

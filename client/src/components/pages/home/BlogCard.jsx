@@ -4,7 +4,7 @@ import { Button, CustomTagIcon, LazyImage } from '@components'; // Import the La
 import { usePostContext } from '@contexts/PostContext';
 import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
-import { memo, useCallback, useMemo } from 'react';
+import { memo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const cardVariants = {
@@ -33,12 +33,12 @@ const BlogCard = memo(function BlogCard({ post, author, cookie }) {
     const navigate = useNavigate();
     const { like, unlike } = usePostContext();
 
-    const truncatedContent = useMemo(() => {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(post.content, 'text/html');
-        const text = doc.body.textContent || '';
-        return text.length > 100 ? `${text.substring(0, 100)}...` : text;
-    }, [post.content]);
+    // const truncatedContent = useMemo(() => {
+    //     const parser = new DOMParser();
+    //     const doc = parser.parseFromString(post.content, 'text/html');
+    //     const text = doc.body.textContent || '';
+    //     return text.length > 100 ? `${text.substring(0, 100)}...` : text;
+    // }, [post.content]);
 
     const handleLikeClick = useCallback(
         (e) => {
@@ -79,63 +79,67 @@ const BlogCard = memo(function BlogCard({ post, author, cookie }) {
             }}
             aria-label={`Go to blog post titled ${post.title || 'Untitled'}`}
         >
-            {post.imageUrls?.length ? (
-                <LazyImage
-                    src={post.imageUrls[0]}
-                    alt={`Cover image for ${post.title || 'Untitled'}`}
-                    className="blog-cover-image"
-                />
-            ) : post.images?.length ? (
-                <LazyImage
-                    src={`data:image/jpeg;base64,${post.images[0].data}`}
-                    alt={`Cover image for ${post.title || 'Untitled'}`}
-                    className="blog-cover-image"
-                />
-            ) : (
-                <div className="blog-cover-placeholder" aria-label="No cover image available">
-                    No Image
-                </div>
-            )}
-
-            <div className="post-header">
-                <span className="author-name">{author}</span>
-                <span className="post-date">
-                    {post.createdAt ? new Date(post.createdAt).toLocaleDateString() : 'Unknown Date'}
-                </span>
+            <div className="image-container">
+                {post.imageUrls?.length ? (
+                    <LazyImage
+                        src={post.imageUrls[0]}
+                        alt={`Cover image for ${post.title || 'Untitled'}`}
+                        className="blog-cover-image"
+                    />
+                ) : post.images?.length ? (
+                    <LazyImage
+                        src={`data:image/jpeg;base64,${post.images[0].data}`}
+                        alt={`Cover image for ${post.title || 'Untitled'}`}
+                        className="blog-cover-image"
+                    />
+                ) : (
+                    <div className="blog-cover-placeholder" aria-label="No cover image available">
+                        No Image
+                    </div>
+                )}
             </div>
 
-            <h2 className="post-title">{post.title || 'Untitled'}</h2>
-
-            <div className="post-category">
-                {post.category && <CustomTagIcon className="category-icon" text={post.category} />}
-            </div>
-
-            <div className="post-content">
-                <span className="blog-quote">
-                    <span className="blog-opening-quote">"</span>
-                    {truncatedContent}
-                    <span className="blog-closing-group">
-                        <span className="blog-closing-quote">"</span>
+            <div className="content">
+                <div className="post-header">
+                    <span className="author-name">{author}</span>
+                    <span className="post-date">
+                        {post.createdAt ? new Date(post.createdAt).toLocaleDateString() : 'Unknown Date'}
                     </span>
-                </span>
-            </div>
+                </div>
 
-            <div className="post-interactions">
-                <Button
-                    className="button button-submit like-button"
-                    onClick={handleLikeClick}
-                    aria-label={isLiked ? 'Unlike' : 'Like'}
-                    variant="like"
-                    filled={isLiked}
-                >
-                    <motion.span
-                        className={`heart-icon ${isLiked ? 'liked' : ''}`}
-                        variants={likeButtonVariants}
-                        whileTap="tap"
-                        aria-hidden="true"
-                    ></motion.span>
-                    <span className="likes-count">{post.likes}</span>
-                </Button>
+                <h2 className="post-title">{post.title || 'Untitled'}</h2>
+
+                <div className="post-category">
+                    {post.category && <CustomTagIcon className="category-icon" text={post.category} />}
+                </div>
+
+                {/* <div className="post-content">
+                    <span className="blog-quote">
+                        <span className="blog-opening-quote">"</span>
+                        {truncatedContent}
+                        <span className="blog-closing-group">
+                            <span className="blog-closing-quote">"</span>
+                        </span>
+                    </span>
+                </div> */}
+
+                <div className="post-interactions">
+                    <Button
+                        className="button button-submit like-button"
+                        onClick={handleLikeClick}
+                        aria-label={isLiked ? 'Unlike' : 'Like'}
+                        variant="like"
+                        filled={isLiked}
+                    >
+                        <motion.span
+                            className={`heart-icon ${isLiked ? 'liked' : ''}`}
+                            variants={likeButtonVariants}
+                            whileTap="tap"
+                            aria-hidden="true"
+                        ></motion.span>
+                        <span className="likes-count">{post.likes}</span>
+                    </Button>
+                </div>
             </div>
         </motion.div>
     );

@@ -8,7 +8,7 @@
     padding-top: 20rem;
     background-color: $primary-bg-color;
     color: $primary-text-color;
-    width: 80vw;
+    width: 75vw;
     z-index: 0; // Ensure it overlays the navbar
     position: relative; // Required for z-index to take effect
     // to ensur th blogs cntainer is centered, we need to add the following styles:
@@ -151,7 +151,7 @@
 
         .blog-cover-image {
             width: 100%;
-            height: 200px; // Set a fixed height for consistency
+            height: 30vh; // Set a fixed height for consistency
             object-fit: cover; // Ensure the image covers the area without distortion
             border-top-left-radius: $border-radius;
             border-top-right-radius: $border-radius;

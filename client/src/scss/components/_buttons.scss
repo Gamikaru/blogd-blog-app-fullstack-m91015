@@ -144,3 +144,17 @@
         justify-content: center; // Center align text and icons
     }
 }
+
+.filter-icon,
+.search-icon {
+    font-size: 1.3rem;
+    color: $primary-text-color;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+
+    &:hover {
+        color: $accent-color-2;
+    }
+}

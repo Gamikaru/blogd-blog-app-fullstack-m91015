@@ -1,0 +1,66 @@
+// src/_forms.scss
+
+
+
+/* Input Field Styles */
+.input-field-wrapper {
+    margin-bottom: $spacing-md;
+}
+
+.input-label {
+    display: block;
+    margin-bottom: $spacing-xs;
+    font-weight: 600;
+    text-align: left; // Assuming text-left is handled via utility classes
+}
+
+.input-control {
+    width: 100%;
+    padding: $input-padding;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    font-size: $body-font-size;
+    color: $primary-text-color;
+    background-color: $input-bg-color;
+    transition: background-color $transitions-base, border-color $transitions-base, box-shadow $transitions-base;
+
+    &:focus {
+        border-color: $accent-color-2;
+        box-shadow: 0 0 0 2px rgba($highlight-color, 0.2);
+        outline: none;
+    }
+
+    &.input-error,
+    &.is-invalid {
+        border-color: $error-color;
+    }
+}
+
+.error-label {
+    display: block;
+    margin-top: $spacing-xs;
+    color: $error-color;
+    font-size: $small-font-size;
+}
+
+.helper-text {
+    display: block;
+    margin-top: $spacing-xs;
+    color: $secondary-text-color;
+    font-size: $small-font-size;
+}
+
+/* Optional: Specific Select Field Styles if Needed */
+select {
+    appearance: none;
+    background-image: url('path-to-dropdown-icon.svg');
+    background-repeat: no-repeat;
+    background-position: right $spacing-sm center;
+}
+
+@media (max-width: $breakpoint-md) {
+    input,
+    select {
+        font-size: $xsmall-font-size;
+    }
+}

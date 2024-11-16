@@ -162,6 +162,7 @@ const BlogsContainer = () => {
                     >
                         <FaSearch />
                     </Button>
+
                     <AnimatePresence>
                         {showSearchInput && (
                             <motion.input

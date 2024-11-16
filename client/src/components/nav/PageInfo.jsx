@@ -41,13 +41,18 @@ const PageInfo = ({ welcomeText, categories, location }) => {
             )}
 
             {location.pathname === '/' && (
-                <div className="explore-links">
-                    {categories.map((category) => (
-                        <NavLink key={category} to={`/${category.toLowerCase()}`} className="explore-link">
-                            {category}
-                        </NavLink>
-                    ))}
-                </div>
+                <>
+                    <div className="explore-links">
+                        {categories.map((category) => (
+                            <NavLink key={category} to={`/${category.toLowerCase()}`} className="explore-link">
+                                {category}
+                            </NavLink>
+                        ))}
+                    </div>
+                    {/* <div>
+                        <h2 className="cubes-title">Most Liked</h2>
+                    </div> */}
+                </>
             )}
         </div>
     );
