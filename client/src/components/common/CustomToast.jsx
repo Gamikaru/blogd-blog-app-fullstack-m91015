@@ -134,7 +134,7 @@ const CustomToast = React.memo(
 CustomToast.displayName = 'CustomToast';
 
 CustomToast.propTypes = {
-    message: PropTypes.string.isRequired,
+    message: PropTypes.string.isRequired, // Ensures message is a string
     show: PropTypes.bool.isRequired,
     type: PropTypes.oneOf(['success', 'error', 'info', 'warning']),
     onClose: PropTypes.func.isRequired,

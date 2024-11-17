@@ -112,8 +112,8 @@ export const updateUser = async (req, res) => {
             }
         });
 
-        // Handle profile picture upload
-        if (req.files['profilePicture'] && req.files['profilePicture'][0]) {
+        // Safely handle profile picture upload
+        if (req.files && req.files['profilePicture'] && req.files['profilePicture'][0]) {
             const profilePicture = req.files['profilePicture'][0];
             const profileFilename = `profile_${Date.now()}_${profilePicture.originalname}`;
             user.profilePicture = await uploadToCloudinary(
@@ -123,8 +123,8 @@ export const updateUser = async (req, res) => {
             );
         }
 
-        // Handle cover photo upload
-        if (req.files['coverPicture'] && req.files['coverPicture'][0]) {
+        // Safely handle cover photo upload
+        if (req.files && req.files['coverPicture'] && req.files['coverPicture'][0]) {
             const coverPicture = req.files['coverPicture'][0];
             const coverFilename = `cover_${Date.now()}_${coverPicture.originalname}`;
             user.coverPicture = await uploadToCloudinary(

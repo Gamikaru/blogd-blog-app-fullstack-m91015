@@ -1,0 +1,182 @@
+// components/pages/profile/_posts-section.scss
+
+.posts-section {
+    background: $secondary-bg-color;
+    border-radius: $border-radius;
+    padding: $spacing-lg;
+    margin-bottom: $spacing-lg;
+    width: 50vw;
+
+    @media (max-width: 768px) {
+        padding: $spacing-md;
+    }
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: $spacing-md;
+
+        &__title {
+            display: flex;
+            align-items: center;
+            font-size: $heading-font-size-lg;
+            color: $primary-text-color;
+            font-family: $font-family-heading;
+
+            svg {
+                margin-right: $spacing-sm;
+                font-size: 1.5em;
+                color: $highlight-color;
+            }
+        }
+
+        .section-action {
+            font-size: $body-font-size;
+            color: $info-color;
+            cursor: pointer;
+            transition: color $transitions-base;
+
+            &:hover,
+            &:focus {
+                color: lighten($info-color, 10%);
+            }
+        }
+    }
+
+    &__tabs-and-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: $spacing-md;
+        flex-wrap: wrap;
+
+        @media (max-width: 768px) {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+
+    &__tabs {
+        display: flex;
+
+        .tab {
+            padding: $spacing-sm $spacing-md;
+            margin-right: $spacing-sm;
+            background: $secondary-bg-color;
+            border: none;
+            border-radius: $border-radius;
+            cursor: pointer;
+            font-size: 0.9rem; // Reduced from $body-font-size
+            transition: background-color $transitions-base;
+
+            &.active {
+                background: $primary-bg-color;
+                color: #fff;
+            }
+
+            &:hover {
+                background: lighten($secondary-bg-color, 10%);
+            }
+
+            @media (max-width: 768px) {
+                margin-bottom: $spacing-sm;
+            }
+        }
+    }
+
+    &__controls {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+
+        @media (max-width: 768px) {
+            align-items: flex-start;
+            margin-top: $spacing-sm;
+        }
+
+        .filter-icon,
+        .search-icon {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2em;
+            color: $primary-text-color;
+            transition: color $transitions-base;
+
+            &:hover {
+                color: lighten($primary-text-color, 10%);
+            }
+        }
+
+        .search-input {
+            margin-left: $spacing-sm;
+            padding: $spacing-xs $spacing-sm;
+            border: 1px solid $border-color;
+            border-radius: $border-radius;
+            outline: none;
+            font-size: 0.9rem; // Reduced from $body-font-size
+            width: 200px;
+            max-width: 100%;
+
+            @media (max-width: 768px) {
+                width: 100%;
+            }
+        }
+
+        .filter-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: $primary-bg-color;
+            border: 1px solid $border-color;
+            border-radius: $border-radius;
+            padding: $spacing-sm;
+            box-shadow: $card-shadow;
+            z-index: 10;
+            width: 200px;
+
+            @media (max-width: 768px) {
+                width: 100%;
+            }
+        }
+    }
+
+    .posts-gallery {
+        display: flex;
+        margin-left: 1rem;
+        width: auto;
+
+        &__column {
+            padding: 1rem; /* Adjust gutter size */
+            background-clip: padding-box;
+        }
+
+        @media (max-width: 768px) {
+            margin-left: 0;
+
+            &__column {
+                padding-left: 0;
+            }
+        }
+    }
+
+    .no-posts-message {
+        text-align: center;
+        font-size: 0.9rem; // Reduced
+        color: $secondary-text-color;
+        padding: $spacing-md 0;
+    }
+
+    &__controls {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        justify-content:center;
+
+        @media (max-width: 768px) {
+            justify-content: flex-start;
+            width: 100%;
+        }
+    }
+}

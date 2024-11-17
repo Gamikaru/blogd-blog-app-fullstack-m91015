@@ -1,0 +1,170 @@
+// components/pages/profile/_post-card.scss
+
+.post-card {
+    background: $primary-bg-color;
+    border-radius: $border-radius;
+    box-shadow: $card-shadow;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    transition:
+        transform $transitions-base,
+        box-shadow $transitions-base;
+    font-family: $font-family-primary;
+
+    &:hover {
+        transform: scale(1.02);
+        box-shadow: $box-shadow-medium;
+    }
+
+    &__image-container {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+
+        .post-card__image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform $transitions-base;
+
+            &:hover {
+                transform: scale(1.05);
+            }
+        }
+
+        .post-card__image-placeholder {
+            width: 100%;
+            height: 100%;
+            background: lighten($secondary-bg-color, 10%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: $secondary-text-color;
+            font-size: $body-font-size;
+        }
+    }
+
+    &__content {
+        padding: $spacing-md;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+
+        &__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: $spacing-sm;
+
+            .post-card__title {
+                font-size: $heading-font-size-md;
+                color: $primary-text-color;
+                margin: 0;
+                flex: 1;
+                margin-right: $spacing-sm;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                font-family: $font-family-heading;
+            }
+
+            .post-card__date {
+                font-size: $small-font-size;
+                color: $secondary-text-color;
+            }
+        }
+
+        &__category {
+            margin-bottom: $spacing-sm;
+
+            .post-card__category-tag {
+                display: inline-block;
+                background: $accent-color-1;
+                color: $primary-text-color;
+                padding: 0.2em 0.6em;
+                border-radius: 999px;
+                font-size: $small-font-size;
+                text-transform: capitalize;
+                font-weight: bold;
+            }
+        }
+
+        &__excerpt {
+            flex-grow: 1;
+            font-size: $body-font-size;
+            color: $primary-text-color;
+            margin-bottom: $spacing-md;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: $spacing-sm;
+        padding: $spacing-md;
+        border-top: 1px solid $border-color;
+
+        .button {
+            padding: 0.4em 0.8em;
+            font-size: $small-font-size;
+            display: flex;
+            align-items: center;
+            border: none;
+            border-radius: $button-border-radius;
+            cursor: pointer;
+            transition:
+                background-color map-get($transitions, button),
+                opacity map-get($transitions, button);
+            opacity: $button-opacity-default;
+            font-family: $font-family-primary;
+
+            .icon {
+                margin-right: 0.4em;
+                font-size: 1em;
+            }
+
+            &:hover {
+                opacity: $button-opacity-hover;
+            }
+
+            &:disabled {
+                opacity: $button-opacity-disabled;
+                cursor: not-allowed;
+            }
+
+            &.button-edit {
+                background-color: $button-primary;
+                color: #fff;
+
+                &:hover {
+                    background-color: $button-primary-hover;
+                }
+
+                &:disabled {
+                    background-color: $button-primary-disabled;
+                }
+            }
+
+            &.button-delete {
+                background-color: $button-danger;
+                color: #fff;
+
+                &:hover {
+                    background-color: $button-danger-hover;
+                }
+
+                &:disabled {
+                    background-color: $button-danger-disabled;
+                }
+            }
+        }
+    }
+}

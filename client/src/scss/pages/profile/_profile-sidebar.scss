@@ -1,133 +1,37 @@
 .profile-sidebar {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     position: sticky;
     top: 2rem; // Stay in view on scroll
     height: fit-content;
+    width: 20vw;
 
-    .user-stats-card {
-        background: $secondary-bg-color;
-        border-radius: $border-radius;
-        padding: $spacing-lg;
-        margin-bottom: $spacing-lg;
-        box-shadow: $box-shadow-medium;
-        width: 100%;
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: $spacing-md;
-
-            .stat-item {
-                text-align: center;
-                padding: $spacing-md;
-                background: lighten($secondary-bg-color, 5%);
-                border-radius: $border-radius;
-
-                .stat-value {
-                    font-size: $heading-font-size-md;
-                    color: $primary-text-color;
-                    font-weight: bold;
-                }
-
-                .stat-label {
-                    font-size: $small-font-size;
-                    color: $secondary-text-color;
-                    margin-top: $spacing-xs;
-                }
-            }
-        }
+    @media (max-width: 1200px) {
+        width: 25vw;
     }
 
-    .user-card {
-        background: $secondary-bg-color;
-        border-radius: $border-radius;
-        overflow: hidden;
-        margin-bottom: $spacing-lg;
-        box-shadow: $box-shadow-medium;
-        padding: $spacing-lg;
-        width: 100%;
-
-        .user-info {
-            h2 {
-                color: $primary-text-color;
-                font-size: $heading-font-size-lg;
-                margin-bottom: $spacing-xs;
-                text-align: center;
-            }
-
-            .user-role {
-                color: $secondary-text-color;
-                font-size: $sub-heading-font-size;
-                text-align: center;
-                margin-bottom: $spacing-md;
-            }
-        }
-
-        .user-details {
-            .detail-grid {
-                display: grid;
-                grid-template-columns: 1fr;
-                gap: $spacing-md;
-
-                .detail-item {
-                    display: flex;
-                    align-items: center;
-                    gap: $spacing-sm;
-                    padding: $spacing-sm;
-                    background: lighten($secondary-bg-color, 5%);
-                    border-radius: $border-radius;
-
-                    .detail-icon {
-                        color: $accent-color-1;
-                        font-size: $heading-font-size-md;
-                    }
-
-                    .detail-content {
-                        .detail-label {
-                            font-size: $small-font-size;
-                            color: $secondary-text-color;
-                        }
-
-                        .detail-value {
-                            font-size: $body-font-size;
-                            color: $primary-text-color;
-                        }
-                    }
-                }
-            }
-        }
+    @media (max-width: 992px) {
+        width: 30vw;
     }
 
-    .quick-actions {
-        background: $secondary-bg-color;
-        border-radius: $border-radius;
-        padding: $spacing-lg;
-        margin-bottom: $spacing-lg;
-        box-shadow: $box-shadow-medium;
+    @media (max-width: 768px) {
         width: 100%;
+        margin-bottom: $spacing-lg;
+    }
 
-        h3 {
-            font-size: $sub-heading-font-size;
-            color: $primary-text-color;
-            margin-bottom: $spacing-md;
-            text-align: center;
-        }
+    // Importing Stats Card
+    @import './_stats-card';
 
-        .action-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: $spacing-sm;
+    // Importing User Card
+    @import './_user-card';
 
-            .button {
-                width: 100%;
-                justify-content: center;
+    // Importing Quick Actions
+    @import './_quick-actions';
 
-                .icon {
-                    margin-right: $spacing-sm;
-                }
-            }
-        }
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+
+    @media (max-width: 768px) {
+        /* On small screens, stack the components vertically */
+        align-items: center;
     }
 }

@@ -147,9 +147,9 @@ export const UserProvider = ({ children }) => {
             });
             logger.info('UserContext: User updated successfully');
             return { success: true };
-        } catch {
-            logger.error('UserContext: Error updating user');
-            return { success: false };
+        } catch (error) {
+            logger.error('UserContext: Error updating user', error);
+            throw error;
         }
     };
 

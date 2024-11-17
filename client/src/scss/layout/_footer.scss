@@ -7,7 +7,7 @@
     border-top: 1px solid $border-color;
     position: relative;
     z-index: -3;
-    margin-top: auto;
+    margin-top: $spacing-xxl;
 
     .footer-content {
         display: flex;

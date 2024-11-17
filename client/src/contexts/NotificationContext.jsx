@@ -2,7 +2,7 @@
 
 import { CustomToast } from '@components';
 import { logger } from '@utils';
-import PropTypes from 'prop-types'; // Import PropTypes
+import PropTypes from 'prop-types';
 import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
 export const NotificationContext = createContext();

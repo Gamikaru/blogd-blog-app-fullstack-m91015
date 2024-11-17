@@ -1,0 +1,120 @@
+// components/pages/profile/_user-card.scss
+
+.profile-user-card {
+    background: $secondary-bg-color;
+    border-radius: $border-radius;
+    overflow: hidden;
+    margin-bottom: $spacing-lg;
+    box-shadow: $box-shadow-medium;
+    padding: $spacing-md;
+    width: 100%;
+    max-width: 400px;
+
+    @media (max-width: 768px) {
+        padding: $spacing-sm;
+    }
+
+    .profile-user-card-header {
+        background: linear-gradient(135deg, $accent-color-1, $accent-color-2);
+        padding: $spacing-lg;
+        display: flex;
+        align-items: center;
+        gap: $spacing-md;
+
+        @media (max-width: 768px) {
+            padding: $spacing-sm;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .profile-user-info {
+            flex: 1;
+
+            h2 {
+                color: $secondary-bg-color;
+                font-size: 1.3rem; // Slightly reduced for consistency
+                margin-bottom: $spacing-xs;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            }
+
+            .profile-user-role {
+                color: rgba(255, 255, 255, 0.8);
+                font-size: 0.85rem; // Slightly reduced for consistency
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            }
+
+            .button-edit {
+                margin-top: $spacing-sm;
+                padding: $spacing-xs $spacing-sm;
+                background-color: $button-primary;
+                color: #fff;
+                border: none;
+                border-radius: $border-radius;
+                cursor: pointer;
+                font-size: 0.85rem; // Slightly reduced for consistency
+                display: flex;
+                align-items: center;
+                gap: $spacing-xs;
+                transition: background-color $transitions-base;
+
+                &:hover {
+                    background-color: $button-primary-hover;
+                }
+
+                &:disabled {
+                    background-color: $button-primary-disabled;
+                    cursor: not-allowed;
+                }
+
+                .icon {
+                    font-size: 0.9rem;
+                }
+            }
+        }
+    }
+
+    .profile-user-details {
+        padding: $spacing-sm;
+
+        .profile-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; // Two-column grid
+            gap: $spacing-md;
+
+            @media (max-width: 768px) {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-detail-item {
+                display: flex;
+                align-items: center;
+                gap: $spacing-sm;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+
+                .profile-detail-icon {
+                    color: $accent-color-1;
+                    font-size: 1rem; // Slightly reduced for consistency
+                }
+
+                .profile-detail-content {
+                    .profile-detail-label {
+                        font-size: 0.75rem; // Slightly reduced for consistency
+                        color: $secondary-text-color;
+                        word-wrap: break-word;
+                        overflow-wrap: break-word;
+                    }
+
+                    .profile-detail-value {
+                        font-size: 0.85rem; // Slightly reduced for consistency
+                        color: $primary-text-color;
+                        word-wrap: break-word;
+                        overflow-wrap: break-word;
+                    }
+                }
+            }
+        }
+    }
+}

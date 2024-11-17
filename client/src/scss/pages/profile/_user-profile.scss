@@ -1,0 +1,61 @@
+// .profile-main {
+//     // Activity and Posts Sections
+//     .activity-section,
+//     .posts-section {
+//         background: $secondary-bg-color;
+//         border-radius: $border-radius;
+//         padding: $spacing-lg;
+//         margin-bottom: $spacing-lg;
+//         box-shadow: $box-shadow-medium;
+
+//         h3 {
+//             font-size: $sub-heading-font-size;
+//             color: $primary-text-color;
+//             margin-bottom: $spacing-md;
+//             display: flex;
+//             justify-content: space-between;
+//             align-items: center;
+
+//             .section-action {
+//                 font-size: $small-font-size;
+//                 color: $accent-color-2;
+//                 cursor: pointer;
+
+//                 &:hover {
+//                     text-decoration: underline;
+//                 }
+//             }
+//         }
+
+//         .placeholder-content {
+//             height: 200px;
+//             background: $primary-bg-color;
+//             border-radius: $border-radius;
+//             display: flex;
+//             align-items: center;
+//             justify-content: center;
+//             color: $secondary-text-color;
+//             font-size: $sub-heading-font-size;
+//         }
+//     }
+
+//     // Loading and Error States
+//     .loading-spinner,
+//     .error-message {
+//         text-align: center;
+//         padding: $spacing-xl;
+//         color: $secondary-text-color;
+//         font-size: $sub-heading-font-size;
+//     }
+
+//     // Activity and Connections Layout
+//     .activity-and-connections {
+//         display: grid;
+//         grid-template-columns: 1fr; // Single column for mobile
+
+//         @media (min-width: $breakpoint-lg) {
+//             grid-template-columns: 1fr 1fr; // Two columns on larger screens
+//             gap: $spacing-lg;
+//         }
+//     }
+// }

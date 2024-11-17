@@ -14,11 +14,11 @@ const PageInfo = ({ welcomeText, categories, location }) => {
     const isProfilePage = location.pathname.startsWith('/profile');
 
     // State to control the lightbox visibility
-    const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+    const [isPicModalOpen, setisPicModalOpen] = useState(false);
 
     // Handler for clicking the profile picture
     const handleProfilePictureClick = () => {
-        setIsLightboxOpen(true);
+        setisPicModalOpen(true);
     };
 
     return (
@@ -64,11 +64,11 @@ const PageInfo = ({ welcomeText, categories, location }) => {
                 </>
             )}
 
-            {/* Render the Lightbox when isLightboxOpen is true */}
-            {isLightboxOpen && (
+            {/* Render the Lightbox when isPicModalOpen is true */}
+            {isPicModalOpen && (
                 <ProfilePicModal
                     imageUrl={welcomeText.avatarUrl}
-                    onClose={() => setIsLightboxOpen(false)}
+                    onClose={() => setisPicModalOpen(false)}
                 />
             )}
         </div>

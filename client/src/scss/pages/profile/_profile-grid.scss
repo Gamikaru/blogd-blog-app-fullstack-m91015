@@ -4,9 +4,8 @@
 
 .profile-grid {
     display: grid;
-    grid-template-columns: 250px 1fr; // Fixed width for sidebar
+    grid-template-columns: 1fr 1fr 3fr; // Adjust sidebar width as needed
     gap: $spacing-lg;
-    margin-top: $spacing-xl; // Increased to accommodate avatar overflow
 
     @media (max-width: $breakpoint-md) {
         grid-template-columns: 1fr;
