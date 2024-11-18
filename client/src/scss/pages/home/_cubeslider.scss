@@ -1,96 +1,111 @@
-// _cubeslider.scss
+/* _cube-slider.scss */
 
-
-
-.cube-slider-wrapper {
+.cube-slider {
     max-width: 80vw;
-    height: 100%;
+    min-height: 20rem; // Ensure it never collapses to 0
     display: flex;
+
+    height: 100%;
     justify-content: center;
-    // align-items: flex-start;
-    margin: 0rem 0 5rem auto;
-    padding-bottom: 5rem;
+    margin: 0 0 $spacing-xxxl auto;
+    padding-bottom: $spacing-xxxl;
     overflow: visible;
     z-index: 2;
     background-color: $primary-bg-color;
+    flex-direction: row;
+    justify-content: center;
 
-    .cube-slider-container {
+    &__container {
         position: relative;
         margin-top: -13rem;
 
-        &.image-slider-container {
+        &--image {
             @import "./_image-slide.scss";
         }
 
-        &.text-slider-container {
+        &--text {
             @import "./_text-slide.scss";
         }
     }
 
-
-
-    .cube-slider {
+    &__slider {
         width: 100%;
         height: 25rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        min-height: 15rem;
+
+        @include flex-center;
         margin-top: -2rem;
 
-        .cube-slide {
+        &__slide {
             width: 100%;
             height: 100%;
             position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            @include flex-center;
         }
     }
 
     @media (max-width: $breakpoint-md) {
         flex-direction: column;
         align-items: center;
-        margin-top: -5rem; // Adjusted margin for better spacing on mobile
+        margin-top: -5rem;
 
-        .cube-slider-container {
+        &__container {
             max-width: 100%;
             margin-left: 0;
             margin-top: 0;
         }
 
-        .cube-slider {
-            height: 200px;
-        }
-
-        .image-slider-container,
-        .text-slider-container {
+        &__container--image,
+        &__container--text {
             margin: 0;
         }
 
-        .text-slider-container {
-            margin-top: 2rem;
+        &__container--text {
+            margin-top: -$spacing-lg; // Adjusted to overlap with image
         }
 
-        .cube-slide-text {
-            .post-title {
-                margin: 1rem 1rem;
-                font-size: clamp(1.5rem, 2.2vw, $heading-font-size-md - 2px);
+        &__slider {
+            width: 100%;
+            height: auto; // Let the height adjust automatically
+            margin-top: 0;
+        }
+
+        &__slider__slide {
+            width: 100%;
+            height: auto;
+        }
+
+        &__text-slide {
+            padding: $spacing-md;
+
+            &__title {
+                margin: $spacing-md 0;
+                font-size: clamp(1.2rem, 2.2vw, $heading-font-size-md);
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
 
-            .post-excerpt {
-                margin-left: 1rem;
-                padding-right: 1rem;
-                font-size: $base-font-size - 1px;
-                max-width: 90%;
+            &__excerpt {
+                margin-left: 0;
+                padding-right: 0;
+                max-width: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                /* Default line clamp */
+                -webkit-line-clamp: 2;
+                line-clamp: 2;
             }
 
-            .post-meta {
-                padding-left: 1rem;
+            &__meta {
+                padding-left: 0;
                 flex-direction: column;
                 align-items: flex-start;
 
-                .post-author,
-                .post-date {
+                &__author,
+                &__date {
                     margin-right: 0;
 
                     &::after {
@@ -101,26 +116,24 @@
         }
     }
 
-    .cube-slider-loading,
-    .cube-slider-error {
+    &__loading,
+    &__error {
         height: 300px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        @include flex-center;
         font-family: $font-family-primary;
         color: #ffffff;
-        font-size: 1rem;
+        font-size: $body-font-size;
+    }
+}
+@media (max-width: 768px) {
+    .cube-slider {
+        min-height: 60vh; // Always keep slider visible within viewport
     }
 
-    // /* Ensure smooth transitions */
-    // .cube-slide,
-    // .cube-slide-text {
-    //     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    // }
-
-    // .cube-slide:hover,
-    // .cube-slide-text:hover {
-    //     transform: scale(1.02);
-    //     // box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    // }
+    .cube-slider__container {
+        margin: 0 auto; // Center container at all sizes
+        height: auto; // Let it adapt dynamically
+        top: 0;
+        overflow: visible; // Avoid hiding content
+    }
 }

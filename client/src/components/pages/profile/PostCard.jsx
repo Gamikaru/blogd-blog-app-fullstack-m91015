@@ -54,7 +54,7 @@ const PostCard = memo(({ post, isOwnProfile }) => {
 
     return (
         <motion.div
-            className="post-card"
+            className="profile-post-card"
             whileHover={{ scale: 1.02, boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.1)' }}
             onClick={navigateToPost}
             role="button"
@@ -68,49 +68,49 @@ const PostCard = memo(({ post, isOwnProfile }) => {
             transition={{ duration: 0.5 }}
         >
             {/* Post Image */}
-            <div className="post-card__image-container">
+            <div className="profile-post-card__image-container">
                 {post.imageUrls?.length ? (
                     <img
                         src={post.imageUrls[0]}
                         alt={`Cover image for ${post.title || 'Untitled'}`}
-                        className="post-card__image"
+                        className="profile-post-card__image"
                         loading="lazy"
                     />
                 ) : post.images?.length ? (
                     <img
                         src={`data:image/jpeg;base64,${post.images[0].data}`}
                         alt={`Cover image for ${post.title || 'Untitled'}`}
-                        className="post-card__image"
+                        className="profile-post-card__image"
                         loading="lazy"
                     />
                 ) : (
-                    <div className="post-card__image-placeholder" aria-label="No cover image available">
+                    <div className="profile-post-card__image-placeholder" aria-label="No cover image available">
                         No Image
                     </div>
                 )}
             </div>
 
             {/* Post Content */}
-            <div className="post-card__content">
-                <div className="post-card__header">
-                    <h4 className="post-card__title">{post.title || 'Untitled'}</h4>
-                    <span className="post-card__date">
+            <div className="profile-post-card__content">
+                <div className="profile-post-card__header">
+                    <h4 className="profile-post-card__title">{post.title || 'Untitled'}</h4>
+                    <span className="profile-post-card__date">
                         {post.createdAt
                             ? formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })
                             : "Date Unavailable"}
                     </span>
                 </div>
-                <div className="post-card__category">
-                    {post.category && <span className="post-card__category-tag">{post.category}</span>}
+                <div className="profile-post-card__category">
+                    {post.category && <span className="profile-post-card__category-tag">{post.category}</span>}
                 </div>
-                {/* <p className="post-card__excerpt">
+                {/* <p className="profile-post-card__excerpt">
                     {post.excerpt ? post.excerpt : sanitizeContent(post.content).substring(0, 100) + '...'}
                 </p> */}
             </div>
 
             {/* Post Actions */}
             {isOwnProfile && (
-                <div className="post-card__actions">
+                <div className="profile-post-card__actions">
                     <Button
                         className="button button-edit"
                         onClick={(e) => {
@@ -142,7 +142,7 @@ const PostCard = memo(({ post, isOwnProfile }) => {
                 <Modal onClose={() => setShowDeleteModal(false)}>
                     <h2>Confirm Deletion</h2>
                     <p>Are you sure you want to delete this post?</p>
-                    <div className="modal-actions">
+                    <div className="profile-modal-actions">
                         <Button
                             className="button button-delete"
                             onClick={handleDeletePost}

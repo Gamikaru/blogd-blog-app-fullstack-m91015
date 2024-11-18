@@ -5,6 +5,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex: 1 1 auto; // Allow shrinking but keep proportions
+
+}
+
+@mixin flex-start {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 // Mixin for Box Shadows
@@ -29,7 +37,7 @@
 
 // Mixin for Button Styling
 @mixin button-style($bg-color, $text-color) {
-    background-color: $bg-color;
+    background-color: if($bg-color != none, $bg-color, transparent);
     color: $text-color;
     padding: map-get($button-padding, md);
     border-radius: $button-border-radius;
@@ -53,7 +61,7 @@
     box-shadow: none;
 
     &:hover {
-        background-color: darken($bg-color, 10%);
+        background-color: if($bg-color != none, darken($bg-color, 10%), transparent);
         opacity: $button-opacity-default; // Slightly more opaque on hover
     }
 
@@ -86,7 +94,7 @@
 }
 
 // Mixin for Heading Styles
-@mixin heading-style($size: $heading-font-size-lg, $font-family: $font-family-heading, $weight: 700) {
+@mixin heading-style($size, $font-family: $font-family-heading, $weight: 700) {
     font-size: $size;
     font-family: $font-family;
     font-weight: $weight;
@@ -101,16 +109,127 @@
     box-shadow: $card-shadow;
     padding: $card-padding;
     color: $primary-text-color;
+
+    @include respond-to(md) {
+        padding: map-get($spacing-scale, md);
+    }
+
+    @include respond-to(sm) {
+        padding: map-get($spacing-scale, sm);
+    }
 }
 
 // Responsive Typography Mixin
 @mixin responsive-typography($small, $medium, $large) {
     font-size: $small;
-    @media (min-width: $breakpoint-sm) {
+    @include respond-to(sm) {
         font-size: $medium;
     }
-    @media (min-width: $breakpoint-lg) {
+    @include respond-to(lg) {
         font-size: $large;
+    }
+}
+
+// Mixin for Media Queries
+@mixin respond-to($breakpoint) {
+    @media (max-width: map-get($breakpoints, $breakpoint)) {
+        @content;
+    }
+}
+
+// Mixin to Hide on Specific Breakpoint
+@mixin hide-on($breakpoint) {
+    @media (max-width: map-get($breakpoints, $breakpoint)) {
+        display: none !important;
+    }
+}
+
+// Mixin to Show on Specific Breakpoint
+@mixin show-on($breakpoint) {
+    display: none;
+
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+        display: block !important;
+    }
+}
+
+// Mixin for Responsive Margin
+@mixin responsive-margin($margin-xs, $margin-md, $margin-lg) {
+    margin: $margin-xs;
+
+    @include respond-to(sm) {
+        margin: $margin-md;
+    }
+
+    @include respond-to(lg) {
+        margin: $margin-lg;
+    }
+}
+
+// Mixin for Responsive Padding
+@mixin responsive-padding() {
+
+
+    @include respond-to(xxs) {
+        padding: $spacing-xxs;
+    }
+
+    @include respond-to(xs) {
+        padding: $padding-xs;
+    }
+    @include respond-to(sm) {
+        padding: $padding-sm;
+    }
+
+    @include respond-to(md) {
+        padding: $padding-md;
+    }
+
+    @include respond-to(lg) {
+        padding: $padding-lg;
+    }
+}
+
+@mixin responsive-grid-auto($min-size) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax($min-size, 1fr));
+    gap: $spacing-unit;
+}
+
+// Mixin for Container
+@mixin container {
+    width: 100%;
+    max-width: map-get($container-max-widths, sm);
+    margin: 0 auto;
+    padding: 0 map-get($spacing-scale, sm);
+
+    @include respond-to(md) {
+        max-width: map-get($container-max-widths, md);
+    }
+
+    @include respond-to(lg) {
+        max-width: map-get($container-max-widths, lg);
+    }
+
+    @include respond-to(xl) {
+        max-width: map-get($container-max-widths, xl);
+    }
+
+    @include respond-to(xxl) {
+        max-width: map-get($container-max-widths, xxl);
+    }
+}
+
+// Mixin for Fluid Typography
+@mixin fluid-font-size($min-size, $max-size) {
+    font-size: $min-size;
+
+    @media (min-width: map-get($breakpoints, xxs)) and (max-width: map-get($breakpoints, xxl)) {
+        font-size: calc(#{$min-size} + (#{$max-size} - #{$min-size}) * ((100vw - 320px) / (1440 - 320)));
+    }
+
+    @media (min-width: map-get($breakpoints, xxl)) {
+        font-size: $max-size;
     }
 }
 

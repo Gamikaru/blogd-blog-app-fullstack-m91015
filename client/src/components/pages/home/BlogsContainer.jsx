@@ -151,36 +151,14 @@ const BlogsContainer = () => {
 
     return (
         <div className="blogs-container">
+            {/* Title and Subtitle Section */}
+            <div className="blogs-header">
+                <h1 className="blogs-title">Discover</h1>
+                <p className="blogs-subtitle">
+                    Explore the best blogs crafted by creative minds around the world. Search, filter, and dive into stories that inspire.
+                </p>
+            </div>
             <div className="filter-search-container">
-                {/* Search Functionality */}
-                <div className="search-container" ref={searchRef}>
-                    <Button
-                        className="search-icon"
-                        onClick={() => setShowSearchInput((prev) => !prev)}
-                        variant="iconButton"
-                        aria-label="Search"
-                    >
-                        <FaSearch />
-                    </Button>
-
-                    <AnimatePresence>
-                        {showSearchInput && (
-                            <motion.input
-                                type="text"
-                                className="search-input"
-                                placeholder="Search by author or title"
-                                onChange={handleSearchChange}
-                                initial="hidden"
-                                animate="visible"
-                                exit="hidden"
-                                variants={searchInputVariants}
-                                transition={{ duration: 0.3 }}
-                                aria-label="Search input"
-                            />
-                        )}
-                    </AnimatePresence>
-                </div>
-
                 {/* Filter Functionality */}
                 <div className="filter-container" ref={filterRef}>
                     <Button
@@ -261,6 +239,33 @@ const BlogsContainer = () => {
 
                                 </div>
                             </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
+                <div className="search-container" ref={searchRef}>
+                    <Button
+                        className="search-icon"
+                        onClick={() => setShowSearchInput((prev) => !prev)}
+                        variant="iconButton"
+                        aria-label="Search"
+                    >
+                        <FaSearch />
+                    </Button>
+
+                    <AnimatePresence>
+                        {showSearchInput && (
+                            <motion.input
+                                type="text"
+                                className="search-input"
+                                placeholder="Search by author or title"
+                                onChange={handleSearchChange}
+                                initial="hidden"
+                                animate="visible"
+                                exit="hidden"
+                                variants={searchInputVariants}
+                                transition={{ duration: 0.3 }}
+                                aria-label="Search input"
+                            />
                         )}
                     </AnimatePresence>
                 </div>

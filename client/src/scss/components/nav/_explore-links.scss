@@ -1,11 +1,10 @@
-//explore-links.scss
+// explore-links.scss
 
 .info-and-explore-container {
-    display: flex;
+    @include flex-center;
     flex-direction: column;
     align-items: flex-start;
-    margin-left: 8rem;
-    // margin-top: $spacing-lg;
+    margin-left: px-to-rem(128); // 8rem
 
     .page-info-message {
         text-align: left;
@@ -13,21 +12,19 @@
         margin-top: $spacing-xxl;
 
         &.profile-info {
-            display: flex;
+            @include flex-start;
             align-items: center;
             gap: $spacing-xxl;
-            margin-left: 5rem;
+            margin-left: px-to-rem(30); // 5rem
 
             .profile-avatar {
-                width: 10vw;
-                height: 10vw;
+                width: 15vw;
+                height: 15vw;
                 border-radius: 50%;
                 overflow: hidden;
                 position: relative;
-                margin-right: 1rem;
-                margin-left: 5rem;
-
-
+                margin-right: $spacing-sm;
+                margin-left: px-to-rem(80); // 5rem
 
                 .profile-image {
                     width: 100%;
@@ -40,35 +37,34 @@
                 font-size: $heading-font-size-xxlg;
                 color: $primary-text-color;
                 font-weight: 800;
-                margin-top:5rem;
-
+                margin-top: px-to-rem(40); // 5rem
             }
         }
 
         .page-title {
-            font-size: $heading-font-size-xxlg;
+            @include heading-style($heading-font-size-xxlg);
             font-weight: bold;
             color: $primary-text-color;
             margin: 0;
-            margin-left: 2rem;
-            padding-inline: 12.5rem;
+            margin-left: $spacing-xs;
+            padding-inline: px-to-rem(50); // 12.5rem
         }
 
         .page-subtitle {
-            font-size: $sub-heading-font-size;
+            font-size: clamp(1rem, 2.5vw, 1.5rem); // Responsive subtitle size
             color: $secondary-text-color;
             margin-top: $spacing-sm;
-            margin-left: 15rem;
+            margin-left: px-to-rem(50); // 15rem
         }
     }
 
     .explore-links {
-        display: flex;
+        @include flex-center;
         justify-content: flex-start;
         gap: $spacing-md;
-        margin-top: $spacing-sm;
-        padding-top: $spacing-sm;
-        margin-left: 15rem;
+        margin-top: $spacing-xxs;
+        padding-top: $spacing-xxs;
+        margin-left: px-to-rem(50); // 15rem
 
         .explore-link {
             font-size: $small-font-size;
@@ -82,34 +78,37 @@
         }
     }
 }
+
 @media (max-width: $breakpoint-md) {
     .navbar {
         padding: $spacing-sm $spacing-md;
 
         .navbar-right {
-            gap: 0.5rem;
+            gap: $spacing-xxs; // 0.5rem
         }
     }
 
     .info-and-explore-container {
-        margin-left: 2rem;
+        margin-left: $spacing-sm;
 
         .page-info-message {
             &.profile-info {
-                margin-left: 2rem;
+                margin-left: $spacing-sm;
+
                 .profile-avatar {
-                    width: 40px;
-                    height: 40px;
+                    width: px-to-rem(140);
+                    height: px-to-rem(140);
                 }
 
                 .profile-user-name {
-                    font-size: $small-font-size;
+                    font-size: $heading-font-size-lg;
                 }
             }
 
             .page-title,
             .page-subtitle {
-                margin-left: 2rem;
+                font-size: $heading-font-size-md;
+                margin-left: $spacing-sm;
             }
         }
 
@@ -117,7 +116,7 @@
             flex-wrap: wrap;
             gap: $spacing-sm;
             padding: $spacing-xs $spacing-sm;
-            margin-left: 2rem;
+            margin-left: $spacing-sm;
         }
     }
 }

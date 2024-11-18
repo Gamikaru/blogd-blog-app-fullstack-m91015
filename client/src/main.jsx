@@ -9,7 +9,7 @@ import App from './App';
 import Providers from './Providers';
 
 // Import styles
-import 'bootstrap/scss/bootstrap.scss';
+// import 'bootstrap/scss/bootstrap.scss';
 import 'swiper/css'; // Global swiper styles
 import './scss/main.scss';
 

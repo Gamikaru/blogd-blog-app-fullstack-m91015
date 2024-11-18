@@ -2,14 +2,27 @@
 
 // Function for Rem Conversion
 @function px-to-rem($px) {
-    $base: 16;  // Remove px unit
-    $value: $px / $base;  // Simple division of numbers
-    @return #{$value}rem;  // Interpolate and add rem unit
+    @if type-of($px) != "number" {
+        @error "px-to-rem: Expected a numeric value, got #{type-of($px)}.";
+    }
+    $base: 16;
+    $value: $px / $base;
+    @return #{$value}rem;
 }
 
 // Function for Calculating Lightness Adjustments
 @function adjust-color-lightness($color, $percent) {
     @return lighten($color, $percent);
+}
+
+// Function to Darken Color by Percentage
+@function darken-color($color, $percent) {
+    @return darken($color, $percent);
+}
+
+// Function to Fade Color by Percentage
+@function fade-color($color, $percent) {
+    @return rgba($color, $percent);
 }
 
 // Function for Border Radius
@@ -23,10 +36,10 @@
 }
 
 @function luminance($color) {
-    $r: color.channel($color, "red", $space: rgb);
-    $g: color.channel($color, "green", $space: rgb);
-    $b: color.channel($color, "blue", $space: rgb);
-    // Rest of the function...
+    $r: get-color-channel($color, "red");
+    $g: get-color-channel($color, "green");
+    $b: get-color-channel($color, "blue");
+    @return (0.299 * $r + 0.587 * $g + 0.114 * $b);
 }
 
 // Function for Color Channel
@@ -52,4 +65,42 @@
 
 @function get-z-index($key) {
     @return map-get($z-indices, $key);
+}
+
+// Function for Fluid Width
+@function fluid-width($min-vw, $max-vw, $min-width, $max-width) {
+    @if unit($min-width) != unit($max-width) {
+        @error "fluid-width: $min-width and $max-width must have the same units.";
+    }
+    @if unit($min-vw) != unit($max-vw) {
+        @error "fluid-width: $min-vw and $max-vw must have the same units.";
+    }
+    $slope: math.div($max-width - $min-width, $max-vw - $min-vw);
+    $intercept: $min-width - ($slope * $min-vw);
+    @return clamp(#{$min-width}, calc(#{$slope} * 100vw + #{$intercept}), #{$max-width});
+}
+
+// Function for Fluid Typography
+@function fluid-type($min-vw, $max-vw, $min-size, $max-size) {
+    @if unit($min-size) != unit($max-size) {
+        @error "fluid-type: $min-size and $max-size must have the same units.";
+    }
+    @if unit($min-vw) != unit($max-vw) {
+        @error "fluid-type: $min-vw and $max-vw must have the same units.";
+    }
+    $slope: math.div($max-size - $min-size, $max-vw - $min-vw);
+    $intercept: $min-size - ($slope * $min-vw);
+    @return clamp(#{$min-size}, calc(#{$slope} * 100vw + #{$intercept}), #{$max-size});
+}
+
+// Function for Responsive Breakpoint
+@function breakpoint($name) {
+    @return map-get($breakpoints, $name);
+}
+
+
+
+// Function to Calculate Container Width
+@function container-width($size) {
+    @return map-get($container-max-widths, $size);
 }

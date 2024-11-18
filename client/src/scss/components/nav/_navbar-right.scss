@@ -1,20 +1,20 @@
 // _navbar-right.scss
 
 .navbar-right {
-    display: flex;
+    @include flex-center;
     align-items: center;
-    gap: 1rem;
+    gap: $spacing-sm; // 1rem
 
     .create-post-icon,
     .search-icon,
     .user-icon {
-        font-size: 1.2rem;
+        font-size: px-to-rem(19.2); // 1.2rem
         color: $primary-text-color;
         background: none;
         border: none;
         cursor: pointer;
-        padding: 0.5rem;
-        transition: color 0.3s ease;
+        padding: $spacing-xs; // 0.25rem
+        transition: color $transitions-base;
         display: flex;
         align-items: center;
         justify-content: center;

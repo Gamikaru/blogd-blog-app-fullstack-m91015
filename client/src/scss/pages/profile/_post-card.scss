@@ -1,6 +1,6 @@
 // components/pages/profile/_post-card.scss
 
-.post-card {
+.profile-post-card {
     background: $primary-bg-color;
     border-radius: $border-radius;
     box-shadow: $card-shadow;
@@ -23,7 +23,7 @@
         height: 200px;
         overflow: hidden;
 
-        .post-card__image {
+        .profile-post-card__image {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -34,7 +34,7 @@
             }
         }
 
-        .post-card__image-placeholder {
+        .profile-post-card__image-placeholder {
             width: 100%;
             height: 100%;
             background: lighten($secondary-bg-color, 10%);
@@ -58,7 +58,7 @@
             align-items: center;
             margin-bottom: $spacing-sm;
 
-            .post-card__title {
+            .profile-post-card__title {
                 font-size: $heading-font-size-md;
                 color: $primary-text-color;
                 margin: 0;
@@ -70,7 +70,7 @@
                 font-family: $font-family-heading;
             }
 
-            .post-card__date {
+            .profile-post-card__date {
                 font-size: $small-font-size;
                 color: $secondary-text-color;
             }
@@ -79,7 +79,7 @@
         &__category {
             margin-bottom: $spacing-sm;
 
-            .post-card__category-tag {
+            .profile-post-card__category-tag {
                 display: inline-block;
                 background: $accent-color-1;
                 color: $primary-text-color;
@@ -164,6 +164,24 @@
                 &:disabled {
                     background-color: $button-danger-disabled;
                 }
+            }
+        }
+    }
+
+    /* Modal Actions Specific to Profile */
+    .profile-modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: $spacing-sm;
+        margin-top: $spacing-md;
+
+        .button {
+            &.button-edit {
+                /* Inherit styles from .profile-post-card__actions .button-edit */
+            }
+
+            &.button-delete {
+                /* Inherit styles from .profile-post-card__actions .button-delete */
             }
         }
     }

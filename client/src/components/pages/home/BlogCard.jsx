@@ -23,8 +23,6 @@ const cardVariants = {
     },
 };
 
-// Remove hoverVariants since it's merged into cardVariants
-
 const likeButtonVariants = {
     tap: { scale: 0.9 },
 };
@@ -32,13 +30,6 @@ const likeButtonVariants = {
 const BlogCard = memo(function BlogCard({ post, author, cookie }) {
     const navigate = useNavigate();
     const { like, unlike } = usePostContext();
-
-    // const truncatedContent = useMemo(() => {
-    //     const parser = new DOMParser();
-    //     const doc = parser.parseFromString(post.content, 'text/html');
-    //     const text = doc.body.textContent || '';
-    //     return text.length > 100 ? `${text.substring(0, 100)}...` : text;
-    // }, [post.content]);
 
     const handleLikeClick = useCallback(
         (e) => {
@@ -107,10 +98,16 @@ const BlogCard = memo(function BlogCard({ post, author, cookie }) {
                     </span>
                 </div>
 
-                <h2 className="post-title">{post.title || 'Untitled'}</h2>
-
-                <div className="post-category">
-                    {post.category && <CustomTagIcon className="category-icon" text={post.category} />}
+                <div className="post-title-category">
+                    <h2 className="post-title">{post.title || 'Untitled'}</h2>
+                    <div className="post-category">
+                        {post.category ? (
+                            <CustomTagIcon className="category-icon" text={post.category} />
+                        ) : (
+                            // Placeholder to maintain layout consistency
+                            <span className="category-text"></span>
+                        )}
+                    </div>
                 </div>
 
                 {/* <div className="post-content">

@@ -1,6 +1,6 @@
 // components/pages/profile/_posts-section.scss
 
-.posts-section {
+.profile-posts-section {
     background: $secondary-bg-color;
     border-radius: $border-radius;
     padding: $spacing-lg;
@@ -31,7 +31,7 @@
             }
         }
 
-        .section-action {
+        .profile-section-action {
             font-size: $body-font-size;
             color: $info-color;
             cursor: pointer;
@@ -60,7 +60,7 @@
     &__tabs {
         display: flex;
 
-        .tab {
+        .profile-tab {
             padding: $spacing-sm $spacing-md;
             margin-right: $spacing-sm;
             background: $secondary-bg-color;
@@ -89,14 +89,15 @@
         display: flex;
         align-items: center;
         gap: $spacing-sm;
+        justify-content: center;
 
         @media (max-width: 768px) {
-            align-items: flex-start;
-            margin-top: $spacing-sm;
+            justify-content: flex-start;
+            width: 100%;
         }
 
-        .filter-icon,
-        .search-icon {
+        .profile-filter-icon,
+        .profile-search-icon {
             background: none;
             border: none;
             cursor: pointer;
@@ -109,7 +110,7 @@
             }
         }
 
-        .search-input {
+        .profile-search-input {
             margin-left: $spacing-sm;
             padding: $spacing-xs $spacing-sm;
             border: 1px solid $border-color;
@@ -124,7 +125,7 @@
             }
         }
 
-        .filter-dropdown {
+        .profile-filter-dropdown {
             position: absolute;
             top: 100%;
             right: 0;
@@ -142,7 +143,7 @@
         }
     }
 
-    .posts-gallery {
+    .profile-posts-gallery {
         display: flex;
         margin-left: 1rem;
         width: auto;
@@ -161,22 +162,10 @@
         }
     }
 
-    .no-posts-message {
+    .profile-no-posts-message {
         text-align: center;
         font-size: 0.9rem; // Reduced
         color: $secondary-text-color;
         padding: $spacing-md 0;
-    }
-
-    &__controls {
-        display: flex;
-        align-items: center;
-        gap: $spacing-sm;
-        justify-content:center;
-
-        @media (max-width: 768px) {
-            justify-content: flex-start;
-            width: 100%;
-        }
     }
 }

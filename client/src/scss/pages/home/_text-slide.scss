@@ -1,143 +1,136 @@
-// _text-slide.scss
+/* _text-slide.scss */
 
-.text-slider-container {
+.cube-slider__container--text {
     position: relative;
-    width: 58%;
-    margin-left: -5rem;
+    width: 60%;
+    margin-left: -8rem;
     z-index: 1;
-    top: 5rem;
-    left: 5rem;
+    top: $spacing-xxl*1.2;
+    left: $spacing-xxl;
 
-    .cube-slider {
+    .cube-slider__slider {
         width: 100%;
         height: 27rem;
-        // background-color: $primary-bg-color;
 
-
-        &.text-slider {
-            height: 25rem; // Adjusted to take more vertical room
-            // background-color: $primary-bg-color;
+        &--text {
+            height: 25rem;
             border-bottom-right-radius: 8rem;
-
-
         }
 
         .swiper-slide {
-            // display: flex;
-            // align-items: center;
-            // justify-content: center;
-            // position: relative;
-
-
-            .cube-slide-text {
+            .cube-slider__text-slide {
                 width: 100%;
                 height: 100%;
-                padding: 3rem 3.5rem 2rem 8rem; // Increased padding for more content space
+                padding: $spacing-xxl $spacing-xxl $spacing-xl 8rem;
                 background-color: $secondary-bg-color;
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
                 text-align: left;
-                overflow: visible;
-                //to add a top shadow, add the following line
-                // box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-                border-radius: 1.5rem 1.5rem 1.5rem 1.5rem;
+                overflow: hidden; // Prevent overflow
+                border-radius: $border-radius-lg;
                 border-bottom: 0.2rem solid $border-color;
                 border-right: 0.2rem solid $border-color;
                 border-top: 0.2rem solid $border-color;
 
-
-
-
-                //
-
-
-                .post-title {
-                    font-size: clamp(1.7rem, 2.5vw, $heading-font-size-md);
-                    font-weight: 600;
-                    margin: 0 0 2rem 0; // Improved spacing below title
-                    color: $primary-text-color;
-                    line-height: 1.6;
-                    font-family: $font-family-heading;
-                    white-space: normal;
+                &__title {
+                    @include heading-style($heading-font-size-md, $font-family-heading, 600);
+                    margin: 0 0 $spacing-xl 0;
+                    white-space: nowrap;
                     overflow: hidden;
+                    line-height: 1.3;
+                    word-break: break-word; // Ensure text wraps properly
+                    white-space: normal; // Allow text to wrap instead of a single line
                     text-overflow: ellipsis;
                     min-height: 3rem;
+                    font-size: clamp(1.5rem, 2.2vw, $heading-font-size-md);
                 }
 
-                .post-excerpt {
-                    font-size: $body-font-size;
+                &__excerpt {
+                    font-size: clamp(0.9rem, 1.2vw, $body-font-size); // Responsive font size
                     color: $secondary-text-color;
                     line-height: 1.7;
-                    margin: 0 0 1.5rem 0; // Improved spacing below excerpt
+                    margin: 0 0 $spacing-lg 0;
                     position: relative;
                     z-index: 2000;
-                    max-height: 100%;
+                    max-height: none; // Allow multiple lines
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 5; // Default number of lines
+                    line-clamp: 5;
 
-                    .cube-quote {
-                        font-size: $body-font-size *1.1;
+                    @media (max-width: 1200px) {
+                        // Adjust based on your breakpoints
+                        -webkit-line-clamp: 3;
+                        line-clamp: 3;
+                    }
+
+                    @media (max-width: 768px) {
+                        -webkit-line-clamp: 2;
+                        line-clamp: 2;
+                        font-size: clamp(0.8rem, 1vw, 0.9rem);
+                    }
+
+                    &__quote {
+                        font-size: clamp(1rem, 1.1vw, $body-font-size * 1.1);
                         color: $secondary-text-color;
                         font-style: italic;
                         line-height: 1.6rem;
-                        overflow: visible;
-                        display: inline;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: normal;
+                        display: -webkit-box;
+                        -webkit-box-orient: vertical;
+                        -webkit-line-clamp: inherit; // Inherit from parent
+                    }
 
+                    &__opening-quote {
+                        font-size: 2rem;
+                        font-weight: bold;
+                        color: $primary-text-color;
+                        margin-right: 0.5rem;
+                        vertical-align: text-top;
+                        font-family: $font-family-heading;
+                    }
 
+                    &__closing-group {
+                        display: inline-flex;
+                        align-items: center;
+                        margin-left: 0.25rem;
+                        position: relative;
+                        top: 0.3rem;
 
-
-
-                        .cube-opening-quote {
+                        &__closing-quote {
                             font-size: 2rem;
                             font-weight: bold;
                             color: $primary-text-color;
-                            margin-right: 0.5rem;
-                            vertical-align: text-top;
+                            vertical-align: baseline;
                             font-family: $font-family-heading;
-
-
-                        }
-
-                        .cube-closing-group {
-                            display: inline-flex;
-                            align-items: center;
-                            margin-left: 0.25rem;
-                            position: relative;
-                            top: 0.3rem;
-
-                            .cube-closing-quote {
-                                font-size: 2rem;
-                                font-weight: bold;
-                                color: $primary-text-color;
-                                vertical-align: baseline;
-                                font-family: $font-family-heading;
-                            }
                         }
                     }
                 }
 
-                .post-meta {
-                    gap: 3rem; // Use gap instead of hard margins
+                &__meta {
                     display: flex;
-                    align-items: center;
-                    justify-content: flex-center;
-                    padding-top: 1rem;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    color: $secondary-text-color;
-                    margin-left: 3rem;
+                    flex-wrap: wrap; // Allow the content to wrap on smaller screens
+                    justify-content: flex-start; // Align to left
+                    gap: $spacing-sm; // Add spacing between author and date
+                    padding: 0 $spacing-md; // Ensure padding on both sides
 
+                    &__author,
+                    &__date {
+                        white-space: nowrap; // Keep each piece of meta info on one line
+                        text-overflow: ellipsis; // Prevent overflow on small screens
+                        overflow: hidden;
 
-                    .post-author,
-                    .post-date {
-                        font-size: 0.8rem;
-                        color: #666;
                         &:not(:last-child) {
-                            margin-right: 1rem;
+                            margin-right: $spacing-md;
 
                             &::after {
                                 content: "|";
-                                margin-left: 4rem;
+                                margin-left: $spacing-xl;
                                 color: #999;
                             }
                         }
@@ -150,26 +143,43 @@
     @media (max-width: $breakpoint-md) {
         width: 100%;
         margin-left: 0;
-        margin-top: 2rem;
+        margin-top: $spacing-md;
         top: 0;
+        left: 0;
 
-        .cube-slider {
-            height: 200px;
+        .cube-slider__slider {
+            height: auto;
         }
 
-        .cube-slide-text {
-            padding: 1rem;
+        .cube-slider__text-slide {
+            padding: $spacing-md;
+            overflow: hidden;
 
-            .post-title {
-                margin: 1rem 0;
+            &__title {
+                margin: $spacing-md 0;
+                font-size: clamp(1.2rem, 2vw, $heading-font-size-md);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
 
-            .post-excerpt {
-                margin-bottom: 1.5rem;
+            &__excerpt {
+                margin-bottom: $spacing-lg;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: normal; // Allow wrapping
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                line-clamp: 2;
+                font-size: clamp(0.8rem, 1vw, 0.9rem);
             }
 
-            .post-meta {
-                padding-top: 0.5rem;
+            &__meta {
+                padding-top: $spacing-sm;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
         }
     }

@@ -28,10 +28,10 @@ const ImageSlide = memo(({ posts, swiperProps }) => {
     };
 
     return (
-        <div className="cube-slider-container image-slider-container">
+        <div className="cube-slider__container cube-slider__container--image">
             <Swiper
                 {...swiperProps}
-                className="cube-slider"
+                className="cube-slider__slider"
                 onSwiper={(swiper) => {
                     swiperRef.current = swiper;
                 }}
@@ -52,7 +52,7 @@ const ImageSlide = memo(({ posts, swiperProps }) => {
                             key={`image-${postId}`}
                             onClick={() => navigate(`/blog/${postId}`)}
                         >
-                            <div className="cube-slide">
+                            <div className="cube-slider__slider__slide">
                                 <div
                                     className="swiper-lazy-preloader"
                                     style={{
@@ -74,7 +74,8 @@ const ImageSlide = memo(({ posts, swiperProps }) => {
                                     onError={(e) => {
                                         if (mounted.current) {
                                             e.target.onerror = null;
-                                            e.target.src = '/assets/images/default-placeholder-image.jpg';
+                                            e.target.src =
+                                                '/assets/images/default-placeholder-image.jpg';
                                         }
                                     }}
                                     style={{

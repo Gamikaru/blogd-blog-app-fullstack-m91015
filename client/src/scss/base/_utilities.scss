@@ -1,60 +1,60 @@
-/* Margin and Padding Utilities */
-@mixin spacing-utility($property, $size) {
-    #{$property}-1 { #{$property}: spacing(0.5); }
-    #{$property}-2 { #{$property}: spacing(1); }
-    #{$property}-3 { #{$property}: spacing(1.5); }
-}
+// /* Margin and Padding Utilities */
+// @mixin spacing-utility($property, $size) {
+//     #{$property}-1 { #{$property}: spacing(0.5); }
+//     #{$property}-2 { #{$property}: spacing(1); }
+//     #{$property}-3 { #{$property}: spacing(1.5); }
+// }
 
-@include spacing-utility('m', $spacing-unit); // Margin utilities
-@include spacing-utility('p', $spacing-unit); // Padding utilities
+// @include spacing-utility('m', $spacing-unit); // Margin utilities
+// @include spacing-utility('p', $spacing-unit); // Padding utilities
 
-/* Flex Utilities */
-.flex-center {
-    @include flex-center;
-}
+// /* Flex Utilities */
+// .flex-center {
+//     @include flex-center;
+// }
 
-.flex-space-between {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+// .flex-space-between {
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: center;
+// }
 
-.flex-column {
-    display: flex;
-    flex-direction: column;
-}
+// .flex-column {
+//     display: flex;
+//     flex-direction: column;
+// }
 
-/* Grid Utilities */
-.grid-2 {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: $spacing-unit;
-}
+// /* Grid Utilities */
+// .grid-2 {
+//     display: grid;
+//     grid-template-columns: repeat(2, 1fr);
+//     gap: $spacing-unit;
+// }
 
-.grid-3 {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: $spacing-unit;
-}
+// .grid-3 {
+//     display: grid;
+//     grid-template-columns: repeat(3, 1fr);
+//     gap: $spacing-unit;
+// }
 
-/* Visibility Utilities */
-.hidden {
-    display: none !important;
-}
+// /* Visibility Utilities */
+// .hidden {
+//     display: none !important;
+// }
 
-.visible {
-    display: block !important;
-}
+// .visible {
+//     display: block !important;
+// }
 
-/* Text Alignment Utilities */
-.text-center {
-    text-align: center;
-}
+// /* Text Alignment Utilities */
+// .text-center {
+//     text-align: center;
+// }
 
-.text-left {
-    text-align: left;
-}
+// .text-left {
+//     text-align: left;
+// }
 
-.text-right {
-    text-align: right;
-}
+// .text-right {
+//     text-align: right;
+// }

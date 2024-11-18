@@ -3,21 +3,22 @@
 .nav-header {
     position: fixed;
     background-color: $primary-bg-color;
-    padding-bottom: 10rem;
+    padding-bottom: px-to-rem(160); // 10rem
     padding-inline: $navbar-padding;
-    margin-right: 2rem;
+    margin-right: px-to-rem(32); // 2rem
     position: relative;
-    border-radius: 0 0 5rem 0;
-    height:50vh;
+    border-radius: 0 0 px-to-rem(80) 0;
+    height: px-to-rem(450); // 50vh assuming 16px base
     // border-bottom: 0.2rem solid $border-color;
     border-right: 0.1rem solid $border-color;
 }
 
 .navbar {
-    display: flex;
+    @include flex-center;
+    // display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
+    max-width: px-to-rem(1200); // 1200px
     margin: 0 auto;
 }
 

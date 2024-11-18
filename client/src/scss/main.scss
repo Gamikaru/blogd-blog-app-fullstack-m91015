@@ -1,5 +1,10 @@
+// Import styles
 // Import sass modules
 @use "sass:math";
+
+@import 'bootstrap/scss/bootstrap.scss';
+
+
 
 // Import abstracts
 @import "abstracts/variables";

@@ -1,5 +1,3 @@
-// _variables.scss
-
 // Base values
 $base-font-size: 16px;
 $base-line-height: 1.6;
@@ -15,7 +13,7 @@ $light-theme: (
     secondary-text-color: #9c9c9c,
     accent-color-1: #e2e3d5,
     accent-color-2: #f1f1f1,
-    highlight-color:#9c9c9c,
+    highlight-color: #9c9c9c,
     success-color: #28a745,
     error-color: #e74c3c,
     warning-color: #f39c12,
@@ -59,21 +57,20 @@ $hover-color: map-get($theme-colors, hover-color);
 $modal-backdrop-color: map-get($theme-colors, modal-backdrop-color);
 $border-color: map-get($theme-colors, border-color);
 
-// Fluid Typography Function
-@function fluid-type($min-vw, $max-vw, $min-size, $max-size) {
-    @return clamp(#{$min-size}rem, #{($max-size - $min-size) * 100}vw, #{$max-size}rem);
-}
-
 // Typography - Fluid Responsive
 $font-family-primary: "Inter", sans-serif;
 $font-family-heading: "Merriweather", serif;
-$heading-font-size-xxlg: fluid-type(320px, 1200px, 2.5, 3.5);
-$heading-font-size-lg: fluid-type(320px, 1200px, 1.75, 2.25);
-$heading-font-size-md: fluid-type(320px, 1200px, 1.25, 1.5);
-$sub-heading-font-size: fluid-type(320px, 1200px, 1, 1.125);
-$body-font-size: 1rem;
-$small-font-size: 0.875rem;
-$xsmall-font-size: 0.75rem;
+
+// Fluid Typography sizes for headings
+$heading-font-size-xxlg: fluid-type(400px, 1400px, 5rem, 4rem);
+$heading-font-size-lg: fluid-type(320px, 1200px, 1.75rem, 2.5rem);
+$heading-font-size-md: fluid-type(320px, 1200px, 1.5rem, 2rem);
+$heading-font-size-sm: fluid-type(320px, 1200px, 1.25rem, 1.5rem);
+
+$sub-heading-font-size: fluid-type(320px, 1200px, 1rem, 1.25rem);
+$body-font-size: fluid-type(320px, 1200px, 0.9rem, 1rem);
+$small-font-size: fluid-type(320px, 1200px, 0.8rem, 0.9rem);
+$xsmall-font-size: fluid-type(320px, 1200px, 0.75rem, 0.8rem);
 $line-height: $base-line-height;
 
 // Responsive Spacing Scale
@@ -84,10 +81,12 @@ $spacing-scale: (
     md: 1rem,
     lg: 1.5rem,
     xl: 2rem,
-    xxl: 3rem
+    xxl: 3rem,
+    xxxl: 5rem,
+    xxl2: 6rem
 );
 
-// Spacing and Layout - More Responsive
+// Spacing and Layout
 $spacing-unit: map-get($spacing-scale, md);
 $navbar-padding: map-get($spacing-scale, sm) map-get($spacing-scale, md);
 $card-padding: map-get($spacing-scale, lg);
@@ -101,44 +100,53 @@ $sidebar-width: 12rem;
 
 // Responsive Borders and Shadows
 $border-radius: clamp(4px, 0.5vw, 8px);
-$button-border-radius: clamp(20px, 2vw, 30px); // Increased for oval buttons
+$border-radius-lg: 1rem;
+$border-radius-sm: 0.25rem;
+$button-border-radius: clamp(20px, 2vw, 30px);
 $card-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 $box-shadow-small: 0 clamp(1px, 0.25vw, 2px) clamp(2px, 0.5vw, 4px) rgba(0, 0, 0, 0.1);
 $box-shadow-medium: 0 clamp(2px, 0.5vw, 4px) clamp(4px, 0.75vw, 8px) rgba(0, 0, 0, 0.1);
 $box-shadow-strong: 0 clamp(4px, 1vw, 8px) clamp(8px, 1.5vw, 12px) rgba(0, 0, 0, 0.4);
-$shadow-color: rgba(0, 0, 0, 0.08); // For inset shadow effects
+$shadow-color: rgba(0, 0, 0, 0.08);
 
-// Breakpoints with em units for better scaling
-$breakpoint-sm: 36em; // 576px
-$breakpoint-md: 48em; // 768px
-$breakpoint-lg: 62em; // 992px
-$breakpoint-xl: 75em; // 1200px
+// Breakpoints with em units
+$breakpoints: (
+    xxs: 20em,
+    // 320px
+    xs: 24em,
+    // 384px
+    sm: 36em,
+    // 576px
+    md: 48em,
+    // 768px
+    lg: 62em,
+    // 992px
+    xl: 75em,
+    // 1200px
+    xxl: 90em // 1440px
+);
+
+// Individual Breakpoint Variables
+$breakpoint-xxs: 20em;
+$breakpoint-xs: 24em;
+$breakpoint-sm: 36em;
+$breakpoint-md: 48em;
+$breakpoint-lg: 62em;
+$breakpoint-xl: 75em;
+$breakpoint-xxl: 90em;
 
 // Viewport-based Container Widths
 $container-max-widths: (
+    xxs: 95vw,
+    xs: 90vw,
     sm: 90vw,
     md: 85vw,
     lg: 80vw,
-    xl: 75vw
+    xl: 75vw,
+    xxl: 70vw
 );
 
-// Additional Button and Input Focus Styles
-$input-bg-color: #f3f0ed; // Adjust if needed for dark theme
-$transitions-base: 0.3s ease-out;
-
-// Transitions
-$transitions: (
-    base: 0.2s ease,
-    button: 0.2s ease-in-out
-);
-
-// Z-indices
-$z-indices: (
-    modal-backdrop: 1040,
-    modal: 1050
-);
-
-// Utility Variables for Responsive Design
+// Utility Variables
 $spacing-xxs: map-get($spacing-scale, xxs);
 $spacing-xs: map-get($spacing-scale, xs);
 $spacing-sm: map-get($spacing-scale, sm);
@@ -146,6 +154,8 @@ $spacing-md: map-get($spacing-scale, md);
 $spacing-lg: map-get($spacing-scale, lg);
 $spacing-xl: map-get($spacing-scale, xl);
 $spacing-xxl: map-get($spacing-scale, xxl);
+$spacing-xxxl: map-get($spacing-scale, xxxl);
+$spacing-xxl2: map-get($spacing-scale, xxl2);
 
 // **Added Variables**
 $button-hover-bg-color: lighten($highlight-color, 5%); // Hover background color for buttons
@@ -187,4 +197,25 @@ $button-link-hover: darken($highlight-color, 10%);
 $button-link-disabled: #343a40;
 $info-color: #17a2b8;
 
-// If needed, other variables can be added here
+// Transition Variables
+$transitions-base: 0.3s ease-out;
+
+$transitions: (
+    base: 0.2s ease,
+    button: 0.2s ease-in-out
+);
+
+// Z-Indices
+$z-indices: (
+    modal-backdrop: 1040,
+    modal: 1050
+);
+
+// Input Background Color
+$input-bg-color: #f3f0ed; // Adjust if needed for dark theme
+
+// Padding Variables (If Used)
+$padding-xs: map-get($spacing-scale, xs);
+$padding-sm: map-get($spacing-scale, sm);
+$padding-md: map-get($spacing-scale, md);
+$padding-lg: map-get($spacing-scale, lg);

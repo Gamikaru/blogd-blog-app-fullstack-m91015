@@ -43,8 +43,6 @@ const TextSlide = memo(({ posts, swiperProps }) => {
         };
     }, [debouncedAdjustFontSize]);
 
-    // TextSlide.jsx
-
     const processedPosts = useMemo(
         () =>
             posts.map((post) => {
@@ -74,12 +72,11 @@ const TextSlide = memo(({ posts, swiperProps }) => {
         [posts]
     );
 
-
     return (
-        <div className="cube-slider-container text-slider-container">
+        <div className="cube-slider__container cube-slider__container--text">
             <Swiper
                 {...swiperProps}
-                className="cube-slider"
+                className="cube-slider__slider cube-slider__slider--text"
                 modules={[EffectCube, Autoplay]}
             >
                 {processedPosts.map((post, index) => {
@@ -89,30 +86,37 @@ const TextSlide = memo(({ posts, swiperProps }) => {
                             key={`text-${postId}`}
                             onClick={() => navigate(`/blog/${postId}`)}
                             tabIndex="0"
-                            aria-label={`Navigate to blog post titled ${post.title || 'Untitled Post'
-                                }`}
+                            aria-label={`Navigate to blog post titled ${post.title || 'Untitled Post'}`}
                         >
-                            <div className="cube-slide-text">
+                            <div className="cube-slider__text-slide">
                                 <h3
-                                    className="post-title"
+                                    className="cube-slider__text-slide__title"
                                     ref={(el) => (titleRefs.current[index] = el)}
+                                    style={{
+                                        overflowWrap: 'break-word',
+                                        wordBreak: 'break-word',
+                                        whiteSpace: 'normal' // Ensure wrapping happens
+                                    }}
                                 >
                                     {post.title || 'Untitled Post'}
                                 </h3>
-                                <div className="post-excerpt">
-                                    <span className="cube-quote">
-                                        <span className="cube-opening-quote">"</span>
+
+                                <div className="cube-slider__text-slide__excerpt">
+                                    <span className="cube-slider__text-slide__excerpt__quote">
+                                        <span className="cube-slider__text-slide__excerpt__opening-quote">"</span>
                                         {post.excerpt}
-                                        <span className="cube-closing-group">
-                                            <span className="cube-closing-quote">"</span>
+                                        <span className="cube-slider__text-slide__excerpt__closing-group">
+                                            <span className="cube-slider__text-slide__excerpt__closing-quote">"</span>
                                         </span>
                                     </span>
                                 </div>
-                                <div className="post-meta">
-                                    <span className="post-author">
+                                <div className="cube-slider__text-slide__meta">
+                                    <span className="cube-slider__text-slide__meta__author">
                                         By {post.authorName || 'Unknown Author'}
                                     </span>
-                                    <span className="post-date">{post.formattedDate}</span>
+                                    <span className="cube-slider__text-slide__meta__date">
+                                        {post.formattedDate}
+                                    </span>
                                 </div>
                             </div>
                         </SwiperSlide>
@@ -134,6 +138,7 @@ TextSlide.propTypes = {
                 lastName: PropTypes.string,
             }),
             title: PropTypes.string,
+            content: PropTypes.string,
             excerpt: PropTypes.string, // Made optional
         })
     ).isRequired,

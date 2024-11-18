@@ -1,50 +1,64 @@
-// _image-slide.scss
-
-.image-slider-container {
+.cube-slider__container--image {
     position: relative;
-    width: 100%;
-    margin-top: 2rem;
-    margin-left: -10%; // Adjust to center or spill over
+    width: 65%;
+    margin-top: $spacing-xl;
+    margin-left: 0;
     z-index: 2;
-    left: 3.5rem;
-    box-sizing: border-box; // Ensure padding and borders are included
-    top: 3rem;
+    box-sizing: border-box;
+    top: $spacing-xxs;
+    display: flex;
+    justify-content: center;
 
+    .cube-slider__slider {
+        width: 80vw; // Default width, slightly wider than before
+        height: 25rem; // Fixed height for consistency
 
-    .cube-slider {
-        width: 100%;
-        height: 25rem;
-
-        .cube-slide {
+        &__slide {
             width: 100%;
             height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            top: 0; // Removed top offset to prevent gaps
+            @include flex-center;
             box-sizing: border-box;
-            // border-radius: 1rem 1rem 1rem 1rem;
-            // border-bottom: 0.1rem solid $border-color;
-            // border-left: 0.1rem solid $border-color;
-            // // border-top: 0.2rem solid $border-color;
 
             img {
-                position: absolute;
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
-                border-radius:1rem 1rem 1rem 1rem;
+                border-radius: $border-radius-lg;
             }
         }
     }
 
-    @media (max-width: $breakpoint-md) {
-        margin-left: 0;
-        margin-top: 0;
+    @media (min-width: $breakpoint-lg) {
+        .cube-slider__slider {
+            width: 75vw; // Slightly reduce width for larger screens
+            height: 28rem; // Increase height for a better aspect ratio
+        }
+    }
 
-        .cube-slider {
-            height: 200px;
+    @media (max-width: $breakpoint-md) {
+        margin-top: $spacing-md;
+
+        .cube-slider__slider {
+            width: 70vw; // Increase width slightly on medium screens
+            height: 22rem; // Reduce height for better proportion on smaller screens
+        }
+    }
+
+    @media (max-width: $breakpoint-sm) {
+        .cube-slider__slider {
+            width: 70vw; // Nearly full width for small screens
+            height: 20rem; // Further reduce height
+        }
+    }
+
+    @media (max-width: $breakpoint-xs) {
+        .cube-slider__slider {
+            width: 100%; // Full width for extra-small screens
+            height: 18rem; // Maintain visual consistency
+        }
+
+        img {
+            object-fit: contain; // Ensure no content gets cropped on narrow screens
         }
     }
 }
