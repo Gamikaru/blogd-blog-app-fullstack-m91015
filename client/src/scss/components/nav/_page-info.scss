@@ -1,4 +1,4 @@
-// explore-links.scss
+// page-info.scss
 
 .info-and-explore-container {
     @include flex-center;
@@ -51,14 +51,6 @@
 }
 
 @media (max-width: $breakpoint-md) {
-    .navbar {
-        padding: $spacing-sm $spacing-md;
-
-        .navbar-right {
-            gap: $spacing-xxs; // 0.5rem
-        }
-    }
-
     .info-and-explore-container {
         margin-left: $spacing-sm;
 

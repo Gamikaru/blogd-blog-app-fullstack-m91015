@@ -1,12 +1,12 @@
-import React, { forwardRef } from 'react';
-import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
+import PropTypes from 'prop-types';
+import React, { forwardRef } from 'react';
 
 const HamburgerMenu = forwardRef(({ isOpen, handleSidebarToggle }, ref) => {
-    const iconVariants = {
-        hover: { scale: 1.1 },
-        tap: { scale: 0.95 },
-    };
+    // const iconVariants = {
+    //     hover: { scale: 1.1 },
+    //     tap: { scale: 0.95 },
+    // };
 
     const line1Variants = {
         closed: { rotate: 0, y: 0 },
@@ -31,7 +31,6 @@ const HamburgerMenu = forwardRef(({ isOpen, handleSidebarToggle }, ref) => {
             aria-label="Toggle Sidebar"
             whileHover="hover"
             whileTap="tap"
-            variants={iconVariants}
             initial="closed"
             animate={isOpen ? 'open' : 'closed'}
         >

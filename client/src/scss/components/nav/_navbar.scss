@@ -1,4 +1,4 @@
-// _navbar-header.scss
+// navbar.scss
 
 .nav-header {
     position: fixed;
@@ -14,11 +14,20 @@
 
 .navbar {
     @include flex-center;
-    // display: flex;
     justify-content: space-between;
     align-items: center;
     max-width: px-to-rem(1200); // 1200px
     margin: 0 auto;
 }
 
+.navbar-left {
+    @include flex-center;
+    gap: $spacing-md; // 1rem
+    margin-left: px-to-rem(30); // -5rem
+}
 
+@media (max-width: $breakpoint-md) {
+    .navbar {
+        padding: $spacing-sm $spacing-md;
+    }
+}

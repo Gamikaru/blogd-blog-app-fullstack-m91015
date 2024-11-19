@@ -5,7 +5,7 @@
     border-radius: $border-radius;
     padding: $spacing-lg;
     margin-bottom: $spacing-lg;
-    width: 50vw;
+    width: 62vw;
 
     @media (max-width: 768px) {
         padding: $spacing-md;
@@ -57,35 +57,58 @@
         }
     }
 
+    // Updated tabs styling to match user manager modal
     &__tabs {
         display: flex;
+        gap: $spacing-sm;
+        border-bottom: 1px solid $border-color;
+        margin-bottom: $spacing-md;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
 
-        &__tab {
-            padding: $spacing-sm $spacing-md;
-            margin-right: $spacing-sm;
-            background: $secondary-bg-color;
-            border: none;
-            border-radius: $border-radius;
-            cursor: pointer;
-            font-size: 0.9rem; // Reduced from $body-font-size
-            transition: background-color $transitions-base;
+    &__tab {
+        @include reset-button; // Reset button styles
+        display: flex;
+        align-items: center;
+        gap: $spacing-xs;
+        padding: $spacing-sm $spacing-md;
+        color: $secondary-text-color;
+        font-size: $small-font-size;
+        border-radius: $border-radius $border-radius 0 0;
+        transition: all 0.3s ease; // Increased transition duration for smoother effect
+        cursor: pointer;
+        position: relative;
 
-            &--active {
-                background: $primary-bg-color;
-                color: #fff;
+        &:hover {
+            background: rgba($accent-color-1, 0.2); // Stronger background on hover
+
+
+
+
+        &.active {
+            background: $accent-color-1; // Solid background for active state
+            border-bottom: 3px solid $accent-color-2; // Thicker border for emphasis
+            // font-weight: bold; // Bold text to highlight active state
+        }
+
+
+            &::after {
+                content: "";
+                position: absolute;
+                bottom: -1px;
+                left: 0;
+                width: 100%;
+                height: 2px;
+                background: $accent-color-1; // Match the border-bottom color
             }
+        }
 
-            &:hover {
-                background: lighten($secondary-bg-color, 10%);
-            }
+        &:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba($accent-color-2, 0.3);
+            background: rgba($accent-color-1, 0.2); // Stronger background on hover
 
-            &--active:hover {
-                background: $primary-bg-color; // Keep primary bg on hover when active
-            }
-
-            @media (max-width: 768px) {
-                margin-bottom: $spacing-sm;
-            }
         }
     }
 

@@ -11,18 +11,17 @@
     box-sizing: border-box;
 }
 
-// html,
-// body {
-//     height: 100%;
-//     font-family: $font-family-primary;
-//     background-color: $secondary-bg-color;
-//     color: $primary-text-color;
-//     line-height: $line-height;
-//     -webkit-font-smoothing: antialiased;
-//     -moz-osx-font-smoothing: grayscale;
+html,
+body {
+    height: 100%;
+    font-family: $font-family-primary;
+    background-color: $secondary-bg-color;
+    color: $primary-text-color;
+    line-height: $line-height;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 
-//     @include responsive-typography(px-to-rem(14), px-to-rem(16), px-to-rem(18));
-// }
+}
 
 /* Links */
 a {

@@ -1,0 +1,36 @@
+// _hamburger-menu.scss
+
+.hamburger-icon {
+    @include flex-center;
+    flex-direction: column;
+    justify-content: end;
+    width: px-to-rem(24); // 24px
+    height: px-to-rem(18); // 18px
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    margin-left: $spacing-xxs; // 0.5rem
+    position: relative;
+    z-index: 2000;
+
+    .line {
+        height: px-to-rem(2); // 2px
+        background-color: $primary-text-color;
+        transition: all 0.3s ease;
+        align-self: start;
+
+        &:first-child {
+            width: px-to-rem(24); // 24px
+            margin-bottom: px-to-rem(4); // 4px
+        }
+
+        &:last-child {
+            width: px-to-rem(17); // 18px
+        }
+    }
+
+    &:hover .line {
+        background-color: $accent-color-1;
+    }
+}
