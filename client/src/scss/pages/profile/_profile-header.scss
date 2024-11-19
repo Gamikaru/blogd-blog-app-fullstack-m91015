@@ -4,20 +4,26 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: px-to-rem(50);
-    margin-top: $spacing-xxl;
+    position: relative;
+    bottom: 3rem;
+    width: 100%;
+    left: 20rem;
 
     &__left {
         display: flex;
         align-items: center;
         gap: $spacing-md; // Adds space between picture and user info
+        width: 100%;
+        justify-content: flex-start;
     }
 
     &__user-picture {
-        width: px-to-rem(100); // Adjust as needed
-        height: px-to-rem(100);
+        width: 20vw; // Updated width
+        height: 15vw; // Updated height
         border-radius: 50%;
         overflow: hidden;
+        position: relative;
+        right: 12rem;
 
         &__image {
             width: 100%;
@@ -36,6 +42,9 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+        position: relative;
+        right: 10rem;
+        width: 100%;
     }
 
     &__user-name {
@@ -52,6 +61,7 @@
         font-style: italic;
         display: flex;
         align-items: baseline;
+        width: 70%;
 
         .profile-header__opening-quote,
         .profile-header__closing-quote {
@@ -74,17 +84,21 @@
         flex-direction: column;
         gap: $spacing-xs;
         margin-top: $spacing-sm;
+        align-items: stretch;
+        width: 70%;
     }
 
     &__status-textarea {
         width: 100%;
         padding: $spacing-sm;
-        font-size: $body-font-size;
+        font-size: $sub-heading-font-size;
+        font-family: $font-family-heading;
+        color: $secondary-text-color;
+        font-style: italic;
         border-radius: $border-radius;
         resize: none;
         background-color: $primary-bg-color;
-        color: $primary-text-color;
-        border: 1px solid $border-color;
+        border: none;
         overflow-wrap: break-word;
         word-wrap: break-word;
 
@@ -103,11 +117,12 @@
         border: none;
         border-radius: $border-radius;
         cursor: pointer;
-        font-size: 0.9rem;
+        font-size: 1rem; // Increased font size
         display: flex;
         align-items: center;
         gap: $spacing-xs;
         transition: background-color $transitions-base;
+        display: none; // Initially hidden
 
         &:hover {
             background-color: darken($highlight-color, 10%);
@@ -117,27 +132,29 @@
             background-color: lighten($highlight-color, 30%);
             cursor: not-allowed;
         }
-    }
 
-    .page-title {
-        font-family: $font-family-heading;
-        font-size: $heading-font-size-xxlg;
-        font-weight: bold;
-        color: $primary-text-color;
-        margin: 0;
-    }
+        &.active {
+            display: flex; // Display when active (focused)
+        }
 
-    &__status-container {
-        width: 100%;
-        margin-top: $spacing-sm;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+        &.active {
+            display: flex; // Ensure display when active
+        }
 
-    &__user-status {
-        margin-top: $spacing-md;
-        font-family: $font-family-heading;
+        &.active {
+            display: flex; // Redundant but ensures active state
+        }
+
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+
+        @media (max-width: $breakpoint-md) {
+            bottom: 5px;
+            right: 5px;
+            font-size: 0.9rem; // Adjusted for smaller screens
+            padding: $spacing-xs;
+        }
     }
 
     &__status-input-container {
@@ -153,47 +170,8 @@
         width: 100%;
     }
 
-    &__status-submit-button {
-        position: absolute;
-        bottom: 10px;
-        right: 10px;
-        display: none;
-        padding: $spacing-xs $spacing-sm;
-        background-color: $highlight-color;
-        color: #fff;
-        border: none;
-        border-radius: $border-radius;
-        cursor: pointer;
-        font-size: 0.9rem;
-        display: flex;
-        align-items: center;
-        gap: $spacing-xs;
-        transition: background-color $transitions-base;
-
-        &:hover {
-            background-color: darken($highlight-color, 10%);
-        }
-
-        &:disabled {
-            background-color: lighten($highlight-color, 30%);
-            cursor: not-allowed;
-        }
-
-        // Display the button only when the textarea is focused
-        .profile-header__status-textarea:focus + & {
-            display: flex;
-        }
-
-        @media (max-width: $breakpoint-md) {
-            bottom: 5px;
-            right: 5px;
-            font-size: 0.8rem;
-            padding: $spacing-xs;
-        }
-    }
-
     &__user-status.quote-style {
-        font-size: clamp(1rem, 1.1vw, $body-font-size * 1.1);
+        font-size: clamp(1.2rem, 1.3vw, $body-font-size * 1.3); // Increased font size
         color: $secondary-text-color;
         font-style: italic;
         line-height: 1.6rem;
@@ -228,6 +206,39 @@
             font-family: $font-family-heading;
             color: $secondary-text-color;
             font-style: italic;
+        }
+    }
+
+    @media (max-width: $breakpoint-md) {
+        display: block; // Ensure proper stacking on smaller screens
+        left: 0;
+        bottom: 2rem;
+
+        &__left {
+            justify-content: center;
+            right: 0;
+        }
+
+        &__user-info {
+            right: 0;
+            align-items: flex-start;
+        }
+
+        &__user-status.quote-style {
+            font-size: 1.2rem; // Increased for smaller screens
+            padding: $spacing-xs 1rem; // Adjusted padding for smaller screens
+        }
+
+        &__status-container {
+            width: 100%;
+        }
+
+        &__status-submit-button {
+            width: 100%;
+            bottom: 5px;
+            right: 5px;
+            font-size: 0.9rem;
+            padding: $spacing-xs;
         }
     }
 }

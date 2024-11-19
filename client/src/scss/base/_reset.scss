@@ -3,13 +3,13 @@
 
 
 // /* Reset Browser Defaults */
-// *,
-// *::before,
-// *::after {
-//     margin: 0;
-//     padding: 0;
-//     box-sizing: border-box;
-// }
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 // html,
 // body {
@@ -89,10 +89,10 @@ h4 {
     @include heading-style($sub-heading-font-size);
 }
 
-// p {
-//     font-size: $body-font-size;
-//     margin-bottom: $spacing-unit;
-// }
+p {
+    font-size: $body-font-size;
+    margin-bottom: $spacing-unit;
+}
 
 // /* Responsive Grid Adjustments */
 // @include respond-to(lg) {
@@ -127,14 +127,14 @@ h4 {
 //     }
 // }
 
-// /* Reactive Loading Skeleton */
-// .skeleton {
-//     background-color: $secondary-bg-color;
-//     border-radius: $border-radius;
-//     width: 100%;
-//     height: 1rem;
-//     animation: pulse 1.5s infinite ease-in-out;
-// }
+/* Reactive Loading Skeleton */
+.skeleton {
+    background-color: $secondary-bg-color;
+    border-radius: $border-radius;
+    width: 100%;
+    height: 1rem;
+    animation: pulse 1.5s infinite ease-in-out;
+}
 
 // @keyframes pulse {
 //     0% {

@@ -11,10 +11,10 @@ const ProfileHeader = ({
     handleStatusChange,
     handleStatusSubmit,
     statusLoading,
-    profilePicture // Added profilePicture prop
+    profilePicture
 }) => {
     const [isFocused, setIsFocused] = useState(false);
-    const [isPicModalOpen, setIsPicModalOpen] = useState(false); // State for modal
+    const [isPicModalOpen, setIsPicModalOpen] = useState(false);
 
     const handleProfilePictureClick = () => {
         setIsPicModalOpen(true);
@@ -30,10 +30,10 @@ const ProfileHeader = ({
                 {/* User Picture */}
                 <div className="profile-header__user-picture">
                     <img
-                        src={profilePicture || '/images/default-avatar.png'} // Use dynamic source
+                        src={profilePicture || '/images/default-avatar.png'}
                         alt={`${userName}'s Profile`}
                         className="profile-header__user-image clickable"
-                        onClick={handleProfilePictureClick} // Attach click handler
+                        onClick={handleProfilePictureClick}
                     />
                 </div>
 
@@ -45,32 +45,32 @@ const ProfileHeader = ({
                     {/* User Status */}
                     {isOwnProfile ? (
                         <div className="profile-header__status-container">
-                            <textarea
-                                className="profile-header__status-textarea"
-                                value={status}
-                                onChange={handleStatusChange}
-                                placeholder="What's on your mind?"
-                                disabled={statusLoading}
-                                onFocus={() => setIsFocused(true)}
-                                onBlur={() => setIsFocused(false)}
-                            />
-                            {isFocused && (
+                            <div className="profile-header__status-textarea-wrapper">
+                                <textarea
+                                    className="profile-header__status-textarea"
+                                    value={status}
+                                    onChange={handleStatusChange}
+                                    placeholder="What's on your mind?"
+                                    disabled={statusLoading}
+                                    onFocus={() => setIsFocused(true)}
+                                    onBlur={() => setIsFocused(false)}
+                                />
                                 <Button
                                     variant="submit"
                                     onClick={handleStatusSubmit}
                                     disabled={statusLoading || !status.trim()}
                                     aria-label="Submit Status"
-                                    className="profile-header__status-submit-button"
+                                    className={`profile-header__status-submit-button ${isFocused ? 'active' : ''}`}
                                 >
                                     {statusLoading ? 'Updating...' : 'Update Status'}
                                 </Button>
-                            )}
+                            </div>
                         </div>
                     ) : (
                         status && (
-                            <p className="profile-header__user-status">
+                            <p className="profile-header__user-status quote-style">
                                 <span className="profile-header__opening-quote">“</span>
-                                <em>{status}</em>
+                                <em className="profile-header__status-text">{status}</em>
                                 <span className="profile-header__closing-quote">”</span>
                             </p>
                         )

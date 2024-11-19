@@ -70,71 +70,71 @@ const BlogCard = memo(function BlogCard({ post, author, cookie }) {
             }}
             aria-label={`Go to blog post titled ${post.title || 'Untitled'}`}
         >
-            <div className="image-container">
+            <div className="blog-post-card__image-container">
                 {post.imageUrls?.length ? (
                     <LazyImage
                         src={post.imageUrls[0]}
                         alt={`Cover image for ${post.title || 'Untitled'}`}
-                        className="blog-cover-image"
+                        className="blog-post-card__image-container__cover-image"
                     />
                 ) : post.images?.length ? (
                     <LazyImage
                         src={`data:image/jpeg;base64,${post.images[0].data}`}
                         alt={`Cover image for ${post.title || 'Untitled'}`}
-                        className="blog-cover-image"
+                        className="blog-post-card__image-container__cover-image"
                     />
                 ) : (
-                    <div className="blog-cover-placeholder" aria-label="No cover image available">
+                    <div className="blog-post-card__image-container__cover-placeholder" aria-label="No cover image available">
                         No Image
                     </div>
                 )}
             </div>
 
-            <div className="content">
-                <div className="post-header">
-                    <span className="author-name">{author}</span>
-                    <span className="post-date">
+            <div className="blog-post-card__content">
+                <div className="blog-post-card__content__header">
+                    <span className="blog-post-card__content__header__author-name">{author}</span>
+                    <span className="blog-post-card__content__header__post-date">
                         {post.createdAt ? new Date(post.createdAt).toLocaleDateString() : 'Unknown Date'}
                     </span>
                 </div>
 
-                <div className="post-title-category">
-                    <h2 className="post-title">{post.title || 'Untitled'}</h2>
-                    <div className="post-category">
+                <div className="blog-post-card__content__title-category">
+                    <h2 className="blog-post-card__content__title-category__title">{post.title || 'Untitled'}</h2>
+                    <div className="blog-post-card__content__title-category__category">
                         {post.category ? (
-                            <CustomTagIcon className="category-icon" text={post.category} />
+                            <CustomTagIcon className="blog-post-card__content__title-category__category__icon" text={post.category} />
                         ) : (
                             // Placeholder to maintain layout consistency
-                            <span className="category-text"></span>
+                            <span className="blog-post-card__content__title-category__category__text"></span>
                         )}
                     </div>
                 </div>
 
-                {/* <div className="post-content">
-                    <span className="blog-quote">
-                        <span className="blog-opening-quote">"</span>
+                {/* <div className="blog-post-card__content__content-text">
+                    <span className="blog-post-card__content__content-text__quote">
+                        <span className="blog-post-card__content__content-text__quote__opening-quote">"</span>
                         {truncatedContent}
-                        <span className="blog-closing-group">
-                            <span className="blog-closing-quote">"</span>
+                        <span className="blog-post-card__content__content-text__quote__closing-group">
+                            <span className="blog-post-card__content__content-text__quote__closing-quote">"</span>
                         </span>
                     </span>
                 </div> */}
 
-                <div className="post-interactions">
+                <div className="blog-post-card__content__interactions">
                     <Button
-                        className="button button-submit like-button"
+                        className="blog-post-card__content__interactions__like-button"
                         onClick={handleLikeClick}
                         aria-label={isLiked ? 'Unlike' : 'Like'}
                         variant="like"
                         filled={isLiked}
                     >
                         <motion.span
-                            className={`heart-icon ${isLiked ? 'liked' : ''}`}
+                            className={`blog-post-card__content__interactions__like-button__heart-icon ${isLiked ? 'blog-post-card__content__interactions__like-button__heart-icon--liked' : ''}`}
                             variants={likeButtonVariants}
                             whileTap="tap"
                             aria-hidden="true"
                         ></motion.span>
-                        <span className="likes-count">{post.likes}</span>
+                        <span className="blog-post-card__content__interactions__like-button__likes-count">{post.likes}</span>
                     </Button>
                 </div>
             </div>

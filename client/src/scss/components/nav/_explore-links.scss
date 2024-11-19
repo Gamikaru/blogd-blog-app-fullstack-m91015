@@ -11,45 +11,6 @@
         width: 100%;
         margin-top: $spacing-xxl;
 
-        &:not(.profile-info) {
-            // Styles for non-profile pages
-            .page-title,
-            .page-subtitle {
-                // ... existing styles ...
-            }
-        }
-
-        &.profile-info {
-            @include flex-start;
-            align-items: center;
-            gap: $spacing-xxl;
-            margin-left: px-to-rem(30); // 5rem
-
-            .profile-avatar {
-                width: 15vw;
-                height: 15vw;
-                border-radius: 50%;
-                overflow: hidden;
-                position: relative;
-                margin-right: $spacing-sm;
-                margin-left: px-to-rem(80); // 5rem
-
-                .profile-image {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                }
-            }
-
-            .profile-user-name {
-                font-size: $heading-font-size-xxlg;
-                font-family: $font-family-heading;
-                color: $primary-text-color;
-                font-weight: 800;
-                margin-top: px-to-rem(40); // 5rem
-            }
-        }
-
         .page-title {
             @include heading-style($heading-font-size-xxlg);
             font-weight: bold;
@@ -64,25 +25,7 @@
             color: $secondary-text-color;
             margin-top: $spacing-sm;
             margin-left: px-to-rem(50);
-
-            &.status-text {
-                font-style: italic;
-
-                .opening-quote,
-                .closing-quote {
-                    font-weight: bold;
-                    font-size: 1.5em;
-                    color: $primary-text-color;
-                }
-
-                .opening-quote {
-                    margin-right: 0.25rem;
-                }
-
-                .closing-quote {
-                    margin-left: 0.25rem;
-                }
-            }
+            font-style: italic;
         }
     }
 
@@ -120,19 +63,6 @@
         margin-left: $spacing-sm;
 
         .page-info-message {
-            &.profile-info {
-                margin-left: $spacing-sm;
-
-                .profile-avatar {
-                    width: px-to-rem(140);
-                    height: px-to-rem(140);
-                }
-
-                .profile-user-name {
-                    font-size: $heading-font-size-lg;
-                }
-            }
-
             .page-title,
             .page-subtitle {
                 font-size: $heading-font-size-md;

@@ -147,22 +147,22 @@ const BlogsContainer = () => {
     }, []);
 
     if (loading) return <Spinner message="Loading blog posts..." />;
-    if (!posts) return <div className="error-message">No posts available</div>;
+    if (!posts) return <div className="blogs-container__no-posts-message">No posts available</div>;
 
     return (
         <div className="blogs-container">
             {/* Title and Subtitle Section */}
-            <div className="blogs-header">
-                <h1 className="blogs-title">Discover</h1>
-                <p className="blogs-subtitle">
+            <div className="blogs-container__header">
+                <h1 className="blogs-container__header__title">Discover</h1>
+                <p className="blogs-container__header__subtitle">
                     Explore the best blogs crafted by creative minds around the world. Search, filter, and dive into stories that inspire.
                 </p>
             </div>
-            <div className="filter-search-container">
+            <div className="blogs-container__filter-search-container">
                 {/* Filter Functionality */}
-                <div className="filter-container" ref={filterRef}>
+                <div className="blogs-container__filter-search-container__filter-container" ref={filterRef}>
                     <Button
-                        className="filter-icon"
+                        className="blogs-container__filter-search-container__filter-container__icon"
                         onClick={() => setShowFilterDropdown((prev) => !prev)}
                         variant="iconButton"
                         aria-label="Filter"
@@ -172,14 +172,14 @@ const BlogsContainer = () => {
                     <AnimatePresence>
                         {showFilterDropdown && (
                             <motion.div
-                                className="filter-dropdown"
+                                className="blogs-container__filter-search-container__filter-container__dropdown"
                                 initial="hidden"
                                 animate="visible"
                                 exit="exit"
                                 variants={filterDropdownVariants}
                                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
                             >
-                                <div className="filter-option">
+                                <div className="blogs-container__filter-search-container__filter-container__dropdown__option">
                                     <label htmlFor="author">Author:</label>
                                     <input
                                         type="text"
@@ -190,7 +190,7 @@ const BlogsContainer = () => {
                                         aria-label="Filter by author"
                                     />
                                 </div>
-                                <div className="filter-option">
+                                <div className="blogs-container__filter-search-container__filter-container__dropdown__option">
                                     <label htmlFor="category">Category:</label>
                                     <select
                                         id="category"
@@ -213,7 +213,7 @@ const BlogsContainer = () => {
                                         <option value="Other">Other</option>
                                     </select>
                                 </div>
-                                <div className="filter-option">
+                                <div className="blogs-container__filter-search-container__filter-container__dropdown__option">
                                     <label htmlFor="sortBy">Sort By:</label>
                                     <select
                                         id="sortBy"
@@ -228,7 +228,7 @@ const BlogsContainer = () => {
                                     </select>
                                 </div>
                                 {/* Reset Filters Button */}
-                                <div className="filter-option filter-actions">
+                                <div className="blogs-container__filter-search-container__filter-container__dropdown__option blogs-container__filter-search-container__filter-container__dropdown__option--actions">
                                     <Button
                                         onClick={resetFilters}
                                         variant="reset"
@@ -236,15 +236,14 @@ const BlogsContainer = () => {
                                     >
                                         Reset Filters
                                     </Button>
-
                                 </div>
                             </motion.div>
                         )}
                     </AnimatePresence>
                 </div>
-                <div className="search-container" ref={searchRef}>
+                <div className="blogs-container__filter-search-container__search-container" ref={searchRef}>
                     <Button
-                        className="search-icon"
+                        className="blogs-container__filter-search-container__search-container__icon"
                         onClick={() => setShowSearchInput((prev) => !prev)}
                         variant="iconButton"
                         aria-label="Search"
@@ -256,7 +255,7 @@ const BlogsContainer = () => {
                         {showSearchInput && (
                             <motion.input
                                 type="text"
-                                className="search-input"
+                                className="blogs-container__filter-search-container__search-container__search-input"
                                 placeholder="Search by author or title"
                                 onChange={handleSearchChange}
                                 initial="hidden"
@@ -275,7 +274,7 @@ const BlogsContainer = () => {
             <AnimatePresence>
                 <LayoutGroup>
                     <motion.div
-                        className="blog-posts-grid"
+                        className="blogs-container__posts-grid"
                         variants={containerVariants}
                         initial="hidden"
                         animate="visible"
@@ -292,7 +291,7 @@ const BlogsContainer = () => {
                                 />
                             ))
                         ) : (
-                            <p className="no-posts-message">No blog posts available.</p>
+                            <p className="blogs-container__no-posts-message">No blog posts available.</p>
                         )}
                     </motion.div>
                 </LayoutGroup>
