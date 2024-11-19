@@ -11,6 +11,14 @@
         width: 100%;
         margin-top: $spacing-xxl;
 
+        &:not(.profile-info) {
+            // Styles for non-profile pages
+            .page-title,
+            .page-subtitle {
+                // ... existing styles ...
+            }
+        }
+
         &.profile-info {
             @include flex-start;
             align-items: center;
@@ -35,6 +43,7 @@
 
             .profile-user-name {
                 font-size: $heading-font-size-xxlg;
+                font-family: $font-family-heading;
                 color: $primary-text-color;
                 font-weight: 800;
                 margin-top: px-to-rem(40); // 5rem
@@ -54,7 +63,26 @@
             font-size: clamp(1rem, 2.5vw, 1.5rem); // Responsive subtitle size
             color: $secondary-text-color;
             margin-top: $spacing-sm;
-            margin-left: px-to-rem(50); // 15rem
+            margin-left: px-to-rem(50);
+
+            &.status-text {
+                font-style: italic;
+
+                .opening-quote,
+                .closing-quote {
+                    font-weight: bold;
+                    font-size: 1.5em;
+                    color: $primary-text-color;
+                }
+
+                .opening-quote {
+                    margin-right: 0.25rem;
+                }
+
+                .closing-quote {
+                    margin-left: 0.25rem;
+                }
+            }
         }
     }
 

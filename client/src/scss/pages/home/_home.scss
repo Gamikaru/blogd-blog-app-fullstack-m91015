@@ -11,89 +11,11 @@
     // border-top: white 5rem solid;
     // border-right: 0.05rem solid $border-color;
 
-
-
-
-
-    .carousel-section {
-        margin-top: 5rem; // Negative margin to overlay the navbar
-        margin-bottom: 0rem;
-        z-index: 10; // Ensure it overlays the navbar but is below the dropdown
-        position: relative; // Required for z-index to take effect
-    }
-
-    .content-section {
-        margin-top: 2rem;
-    }
 }
 
-// Content Section
-.content-section {
-    margin-top: $spacing-unit * 4;
-}
 
-.user-card-container {
-    // Add any necessary styles for the user card container
 
-    .user-card {
-        .user-card-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: $spacing-unit * 1.5;
 
-            .initials-title {
-                width: 48px;
-                height: 48px;
-                background-color: $accent-color-2;
-                color: #fff;
-                font-size: $heading-font-size-md;
-                font-weight: bold;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin-right: $spacing-unit;
-            }
-
-            .status-update-container {
-                flex: 1;
-
-                .status-update-input {
-                    background-color: $secondary-bg-color;
-                    border: 1px solid lighten($secondary-bg-color, 20%);
-                    border-radius: $border-radius;
-                    padding: $input-padding;
-                    font-size: $body-font-size;
-                    color: $primary-text-color;
-                    margin-bottom: $spacing-unit;
-
-                    &:focus {
-                        border-color: $accent-color-2;
-                        outline: none;
-                    }
-                }
-            }
-        }
-
-        .user-details {
-            .detail-item {
-                display: flex;
-                align-items: center;
-                margin-bottom: $spacing-unit;
-
-                .detail-icon {
-                    margin-right: $spacing-unit * 0.5;
-                    color: $accent-color-2;
-                }
-
-                .detail-text {
-                    font-size: $body-font-size;
-                    color: $primary-text-color;
-                }
-            }
-        }
-    }
-}
 
 @media (max-width: 480px) {
     // Add any necessary responsive styles

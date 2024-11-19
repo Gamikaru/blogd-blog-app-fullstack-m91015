@@ -22,28 +22,28 @@
         width: 100%;
         height: 200px;
         overflow: hidden;
+    }
 
-        .profile-post-card__image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform $transitions-base;
+    &__image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform $transitions-base;
 
-            &:hover {
-                transform: scale(1.05);
-            }
+        &:hover {
+            transform: scale(1.05);
         }
+    }
 
-        .profile-post-card__image-placeholder {
-            width: 100%;
-            height: 100%;
-            background: lighten($secondary-bg-color, 10%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: $secondary-text-color;
-            font-size: $body-font-size;
-        }
+    &__image-placeholder {
+        width: 100%;
+        height: 100%;
+        background: lighten($secondary-bg-color, 10%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $secondary-text-color;
+        font-size: $body-font-size;
     }
 
     &__content {
@@ -51,58 +51,58 @@
         flex-grow: 1;
         display: flex;
         flex-direction: column;
+    }
 
-        &__header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: $spacing-sm;
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: $spacing-sm;
+    }
 
-            .profile-post-card__title {
-                font-size: $heading-font-size-md;
-                color: $primary-text-color;
-                margin: 0;
-                flex: 1;
-                margin-right: $spacing-sm;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                font-family: $font-family-heading;
-            }
+    &__title {
+        font-size: $heading-font-size-md;
+        color: $primary-text-color;
+        margin: 0;
+        flex: 1;
+        margin-right: $spacing-sm;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-family: $font-family-heading;
+    }
 
-            .profile-post-card__date {
-                font-size: $small-font-size;
-                color: $secondary-text-color;
-            }
-        }
+    &__date {
+        font-size: $small-font-size;
+        color: $secondary-text-color;
+    }
 
-        &__category {
-            margin-bottom: $spacing-sm;
+    &__category {
+        margin-bottom: $spacing-sm;
+    }
 
-            .profile-post-card__category-tag {
-                display: inline-block;
-                background: $accent-color-1;
-                color: $primary-text-color;
-                padding: 0.2em 0.6em;
-                border-radius: 999px;
-                font-size: $small-font-size;
-                text-transform: capitalize;
-                font-weight: bold;
-            }
-        }
+    &__category-tag {
+        display: inline-block;
+        background: $accent-color-1;
+        color: $primary-text-color;
+        padding: 0.2em 0.6em;
+        border-radius: 999px;
+        font-size: $small-font-size;
+        text-transform: capitalize;
+        font-weight: bold;
+    }
 
-        &__excerpt {
-            flex-grow: 1;
-            font-size: $body-font-size;
-            color: $primary-text-color;
-            margin-bottom: $spacing-md;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            line-clamp: 3;
-            -webkit-box-orient: vertical;
-        }
+    &__excerpt {
+        flex-grow: 1;
+        font-size: $body-font-size;
+        color: $primary-text-color;
+        margin-bottom: $spacing-md;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
     }
 
     &__actions {
@@ -111,77 +111,107 @@
         gap: $spacing-sm;
         padding: $spacing-md;
         border-top: 1px solid $border-color;
+    }
 
-        .button {
-            padding: 0.4em 0.8em;
-            font-size: $small-font-size;
-            display: flex;
-            align-items: center;
-            border: none;
-            border-radius: $button-border-radius;
-            cursor: pointer;
-            transition:
-                background-color map-get($transitions, button),
-                opacity map-get($transitions, button);
-            opacity: $button-opacity-default;
-            font-family: $font-family-primary;
+    &__button {
+        padding: 0.4em 0.8em;
+        font-size: $small-font-size;
+        display: flex;
+        align-items: center;
+        border: none;
+        border-radius: $button-border-radius;
+        cursor: pointer;
+        transition:
+            background-color map-get($transitions, button),
+            opacity map-get($transitions, button);
+        opacity: $button-opacity-default;
+        font-family: $font-family-primary;
 
-            .icon {
-                margin-right: 0.4em;
-                font-size: 1em;
-            }
+        &--edit {
+            background-color: $button-primary;
+            color: #fff;
 
             &:hover {
-                opacity: $button-opacity-hover;
+                background-color: darken($button-primary, 10%);
             }
 
             &:disabled {
-                opacity: $button-opacity-disabled;
-                cursor: not-allowed;
+                background-color: $button-primary-disabled;
+            }
+        }
+
+        &--delete {
+            background-color: $button-danger;
+            color: #fff;
+
+            &:hover {
+                background-color: darken($button-danger, 10%);
             }
 
-            &.button-edit {
-                background-color: $button-primary;
-                color: #fff;
-
-                &:hover {
-                    background-color: $button-primary-hover;
-                }
-
-                &:disabled {
-                    background-color: $button-primary-disabled;
-                }
+            &:disabled {
+                background-color: $button-danger-disabled;
             }
+        }
 
-            &.button-delete {
-                background-color: $button-danger;
-                color: #fff;
-
-                &:hover {
-                    background-color: $button-danger-hover;
-                }
-
-                &:disabled {
-                    background-color: $button-danger-disabled;
-                }
-            }
+        &__icon {
+            margin-right: 0.4em;
+            font-size: 1em;
         }
     }
 
     /* Modal Actions Specific to Profile */
-    .profile-modal-actions {
+    &__modal-title {
+        font-size: $heading-font-size-md;
+        color: $primary-text-color;
+        margin-bottom: $spacing-sm;
+    }
+
+    &__modal-message {
+        font-size: $body-font-size;
+        color: $secondary-text-color;
+        margin-bottom: $spacing-md;
+    }
+
+    &__modal-actions {
         display: flex;
         justify-content: flex-end;
         gap: $spacing-sm;
         margin-top: $spacing-md;
+    }
 
-        .button {
-            &.button-edit {
-                /* Inherit styles from .profile-post-card__actions .button-edit */
+    &__modal-button {
+        &--delete {
+            padding: 0.4em 0.8em;
+            font-size: $small-font-size;
+            background-color: $button-danger;
+            color: #fff;
+            border: none;
+            border-radius: $button-border-radius;
+            cursor: pointer;
+            transition: background-color $transitions-base;
+
+            &:hover {
+                background-color: darken($button-danger, 10%);
             }
 
-            &.button-delete {
-                /* Inherit styles from .profile-post-card__actions .button-delete */
+            &:disabled {
+                background-color: $button-danger-disabled;
+                cursor: not-allowed;
+            }
+        }
+
+        &--cancel {
+            padding: 0.4em 0.8em;
+            font-size: $small-font-size;
+            background-color: $button-primary;
+            color: #fff;
+            border: none;
+            border-radius: $button-border-radius;
+            cursor: pointer;
+            transition: background-color $transitions-base;
+
+            &:hover {
+                background-color: darken($button-primary, 10%);
             }
         }
     }

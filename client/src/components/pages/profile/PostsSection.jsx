@@ -72,7 +72,7 @@ const PostsSection = ({ userPosts, isOwnProfile }) => {
 
     const renderContent = () => {
         if (activeTab === 'archived' || activeTab === 'favorites') {
-            return <div className="profile-no-posts-message">Feature coming soon.</div>;
+            return <div className="posts-section__no-posts-message">Feature coming soon.</div>;
         }
 
         const posts = filteredPosts();
@@ -80,27 +80,27 @@ const PostsSection = ({ userPosts, isOwnProfile }) => {
         return posts.length > 0 ? (
             <Masonry
                 breakpointCols={breakpointColumnsObj}
-                className="profile-posts-gallery"
-                columnClassName="profile-posts-gallery__column"
+                className="posts-section__posts-gallery"
+                columnClassName="posts-section__posts-gallery-column"
             >
                 {posts.map((post) => (
                     <PostCard key={post.postId || post._id} post={post} isOwnProfile={isOwnProfile} />
                 ))}
             </Masonry>
         ) : (
-            <div className="profile-no-posts-message">No posts available.</div>
+            <div className="posts-section__no-posts-message">No posts available.</div>
         );
     };
 
     return (
-        <div className="profile-posts-section">
-            <div className="profile-posts-section__header">
-                <h3 className="profile-posts-section__title">
+        <div className="posts-section">
+            <div className="posts-section__header">
+                <h3 className="posts-section__title">
                     <FiBook /> Posts
                 </h3>
                 {isOwnProfile && (
                     <span
-                        className="profile-section-action"
+                        className="posts-section__action"
                         role="button"
                         tabIndex={0}
                         aria-label="View All Posts"
@@ -116,43 +116,43 @@ const PostsSection = ({ userPosts, isOwnProfile }) => {
                 )}
             </div>
 
-            <div className="profile-posts-section__tabs-and-controls">
-                <div className="profile-posts-section__tabs">
+            <div className="posts-section__tabs-and-controls">
+                <div className="posts-section__tabs">
                     <button
-                        className={`profile-tab ${activeTab === 'recent' ? 'active' : ''}`}
+                        className={`posts-section__tab ${activeTab === 'recent' ? 'posts-section__tab--active' : ''}`}
                         onClick={() => handleTabClick('recent')}
                     >
                         Recent
                     </button>
                     <button
-                        className={`profile-tab ${activeTab === 'all' ? 'active' : ''}`}
+                        className={`posts-section__tab ${activeTab === 'all' ? 'posts-section__tab--active' : ''}`}
                         onClick={() => handleTabClick('all')}
                     >
                         All
                     </button>
                     <button
-                        className={`profile-tab ${activeTab === 'category' ? 'active' : ''}`}
+                        className={`posts-section__tab ${activeTab === 'category' ? 'posts-section__tab--active' : ''}`}
                         onClick={() => handleTabClick('category')}
                     >
                         Categories
                     </button>
                     <button
-                        className={`profile-tab ${activeTab === 'archived' ? 'active' : ''}`}
+                        className={`posts-section__tab ${activeTab === 'archived' ? 'posts-section__tab--active' : ''}`}
                         onClick={() => handleTabClick('archived')}
                     >
                         Archived
                     </button>
                     <button
-                        className={`profile-tab ${activeTab === 'favorites' ? 'active' : ''}`}
+                        className={`posts-section__tab ${activeTab === 'favorites' ? 'posts-section__tab--active' : ''}`}
                         onClick={() => handleTabClick('favorites')}
                     >
                         Favorites
                     </button>
                 </div>
-                <div className="profile-posts-section__controls">
-                    <div className="profile-filter-container">
+                <div className="posts-section__controls">
+                    <div className="posts-section__filter-container">
                         <button
-                            className="profile-filter-icon"
+                            className="posts-section__filter-icon"
                             onClick={toggleFilter}
                             aria-label="Filter posts"
                         >
@@ -161,7 +161,7 @@ const PostsSection = ({ userPosts, isOwnProfile }) => {
                         <AnimatePresence>
                             {isFilterOpen && (
                                 <motion.div
-                                    className="profile-filter-dropdown"
+                                    className="posts-section__filter-dropdown"
                                     variants={filterDropdownVariants}
                                     initial="hidden"
                                     animate="visible"
@@ -173,9 +173,9 @@ const PostsSection = ({ userPosts, isOwnProfile }) => {
                             )}
                         </AnimatePresence>
                     </div>
-                    <div className="profile-search-container">
+                    <div className="posts-section__search-container">
                         <button
-                            className="profile-search-icon"
+                            className="posts-section__search-icon"
                             onClick={toggleSearchInput}
                             aria-label="Search posts"
                         >
@@ -185,7 +185,7 @@ const PostsSection = ({ userPosts, isOwnProfile }) => {
                             {showSearchInput && (
                                 <motion.input
                                     type="text"
-                                    className="profile-search-input"
+                                    className="posts-section__search-input"
                                     placeholder="Search posts..."
                                     value={searchQuery}
                                     onChange={handleSearchChange}

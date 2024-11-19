@@ -2,129 +2,232 @@
 
 .profile-header {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-radius: $border-radius;
-    width: 50vw;
-    position: relative;
+    margin-left: px-to-rem(50);
+    margin-top: $spacing-xxl;
 
-    @media (max-width: 1200px) {
-        width: 60vw;
+    &__left {
+        display: flex;
+        align-items: center;
+        gap: $spacing-md; // Adds space between picture and user info
     }
 
-    @media (max-width: 992px) {
-        width: 70vw;
+    &__user-picture {
+        width: px-to-rem(100); // Adjust as needed
+        height: px-to-rem(100);
+        border-radius: 50%;
+        overflow: hidden;
+
+        &__image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     }
 
-    @media (max-width: 768px) {
+    &__user-image {
         width: 100%;
-        margin-bottom: $spacing-lg;
+        height: 100%;
+        object-fit: cover;
     }
 
-    h1 {
+    &__user-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    &__user-name {
+        font-family: $font-family-heading;
+        font-size: $heading-font-size-lg;
         color: $primary-text-color;
-        font-size: $heading-font-size-md;
-        margin: 0;
-        text-align: center;
+        margin: 0 0 $spacing-sm 0;
     }
 
-    .status-container {
+    &__user-status {
+        font-family: $font-family-heading;
+        font-size: $sub-heading-font-size;
+        color: $secondary-text-color;
+        font-style: italic;
+        display: flex;
+        align-items: baseline;
+
+        .profile-header__opening-quote,
+        .profile-header__closing-quote {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: $primary-text-color;
+        }
+
+        .profile-header__opening-quote {
+            margin-right: 0.25rem;
+        }
+
+        .profile-header__closing-quote {
+            margin-left: 0.25rem;
+        }
+    }
+
+    &__status-container {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-xs;
+        margin-top: $spacing-sm;
+    }
+
+    &__status-textarea {
         width: 100%;
-        margin-top: $spacing-md;
+        padding: $spacing-sm;
+        font-size: $body-font-size;
+        border-radius: $border-radius;
+        resize: none;
+        background-color: $primary-bg-color;
+        color: $primary-text-color;
+        border: 1px solid $border-color;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+
+        &:focus {
+            outline: none;
+            border-color: $highlight-color;
+            box-shadow: 0 0 0 2px rgba($highlight-color, 0.2);
+        }
+    }
+
+    &__status-submit-button {
+        align-self: flex-end;
+        padding: $spacing-xs $spacing-sm;
+        background-color: $highlight-color;
+        color: #fff;
+        border: none;
+        border-radius: $border-radius;
+        cursor: pointer;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: $spacing-xs;
+        transition: background-color $transitions-base;
+
+        &:hover {
+            background-color: darken($highlight-color, 10%);
+        }
+
+        &:disabled {
+            background-color: lighten($highlight-color, 30%);
+            cursor: not-allowed;
+        }
+    }
+
+    .page-title {
+        font-family: $font-family-heading;
+        font-size: $heading-font-size-xxlg;
+        font-weight: bold;
+        color: $primary-text-color;
+        margin: 0;
+    }
+
+    &__status-container {
+        width: 100%;
+        margin-top: $spacing-sm;
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
 
-        .status-input-container {
-            width: 100%;
+    &__user-status {
+        margin-top: $spacing-md;
+        font-family: $font-family-heading;
+    }
+
+    &__status-input-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: $spacing-sm;
+    }
+
+    &__status-textarea-wrapper {
+        position: relative;
+        width: 100%;
+    }
+
+    &__status-submit-button {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        display: none;
+        padding: $spacing-xs $spacing-sm;
+        background-color: $highlight-color;
+        color: #fff;
+        border: none;
+        border-radius: $border-radius;
+        cursor: pointer;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: $spacing-xs;
+        transition: background-color $transitions-base;
+
+        &:hover {
+            background-color: darken($highlight-color, 10%);
+        }
+
+        &:disabled {
+            background-color: lighten($highlight-color, 30%);
+            cursor: not-allowed;
+        }
+
+        // Display the button only when the textarea is focused
+        .profile-header__status-textarea:focus + & {
             display: flex;
-            flex-direction: column;
+        }
+
+        @media (max-width: $breakpoint-md) {
+            bottom: 5px;
+            right: 5px;
+            font-size: 0.8rem;
+            padding: $spacing-xs;
+        }
+    }
+
+    &__user-status.quote-style {
+        font-size: clamp(1rem, 1.1vw, $body-font-size * 1.1);
+        color: $secondary-text-color;
+        font-style: italic;
+        line-height: 1.6rem;
+        text-overflow: ellipsis;
+        white-space: normal;
+        display: flex;
+        align-items: baseline;
+        padding: 0 $spacing-md;
+        margin-top: $spacing-xl;
+
+        .profile-header__opening-quote,
+        .profile-header__closing-quote {
+            font-size: 2rem;
+            font-weight: bold;
+            color: $primary-text-color;
+            font-family: $font-family-heading;
+        }
+
+        .profile-header__opening-quote {
+            margin-right: 0.5rem;
+        }
+
+        .profile-header__closing-group {
+            display: inline-flex;
             align-items: center;
-            margin-top: $spacing-md;
+            margin-left: 0.25rem;
+            position: relative;
+            top: 0.3rem;
+        }
 
-            .status-textarea-wrapper {
-                position: relative;
-                width: 100%;
-
-                .status-textarea {
-                    width: 100%;
-                    padding: $spacing-sm;
-                    font-size: $body-font-size;
-                    border-radius: $border-radius;
-                    resize: none;
-                    background-color: $primary-bg-color;
-                    color: $primary-text-color;
-                    border: none !important;
-                    overflow-wrap: break-word;
-                    word-wrap: break-word;
-
-                    &:focus {
-                        outline: none;
-                        border-color: $highlight-color;
-                        box-shadow: 0 0 0 2px rgba($highlight-color, 0.2);
-                    }
-
-                    @include subtle-border;
-                }
-
-                .button-submit {
-                    position: absolute;
-                    bottom: 10px;
-                    right: 10px;
-                    display: none;
-                    padding: $spacing-xs $spacing-sm;
-                    background-color: $highlight-color;
-                    color: #fff;
-                    border: none;
-                    border-radius: $border-radius;
-                    cursor: pointer;
-                    font-size: 0.9rem;
-                    display: flex;
-                    align-items: center;
-                    gap: $spacing-xs;
-                    transition: background-color $transitions-base;
-
-                    &:hover {
-                        background-color: darken($highlight-color, 10%);
-                    }
-
-                    &:disabled {
-                        background-color: lighten($highlight-color, 30%);
-                        cursor: not-allowed;
-                    }
-
-                    @include reset-button;
-
-                    // Display the button only when the textarea is focused
-                    .status-textarea:focus + & {
-                        display: flex;
-                    }
-
-                    @media (max-width: $breakpoint-md) {
-                        bottom: 5px;
-                        right: 5px;
-                        font-size: 0.8rem;
-                        padding: $spacing-xs;
-                    }
-                }
-            }
-
-            .user-status {
-                margin-top: $spacing-md;
-
-                p {
-                    font-size: $body-font-size;
-                    color: $primary-text-color;
-                    text-align: center;
-                    margin: 0;
-                    background-color: $primary-bg-color;
-                    padding: $spacing-sm;
-                    border-radius: $border-radius;
-                    word-wrap: break-word;
-                    overflow-wrap: break-word;
-                }
-            }
+        .profile-header__status-text {
+            font-family: $font-family-heading;
+            color: $secondary-text-color;
+            font-style: italic;
         }
     }
 }

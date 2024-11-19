@@ -1,26 +1,52 @@
 // components/pages/profile/ProfileHeader.jsx
 
-import { Button } from '@components';
+import { Button, ProfilePicModal } from '@components';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 const ProfileHeader = ({
     isOwnProfile,
+    userName,
     status,
     handleStatusChange,
     handleStatusSubmit,
-    statusLoading
+    statusLoading,
+    profilePicture // Added profilePicture prop
 }) => {
     const [isFocused, setIsFocused] = useState(false);
+    const [isPicModalOpen, setIsPicModalOpen] = useState(false); // State for modal
+
+    const handleProfilePictureClick = () => {
+        setIsPicModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsPicModalOpen(false);
+    };
 
     return (
         <div className="profile-header">
-            <div className="status-container">
-                {isOwnProfile ? (
-                    <div className="status-input-container">
-                        <div className="status-textarea-wrapper">
+            <div className="profile-header__left">
+                {/* User Picture */}
+                <div className="profile-header__user-picture">
+                    <img
+                        src={profilePicture || '/images/default-avatar.png'} // Use dynamic source
+                        alt={`${userName}'s Profile`}
+                        className="profile-header__user-image clickable"
+                        onClick={handleProfilePictureClick} // Attach click handler
+                    />
+                </div>
+
+                {/* User Name and Status */}
+                <div className="profile-header__user-info">
+                    {/* User Name */}
+                    <h1 className="profile-header__user-name">{userName}</h1>
+
+                    {/* User Status */}
+                    {isOwnProfile ? (
+                        <div className="profile-header__status-container">
                             <textarea
-                                className="status-textarea"
+                                className="profile-header__status-textarea"
                                 value={status}
                                 onChange={handleStatusChange}
                                 placeholder="What's on your mind?"
@@ -34,28 +60,43 @@ const ProfileHeader = ({
                                     onClick={handleStatusSubmit}
                                     disabled={statusLoading || !status.trim()}
                                     aria-label="Submit Status"
+                                    className="profile-header__status-submit-button"
                                 >
                                     {statusLoading ? 'Updating...' : 'Update Status'}
                                 </Button>
                             )}
                         </div>
-                    </div>
-                ) : (
-                    <div className="user-status">
-                        <p>{status}</p>
-                    </div>
-                )}
+                    ) : (
+                        status && (
+                            <p className="profile-header__user-status">
+                                <span className="profile-header__opening-quote">“</span>
+                                <em>{status}</em>
+                                <span className="profile-header__closing-quote">”</span>
+                            </p>
+                        )
+                    )}
+                </div>
             </div>
+
+            {/* Profile Picture Modal */}
+            {isPicModalOpen && (
+                <ProfilePicModal
+                    imageUrl={profilePicture || '/images/default-avatar.png'}
+                    onClose={handleCloseModal}
+                />
+            )}
         </div>
     );
 };
 
 ProfileHeader.propTypes = {
     isOwnProfile: PropTypes.bool.isRequired,
+    userName: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
     handleStatusChange: PropTypes.func.isRequired,
     handleStatusSubmit: PropTypes.func.isRequired,
     statusLoading: PropTypes.bool.isRequired,
+    profilePicture: PropTypes.string,
 };
 
 export default ProfileHeader;

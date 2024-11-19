@@ -1,6 +1,6 @@
 // components/pages/profile/_user-card.scss
 
-.profile-user-card {
+.user-card {
     background: $secondary-bg-color;
     border-radius: $border-radius;
     overflow: hidden;
@@ -14,7 +14,7 @@
         padding: $spacing-sm;
     }
 
-    .profile-user-card-header {
+    &__header {
         background: linear-gradient(135deg, $accent-color-1, $accent-color-2);
         padding: $spacing-lg;
         display: flex;
@@ -26,95 +26,70 @@
             flex-direction: column;
             text-align: center;
         }
+    }
 
-        .profile-user-info {
-            flex: 1;
+    &__info {
+        flex: 1;
+    }
 
-            h2 {
-                color: $secondary-bg-color;
-                font-size: 1.3rem; // Slightly reduced for consistency
-                margin-bottom: $spacing-xs;
-                word-wrap: break-word;
-                overflow-wrap: break-word;
-            }
+    &__name {
+        color: $secondary-bg-color;
+        font-size: 1.3rem; // Slightly reduced for consistency
+        margin-bottom: $spacing-xs;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
 
-            .profile-user-role {
-                color: rgba(255, 255, 255, 0.8);
-                font-size: 0.85rem; // Slightly reduced for consistency
-                word-wrap: break-word;
-                overflow-wrap: break-word;
-            }
+    &__role {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.85rem; // Slightly reduced for consistency
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
 
-            .button-edit {
-                margin-top: $spacing-sm;
-                padding: $spacing-xs $spacing-sm;
-                background-color: $button-primary;
-                color: #fff;
-                border: none;
-                border-radius: $border-radius;
-                cursor: pointer;
-                font-size: 0.85rem; // Slightly reduced for consistency
-                display: flex;
-                align-items: center;
-                gap: $spacing-xs;
-                transition: background-color $transitions-base;
+    &__details {
+        padding: $spacing-sm;
+    }
 
-                &:hover {
-                    background-color: $button-primary-hover;
-                }
+    &__detail-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr; // Two-column grid
+        gap: $spacing-md;
 
-                &:disabled {
-                    background-color: $button-primary-disabled;
-                    cursor: not-allowed;
-                }
-
-                .icon {
-                    font-size: 0.9rem;
-                }
-            }
+        @media (max-width: 768px) {
+            grid-template-columns: 1fr;
         }
     }
 
-    .profile-user-details {
-        padding: $spacing-sm;
+    &__detail-item {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
 
-        .profile-detail-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr; // Two-column grid
-            gap: $spacing-md;
+    &__detail-icon {
+        color: $accent-color-1;
+        font-size: 1rem; // Slightly reduced for consistency
+    }
 
-            @media (max-width: 768px) {
-                grid-template-columns: 1fr;
-            }
+    &__detail-content {
+        display: flex;
+        flex-direction: column;
+    }
 
-            .profile-detail-item {
-                display: flex;
-                align-items: center;
-                gap: $spacing-sm;
-                word-wrap: break-word;
-                overflow-wrap: break-word;
+    &__detail-label {
+        font-size: 0.75rem; // Slightly reduced for consistency
+        color: $secondary-text-color;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
 
-                .profile-detail-icon {
-                    color: $accent-color-1;
-                    font-size: 1rem; // Slightly reduced for consistency
-                }
-
-                .profile-detail-content {
-                    .profile-detail-label {
-                        font-size: 0.75rem; // Slightly reduced for consistency
-                        color: $secondary-text-color;
-                        word-wrap: break-word;
-                        overflow-wrap: break-word;
-                    }
-
-                    .profile-detail-value {
-                        font-size: 0.85rem; // Slightly reduced for consistency
-                        color: $primary-text-color;
-                        word-wrap: break-word;
-                        overflow-wrap: break-word;
-                    }
-                }
-            }
-        }
+    &__detail-value {
+        font-size: 0.85rem; // Slightly reduced for consistency
+        color: $primary-text-color;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 }

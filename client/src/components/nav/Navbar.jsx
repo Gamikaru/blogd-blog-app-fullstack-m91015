@@ -1,12 +1,25 @@
 // src/components/nav/Navbar.jsx
-import { HamburgerMenu, Logo, NavbarButtons, PageInfo, Sidebar, UserDropdown } from '@components';
+import {
+    HamburgerMenu,
+    Logo,
+    NavbarButtons,
+    PageInfo,
+    Sidebar,
+    UserDropdown
+} from '@components';
 import { usePrivateModalContext, useUser, useUserUpdate } from '@contexts';
-import { fetchPostById, UserService } from '@services/api';
+import { fetchPostById } from '@services/api';
 import { logger } from '@utils';
 import { useAnimation } from 'framer-motion';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState
+} from 'react';
 import { useCookies } from 'react-cookie';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { CATEGORIES } from '../../constants/categories';
 
 const navbarVariants = {
@@ -21,9 +34,7 @@ const Navbar = () => {
     const navigate = useNavigate();
     const { setUser } = useUserUpdate();
     const { user } = useUser();
-    const { userId: profileUserId } = useParams();
 
-    const [profileUser, setProfileUser] = useState(null);
     const [showUserDropdown, setShowUserDropdown] = useState(false);
     const userIconRef = useRef(null);
     const hamburgerRef = useRef(null);
@@ -81,50 +92,23 @@ const Navbar = () => {
         }
     }, [postId, fetchPostTitleAndExcerpt]);
 
-    const isProfilePage = useMemo(() => location.pathname.startsWith('/profile'), [location.pathname]);
-
-    useEffect(() => {
-        const fetchProfileUserData = async () => {
-            if (isProfilePage) {
-                try {
-                    let profileUserData;
-                    if (profileUserId && profileUserId !== user.userId) {
-                        // Fetch the profile data of another user
-                        profileUserData = await UserService.fetchUserById(profileUserId);
-                    } else {
-                        // Viewing own profile
-                        profileUserData = user;
-                    }
-                    setProfileUser(profileUserData);
-                } catch (error) {
-                    logger.error('Error fetching profile user:', error);
-                    setProfileUser(null);
-                }
-            }
-        };
-
-        fetchProfileUserData();
-    }, [isProfilePage, profileUserId, user]);
+    const isProfilePage = useMemo(
+        () => location.pathname.startsWith('/profile'),
+        [location.pathname]
+    );
 
     const getPageWelcomeText = useMemo(() => {
         if (isProfilePage) {
-            const isOwnProfile = !profileUserId || profileUserId === user.userId;
-            return {
-                title: isOwnProfile
-                    ? 'Your Profile'
-                    : `${profileUser?.firstName} ${profileUser?.lastName}'s Profile`,
-                subtitle: isOwnProfile
-                    ? 'Manage your profile information'
-                    : `Viewing ${profileUser?.firstName} ${profileUser?.lastName}'s profile`,
-                avatarUrl: profileUser?.profilePicture || '/images/default-avatar.png',
-            };
+            // Profile-specific welcome text is handled by ProfileHeader
+            return null;
         }
 
         switch (location.pathname) {
             case '/':
                 return {
                     title: 'Welcome to Blogd.',
-                    subtitle: 'Discover blogs that inspire and educate. Blow your mind, expand your horizons.',
+                    subtitle:
+                        'Discover blogs that inspire and educate. Blow your mind, expand your horizons.',
                 };
             case '/network':
                 return {
@@ -137,15 +121,7 @@ const Navbar = () => {
                     subtitle: postExcerpt || '',
                 };
         }
-    }, [
-        location.pathname,
-        postTitle,
-        postExcerpt,
-        isProfilePage,
-        profileUserId,
-        profileUser,
-        user,
-    ]);
+    }, [location.pathname, postTitle, postExcerpt, isProfilePage]);
 
     useEffect(() => {
         if (showUserDropdown && userIconRef.current) {
@@ -210,6 +186,7 @@ const Navbar = () => {
                             setShowUserDropdown={setShowUserDropdown}
                         />
                         <UserDropdown
+                            user={user} // Pass 'user' to UserDropdown for avatar display
                             showDropdown={showUserDropdown}
                             setShowDropdown={setShowUserDropdown}
                             handleLogout={handleLogout}
@@ -219,11 +196,14 @@ const Navbar = () => {
                     </div>
                 </nav>
 
-                <PageInfo
-                    welcomeText={getPageWelcomeText}
-                    categories={memoizedCategories}
-                    location={location}
-                />
+                {/* Conditionally render PageInfo */}
+                {getPageWelcomeText && (
+                    <PageInfo
+                        welcomeText={getPageWelcomeText}
+                        categories={memoizedCategories}
+                        location={location}
+                    />
+                )}
             </header>
 
             <Sidebar

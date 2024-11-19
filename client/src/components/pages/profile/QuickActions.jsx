@@ -7,11 +7,11 @@ import { FiEdit } from 'react-icons/fi';
 const QuickActions = ({ isOwnProfile }) => {
     return (
         <div className="quick-actions">
-            <h3>Quick Actions</h3>
-            <div className="action-buttons">
+            <h3 className="quick-actions__title">Quick Actions</h3>
+            <div className="quick-actions__action-buttons">
                 {isOwnProfile && (
-                    <Button className="button button-edit">
-                        <FiEdit className="icon" />Edit Profile
+                    <Button className="quick-actions__button quick-actions__button--edit">
+                        <FiEdit className="quick-actions__icon" />Edit Profile
                     </Button>
                 )}
             </div>

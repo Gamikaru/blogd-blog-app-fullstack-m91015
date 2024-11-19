@@ -46,10 +46,12 @@ const UserProfile = () => {
     }, [userId, user]);
 
     if (loading || userLoading) {
-        return <div className="loading-spinner">Loading profile...</div>;
+        return <div className="profile-page-container__loading-spinner">Loading profile...</div>;
     }
 
     const isOwnProfile = user.userId === profileUser.userId;
+    const userName = `${profileUser.firstName} ${profileUser.lastName}`;
+    const profilePicture = profileUser.profilePicture; // Extract profile picture
 
     const handleStatusChange = (e) => {
         setStatus(e.target.value);
@@ -80,14 +82,16 @@ const UserProfile = () => {
             {/* Profile Header */}
             <ProfileHeader
                 isOwnProfile={isOwnProfile}
+                userName={userName}
                 status={status}
                 handleStatusChange={handleStatusChange}
                 handleStatusSubmit={handleStatusSubmit}
                 statusLoading={statusLoading}
+                profilePicture={profilePicture} // Pass profilePicture prop
             />
 
             {/* Profile Grid */}
-            <div className="profile-grid">
+            <div className="profile-page-container__profile-grid">
                 {/* Sidebar Column */}
                 <ProfileSidebar
                     profileUser={profileUser}
@@ -96,32 +100,13 @@ const UserProfile = () => {
                 />
 
                 {/* Posts and Activity Column */}
-                <div className="profile-main">
+                <div className="profile-page-container__profile-main">
                     {/* Posts Section */}
                     <PostsSection
                         userPosts={userPosts}
                         isOwnProfile={isOwnProfile}
                     />
-
-                    {/* Activity Section */}
-                    {/* <div className="activity-and-connections">
-                        <div className="activity-section">
-                            <h3>
-                                Recent Activity
-                                <span className="section-action">View All</span>
-                            </h3>
-                            <div className="placeholder-content">
-                                Activity timeline coming soon
-                            </div>
-                        </div>
-                    </div> */}
                 </div>
-
-                {/* Connections Column
-                <div className="profile-connections">
-                    <ConnectionsSection />
-                    {/* Additional Components or Stats can be added here */}
-                {/* </div> */}
             </div>
         </div>
     );

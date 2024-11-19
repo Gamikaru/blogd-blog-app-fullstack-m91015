@@ -8,7 +8,7 @@ import UserCard from './UserCard';
 const ProfileSidebar = ({ profileUser, userPosts, isOwnProfile }) => {
     return (
         <div className="profile-sidebar">
-            <div className="sidebar-columns">
+            <div className="profile-sidebar__sidebar-columns">
                 <UserCard profileUser={profileUser} />
                 <StatsCard userPosts={userPosts} />
             </div>

@@ -1,3 +1,5 @@
+// components/pages/profile/_stats-card.scss
+
 .user-stats-card {
     background: $secondary-bg-color;
     border-radius: $border-radius;
@@ -11,7 +13,7 @@
         padding: $spacing-sm;
     }
 
-    .stats-grid {
+    &__stats-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr); // Two-column grid
         gap: $spacing-md;
@@ -19,32 +21,32 @@
         @media (max-width: 768px) {
             grid-template-columns: 1fr;
         }
+    }
 
-        .stat-item {
-            text-align: center;
-            padding: $spacing-md;
-            background: lighten($secondary-bg-color, 5%);
-            border-radius: $border-radius;
+    &__stat-item {
+        text-align: center;
+        padding: $spacing-md;
+        background: lighten($secondary-bg-color, 5%);
+        border-radius: $border-radius;
 
-            @media (max-width: 768px) {
-                padding: $spacing-sm;
-            }
-
-            .stat-value {
-                font-size: 1rem; // Slightly reduced for consistency
-                color: $primary-text-color;
-                font-weight: bold;
-                word-wrap: break-word;
-                overflow-wrap: break-word;
-            }
-
-            .stat-label {
-                font-size: 0.75rem; // Slightly reduced for consistency
-                color: $secondary-text-color;
-                margin-top: $spacing-xs;
-                word-wrap: break-word;
-                overflow-wrap: break-word;
-            }
+        @media (max-width: 768px) {
+            padding: $spacing-sm;
         }
+    }
+
+    &__stat-value {
+        font-size: 1rem; // Slightly reduced for consistency
+        color: $primary-text-color;
+        font-weight: bold;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    &__stat-label {
+        font-size: 0.75rem; // Slightly reduced for consistency
+        color: $secondary-text-color;
+        margin-top: $spacing-xs;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 }

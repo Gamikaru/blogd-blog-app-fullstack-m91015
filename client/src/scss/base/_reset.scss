@@ -77,7 +77,7 @@ a {
 
 /* Responsive Typography */
 h1 {
-    @include heading-style($heading-font-size-lg);
+    @include heading-style($heading-font-size-xxlg);
 }
 
 h2 {

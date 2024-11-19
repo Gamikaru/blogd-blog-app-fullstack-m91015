@@ -1,3 +1,5 @@
+// components/pages/profile/_quick-actions.scss
+
 .quick-actions {
     background: $secondary-bg-color;
     border-radius: $border-radius;
@@ -11,17 +13,46 @@
         padding: $spacing-sm;
     }
 
-    h3 {
+    &__title {
         font-size: 1rem; // Slightly reduced for consistency
         color: $primary-text-color;
         margin-bottom: $spacing-md;
         text-align: center;
     }
 
-    .action-buttons {
+    &__action-buttons {
         display: flex;
         gap: $spacing-md;
         justify-content: center;
         margin-top: $spacing-lg;
+    }
+
+    &__button {
+        &--edit {
+            padding: $spacing-xs $spacing-sm;
+            background-color: $button-primary;
+            color: #fff;
+            border: none;
+            border-radius: $border-radius;
+            cursor: pointer;
+            font-size: 0.85rem; // Slightly reduced for consistency
+            display: flex;
+            align-items: center;
+            gap: $spacing-xs;
+            transition: background-color $transitions-base;
+
+            &:hover {
+                background-color: darken($button-primary, 10%);
+            }
+
+            &:disabled {
+                background-color: $button-primary-disabled;
+                cursor: not-allowed;
+            }
+        }
+
+        &__icon {
+            font-size: 0.9rem;
+        }
     }
 }

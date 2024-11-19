@@ -1,8 +1,7 @@
 // client/src/components/nav/PageInfo.jsx
-import { ProfilePicModal } from '@components';
 import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 const PageInfo = ({ welcomeText, categories, location }) => {
@@ -11,32 +10,12 @@ const PageInfo = ({ welcomeText, categories, location }) => {
         visible: { opacity: 1, x: 0 },
     };
 
+    // Determine if the current page is the profile page
     const isProfilePage = location.pathname.startsWith('/profile');
-
-    // State to control the lightbox visibility
-    const [isPicModalOpen, setisPicModalOpen] = useState(false);
-
-    // Handler for clicking the profile picture
-    const handleProfilePictureClick = () => {
-        setisPicModalOpen(true);
-    };
 
     return (
         <div className="info-and-explore-container">
-            {isProfilePage ? (
-                <motion.div
-                    className="page-info-message profile-info"
-                    variants={pageInfoVariants}
-                    initial="hidden"
-                    animate="visible"
-                    transition={{ duration: 0.5, delay: 0.2 }}
-                >
-                    <div className="profile-avatar" onClick={handleProfilePictureClick}>
-                        <img src={welcomeText.avatarUrl} alt="Profile Avatar" className="profile-image clickable" />
-                    </div>
-                    <h2 className="profile-user-name">{welcomeText.title}</h2>
-                </motion.div>
-            ) : (
+            {!isProfilePage && (
                 <motion.div
                     className="page-info-message"
                     variants={pageInfoVariants}
@@ -53,7 +32,11 @@ const PageInfo = ({ welcomeText, categories, location }) => {
                 <>
                     <div className="explore-links">
                         {categories.map((category) => (
-                            <NavLink key={category} to={`/${category.toLowerCase()}`} className="explore-link">
+                            <NavLink
+                                key={category}
+                                to={`/${category.toLowerCase()}`}
+                                className="explore-link"
+                            >
                                 {category}
                             </NavLink>
                         ))}
@@ -62,14 +45,6 @@ const PageInfo = ({ welcomeText, categories, location }) => {
                         <h2 className="cubes-title">Most Liked</h2>
                     </div> */}
                 </>
-            )}
-
-            {/* Render the Lightbox when isPicModalOpen is true */}
-            {isPicModalOpen && (
-                <ProfilePicModal
-                    imageUrl={welcomeText.avatarUrl}
-                    onClose={() => setisPicModalOpen(false)}
-                />
             )}
         </div>
     );

@@ -112,7 +112,7 @@ const PostCard = memo(({ post, isOwnProfile }) => {
             {isOwnProfile && (
                 <div className="profile-post-card__actions">
                     <Button
-                        className="button button-edit"
+                        className="profile-post-card__button profile-post-card__button--edit"
                         onClick={(e) => {
                             e.stopPropagation();
                             handleEditPostModal();
@@ -120,10 +120,10 @@ const PostCard = memo(({ post, isOwnProfile }) => {
                         showIcon={true}
                         aria-label="Edit post"
                     >
-                        <FiEdit className="icon" /> Edit
+                        <FiEdit className="profile-post-card__icon" /> Edit
                     </Button>
                     <Button
-                        className="button button-delete"
+                        className="profile-post-card__button profile-post-card__button--delete"
                         onClick={(e) => {
                             e.stopPropagation();
                             confirmDeletePost();
@@ -132,7 +132,7 @@ const PostCard = memo(({ post, isOwnProfile }) => {
                         aria-label="Delete post"
                         disabled={isDeleting}
                     >
-                        <FiTrash2 className="icon" /> Delete
+                        <FiTrash2 className="profile-post-card__icon" /> Delete
                     </Button>
                 </div>
             )}
@@ -140,18 +140,18 @@ const PostCard = memo(({ post, isOwnProfile }) => {
             {/* Delete Confirmation Modal */}
             {showDeleteModal && (
                 <Modal onClose={() => setShowDeleteModal(false)}>
-                    <h2>Confirm Deletion</h2>
-                    <p>Are you sure you want to delete this post?</p>
-                    <div className="profile-modal-actions">
+                    <h2 className="profile-post-card__modal-title">Confirm Deletion</h2>
+                    <p className="profile-post-card__modal-message">Are you sure you want to delete this post?</p>
+                    <div className="profile-post-card__modal-actions">
                         <Button
-                            className="button button-delete"
+                            className="profile-post-card__modal-button profile-post-card__modal-button--delete"
                             onClick={handleDeletePost}
                             disabled={isDeleting}
                         >
                             {isDeleting ? 'Deleting...' : 'Yes, Delete'}
                         </Button>
                         <Button
-                            className="button button-edit"
+                            className="profile-post-card__modal-button profile-post-card__modal-button--cancel"
                             onClick={() => setShowDeleteModal(false)}
                         >
                             Cancel
@@ -160,27 +160,14 @@ const PostCard = memo(({ post, isOwnProfile }) => {
                 </Modal>
             )}
         </motion.div>
-    );
+);
 });
 
+//display name
 PostCard.displayName = 'PostCard';
 
 PostCard.propTypes = {
-    post: PropTypes.shape({
-        postId: PropTypes.string,
-        _id: PropTypes.string,
-        content: PropTypes.string.isRequired,
-        createdAt: PropTypes.string.isRequired,
-        title: PropTypes.string,
-        category: PropTypes.string,
-        imageUrls: PropTypes.arrayOf(PropTypes.string),
-        images: PropTypes.arrayOf(
-            PropTypes.shape({
-                data: PropTypes.string.isRequired,
-            })
-        ),
-        excerpt: PropTypes.string,
-    }).isRequired,
+    post: PropTypes.object.isRequired,
     isOwnProfile: PropTypes.bool.isRequired,
 };
 

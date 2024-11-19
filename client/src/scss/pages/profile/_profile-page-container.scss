@@ -1,4 +1,4 @@
-//client\src\scss\pages\profile\_profile-page-container.scss
+// client/src/scss/pages/profile/_profile-page-container.scss
 
 .profile-page-container {
     padding: $spacing-lg;
@@ -10,4 +10,29 @@
     justify-items: center;
     justify-content: center;
 
+    &__profile-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 3fr; // Adjust sidebar width as needed
+        gap: $spacing-lg;
+
+        @media (max-width: $breakpoint-md) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    &__loading-spinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-size: 1.2rem;
+        color: $primary-text-color;
+    }
+
+    &__profile-main {
+        grid-column: 3;
+        @media (max-width: $breakpoint-md) {
+            grid-column: 1;
+        }
+    }
 }

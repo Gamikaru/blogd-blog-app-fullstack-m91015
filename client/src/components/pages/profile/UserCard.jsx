@@ -5,41 +5,41 @@ import { FiCalendar, FiMail, FiMapPin, FiPhone } from 'react-icons/fi';
 
 const UserCard = ({ profileUser }) => {
     return (
-        <div className="profile-user-card">
-            <div className="profile-user-card-header">
-                <div className="profile-user-info">
-                    <h2>{profileUser.name}</h2>
-                    <p className="profile-user-role">{profileUser.role}</p>
+        <div className="user-card">
+            <div className="user-card__header">
+                <div className="user-card__info">
+                    <h2 className="user-card__name">{profileUser.name}</h2>
+                    <p className="user-card__role">{profileUser.role}</p>
                 </div>
             </div>
-            <div className="profile-user-details">
-                <div className="profile-detail-grid">
-                    <div className="profile-detail-item">
-                        <FiMail className="profile-detail-icon" />
-                        <div className="profile-detail-content">
-                            <div className="profile-detail-label">Email</div>
-                            <div className="profile-detail-value">{profileUser.email}</div>
+            <div className="user-card__details">
+                <div className="user-card__detail-grid">
+                    <div className="user-card__detail-item">
+                        <FiMail className="user-card__detail-icon" />
+                        <div className="user-card__detail-content">
+                            <div className="user-card__detail-label">Email</div>
+                            <div className="user-card__detail-value">{profileUser.email}</div>
                         </div>
                     </div>
-                    <div className="profile-detail-item">
-                        <FiPhone className="profile-detail-icon" />
-                        <div className="profile-detail-content">
-                            <div className="profile-detail-label">Phone</div>
-                            <div className="profile-detail-value">{profileUser.phone || 'Not provided'}</div>
+                    <div className="user-card__detail-item">
+                        <FiPhone className="user-card__detail-icon" />
+                        <div className="user-card__detail-content">
+                            <div className="user-card__detail-label">Phone</div>
+                            <div className="user-card__detail-value">{profileUser.phone || 'Not provided'}</div>
                         </div>
                     </div>
-                    <div className="profile-detail-item">
-                        <FiMapPin className="profile-detail-icon" />
-                        <div className="profile-detail-content">
-                            <div className="profile-detail-label">Location</div>
-                            <div className="profile-detail-value">{profileUser.location || 'Not provided'}</div>
+                    <div className="user-card__detail-item">
+                        <FiMapPin className="user-card__detail-icon" />
+                        <div className="user-card__detail-content">
+                            <div className="user-card__detail-label">Location</div>
+                            <div className="user-card__detail-value">{profileUser.location || 'Not provided'}</div>
                         </div>
                     </div>
-                    <div className="profile-detail-item">
-                        <FiCalendar className="profile-detail-icon" />
-                        <div className="profile-detail-content">
-                            <div className="profile-detail-label">Joined</div>
-                            <div className="profile-detail-value">
+                    <div className="user-card__detail-item">
+                        <FiCalendar className="user-card__detail-icon" />
+                        <div className="user-card__detail-content">
+                            <div className="user-card__detail-label">Joined</div>
+                            <div className="user-card__detail-value">
                                 {new Date(profileUser.createdAt).toLocaleDateString()}
                             </div>
                         </div>

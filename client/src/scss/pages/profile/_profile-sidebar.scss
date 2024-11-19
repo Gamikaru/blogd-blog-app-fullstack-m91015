@@ -1,3 +1,5 @@
+// client/src/scss/pages/profile/_profile-sidebar.scss
+
 .profile-sidebar {
     position: sticky;
     top: 2rem; // Stay in view on scroll
@@ -33,5 +35,11 @@
     @media (max-width: 768px) {
         /* On small screens, stack the components vertically */
         align-items: center;
+    }
+
+    &__sidebar-columns {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-lg;
     }
 }
