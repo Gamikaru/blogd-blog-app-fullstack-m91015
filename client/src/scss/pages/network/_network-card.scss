@@ -1,131 +1,4 @@
 /* --------------------------------------------------------------------------
-   Network Page Container
--------------------------------------------------------------------------- */
-
-.network-page-container {
-    padding: $spacing-xxl $spacing-lg;
-    background-color: $primary-bg-color;
-    color: $primary-text-color;
-    width: 80vw;
-    margin: 0 auto;
-
-    .filter-search-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: $spacing-lg;
-        margin-bottom: $spacing-lg;
-        margin-top: -15rem;
-
-        .search-container,
-        .filter-container {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .filter-container {
-            .filter-icon {
-                @extend .filter-icon;
-            }
-        }
-
-        .search-container {
-            .search-icon {
-                @extend .search-icon;
-            }
-        }
-
-        .search-input {
-            width: 200px;
-            padding: $spacing-xs $spacing-sm;
-            border: 1px solid $border-color;
-            border-radius: $border-radius;
-            outline: none;
-            transition: width 0.3s ease, opacity 0.3s ease;
-            font-size: $body-font-size;
-            color: $primary-text-color;
-            background-color: $input-bg-color;
-
-            &:focus {
-                border-color: $accent-color-2;
-                box-shadow: 0 0 0 2px rgba($accent-color-2, 0.5);
-            }
-        }
-
-        .filter-dropdown {
-            position: absolute;
-            top: 40px;
-            right: 0;
-            width: 250px;
-            background-color: $secondary-bg-color; // Replaced $dropdown-bg-color
-            border: 1px solid $border-color;
-            border-radius: $border-radius;
-            box-shadow: $box-shadow-medium;
-            padding: $spacing-sm;
-            z-index: 1000;
-
-            .filter-option {
-                margin-bottom: $spacing-xs;
-
-                label {
-                    display: block;
-                    margin-bottom: $spacing-xs;
-                    font-size: $body-font-size;
-                    color: $primary-text-color;
-                }
-
-                input,
-                select {
-                    width: 100%;
-                    padding: $spacing-xs;
-                    border: 1px solid $border-color;
-                    border-radius: $border-radius;
-                    font-size: $body-font-size;
-                    color: $primary-text-color;
-                    background-color: $input-bg-color;
-
-                    &:focus {
-                        border-color: $accent-color-2;
-                        box-shadow: 0 0 0 2px rgba($accent-color-2, 0.5);
-                        outline: none;
-                    }
-                }
-            }
-
-            .filter-actions {
-                display: flex;
-                justify-content: flex-end;
-
-                .button {
-                    padding: $spacing-xs $spacing-sm;
-                    font-size: $body-font-size;
-                    background-color: $button-secondary; // Replaced $reset-button-bg
-                    color: $primary-text-color; // Replaced $reset-button-text
-                    border: none;
-                    border-radius: $border-radius;
-                    cursor: pointer;
-                    transition: background-color 0.3s ease;
-
-                    &:hover {
-                        background-color: darken($button-secondary, 10%);
-                    }
-                }
-            }
-        }
-    }
-
-    .grid-container.network-grid {
-        max-width: 80vw;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-        gap: $spacing-xl;
-        padding: $spacing-lg;
-    }
-}
-
-/* --------------------------------------------------------------------------
    Network Card Styling
 -------------------------------------------------------------------------- */
 .network-card {
@@ -167,7 +40,7 @@
             }
 
             .initials-circle {
-                width: clamp(80px, 15vw, 120px);  // Responsive width
+                width: clamp(80px, 15vw, 120px); // Responsive width
                 height: clamp(80px, 15vw, 120px); // Responsive height
                 flex-shrink: 0;
                 border-radius: 50%;
@@ -307,45 +180,9 @@
 }
 
 /* --------------------------------------------------------------------------
-   Loading and Error Messages
--------------------------------------------------------------------------- */
-.loading-message,
-.error-message {
-    text-align: center;
-    padding: $spacing-xl;
-    background: $secondary-bg-color;
-    border-radius: $border-radius;
-    box-shadow: $box-shadow-medium;
-    max-width: 400px;
-    margin: $spacing-xl auto;
-    color: $secondary-text-color;
-    font-size: $heading-font-size-md;
-
-    &.error-message {
-        border-left: 4px solid $error-color;
-    }
-}
-
-/* --------------------------------------------------------------------------
-   Responsive Design for the Network Page
+   Responsive Design for the Network Card
 -------------------------------------------------------------------------- */
 @media (max-width: $breakpoint-md) {
-    .network-page-container {
-        padding: $spacing-lg $spacing-md;
-
-        .filter-search-container {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: $spacing-md;
-        }
-
-        .grid-container.network-grid {
-            grid-template-columns: 1fr;
-            gap: $spacing-lg;
-            padding: $spacing-md;
-        }
-    }
-
     .network-card {
         .network-card-body {
             padding: $spacing-md;

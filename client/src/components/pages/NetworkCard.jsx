@@ -1,7 +1,7 @@
-// NetworkUserCard.jsx
+// NetworkCard.jsx
 import { Button } from '@components';
 import { motion } from "framer-motion";
-import PropTypes from 'prop-types'; // Import PropTypes
+import PropTypes from 'prop-types';
 import { memo, useMemo, useState } from 'react';
 import { Card } from "react-bootstrap";
 import { FaBriefcase, FaMapMarkerAlt } from "react-icons/fa";
@@ -36,6 +36,7 @@ const NetworkCard = memo(({ user }) => {
                                 src={user.profilePicture}
                                 alt={`${user.firstName} ${user.lastName}`}
                                 className="profile-picture"
+                                loading="lazy"
                             />
                         ) : (
                             memoizedInitials

@@ -3,6 +3,7 @@
 .navbar-links {
     @include flex-center;
     align-items: center;
+    justify-content: right;
     gap: px-to-rem(24); // 1.5rem
     margin: 0;
     padding-right: px-to-rem(16); // 1rem
@@ -58,7 +59,7 @@
 
 @media (max-width: $breakpoint-md) {
     .navbar-links {
-        display: none;
+        gap: 0.5rem;
     }
 
     .navbar-right {

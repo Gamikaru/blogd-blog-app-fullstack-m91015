@@ -5,7 +5,7 @@ import {
     NavbarButtons,
     PageInfo,
     Sidebar,
-    UserDropdown
+    UserDropdown,
 } from '@components';
 import { usePrivateModalContext, useUser, useUserUpdate } from '@contexts';
 import { fetchPostById } from '@services/api';
@@ -16,7 +16,7 @@ import React, {
     useEffect,
     useMemo,
     useRef,
-    useState
+    useState,
 } from 'react';
 import { useCookies } from 'react-cookie';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -54,46 +54,58 @@ const Navbar = () => {
     }, [location.pathname]);
 
     const [postTitle, setPostTitle] = useState('');
-    const [postExcerpt, setPostExcerpt] = useState('');
+    const [postSubtitle, setPostSubtitle] = useState(''); // Holds "Author | Date" for blog pages
     const [loading, setLoading] = useState(!!postId);
 
     const [dropdownPosition, setDropdownPosition] = useState({ top: 0, right: 0 });
 
     const memoizedCategories = useMemo(() => CATEGORIES, []);
 
-    const generateExcerpt = useCallback((content) => {
-        return (
-            content
-                .replace(/<[^>]+>/g, '')
-                .split(/\s+/)
-                .slice(0, 30)
-                .join(' ') + '...'
-        );
+    const formatDateLong = useCallback((dateString) => {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
     }, []);
 
-    const fetchPostTitleAndExcerpt = useCallback(
+    const fetchPostTitleAndSubtitle = useCallback(
         async (postId) => {
             try {
                 const post = await fetchPostById(postId);
                 setPostTitle(post.title || '');
-                setPostExcerpt(generateExcerpt(post.content));
+
+                // Format author name
+                const author = post.userId
+                    ? `${post.userId.firstName} ${post.userId.lastName}`
+                    : 'Unknown Author';
+
+                // Format date
+                const formattedDate = post.createdAt
+                    ? formatDateLong(post.createdAt)
+                    : 'Unknown Date';
+
+                // Set subtitle as "Author | Date"
+                setPostSubtitle(`${author} | ${formattedDate}`);
             } catch (error) {
-                logger.error('Error fetching post title and excerpt:', error);
+                logger.error('Error fetching post title and subtitle:', error);
             } finally {
                 setLoading(false);
             }
         },
-        [generateExcerpt]
+        [formatDateLong]
     );
 
     useEffect(() => {
         if (postId) {
-            fetchPostTitleAndExcerpt(postId);
+            fetchPostTitleAndSubtitle(postId);
         }
-    }, [postId, fetchPostTitleAndExcerpt]);
+    }, [postId, fetchPostTitleAndSubtitle]);
 
     const isProfilePage = useMemo(
         () => location.pathname.startsWith('/profile'),
+        [location.pathname]
+    );
+
+    const isBlogPage = useMemo(
+        () => location.pathname.startsWith('/blog/'),
         [location.pathname]
     );
 
@@ -101,6 +113,14 @@ const Navbar = () => {
         if (isProfilePage) {
             // Profile-specific welcome text is handled by ProfileHeader
             return null;
+        }
+
+        if (isBlogPage && postId) {
+            return {
+                title: postTitle || 'Explore our platform',
+                subtitle: postSubtitle || '',
+                isBlogPage: true, // Indicate that it's a blog page
+            };
         }
 
         switch (location.pathname) {
@@ -117,11 +137,11 @@ const Navbar = () => {
                 };
             default:
                 return {
-                    title: postTitle || 'Explore our platform',
-                    subtitle: postExcerpt || '',
+                    title: 'Explore our platform',
+                    subtitle: '', // No excerpt needed for undefined paths
                 };
         }
-    }, [location.pathname, postTitle, postExcerpt, isProfilePage]);
+    }, [location.pathname, postTitle, postSubtitle, isProfilePage, isBlogPage, postId]);
 
     useEffect(() => {
         if (showUserDropdown && userIconRef.current) {
@@ -159,6 +179,7 @@ const Navbar = () => {
         }
     }, [sidebarOpen]);
 
+    // Determine if on login/register page or loading
     if (['/login', '/register'].includes(location.pathname) || loading) return null;
 
     return (
@@ -199,7 +220,11 @@ const Navbar = () => {
                 {/* Conditionally render PageInfo */}
                 {getPageWelcomeText && (
                     <PageInfo
-                        welcomeText={getPageWelcomeText}
+                        welcomeText={{
+                            title: getPageWelcomeText.title,
+                            subtitle: getPageWelcomeText.subtitle,
+                            isBlogPage: getPageWelcomeText.isBlogPage || false,
+                        }}
                         categories={memoizedCategories}
                         location={location}
                     />

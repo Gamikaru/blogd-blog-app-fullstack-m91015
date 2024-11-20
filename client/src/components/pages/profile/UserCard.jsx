@@ -1,16 +1,14 @@
 // components/pages/profile/UserCard.jsx
 
 import PropTypes from 'prop-types';
-import { FiCalendar, FiMail, FiMapPin, FiPhone } from 'react-icons/fi';
+import { FiCalendar, FiMail, FiMapPin, FiPhone, FiUser } from 'react-icons/fi';
 
 const UserCard = ({ profileUser }) => {
     return (
         <div className="user-card">
-            <div className="user-card__header">
-                <div className="user-card__info">
-                    <h2 className="user-card__name">{profileUser.name}</h2>
-                    <p className="user-card__role">{profileUser.role}</p>
-                </div>
+            <div className="user-card__info-strip">
+                <FiUser className="fi-user-icon" />
+                <span>Info</span>
             </div>
             <div className="user-card__details">
                 <div className="user-card__detail-grid">

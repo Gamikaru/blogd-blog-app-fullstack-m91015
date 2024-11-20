@@ -70,3 +70,18 @@
         }
     }
 }
+
+/* Blog Page Specific Styling */
+.page-info-message.blog-page-info .page-title {
+    /* Styles specific to blog page titles */
+    font-size: $heading-font-size-xxlg;
+    color: #333;
+    margin-top:5rem;
+}
+
+.page-info-message.blog-page-info .blog-subtitle {
+    /* Styles specific to blog page subtitles (author and date) */
+    color: #777;
+    margin-top: 0.3rem;
+    font-style: italic;
+}

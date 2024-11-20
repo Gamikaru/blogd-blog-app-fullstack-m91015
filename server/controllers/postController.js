@@ -1,10 +1,11 @@
 // controllers/postController.js
 
-import path from 'path';
-import { uploadToCloudinary } from '../config/cloudinaryConfig.js';
+import { deleteFromCloudinary, uploadToCloudinary } from '../config/cloudinaryConfig.js';
 
 import Post from '../models/post.js';
+import { extractPublicIdFromURL } from '../utils/imageHelpers.js';
 import logger from '../utils/logger.js';
+
 
 /**
  * Get top 5 most liked posts or latest posts if none.
@@ -213,108 +214,104 @@ export const createPost = async (req, res) => {
 export const updatePost = async (req, res) => {
     const { postId } = req.params;
     const files = req.files;
+    const { title, content, category, imageUrls, tags, status, scheduledAt } = req.body;
 
     try {
         const post = await Post.findById(postId);
         if (!post) {
-            logger.warn('Post not found for update', { postId });
-            return res.status(404).json({ success: false, message: 'Post not found' });
+            logger.warn('Post not found', { postId });
+            return res.status(404).json({ error: 'Post not found.' });
         }
 
-        // Before processing files
-        logger.info('Starting to process image uploads', { postId, fileCount: files ? files.length : 0 });
-
-        // Handle image uploads
+        // If new images are uploaded, replace existing images
         if (files && files.length > 0) {
-            try {
-                const uploadedImageUrls = await Promise.all(
-                    files.map(async (file, index) => {
-                        const timestamp = Date.now();
-                        const extension = file.mimetype === 'image/webp' ? '.webp' : path.extname(file.originalname);
-                        const filename = `post_${postId}_${timestamp}_${index}${extension}`;
+            logger.info('New images uploaded. Replacing existing images.', { postId, fileCount: files.length });
 
-                        // Inside the image upload loop
-                        logger.info('Processing file:', { index, originalName: file.originalname });
-
-                        logger.info('Uploading image', {
-                            filename,
-                            mimetype: file.mimetype,
-                            size: file.size
-                        });
-
-                        const imageUrl = await uploadToCloudinary(file.buffer, filename, 'posts');
-
-                        // After uploading each image
-                        logger.info('Uploaded image', { filename, url: imageUrl });
-
-                        return imageUrl;
-                    })
-                );
-
-                // After image(s) are uploaded, update the post's imageUrls
-                post.imageUrls = uploadedImageUrls;
-                logger.info('Images uploaded successfully', {
-                    postId,
-                    newImages: uploadedImageUrls.length,
-                    totalImages: post.imageUrls.length
-                });
-            } catch (uploadError) {
-                logger.error('Image upload failed', { error: uploadError.message, postId });
-                return res.status(500).json({
-                    success: false,
-                    message: 'Failed to upload images'
-                });
+            // Delete existing images from Cloudinary
+            if (post.imageUrls && post.imageUrls.length > 0) {
+                for (const url of post.imageUrls) {
+                    try {
+                        const publicId = extractPublicIdFromURL(url);
+                        await deleteFromCloudinary(publicId);
+                        logger.info('Deleted image from Cloudinary', { publicId });
+                    } catch (error) {
+                        logger.error('Error deleting image from Cloudinary', { publicId, error: error.message });
+                        // Optionally, continue deleting other images or handle the error accordingly
+                    }
+                }
             }
+
+            // Upload new images to Cloudinary
+            const uploadedImageUrls = [];
+            for (const file of files) {
+                try {
+                    const result = await uploadToCloudinary(file.buffer, file.originalname, 'posts');
+                    uploadedImageUrls.push(result);
+                    logger.info('Uploaded image to Cloudinary', { url: result });
+                } catch (error) {
+                    logger.error('Error uploading image to Cloudinary', { file: file.originalname, error: error.message });
+                    return res.status(500).json({ error: 'Failed to upload images.' });
+                }
+            }
+
+            // Replace imageUrls with new uploads
+            post.imageUrls = uploadedImageUrls;
+        } else if (imageUrls) {
+            // If no new images uploaded but imageUrls are provided, replace them
+            const urlsArray = imageUrls.split(',').map(url => url.trim()).filter(url => url);
+            post.imageUrls = urlsArray;
         }
 
-        // Update other fields
-        if (req.body.title) post.title = req.body.title;
-        if (req.body.content) post.content = req.body.content;
-        if (req.body.category) post.category = req.body.category;
-        if (req.body.imageUrls) {
-            let newUrls = [];
-            if (Array.isArray(req.body.imageUrls)) {
-                newUrls = req.body.imageUrls.map(url => url.trim()).filter(Boolean);
-            } else if (typeof req.body.imageUrls === 'string') {
-                newUrls = req.body.imageUrls.split(',').map(url => url.trim()).filter(Boolean);
-            }
-            post.imageUrls = [...(post.imageUrls || []), ...newUrls];
+        // Update other fields if provided
+        if (title) post.title = title;
+        if (content) {
+            post.content = content;
+            // Add to editHistory
+            post.editHistory.push({ content });
         }
-        if (req.body.tags) post.tags = req.body.tags.map(tag => tag.trim());
-        if (req.body.status) post.status = req.body.status;
-        if (req.body.scheduledAt) post.scheduledAt = new Date(req.body.scheduledAt);
-
-        // Before saving the post
-        logger.info('Saving the updated post to the database', { postId });
+        if (category) post.category = category;
+        if (tags) post.tags = tags.map(tag => tag.trim());
+        if (status) post.status = status;
+        if (scheduledAt) post.scheduledAt = new Date(scheduledAt);
 
         // Save the updated post
         await post.save();
-
-        // After saving the post
-        logger.info('Post saved successfully', { postId });
-
-        // Return populated post data
-        const updatedPost = await Post.findById(postId)
-            .populate('userId', 'firstName lastName')
-            .lean({ virtuals: true });
-
-        // Before sending the response
-        logger.info('Sending response to the client', { postId });
-
         logger.info('Post updated successfully', { postId });
-        res.json({
-            success: true,
-            post: updatedPost,
-            message: 'Post updated successfully'
+
+        // Populate userId
+        await post.populate('userId', 'firstName lastName occupation aboutAuthor');
+
+        // Convert to object including virtuals
+        const postObject = post.toObject({ virtuals: true });
+
+        res.status(200).json({
+            message: 'Post updated successfully.',
+            post: {
+                postId: postObject._id,
+                title: postObject.title,
+                slug: postObject.slug,
+                content: postObject.content,
+                category: postObject.category,
+                likes: postObject.likes,
+                views: postObject.views,
+                userId: postObject.userId,
+                comments: postObject.comments,
+                imageUrls: postObject.imageUrls,
+                tags: postObject.tags,
+                status: postObject.status,
+                scheduledAt: postObject.scheduledAt,
+                createdAt: postObject.createdAt,
+                updatedAt: postObject.updatedAt,
+                excerpt: postObject.excerpt,
+            },
         });
     } catch (error) {
-        logger.error('Error updating post:', { error: error.message, postId });
-        res.status(500).json({
-            success: false,
-            message: 'Server error: ' + error.message
-        });
+        logger.error('Error updating post', { error: error.message, postId });
+        res.status(500).json({ error: 'Server error while updating the post.' });
     }
 };
+
+
 
 /**
  * Delete a post by ID.

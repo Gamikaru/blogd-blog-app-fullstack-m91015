@@ -1,4 +1,4 @@
-// client/src/components/nav/PageInfo.jsx
+// src/components/nav/PageInfo.jsx
 import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -17,14 +17,24 @@ const PageInfo = ({ welcomeText, categories, location }) => {
         <div className="info-and-explore-container">
             {!isProfilePage && (
                 <motion.div
-                    className="page-info-message"
+                    className={`page-info-message ${
+                        welcomeText.isBlogPage ? 'blog-page-info' : ''
+                    }`}
                     variants={pageInfoVariants}
                     initial="hidden"
                     animate="visible"
                     transition={{ duration: 0.5, delay: 0.2 }}
                 >
                     <h1 className="page-title">{welcomeText.title}</h1>
-                    {welcomeText.subtitle && <p className="page-subtitle">{welcomeText.subtitle}</p>}
+                    {welcomeText.subtitle && (
+                        welcomeText.isBlogPage ? (
+                            <p className="page-subtitle blog-subtitle">
+                                {welcomeText.subtitle}
+                            </p>
+                        ) : (
+                            <p className="page-subtitle">{welcomeText.subtitle}</p>
+                        )
+                    )}
                 </motion.div>
             )}
 
@@ -55,6 +65,7 @@ PageInfo.propTypes = {
         title: PropTypes.string.isRequired,
         subtitle: PropTypes.string,
         avatarUrl: PropTypes.string,
+        isBlogPage: PropTypes.bool, // Added isBlogPage
     }).isRequired,
     categories: PropTypes.arrayOf(PropTypes.string).isRequired,
     location: PropTypes.shape({

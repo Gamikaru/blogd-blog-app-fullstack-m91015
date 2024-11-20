@@ -24,14 +24,6 @@
 @import "components/carousel";
 
 @import "components/nav/index";
-// @import "components/nav/navbar-header";
-// @import "components/nav/navbar-left";
-// @import "components/nav/navbar-center";
-// @import "components/nav/navbar-right";
-// @import "components/nav/user-dropdown";
-// @import "components/nav/explore-links";
-// @import "components/nav/navbar-responsive";
-// @import "components/sidebar";
 @import "components/modals/postmodal.variables";
 @import "components/modals/postmodal.layout";
 @import "components/modals/postmodal.components";
@@ -50,7 +42,7 @@
 @import "pages/blog_fullview";
 @import "pages/home/index";
 @import "pages/login";
-@import "pages/network";
+@import "pages/network/index";
 @import "pages/profile/index";
 
 // Import vendor styles

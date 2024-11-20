@@ -1,7 +1,7 @@
 // Network.jsx
 import { Button, NetworkCard } from '@components';
 import { useUser } from '@contexts/UserContext';
-import UserService from '@services/api/UserService';
+import UserService from '@services/api/UserService'; // Ensure this path is correct
 import { AnimatePresence, motion } from "framer-motion";
 import debounce from 'lodash.debounce';
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -52,9 +52,9 @@ const Network = () => {
         fetchData();
     }, [user]);
 
-    const handleUserClick = (userId) => {
+    const handleUserClick = useCallback((userId) => {
         navigate(`/profile/${userId}`);
-    };
+    }, [navigate]);
 
     // Handle outside click for search and filter
     useEffect(() => {
@@ -122,17 +122,17 @@ const Network = () => {
         return sorted;
     }, [filteredUsers, filters.sortBy]);
 
-    const resetFilters = () => {
+    const resetFilters = useCallback(() => {
         setFilters({
             name: "",
             location: "",
             sortBy: "",
         });
         setSearch("");
-    };
+    }, []);
 
     // Animation Variants
-    const containerVariants = {
+    const containerVariants = useMemo(() => ({
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
@@ -140,32 +140,32 @@ const Network = () => {
                 staggerChildren: 0.1,
             },
         },
-    };
+    }), []);
 
-    const cardVariants = {
+    const cardVariants = useMemo(() => ({
         hidden: { opacity: 0, y: 20 },
         visible: {
             opacity: 1,
             y: 0,
             transition: { duration: 0.3, ease: "easeOut" },
         },
-    };
+    }), []);
 
     if (loading || userLoading) {
-        return <div className="loading-message">Loading...</div>;
+        return <div className="network-page__messages--loading">Loading...</div>;
     }
 
     if (error) {
-        return <div className="error-message">Error: {error}</div>;
+        return <div className="network-page__messages--error">Error: {error}</div>;
     }
 
     return (
-        <div className="network-page-container">
-            <div className="filter-search-container">
+        <div className="network-page__container">
+            <div className="network-page__filter-search">
                 {/* Search Functionality */}
-                <div className="search-container" ref={searchRef}>
+                <div className="network-page__filter-search__search" ref={searchRef}>
                     <Button
-                        className="search-icon"
+                        className="network-page__filter-search__search-icon"
                         onClick={() => setShowSearchInput((prev) => !prev)}
                         variant="iconButton"
                         aria-label="Search"
@@ -176,7 +176,7 @@ const Network = () => {
                         {showSearchInput && (
                             <motion.input
                                 type="text"
-                                className="search-input"
+                                className="network-page__filter-search__input"
                                 placeholder="Search by name or location"
                                 onChange={handleSearchChange}
                                 initial={{ width: 0, opacity: 0 }}
@@ -190,9 +190,9 @@ const Network = () => {
                 </div>
 
                 {/* Filter Functionality */}
-                <div className="filter-container" ref={filterRef}>
+                <div className="network-page__filter-search__filter" ref={filterRef}>
                     <Button
-                        className="filter-icon"
+                        className="network-page__filter-search__filter-icon"
                         onClick={() => setShowFilterDropdown((prev) => !prev)}
                         variant="iconButton"
                         aria-label="Filter"
@@ -202,13 +202,13 @@ const Network = () => {
                     <AnimatePresence>
                         {showFilterDropdown && (
                             <motion.div
-                                className="filter-dropdown"
+                                className="network-page__filter-search__dropdown"
                                 initial={{ opacity: 0, y: -20, scale: 0.95 }}
                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                 exit={{ opacity: 0, y: -20, scale: 0.95 }}
                                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
                             >
-                                <div className="filter-option">
+                                <div className="network-page__filter-search__dropdown__option">
                                     <label htmlFor="name">Name:</label>
                                     <input
                                         type="text"
@@ -219,7 +219,7 @@ const Network = () => {
                                         aria-label="Filter by name"
                                     />
                                 </div>
-                                <div className="filter-option">
+                                <div className="network-page__filter-search__dropdown__option">
                                     <label htmlFor="location">Location:</label>
                                     <input
                                         type="text"
@@ -230,7 +230,7 @@ const Network = () => {
                                         aria-label="Filter by location"
                                     />
                                 </div>
-                                <div className="filter-option">
+                                <div className="network-page__filter-search__dropdown__option">
                                     <label htmlFor="sortBy">Sort By:</label>
                                     <select
                                         id="sortBy"
@@ -247,7 +247,7 @@ const Network = () => {
                                     </select>
                                 </div>
                                 {/* Reset Filters Button */}
-                                <div className="filter-option filter-actions">
+                                <div className="network-page__filter-search__dropdown__actions">
                                     <Button
                                         onClick={resetFilters}
                                         variant="reset"
@@ -263,7 +263,7 @@ const Network = () => {
             </div>
 
             <motion.div
-                className="grid-container network-grid"
+                className="network-page__grid"
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
@@ -271,7 +271,7 @@ const Network = () => {
                 <AnimatePresence>
                     {sortedUsers.length === 0 ? (
                         <motion.p
-                            className="no-users-message"
+                            className="network-page__messages--no-users"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
@@ -281,12 +281,12 @@ const Network = () => {
                     ) : (
                         sortedUsers.map((user) => (
                             <motion.div
-                                className="grid-item"
+                                className="network-page__grid__item"
                                 key={user._id}
                                 variants={cardVariants}
                             >
                                 <div
-                                    className="user-card"
+                                    className="network-page__grid__item__user-card"
                                     onClick={() => handleUserClick(user._id)}
                                     style={{ cursor: 'pointer' }}
                                 >
@@ -301,6 +301,7 @@ const Network = () => {
             </motion.div>
         </div>
     );
+
 };
 
 export default Network;

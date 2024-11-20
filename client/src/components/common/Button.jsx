@@ -1,5 +1,4 @@
 // Button.jsx
-
 import clsx from 'clsx';
 import { motion, useReducedMotion } from 'framer-motion';
 import PropTypes from 'prop-types';
@@ -62,7 +61,7 @@ const variantIcons = {
     share: FiShare2,
     link: FiLink,
     message: FiMessageCircle,
-    send: FiSend,
+    send: FiSend, // Added send icon
     book: FiBook,
     fileText: FiFileText,
     reset: FiXCircle,
@@ -98,7 +97,7 @@ const variantClasses = {
     login: 'button-login',
     logout: 'button-logout',
     replace: 'button-edit',
-
+    send: 'button-send', // Added send variant
 };
 
 const Button = React.memo(

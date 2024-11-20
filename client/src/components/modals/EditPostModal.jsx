@@ -94,12 +94,16 @@ export default function EditPostModal() {
             formData.append('category', category);
 
             const urlsArray = imageUrls.split(',').map(url => url.trim()).filter(url => url);
-            urlsArray.forEach((url) => {
-                formData.append('imageUrls', url);
-            });
+            // Append imageUrls as a single comma-separated string
+            formData.append('imageUrls', urlsArray.join(','));
 
-            selectedFiles.forEach((file, index) => {
-                formData.append('images', file, `image${index}`);
+            // Ensure files are appended with their original names to preserve extensions
+            selectedFiles.forEach((file) => {
+                formData.append('images', file, file.name); // Use original filename
+                // Alternatively, for unique filenames:
+                // const extension = file.name.substring(file.name.lastIndexOf('.'));
+                // const uniqueName = `image${index}_${Date.now()}${extension}`;
+                // formData.append('images', file, uniqueName);
             });
 
             const { success, message } = await updatePost(postId, formData);

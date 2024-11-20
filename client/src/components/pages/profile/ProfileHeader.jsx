@@ -60,7 +60,7 @@ const ProfileHeader = ({
                                     onClick={handleStatusSubmit}
                                     disabled={statusLoading || !status.trim()}
                                     aria-label="Submit Status"
-                                    className={`profile-header__status-submit-button ${isFocused ? 'active' : ''}`}
+                                    className={`button button-submit ${isFocused ? 'active' : ''}`}
                                 >
                                     {statusLoading ? 'Updating...' : 'Update Status'}
                                 </Button>
