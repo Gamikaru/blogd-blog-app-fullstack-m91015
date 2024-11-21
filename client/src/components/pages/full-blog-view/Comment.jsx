@@ -16,9 +16,8 @@ const Comment = ({ comment }) => {
 
     const userId = user?.id || user?._id; // Adjust based on your user object
 
-    const isLiked = userId
-        ? comment.likesBy.includes(userId)
-        : false;
+    const isLiked = userId ? comment.likesBy.includes(userId) : false;
+
 
     const handleLike = async () => {
         try {
@@ -48,28 +47,39 @@ const Comment = ({ comment }) => {
         }
     };
 
+    // Format the date in long form
+    const formattedDate = new Date(comment.createdAt).toLocaleString(undefined, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+    });
+
     return (
         <ErrorBoundary>
             <div className="comment">
-                <div className="comment-header">
-                    {comment.userId.profilePicture && (
+                <div className="comment__header">
+                    {comment.userId?.profilePicture && (
                         <img
                             src={comment.userId.profilePicture}
                             alt={`${comment.userId.firstName} ${comment.userId.lastName}`}
-                            className="profile-picture"
+                            className="comment__profile-picture"
                         />
                     )}
-                    <p className="comment-author">
-                        {comment.userId
-                            ? `${comment.userId.firstName} ${comment.userId.lastName}`
-                            : 'Unknown User'}
-                    </p>
+                    <div>
+                        <span className="comment__header__author">
+                            {comment.userId
+                                ? `${comment.userId.firstName} ${comment.userId.lastName}`
+                                : 'Unknown User'}
+                        </span>
+                        <span className="comment__header__date">{formattedDate}</span>
+                    </div>
                 </div>
-                <p className="comment-date">
-                    {new Date(comment.createdAt).toLocaleString()}
-                </p>
-                <p className="comment-text">{comment.content}</p>
-                <div className="comment-actions">
+                <div className="comment__body">
+                    {comment.content}
+                </div>
+                <div className="comment__actions">
                     <Button onClick={handleLike} variant="like">
                         {isLiked ? 'Unlike' : 'Like'} ({likes})
                     </Button>
@@ -112,7 +122,8 @@ const Comment = ({ comment }) => {
     );
 };
 
-//props validation
+
+// PropTypes validation
 Comment.propTypes = {
     comment: PropTypes.shape({
         _id: PropTypes.string.isRequired,
@@ -121,7 +132,7 @@ Comment.propTypes = {
             firstName: PropTypes.string.isRequired,
             lastName: PropTypes.string.isRequired,
             _id: PropTypes.string.isRequired,
-            profilePicture: PropTypes.string, // Added profilePicture
+            profilePicture: PropTypes.string,
         }),
         createdAt: PropTypes.string.isRequired,
         likes: PropTypes.number.isRequired,
@@ -129,6 +140,7 @@ Comment.propTypes = {
         replies: PropTypes.arrayOf(PropTypes.object),
         postId: PropTypes.string.isRequired,
     }).isRequired,
+
 };
 
 export default Comment;

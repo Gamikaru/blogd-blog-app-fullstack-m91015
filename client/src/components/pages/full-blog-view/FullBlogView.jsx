@@ -1,6 +1,6 @@
 // FullBlogView.jsx
 import { Button, Comment, ErrorBoundary, Spinner } from '@components';
-// Import Comment
+// Import Comment styles
 import { useCommentActions, useComments } from '@contexts/CommentContext';
 import { useUser } from '@contexts/UserContext';
 import { fetchPostById } from '@services/api';
@@ -9,7 +9,12 @@ import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const FullBlogView = () => {
-    const { id } = useParams(); const { user } = useUser(); const [post, setPost] = useState(null); const [loading, setLoading] = useState(true); const [error, setError] = useState(null); const [commentText, setCommentText] = useState("");
+    const { id } = useParams();
+    const { user } = useUser();
+    const [post, setPost] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [commentText, setCommentText] = useState("");
 
     // Destructure only the functions that are used
     const { comments, loadingComments, loadCommentsForPost, errorComments } = useComments(); // Include errorComments
@@ -70,7 +75,6 @@ const FullBlogView = () => {
 
     return (
         <ErrorBoundary>
-
             <div className="full-blog-view">
                 <div className="blog-images">
                     {post.imageUrls && post.imageUrls.map((url, index) => (
@@ -129,10 +133,8 @@ const FullBlogView = () => {
                     {error && <div className="error-message">{error}</div>}
                 </div>
             </div>
-
         </ErrorBoundary>
     );
-
 };
 
 export default FullBlogView;

@@ -3,19 +3,9 @@
 import mongoose from 'mongoose';
 import Comment from '../models/comment.js';
 import Post from '../models/post.js';
+import { sendError } from '../utils/commentHelpers.js';
 import logger from '../utils/logger.js';
 
-/**
- * Helper function to handle errors
- */
-const sendError = (res, error, message, statusCode = 500) => {
-    logger.error(`${ message }:`, error);
-    res.status(statusCode).json({
-        error: true,
-        message,
-        details: error.message || error,
-    });
-};
 
 /**
  * Create a new comment.
@@ -71,16 +61,20 @@ export const createComment = async (req, res) => {
 export const getCommentById = async (req, res) => {
     const { commentId } = req.params;
     logger.info('Fetching comment with ID:', commentId);
+
     try {
-        const comment = await Comment.findById(commentId);
+        const comment = await Comment.findById(commentId)
+            .populate('userId', 'firstName lastName profilePicture')
+            .exec();
+
         if (!comment) {
-            logger.error('Comment not found with ID:', commentId);
-            return sendError(res, new Error('Comment Not Found'), 'Comment not found', 404);
+            return res.status(404).json({ message: 'Comment not found' });
         }
-        logger.info('Comment fetched successfully with ID:', commentId);
-        return res.status(200).json(comment);
+
+        logger.info('Comment fetched successfully:', commentId);
+        res.status(200).json(comment);
     } catch (error) {
-        sendError(res, error, 'Server error retrieving the comment');
+        sendError(res, error, 'Error fetching comment');
     }
 };
 
@@ -157,27 +151,28 @@ export const deleteComment = async (req, res) => {
  */
 export const likeComment = async (req, res) => {
     const { commentId } = req.params;
+    const { userId } = req.user;
+
     logger.info('Liking comment with ID:', commentId);
 
     try {
-        const result = await Comment.findByIdAndUpdate(
-            commentId,
-            { $inc: { likes: 1 } },
-            { new: true }
-        );
-
-        if (!result) {
-            logger.error('Comment not found with ID:', commentId);
-            return sendError(res, new Error('Comment Not Found'), 'Comment not found', 404);
+        const comment = await Comment.findById(commentId);
+        if (!comment) {
+            return res.status(404).json({ message: 'Comment not found' });
         }
 
-        logger.info('Comment liked successfully with ID:', commentId);
-        return res.status(200).json({
-            message: 'Comment liked successfully',
-            likes: result.likes,
-        });
+        if (comment.likesBy.includes(userId)) {
+            return res.status(400).json({ message: 'User has already liked this comment' });
+        }
+
+        comment.likes += 1;
+        comment.likesBy.push(userId);
+        await comment.save();
+
+        logger.info('Comment liked successfully:', commentId);
+        res.status(200).json({ likes: comment.likes });
     } catch (error) {
-        sendError(res, error, 'Server error during comment like');
+        sendError(res, error, 'Error liking comment');
     }
 };
 
@@ -186,27 +181,28 @@ export const likeComment = async (req, res) => {
  */
 export const unlikeComment = async (req, res) => {
     const { commentId } = req.params;
+    const { userId } = req.user;
+
     logger.info('Unliking comment with ID:', commentId);
 
     try {
-        const result = await Comment.findByIdAndUpdate(
-            commentId,
-            { $inc: { likes: -1 } },
-            { new: true }
-        );
-
-        if (!result) {
-            logger.error('Comment not found with ID:', commentId);
-            return sendError(res, new Error('Comment Not Found'), 'Comment not found', 404);
+        const comment = await Comment.findById(commentId);
+        if (!comment) {
+            return res.status(404).json({ message: 'Comment not found' });
         }
 
-        logger.info('Comment unliked successfully with ID:', commentId);
-        return res.status(200).json({
-            message: 'Comment unliked successfully',
-            likes: result.likes,
-        });
+        if (!comment.likesBy.includes(userId)) {
+            return res.status(400).json({ message: 'User has not liked this comment' });
+        }
+
+        comment.likes -= 1;
+        comment.likesBy = comment.likesBy.filter(id => id.toString() !== userId);
+        await comment.save();
+
+        logger.info('Comment unliked successfully:', commentId);
+        res.status(200).json({ likes: comment.likes });
     } catch (error) {
-        sendError(res, error, 'Server error during comment unlike');
+        sendError(res, error, 'Error unliking comment');
     }
 };
 
@@ -261,10 +257,14 @@ export const getCommentsByPost = async (req, res) => {
     logger.info('Fetching comments for post ID:', postId);
 
     try {
-        const comments = await Comment.find({ postId }).sort({ createdAt: -1 });
+        const comments = await Comment.find({ postId })
+            .populate('userId', 'firstName lastName profilePicture')
+            .populate('replies')
+            .exec();
+
         logger.info('Comments fetched successfully for post ID:', postId);
-        return res.status(200).json(comments);
+        res.status(200).json(comments);
     } catch (error) {
-        sendError(res, error, 'Server error retrieving comments for the post');
+        sendError(res, error, 'Error fetching comments');
     }
 };

@@ -127,15 +127,20 @@ export const UserProvider = ({ children }) => {
         }
     }, [user]);
 
+    // Ensure that whenever you reference userId, you consistently use String(userData.userId || userData._id) to handle different cases.
     const login = async (loginData) => {
         try {
             const response = await userService.loginUser(loginData);
             const { token, user: userData } = response;
-            const cookies = new Cookies();
-            cookies.set('BlogdPass', token, { path: '/' });
+
+            // If token is an object, extract the token string
+            const tokenString = typeof token === 'object' ? token.token : token;
 
             // Ensure userId is a string
             const userId = String(userData.userId || userData._id);
+
+            const cookies = new Cookies();
+            cookies.set('BlogdPass', tokenString, { path: '/' });
             cookies.set('userId', userId, { path: '/' });
 
             setUser({
@@ -149,6 +154,7 @@ export const UserProvider = ({ children }) => {
             return { success: false, message: error.message };
         }
     };
+
 
     const logout = async () => {
         try {

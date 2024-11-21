@@ -35,13 +35,13 @@ export const deleteComment = async (commentId) => {
 // Function to like a comment by ID
 export const likeComment = async (commentId) => {
     const response = await ApiClient.put(`/comment/like/${commentId}`);
-    return response.data;
+    return response.data; // Should return { likes: number }
 };
 
 // Function to unlike a comment by ID
 export const unlikeComment = async (commentId) => {
     const response = await ApiClient.put(`/comment/unlike/${commentId}`);
-    return response.data;
+    return response.data; // Should return { likes: number }
 };
 
 // Function to reply to a comment by parent comment ID

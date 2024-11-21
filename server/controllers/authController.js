@@ -160,21 +160,17 @@ export const loginUser = async (req, res) => {
         await session.save();
 
         logger.info('User Login: Token generated successfully', { userId: user._id });
-        res.status(200).json({
-            token,
-            user: {
-                userId: user._id,
-                email: user.email,
-                authLevel: user.authLevel,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                location: user.location,
-                occupation: user.occupation,
-                profilePicture: user.profilePicture,
-                coverPicture: user.coverPicture,
-            },
-            message: 'Login successful',
-        });
+
+        // Prepare user data to send
+        const userData = {
+            userId: user._id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            // Add other necessary user fields as needed
+        };
+
+        res.status(200).json({ token, user: userData });
     } catch (error) {
         logger.error('User Login: Error during login', { error: error.message });
         return res.status(500).json({ message: 'Server error: ' + error.message });

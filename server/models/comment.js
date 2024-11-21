@@ -32,6 +32,11 @@ const comment = new Schema({
         type: Number,
         default: 0
     },
+    likesBy: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+
     replies: [{
         type: Schema.Types.ObjectId,
         ref: 'Comment'
