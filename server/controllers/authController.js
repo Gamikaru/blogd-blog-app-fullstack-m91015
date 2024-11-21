@@ -98,14 +98,16 @@ export const registerUser = async (req, res) => {
 
         if (process.env.ENABLE_EMAIL_VERIFICATION === 'true') {
             await sendVerificationEmail(user, user.verificationToken);
-            logger.info('User Registration: Verification email sent', { userId: user._id });
+            logger.info('User Registration: Verification email sent', { userId: user.userId });
             res.status(201).json({
                 message: 'User registered successfully. Please check your email to verify your account.',
+                userId: user.userId
             });
         } else {
-            logger.info('User Registration: Email verification disabled, user registered successfully', { userId: user._id });
+            logger.info('User Registration: Email verification disabled, user registered successfully', { userId: user.userId });
             res.status(201).json({
                 message: 'User registered successfully.',
+                userId: user.userId
             });
         }
     } catch (error) {
@@ -135,18 +137,18 @@ export const loginUser = async (req, res) => {
         }
 
         if (process.env.ENABLE_EMAIL_VERIFICATION === 'true' && !user.emailVerified) {
-            logger.warn('User Login: Email not verified', { userId: user._id });
+            logger.warn('User Login: Email not verified', { userId: user.userId });
             return res.status(401).json({ message: 'Email not verified. Please verify your email.' });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            logger.error('User Login: Incorrect password', { userId: user._id });
+            logger.error('User Login: Incorrect password', { userId: user.userId });
             return res.status(401).json({ message: 'Incorrect password for this user.' });
         }
 
         const token = jwt.sign(
-            { userId: user._id, email: user.email, authLevel: user.authLevel },
+            { userId: user.userId, email: user.email, authLevel: user.authLevel },
             process.env.JWT_SECRET,
             { expiresIn: '24h' }
         );
@@ -154,16 +156,16 @@ export const loginUser = async (req, res) => {
         // Create a new session
         const session = new Session({
             sessionId: crypto.randomUUID(),
-            user: user._id,
+            user: user.userId,
             token,
         });
         await session.save();
 
-        logger.info('User Login: Token generated successfully', { userId: user._id });
+        logger.info('User Login: Token generated successfully', { userId: user.userId });
 
         // Prepare user data to send
         const userData = {
-            userId: user._id,
+            userId: user.userId,
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName,
@@ -224,7 +226,7 @@ export const forgotPassword = async (req, res) => {
 
         await sendResetPasswordEmail(user, token);
 
-        logger.info('Password Reset Request: Password reset email sent', { userId: user._id });
+        logger.info('Password Reset Request: Password reset email sent', { userId: user.userId });
         res.status(200).json({ message: 'Password reset email sent' });
     } catch (error) {
         logger.error('Password Reset Request: Error sending password reset email', { error: error.message });
@@ -261,8 +263,8 @@ export const resetPassword = async (req, res) => {
         user.resetPasswordExpires = undefined;
         await user.save();
 
-        logger.info('Password Reset: Password reset successfully', { userId: user._id });
-        res.status(200).json({ message: 'Password reset successfully' });
+        logger.info('Password Reset: Password reset successfully', { userId: user.userId });
+        res.status(200).json({ message: 'Password reset successfully', userId: user.userId });
     } catch (error) {
         logger.error('Password Reset: Error resetting password', { error: error.message });
         res.status(500).json({ error: 'Server error during password reset' });

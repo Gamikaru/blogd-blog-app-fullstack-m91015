@@ -33,8 +33,8 @@ export const verifyEmail = async (req, res) => {
         user.verificationToken = undefined;
         await user.save();
 
-        logger.info('Email Verification: Email verified successfully', { userId: user._id });
-        res.status(200).json({ message: 'Email verified successfully' });
+        logger.info('Email Verification: Email verified successfully', { userId: user.userId });
+        res.status(200).json({ message: 'Email verified successfully', userId: user.userId });
     } catch (error) {
         logger.error('Email Verification: Error during email verification', { error: error.message });
         res.status(500).json({ error: 'Server error during email verification' });
@@ -59,7 +59,7 @@ export const getUserById = async (req, res) => {
             logger.error('Get User: User not found', { userId });
             return res.status(404).json({ message: 'User not found' });
         }
-        logger.info('Get User: User data retrieved successfully', { userId });
+        logger.info('Get User: User data retrieved successfully', { userId: user.userId });
         res.status(200).json(user);
     } catch (error) {
         logger.error('Get User: Error fetching user', { error: error.message });
@@ -137,8 +137,16 @@ export const updateUser = async (req, res) => {
         }
 
         await user.save(); // Save the updated user data
-        logger.info('Update User: User updated successfully', { userId: user._id });
-        res.status(200).json(user); // Send updated user back to front-end
+        logger.info('Update User: User updated successfully', { userId: user.userId });
+
+        // Exclude sensitive fields before sending the response
+        const userResponse = user.toObject();
+        delete userResponse.password;
+        delete userResponse.verificationToken;
+        delete userResponse.resetPasswordToken;
+        delete userResponse.resetPasswordExpires;
+
+        res.status(200).json(userResponse); // Send updated user back to front-end
     } catch (error) {
         logger.error('Update User: Error updating user', { error: error.message, userId });
         res.status(500).json({ message: 'Error updating user', error: error.message });
@@ -189,8 +197,8 @@ export const deleteUserById = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
         await user.deleteOne();
-        logger.info('Delete User: User deleted successfully', { userId });
-        res.status(200).json({ message: 'User deleted successfully' });
+        logger.info('Delete User: User deleted successfully', { userId: user.userId });
+        res.status(200).json({ message: 'User deleted successfully', userId: user.userId });
     } catch (error) {
         logger.error('Delete User: Error deleting user', { error: error.message });
         return res.status(500).json({ message: 'Server error: ' + error.message });
@@ -210,8 +218,8 @@ export const deleteUserByEmail = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
         await user.deleteOne();
-        logger.info('Delete User: User deleted successfully', { email });
-        return res.status(200).json({ message: 'User deleted successfully' });
+        logger.info('Delete User: User deleted successfully', { email, userId: user.userId });
+        return res.status(200).json({ message: 'User deleted successfully', userId: user.userId });
     } catch (error) {
         logger.error('Delete User: Error deleting user', { error: error.message });
         return res.status(500).json({ message: 'Server error: ' + error.message });
@@ -243,12 +251,17 @@ export const updateUserStatus = async (req, res) => {
     try {
         const sanitizedStatus = sanitizeContent(status);
 
-        const user = await User.findByIdAndUpdate(userId, { status: sanitizedStatus }, { new: true });
+        const user = await User.findByIdAndUpdate(
+            userId,
+            { status: sanitizedStatus },
+            { new: true, runValidators: true }
+        ).select('-password');
+
         if (!user) {
             logger.error('Update Status: User not found', { userId });
             return res.status(404).json({ message: 'User not found' });
         }
-        logger.info('Update Status: Status updated successfully', { userId });
+        logger.info('Update Status: Status updated successfully', { userId: user.userId });
         res.json(user);
     } catch (error) {
         logger.error('Update Status: Error updating user status', { error: error.message });
@@ -289,8 +302,8 @@ export const deleteProfilePicture = async (req, res) => {
         user.profilePicture = undefined;
         await user.save();
 
-        logger.info('Delete Profile Picture: Profile picture deleted successfully', { userId });
-        res.status(200).json({ message: 'Profile picture deleted successfully' });
+        logger.info('Delete Profile Picture: Profile picture deleted successfully', { userId: user.userId });
+        res.status(200).json({ message: 'Profile picture deleted successfully', userId: user.userId });
     } catch (error) {
         logger.error('Delete Profile Picture: Error deleting profile picture', { error: error.message });
         res.status(500).json({ message: 'Error deleting profile picture', error: error.message });

@@ -6,7 +6,6 @@ import Post from '../models/post.js';
 import { extractPublicIdFromURL } from '../utils/imageHelpers.js';
 import logger from '../utils/logger.js';
 
-
 /**
  * Get top 5 most liked posts or latest posts if none.
  */
@@ -176,7 +175,7 @@ export const createPost = async (req, res) => {
         // Populate userId
         await newPost.populate('userId', 'firstName lastName occupation aboutAuthor');
 
-        logger.info('Post created successfully', { postId: newPost._id });
+        logger.info('Post created successfully', { postId: newPost.postId });
 
         // Convert newPost to an object including virtuals
         const postObject = newPost.toObject({ virtuals: true });
@@ -184,7 +183,7 @@ export const createPost = async (req, res) => {
         res.status(201).json({
             message: 'Post created successfully.',
             post: {
-                postId: postObject._id,
+                postId: postObject.postId,
                 title: postObject.title,
                 slug: postObject.slug,
                 content: postObject.content,
@@ -287,7 +286,7 @@ export const updatePost = async (req, res) => {
         res.status(200).json({
             message: 'Post updated successfully.',
             post: {
-                postId: postObject._id,
+                postId: postObject.postId,
                 title: postObject.title,
                 slug: postObject.slug,
                 content: postObject.content,
@@ -311,8 +310,6 @@ export const updatePost = async (req, res) => {
     }
 };
 
-
-
 /**
  * Delete a post by ID.
  */
@@ -324,11 +321,11 @@ export const deletePost = async (req, res) => {
         const post = await Post.findById(postId);
         if (!post) {
             logger.warn('Post not found for deletion', { postId });
-            return res.status(404).json({ success: false, message: 'Post not found.' });
+            return res.status(404).json({ success: false, message: 'Post not found.', postId });
         }
         await post.deleteOne();
         logger.info('Post deleted successfully', { postId });
-        res.status(200).json({ success: true, message: 'Post deleted successfully.' });
+        res.status(200).json({ success: true, message: 'Post deleted successfully.', postId });
     } catch (error) {
         logger.error('Error deleting post', { error: error.message, postId });
         res.status(500).json({ success: false, message: 'Server error: ' + error.message });
@@ -347,11 +344,11 @@ export const likePost = async (req, res) => {
         const post = await Post.findById(postId);
         if (!post) {
             logger.warn('Post not found for liking', { postId });
-            return res.status(404).json({ message: 'Post not found.' });
+            return res.status(404).json({ message: 'Post not found.', postId });
         }
         if (post.likesBy && post.likesBy.includes(userId)) {
             logger.warn('User has already liked the post', { userId, postId });
-            return res.status(400).json({ message: 'You have already liked this post.' });
+            return res.status(400).json({ message: 'You have already liked this post.', postId });
         }
         post.likes += 1;
         post.likesBy = post.likesBy ? [...post.likesBy, userId] : [userId];
@@ -360,7 +357,7 @@ export const likePost = async (req, res) => {
         res.status(200).json({
             likes: post.likes,
             likesBy: post.likesBy,
-            postId: post._id,
+            postId: post.postId,
         });
     } catch (error) {
         logger.error('Error liking post', { error: error.message, userId, postId });
@@ -380,11 +377,11 @@ export const unlikePost = async (req, res) => {
         const post = await Post.findById(postId);
         if (!post) {
             logger.warn('Post not found for unliking', { postId });
-            return res.status(404).json({ message: 'Post not found.' });
+            return res.status(404).json({ message: 'Post not found.', postId });
         }
         if (!post.likesBy || !post.likesBy.includes(userId)) {
             logger.warn('User has not liked the post yet', { userId, postId });
-            return res.status(400).json({ message: 'You have not liked this post yet.' });
+            return res.status(400).json({ message: 'You have not liked this post yet.', postId });
         }
         post.likes = Math.max(0, post.likes - 1);
         post.likesBy = post.likesBy.filter((id) => id.toString() !== userId.toString());
@@ -393,7 +390,7 @@ export const unlikePost = async (req, res) => {
         res.status(200).json({
             likes: post.likes,
             likesBy: post.likesBy,
-            postId: post._id,
+            postId: post.postId,
         });
     } catch (error) {
         logger.error('Error unliking post', { error: error.message, userId, postId });

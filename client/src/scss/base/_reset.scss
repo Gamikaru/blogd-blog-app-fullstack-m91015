@@ -11,17 +11,6 @@
     box-sizing: border-box;
 }
 
-html,
-body {
-    height: 100%;
-    font-family: $font-family-primary;
-    background-color: $secondary-bg-color;
-    color: $primary-text-color;
-    line-height: $line-height;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-
-}
 
 /* Links */
 a {

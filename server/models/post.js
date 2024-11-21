@@ -101,4 +101,11 @@ post.virtual('excerpt').get(function () {
     return words + (strippedContent.split(' ').length > 40 ? '...' : '');
 });
 
+// **Virtual field to alias _id as postId**
+post.virtual('postId').get(function () {
+    return this._id.toHexString();
+});
+
+
+
 export default model('Post', post);

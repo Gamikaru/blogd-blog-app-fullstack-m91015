@@ -60,10 +60,9 @@ const FullBlogView = () => {
         }
 
         try {
-            await addComment(post.postId, commentText, user); // Removed 'const newComment ='
+            await addComment(post.postId, commentText, user);
             logger.info(`Comment submitted for post ${post.postId}: ${commentText}`);
             setCommentText("");
-            // Removed 'loadCommentsForPost' call to prevent full re-render
         } catch (error) {
             logger.error("Error submitting comment:", error);
             setError("Failed to submit comment.");
@@ -114,7 +113,7 @@ const FullBlogView = () => {
                         <div>
                             {displayedComments.length > 0 ? (
                                 displayedComments.map((comment) => (
-                                    <Comment key={comment._id} comment={comment} />
+                                    <Comment key={comment.commentId} comment={comment} />
                                 ))
                             ) : (
                                 <p>No comments yet.</p>
@@ -141,7 +140,6 @@ const FullBlogView = () => {
                         <Button
                             type="submit"
                             variant="submit"
-
                             disabled={!commentText.trim()}
                         >
                             Submit

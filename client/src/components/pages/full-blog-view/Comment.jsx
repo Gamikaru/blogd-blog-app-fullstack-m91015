@@ -1,4 +1,5 @@
 // Comment.jsx
+
 import { Button, ErrorBoundary } from '@components';
 import { useCommentActions } from '@contexts/CommentContext';
 import { useUser } from '@contexts/UserContext';
@@ -34,10 +35,10 @@ const Comment = ({ comment }) => {
         try {
             setIsAnimating(true);
             if (isLiked) {
-                await unlikeAComment(comment._id, comment.postId, userId);
+                await unlikeAComment(comment.commentId, comment.postId, userId);
                 setLikes((prevLikes) => prevLikes - 1);
             } else {
-                await likeAComment(comment._id, comment.postId, userId);
+                await likeAComment(comment.commentId, comment.postId, userId);
                 setLikes((prevLikes) => prevLikes + 1);
             }
         } catch (error) {
@@ -52,7 +53,7 @@ const Comment = ({ comment }) => {
         if (replyText.trim() === '') return;
 
         try {
-            await replyToAComment(comment._id, replyText, user); // Pass user
+            await replyToAComment(comment.commentId, replyText, user); // Pass user
             setReplyText('');
             setShowReply(false);
         } catch (error) {
@@ -65,7 +66,7 @@ const Comment = ({ comment }) => {
         if (editText.trim() === '') return;
 
         try {
-            await updateExistingComment(comment._id, editText);
+            await updateExistingComment(comment.commentId, editText);
             setIsEditing(false);
         } catch (error) {
             logger.error('Error updating comment:', error);
@@ -77,7 +78,7 @@ const Comment = ({ comment }) => {
         if (!confirmed) return;
 
         try {
-            await removeComment(comment._id, comment.postId);
+            await removeComment(comment.commentId, comment.postId);
         } catch (error) {
             logger.error('Error deleting comment:', error);
         }
@@ -181,7 +182,7 @@ const Comment = ({ comment }) => {
                 {comment.replies && comment.replies.length > 0 && (
                     <div className="replies">
                         {comment.replies.map((reply) => (
-                            <Comment key={reply._id} comment={reply} />
+                            <Comment key={reply.commentId} comment={reply} />
                         ))}
                     </div>
                 )}
@@ -192,7 +193,7 @@ const Comment = ({ comment }) => {
 
 Comment.propTypes = {
     comment: PropTypes.shape({
-        _id: PropTypes.string.isRequired,
+        commentId: PropTypes.string.isRequired,
         content: PropTypes.string.isRequired,
         userId: PropTypes.oneOfType([
             PropTypes.shape({
@@ -214,7 +215,7 @@ Comment.propTypes = {
 // Custom comparison to prevent unnecessary re-renders
 const areEqual = (prevProps, nextProps) => {
     return (
-        prevProps.comment._id === nextProps.comment._id &&
+        prevProps.comment.commentId === nextProps.comment.commentId &&
         prevProps.comment.likes === nextProps.comment.likes &&
         prevProps.comment.likesBy.length === nextProps.comment.likesBy.length &&
         prevProps.comment.content === nextProps.comment.content &&

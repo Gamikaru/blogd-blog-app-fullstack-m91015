@@ -28,21 +28,25 @@ export const CommentProvider = ({ children }) => {
     const [errorComments, setErrorComments] = useState(null);
 
     // Function to build a comment tree
-    const buildCommentTree = (comments) => {
+    const buildCommentTree = (commentsList) => {
         const commentMap = {};
-        comments.forEach((comment) => {
+        commentsList.forEach((comment) => {
             comment.replies = [];
-            commentMap[comment._id] = comment;
+            commentMap[comment.commentId] = comment;
         });
 
         const commentTree = [];
-        comments.forEach((comment) => {
+        commentsList.forEach((comment) => {
             if (comment.parentId && commentMap[comment.parentId]) {
                 commentMap[comment.parentId].replies.push(comment);
             } else {
                 commentTree.push(comment);
             }
         });
+
+        // Sort comments by createdAt descending (newest first)
+        commentTree.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
         return commentTree;
     };
 
@@ -72,7 +76,12 @@ export const CommentProvider = ({ children }) => {
         try {
             const commentData = { content, postId };
             const newCommentResponse = await createComment(commentData);
-            const newComment = newCommentResponse.comment;
+            const newComment = {
+                ...newCommentResponse.comment,
+                likes: newCommentResponse.comment.likes || 0,
+                likesBy: newCommentResponse.comment.likesBy || [],
+                replies: [], // Initialize replies
+            };
 
             // Attach user details
             newComment.userId = {
@@ -105,7 +114,7 @@ export const CommentProvider = ({ children }) => {
             // Update the comment in state
             const updateCommentInState = (commentsArray) => {
                 return commentsArray.map((comment) => {
-                    if (comment._id === commentId) {
+                    if (comment.commentId === commentId) {
                         return {
                             ...comment,
                             content: updatedComment.content,
@@ -142,12 +151,11 @@ export const CommentProvider = ({ children }) => {
 
             const removeCommentFromState = (commentsArray) => {
                 return commentsArray
-                    .filter((comment) => comment._id !== commentId)
+                    .filter((comment) => comment.commentId !== commentId)
                     .map((comment) => ({
                         ...comment,
                         replies: removeCommentFromState(comment.replies || []),
-                    }))
-                    .filter((comment) => comment.replies.length > 0 || comment._id !== commentId);
+                    }));
             };
 
             setComments((prevComments) => {
@@ -172,7 +180,7 @@ export const CommentProvider = ({ children }) => {
 
             const updateLikesInState = (commentsArray) => {
                 return commentsArray.map((comment) => {
-                    if (comment._id === commentId) {
+                    if (comment.commentId === commentId) {
                         return {
                             ...comment,
                             likes: updatedLikes,
@@ -210,7 +218,7 @@ export const CommentProvider = ({ children }) => {
 
             const updateLikesInState = (commentsArray) => {
                 return commentsArray.map((comment) => {
-                    if (comment._id === commentId) {
+                    if (comment.commentId === commentId) {
                         return {
                             ...comment,
                             likes: updatedLikes,
@@ -241,11 +249,16 @@ export const CommentProvider = ({ children }) => {
     }, []);
 
     // Function to reply to a comment
-    const replyToAComment = useCallback(async (commentId, content, user) => {
+    const replyToACommentFunction = useCallback(async (commentId, content, user) => {
         try {
             const replyData = { content };
             const response = await replyToComment(commentId, replyData);
-            const newReply = response.comment;
+            const newReply = {
+                ...response.comment,
+                likes: response.comment.likes || 0,
+                likesBy: response.comment.likesBy || [],
+                replies: [], // Initialize replies
+            };
 
             // Attach user details to the new reply
             newReply.userId = {
@@ -259,7 +272,7 @@ export const CommentProvider = ({ children }) => {
 
             const addReplyToState = (commentsArray) => {
                 return commentsArray.map((comment) => {
-                    if (comment._id === commentId) {
+                    if (comment.commentId === commentId) {
                         return {
                             ...comment,
                             replies: [...(comment.replies || []), newReply],
@@ -304,7 +317,7 @@ export const CommentProvider = ({ children }) => {
         removeComment,
         likeAComment,
         unlikeAComment,
-        replyToAComment,
+        replyToAComment: replyToACommentFunction,
     };
 
     return (

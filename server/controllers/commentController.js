@@ -6,7 +6,6 @@ import Post from '../models/post.js';
 import { sendError } from '../utils/commentHelpers.js';
 import logger from '../utils/logger.js';
 
-
 /**
  * Create a new comment.
  */
@@ -39,11 +38,11 @@ export const createComment = async (req, res) => {
         });
 
         await newComment.save();
-        logger.info('Comment created successfully with ID:', newComment._id);
+        logger.info('Comment created successfully with ID:', newComment.commentId);
         return res.status(201).json({
             message: 'Comment created successfully',
             comment: {
-                commentId: newComment._id,
+                commentId: newComment.commentId,
                 content: newComment.content,
                 postId: newComment.postId,
                 userId: newComment.userId,
@@ -107,7 +106,7 @@ export const updateComment = async (req, res) => {
 
         comment.content = content;
         await comment.save();
-        logger.info('Comment updated successfully with ID:', commentId);
+        logger.info('Comment updated successfully with ID:', comment.commentId);
         return res.status(200).json({
             message: 'Comment updated successfully',
             comment,
@@ -121,48 +120,48 @@ export const updateComment = async (req, res) => {
  * Delete a comment and all its child replies recursively.
  */
 export const deleteComment = async (req, res) => {
-  const { userId } = req.user;
-  const { commentId } = req.params;
+    const { userId } = req.user;
+    const { commentId } = req.params;
 
-  logger.info('Deleting comment with ID:', commentId);
-  try {
-    const comment = await Comment.findById(commentId);
+    logger.info('Deleting comment with ID:', commentId);
+    try {
+        const comment = await Comment.findById(commentId);
 
-    if (!comment) {
-      logger.error('Comment not found with ID:', commentId);
-      return sendError(res, new Error('Comment Not Found'), 'Comment not found', 404);
-    }
-
-    if (comment.userId.toString() !== userId.toString()) {
-      logger.error('Unauthorized user ID:', userId, 'attempted to delete comment ID:', commentId);
-      return sendError(res, new Error('Unauthorized'), 'Unauthorized user', 401);
-    }
-
-    // Recursive deletion function
-    const deleteCommentAndReplies = async (commentId) => {
-      const commentsToDelete = [commentId];
-      const queue = [commentId];
-
-      while (queue.length > 0) {
-        const currentId = queue.shift();
-        const childComments = await Comment.find({ parentId: currentId }).select('_id').exec();
-        for (const childComment of childComments) {
-          commentsToDelete.push(childComment._id);
-          queue.push(childComment._id);
+        if (!comment) {
+            logger.error('Comment not found with ID:', commentId);
+            return sendError(res, new Error('Comment Not Found'), 'Comment not found', 404);
         }
-      }
 
-      // Delete all comments in the list
-      await Comment.deleteMany({ _id: { $in: commentsToDelete } });
-    };
+        if (comment.userId.toString() !== userId.toString()) {
+            logger.error('Unauthorized user ID:', userId, 'attempted to delete comment ID:', commentId);
+            return sendError(res, new Error('Unauthorized'), 'Unauthorized user', 401);
+        }
 
-    await deleteCommentAndReplies(commentId);
+        // Recursive deletion function
+        const deleteCommentAndReplies = async (commentId) => {
+            const commentsToDelete = [commentId];
+            const queue = [commentId];
 
-    logger.info('Comment and its replies deleted successfully with ID:', commentId);
-    return res.status(200).json({ message: 'Comment and its replies deleted successfully' });
-  } catch (error) {
-    sendError(res, error, 'Server error during comment deletion');
-  }
+            while (queue.length > 0) {
+                const currentId = queue.shift();
+                const childComments = await Comment.find({ parentId: currentId }).select('_id').exec();
+                for (const childComment of childComments) {
+                    commentsToDelete.push(childComment.commentId);
+                    queue.push(childComment.commentId);
+                }
+            }
+
+            // Delete all comments in the list
+            await Comment.deleteMany({ _id: { $in: commentsToDelete } });
+        };
+
+        await deleteCommentAndReplies(commentId);
+
+        logger.info('Comment and its replies deleted successfully with ID:', commentId);
+        return res.status(200).json({ message: 'Comment and its replies deleted successfully', commentId });
+    } catch (error) {
+        sendError(res, error, 'Server error during comment deletion');
+    }
 };
 
 /**
@@ -188,8 +187,8 @@ export const likeComment = async (req, res) => {
         comment.likesBy.push(userId);
         await comment.save();
 
-        logger.info('Comment liked successfully:', commentId);
-        res.status(200).json({ likes: comment.likes });
+        logger.info('Comment liked successfully:', comment.commentId);
+        res.status(200).json({ likes: comment.likes, commentId: comment.commentId });
     } catch (error) {
         sendError(res, error, 'Error liking comment');
     }
@@ -218,8 +217,8 @@ export const unlikeComment = async (req, res) => {
         comment.likesBy = comment.likesBy.filter(id => id.toString() !== userId);
         await comment.save();
 
-        logger.info('Comment unliked successfully:', commentId);
-        res.status(200).json({ likes: comment.likes });
+        logger.info('Comment unliked successfully:', comment.commentId);
+        res.status(200).json({ likes: comment.likes, commentId: comment.commentId });
     } catch (error) {
         sendError(res, error, 'Error unliking comment');
     }
@@ -258,10 +257,10 @@ export const replyToComment = async (req, res) => {
 
         await newComment.save();
 
-        parentComment.replies.push(newComment._id);
+        parentComment.replies.push(newComment.commentId);
         await parentComment.save();
 
-        logger.info('Reply created successfully with ID:', newComment._id);
+        logger.info('Reply created successfully with ID:', newComment.commentId);
         return res.status(201).json({ success: true, comment: newComment });
     } catch (error) {
         sendError(res, error, 'Server error during reply creation');

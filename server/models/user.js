@@ -5,77 +5,89 @@ import mongoose from 'mongoose';
 
 const { Schema, model } = mongoose;
 
-const user = new Schema({
-    firstName: {
-        type: String,
-        required: true,
-        trim: true,
+const userSchema = new Schema(
+    {
+        firstName: {
+            type: String,
+            required: true,
+            trim: true,
+        },
+        lastName: {
+            type: String,
+            required: true,
+            trim: true,
+        },
+        birthDate: {
+            type: Date,
+            required: true,
+        },
+        email: {
+            type: String,
+            required: true,
+            unique: true,
+            match: [/^\S+@\S+\.\S+$/, 'Invalid email format'],
+            index: true,
+            lowercase: true,
+            trim: true,
+        },
+        password: {
+            type: String,
+            required: true,
+        },
+        location: {
+            type: String,
+            required: true,
+            trim: true,
+        },
+        occupation: {
+            type: String,
+            required: true,
+            trim: true,
+        },
+        authLevel: {
+            type: String,
+            enum: ['basic', 'admin'],
+            default: 'basic',
+        },
+        status: {
+            type: String,
+            default: '',
+            trim: true,
+        },
+        emailVerified: {
+            type: Boolean,
+            default: false,
+        },
+        verificationToken: {
+            type: String,
+        },
+        resetPasswordToken: {
+            type: String,
+        },
+        resetPasswordExpires: {
+            type: Date,
+        },
+        profilePicture: {
+            type: String,
+        },
+        coverPicture: {
+            type: String,
+        },
     },
-    lastName: {
-        type: String,
-        required: true,
-        trim: true,
-    },
-    birthDate: {
-        type: Date,
-        required: true,
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        match: [/^\S+@\S+\.\S+$/, 'Invalid email format'],
-        index: true,
-        lowercase: true,
-        trim: true,
-    },
-    password: {
-        type: String,
-        required: true,
-    },
-    location: {
-        type: String,
-        required: true,
-        trim: true,
-    },
-    occupation: {
-        type: String,
-        required: true,
-        trim: true,
-    },
-    authLevel: {
-        type: String,
-        enum: ['basic', 'admin'],
-        default: 'basic',
-    },
-    status: {
-        type: String,
-        default: '',
-        trim: true,
-    },
-    emailVerified: {
-        type: Boolean,
-        default: false,
-    },
-    verificationToken: {
-        type: String,
-    },
-    resetPasswordToken: {
-        type: String,
-    },
-    resetPasswordExpires: {
-        type: Date,
-    },
-    profilePicture: {
-        type: String,
-    },
-    coverPicture: {
-        type: String,
+    {
+        timestamps: true,
+        toJSON: { virtuals: true },
+        toObject: { virtuals: true },
     }
-}, { timestamps: true });
+);
+
+// Virtual field for userId
+userSchema.virtual('userId').get(function () {
+    return this._id;
+});
 
 // Password hashing middleware
-user.pre('save', async function (next) {
+userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) {
         return next();
     }
@@ -88,4 +100,4 @@ user.pre('save', async function (next) {
     }
 });
 
-export default model('User', user);
+export default model('User', userSchema);

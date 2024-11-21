@@ -22,7 +22,7 @@ export const fetchCommentById = async (commentId) => {
 
 // Function to update a comment by ID
 export const updateComment = async (commentId, updatedData) => {
-    const response = await ApiClient.put(`/comment/${commentId}`, updatedData);
+    const response = await ApiClient.patch(`/comment/${commentId}`, updatedData);
     return response.data;
 };
 
@@ -35,17 +35,17 @@ export const deleteComment = async (commentId) => {
 // Function to like a comment by ID
 export const likeComment = async (commentId) => {
     const response = await ApiClient.put(`/comment/like/${commentId}`);
-    return response.data; // Should return { likes: number }
+    return response.data; // Should return { likes: number, commentId: string }
 };
 
 // Function to unlike a comment by ID
 export const unlikeComment = async (commentId) => {
     const response = await ApiClient.put(`/comment/unlike/${commentId}`);
-    return response.data; // Should return { likes: number }
+    return response.data; // Should return { likes: number, commentId: string }
 };
 
 // Function to reply to a comment by parent comment ID
 export const replyToComment = async (commentId, replyData) => {
     const response = await ApiClient.post(`/comment/reply/${commentId}`, replyData);
-    return response.data;
+    return response.data; // Should return { success: boolean, comment: object }
 };
