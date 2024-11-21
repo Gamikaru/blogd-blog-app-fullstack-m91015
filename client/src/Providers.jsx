@@ -1,6 +1,7 @@
 // src/Providers.jsx
 
 import {
+    CommentProvider,
     NotificationProvider,
     PostProvider,
     PrivateModalProvider,
@@ -10,15 +11,15 @@ import {
 
 import PropTypes from 'prop-types';
 
-
-
 const Providers = ({ children }) => (
     <NotificationProvider>
         <PublicModalProvider>
             <UserProvider>
-                <PostProvider>
-                    <PrivateModalProvider>{children}</PrivateModalProvider>
-                </PostProvider>
+                <CommentProvider> {/* Add CommentProvider here */}
+                    <PostProvider>
+                        <PrivateModalProvider>{children}</PrivateModalProvider>
+                    </PostProvider>
+                </CommentProvider>
             </UserProvider>
         </PublicModalProvider>
     </NotificationProvider>

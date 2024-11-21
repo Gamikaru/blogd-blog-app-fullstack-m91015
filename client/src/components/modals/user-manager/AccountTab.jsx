@@ -2,7 +2,7 @@
 // AccountTab.jsx
 // Desc: A tab component for the user account settings
 import { Button } from '@components';
-import { UserService } from '@services/api';
+import { userService } from '@services/api';
 import { logger } from '@utils';
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
@@ -26,7 +26,7 @@ const AccountTab = ({ user, setUser, showNotification, loading, setLoading }) =>
     const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
         setLoading(true);
         try {
-            const updatedUser = await UserService.updateProfile(user.userId, values);
+            const updatedUser = await userService.updateProfile(user.userId, values);
             setUser(updatedUser);
             showNotification('Settings updated successfully!', 'success');
         } catch (error) {
@@ -42,7 +42,7 @@ const AccountTab = ({ user, setUser, showNotification, loading, setLoading }) =>
 
     const handleUpgrade = async () => {
         try {
-            const updatedUser = await UserService.upgradeAccount(user.userId);
+            const updatedUser = await userService.upgradeAccount(user.userId);
             setUser(updatedUser);
             showNotification('Account upgraded successfully!', 'success');
         } catch (error) {
@@ -55,7 +55,7 @@ const AccountTab = ({ user, setUser, showNotification, loading, setLoading }) =>
     const handleDeleteAccount = async () => {
         if (window.confirm('Are you sure you want to delete your account?')) {
             try {
-                await UserService.deleteAccount(user.userId);
+                await userService.deleteAccount(user.userId);
                 showNotification('Account deleted successfully!', 'success');
                 // Redirect to login page or handle logout logic here
             } catch (error) {

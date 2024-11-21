@@ -1,5 +1,3 @@
-// routes/commentRoutes.js
-
 import express from 'express';
 import {
     createComment,
@@ -12,6 +10,7 @@ import {
     updateComment
 } from '../controllers/commentController.js';
 import { authenticate } from '../middleware/authMiddleware.js';
+import { validateCreateComment } from '../validators/commentValidator.js'; // Corrected path
 
 const router = express.Router();
 
@@ -20,7 +19,7 @@ const router = express.Router();
  * @desc    Create a new comment
  * @access  Private
  */
-router.post('/', authenticate, createComment);
+router.post('/', authenticate, validateCreateComment, createComment);
 
 /**
  * @route   GET /:commentId

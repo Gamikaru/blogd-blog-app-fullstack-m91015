@@ -1,7 +1,7 @@
 // src/components/UserProfile/UserProfile.jsx
 
 import { useNotificationContext, useUser, useUserUpdate } from '@contexts';
-import { UserService, fetchPostsByUser } from '@services/api';
+import { fetchPostsByUser, userService } from '@services/api';
 import { logger } from '@utils';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -24,7 +24,7 @@ const UserProfile = () => {
         const loadProfile = async () => {
             try {
                 if (userId) {
-                    const fetchedUser = await UserService.fetchUserById(userId);
+                    const fetchedUser = await userService.fetchUserById(userId);
                     setProfileUser(fetchedUser);
                     setStatus(fetchedUser.status || '');
                 } else {

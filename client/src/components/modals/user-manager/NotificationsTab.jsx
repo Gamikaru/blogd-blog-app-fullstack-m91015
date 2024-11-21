@@ -1,7 +1,7 @@
 // NotificationsTab.jsx
 //Desc: NotificationsTab component to manage user notification settings
 import { Button } from '@components';
-import { UserService } from '@services/api';
+import { userService } from '@services/api';
 import { logger } from '@utils';
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
@@ -31,7 +31,7 @@ const NotificationsTab = ({ user, setUser, showNotification, loading, setLoading
     const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
         setLoading(true);
         try {
-            const updatedUser = await UserService.updateProfile(user.userId, values);
+            const updatedUser = await userService.updateProfile(user.userId, values);
             setUser(updatedUser);
             showNotification('Settings updated successfully!', 'success');
         } catch (error) {

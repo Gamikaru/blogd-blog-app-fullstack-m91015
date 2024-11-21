@@ -122,6 +122,38 @@
     }
 }
 
+.button-settings {
+    background-color: #007bff; // Example color
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: #0056b3;
+    }
+
+    &.dark {
+        background-color: #343a40;
+        color: #fff;
+
+        &:hover {
+            background-color: #23272b;
+        }
+    }
+
+    &.icon-only {
+        padding: 0.5rem;
+    }
+
+    /* Add any other styles as needed */
+}
+
 // Responsive adjustments for mobile
 @media (max-width: $breakpoint-md) {
     .button {
@@ -142,7 +174,8 @@
     .button-delete,
     .button-success,
     .button-warning,
-    .button-info {
+    .button-info,
+    .button-settings {
         max-width: 100%; // Override any max-width restrictions
         justify-content: center; // Center align text and icons
     }

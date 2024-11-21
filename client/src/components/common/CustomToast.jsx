@@ -1,7 +1,7 @@
 // client/src/components/CustomToast.jsx
 import { AnimatePresence, motion } from 'framer-motion';
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { FiAlertCircle, FiCheckCircle, FiInfo, FiX } from 'react-icons/fi';
 
 const CustomToast = React.memo(
@@ -11,20 +11,17 @@ const CustomToast = React.memo(
         type = 'info',
         onClose,
         delay = 5000,
-        position = 'top-right',
+        position = { top: '5rem', right: '2rem' }, // Default as object
         autoClose = true,
         onConfirm,
         onCancel,
     }) => {
-        const iconMap = useMemo(
-            () => ({
-                success: <FiCheckCircle className="toast-icon" />,
-                error: <FiAlertCircle className="toast-icon" />,
-                info: <FiInfo className="toast-icon" />,
-                warning: <FiAlertCircle className="toast-icon" />,
-            }),
-            []
-        );
+        const iconMap = {
+            success: <FiCheckCircle className="toast-icon" />,
+            error: <FiAlertCircle className="toast-icon" />,
+            info: <FiInfo className="toast-icon" />,
+            warning: <FiAlertCircle className="toast-icon" />,
+        };
 
         useEffect(() => {
             if (show && autoClose) {
@@ -44,17 +41,6 @@ const CustomToast = React.memo(
             hover: { scale: 1.02 },
             tap: { scale: 0.98 },
         };
-
-        const positionStyle = useMemo(() => {
-            switch (position) {
-                case 'top-right':
-                    return { top: '5rem', right: '2rem' };
-                case 'center':
-                    return { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' };
-                default:
-                    return { top: '5rem', right: '2rem' };
-            }
-        }, [position]);
 
         const handleDragEnd = useCallback(
             (_, info) => {
@@ -78,7 +64,7 @@ const CustomToast = React.memo(
                         onDragEnd={handleDragEnd}
                         style={{
                             position: 'fixed',
-                            ...positionStyle,
+                            ...position, // Use the position object directly
                             zIndex: 3060,
                         }}
                         role="alert"
@@ -134,12 +120,12 @@ const CustomToast = React.memo(
 CustomToast.displayName = 'CustomToast';
 
 CustomToast.propTypes = {
-    message: PropTypes.string.isRequired, // Ensures message is a string
+    message: PropTypes.string.isRequired,
     show: PropTypes.bool.isRequired,
     type: PropTypes.oneOf(['success', 'error', 'info', 'warning']),
     onClose: PropTypes.func.isRequired,
     delay: PropTypes.number,
-    position: PropTypes.oneOf(['top-right', 'center']),
+    position: PropTypes.object, // Changed from specific strings to object
     autoClose: PropTypes.bool,
     onConfirm: PropTypes.func,
     onCancel: PropTypes.func,

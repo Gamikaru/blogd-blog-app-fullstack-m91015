@@ -10,7 +10,7 @@ import {
     likePost,
     unlikePost,
     updatePostById,
-} from '../services/api/PostService';
+} from '../services/api/postService';
 import logger from '../utils/logger'; // Ensure logger is imported
 
 export const PostContext = createContext();

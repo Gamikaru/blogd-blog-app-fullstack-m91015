@@ -6,7 +6,7 @@ import { logger } from '@utils';
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import debounce from 'lodash.debounce';
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useCookies } from "react-cookie";
+// Removed import of useCookies
 import { FaFilter, FaSearch } from "react-icons/fa";
 import BlogCard from './BlogCard';
 
@@ -32,7 +32,7 @@ const filterDropdownVariants = {
 };
 
 const BlogsContainer = () => {
-    const [cookies] = useCookies(['userID']);
+    // Removed useCookies
     const { posts, loading, loadPosts } = usePostContext();
     const [showFilterDropdown, setShowFilterDropdown] = useState(false);
     const [showSearchInput, setShowSearchInput] = useState(false);
@@ -287,7 +287,7 @@ const BlogsContainer = () => {
                                     key={post.postId || post._id}
                                     post={post}
                                     author={getAuthor(post)}
-                                    cookie={cookies.userID}
+                                    // Removed 'cookie' prop
                                 />
                             ))
                         ) : (

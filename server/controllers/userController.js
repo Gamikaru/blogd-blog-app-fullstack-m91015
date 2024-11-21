@@ -1,6 +1,7 @@
 // controllers/userController.js
 import dotenv from 'dotenv';
 import { validationResult } from 'express-validator';
+import mongoose from 'mongoose';
 import { deleteFromCloudinary, uploadToCloudinary } from '../config/cloudinaryConfig.js';
 import User from '../models/user.js';
 import logger from '../utils/logger.js';
@@ -45,10 +46,11 @@ export const verifyEmail = async (req, res) => {
  */
 export const getUserById = async (req, res) => {
     const { userId } = req.params;
-    if (!userId) {
-        logger.error('Get User: userId is undefined');
-        return res.status(400).json({ message: 'User ID is required' });
+    if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
+        logger.error('Get User: Invalid or missing userId', { userId });
+        return res.status(400).json({ message: 'Invalid userId' });
     }
+
     logger.info('Fetching user data', { userId });
     try {
         // Find user by ID and exclude password

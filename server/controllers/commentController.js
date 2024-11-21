@@ -9,7 +9,7 @@ import logger from '../utils/logger.js';
  * Helper function to handle errors
  */
 const sendError = (res, error, message, statusCode = 500) => {
-    logger.error(`${message}:`, error);
+    logger.error(`${ message }:`, error);
     res.status(statusCode).json({
         error: true,
         message,

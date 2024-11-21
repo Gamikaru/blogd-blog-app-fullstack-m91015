@@ -1,4 +1,5 @@
-// Button.jsx
+// src/components/common/Button.jsx
+
 import clsx from 'clsx';
 import { motion, useReducedMotion } from 'framer-motion';
 import PropTypes from 'prop-types';
@@ -75,7 +76,7 @@ const variantIcons = {
     blog: FaBlog,
     bookOpen: FaBookOpen,
     paperPlane: FaPaperPlane,
-    settings: FaCog,
+    settings: FaCog, // Ensure 'settings' is included
 
     // Material Design Icons
     notifications: MdNotifications,
@@ -84,7 +85,7 @@ const variantIcons = {
 
     // Additional Variants
     noIcon: null,
-    iconButton: null,
+    iconButton: null, // Will be handled via variantClasses
 };
 
 // Mapping button variants to SCSS classes
@@ -98,6 +99,8 @@ const variantClasses = {
     logout: 'button-logout',
     replace: 'button-edit',
     send: 'button-send', // Added send variant
+    settings: 'button-settings', // Added settings variant
+    iconButton: 'icon-only', // Map 'iconButton' to 'icon-only' class
 };
 
 const Button = React.memo(
@@ -129,7 +132,7 @@ const Button = React.memo(
                         variantClasses[variant],
                         theme,
                         {
-                            'icon-only': iconOnly,
+                            'icon-only': iconOnly || variant === 'iconButton',
                             filled,
                         }
                     )}

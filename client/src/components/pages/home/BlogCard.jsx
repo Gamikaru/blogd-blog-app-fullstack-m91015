@@ -1,7 +1,8 @@
 // src/components/BlogCard.jsx
 
-import { Button, CustomTagIcon, LazyImage } from '@components'; // Import the LazyImage component
+import { Button, CustomTagIcon, LazyImage } from '@components';
 import { usePostContext } from '@contexts/PostContext';
+import { useUser } from '@contexts/UserContext'; // Import useUser
 import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 import { memo, useCallback } from 'react';
@@ -27,21 +28,29 @@ const likeButtonVariants = {
     tap: { scale: 0.9 },
 };
 
-const BlogCard = memo(function BlogCard({ post, author, cookie }) {
+const BlogCard = memo(function BlogCard({ post, author }) {
     const navigate = useNavigate();
     const { like, unlike } = usePostContext();
+    const { user } = useUser(); // Access user from context
+
+    const userId = user?.userId || user?._id; // Safely get userId
 
     const handleLikeClick = useCallback(
         (e) => {
             e.stopPropagation(); // Prevent card click
+            if (!userId) {
+                // Optionally, you can navigate to login or show a message
+                console.warn('User not authenticated');
+                return;
+            }
             const postId = post.postId || post._id;
-            if (post.likesBy?.map(id => id.toString()).includes(cookie)) { // Ensure consistent ID types
+            if (post.likesBy?.map(id => id.toString()).includes(userId)) { // Use userId from context
                 unlike(postId);
             } else {
                 like(postId);
             }
         },
-        [post, cookie, like, unlike]
+        [post, userId, like, unlike]
     );
 
     const navigateToPost = useCallback(() => navigate(`/blog/${post.postId || post._id}`), [
@@ -49,7 +58,7 @@ const BlogCard = memo(function BlogCard({ post, author, cookie }) {
         post,
     ]);
 
-    const isLiked = post.likesBy?.map(id => id.toString()).includes(cookie); // Ensure consistent ID types
+    const isLiked = userId && post.likesBy?.map(id => id.toString()).includes(userId); // Use userId from context
 
     // Debugging: Log post.category
     console.log(`Rendering BlogCard for category: ${post.category}`);
@@ -125,7 +134,7 @@ const BlogCard = memo(function BlogCard({ post, author, cookie }) {
                         className="blog-post-card__content__interactions__like-button"
                         onClick={handleLikeClick}
                         aria-label={isLiked ? 'Unlike' : 'Like'}
-                        variant="like"
+                        variant="iconButton"
                         filled={isLiked}
                     >
                         <motion.span
@@ -167,7 +176,7 @@ BlogCard.propTypes = {
         category: PropTypes.string,
     }).isRequired,
     author: PropTypes.string.isRequired,
-    cookie: PropTypes.string.isRequired,
+    // Removed 'cookie' prop
 };
 
 export default BlogCard;

@@ -1,7 +1,7 @@
 //RegisterModal.jsx
 import { InputField, SelectField } from '@components';
 import { useNotificationContext, usePublicModalContext, useUserUpdate } from '@contexts';
-import { UserService } from '@services/api';
+import { userService } from '@services/api';
 import { capitalizeFirstLetter, logger, validateRegForm } from '@utils';
 import { useEffect, useRef, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
@@ -88,7 +88,7 @@ export default function RegisterModal() {
 
         setLoading(true);
         try {
-            const response = await UserService.registerUser(capitalizedForm);
+            const response = await userService.registerUser(capitalizedForm);
             if (response.message) {
                 showNotification(response.message, "success");
 

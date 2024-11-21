@@ -1,7 +1,7 @@
 // src/components/modals/user-manager/ProfileTab.jsx
 
 import { Button } from '@components';
-import { UserService } from '@services/api';
+import { userService } from '@services/api';
 import { logger } from '@utils';
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
@@ -53,7 +53,7 @@ const ProfileTab = ({ user, setUser, showNotification, loading }) => {
                 formData.append('profilePicture', values.profilePicture);
             }
 
-            const updatedUser = await UserService.updateProfile(user.userId, formData);
+            const updatedUser = await userService.updateProfile(user.userId, formData);
             setUser(updatedUser);
             showNotification('Profile updated successfully!', 'success');
             navigate('/profile');

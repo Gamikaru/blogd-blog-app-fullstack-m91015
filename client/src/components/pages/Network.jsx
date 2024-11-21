@@ -1,7 +1,7 @@
 // Network.jsx
 import { Button, NetworkCard } from '@components';
 import { useUser } from '@contexts/UserContext';
-import UserService from '@services/api/UserService'; // Ensure this path is correct
+import userService from '@services/api/userService'; // Ensure this path is correct
 import { AnimatePresence, motion } from "framer-motion";
 import debounce from 'lodash.debounce';
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -39,7 +39,7 @@ const Network = () => {
             try {
                 setLoading(true);
                 const currentUserId = user.userId || user._id;
-                const usersData = await UserService.fetchUsersExcept(currentUserId);
+                const usersData = await userService.fetchUsersExcept(currentUserId);
                 setUsers(usersData);
             } catch (error) {
                 setError("Failed to fetch users");

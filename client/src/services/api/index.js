@@ -2,7 +2,7 @@
 
 export { default as ApiClient } from './ApiClient';
 // export { fetchTrendingArticles } from './newsService';
-export * from './PostService';
-export { fetchPostsByUser } from './PostService';
-export { default as UserService } from './UserService';
+export * from './commentService';
+export * from './postService';
+export { default as userService } from './userService';
 

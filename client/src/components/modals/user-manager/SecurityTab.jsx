@@ -1,5 +1,5 @@
 // src/components/SecurityTab.jsx
-import { UserService } from '@services/api';
+import { userService } from '@services/api';
 import { logger } from '@utils';
 import { Field, Form, Formik } from 'formik';
 import { motion } from 'framer-motion';
@@ -26,7 +26,7 @@ const SecurityTab = ({ user, setUser, showNotification, loading, setLoading }) =
         setLoading(true);
         try {
             const formData = { ...values };
-            const updatedUser = await UserService.updateProfile(user.userId, formData);
+            const updatedUser = await userService.updateProfile(user.userId, formData);
             setUser(updatedUser);
             showNotification('Settings updated successfully!', 'success');
         } catch (error) {

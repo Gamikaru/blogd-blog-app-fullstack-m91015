@@ -7,7 +7,7 @@ import React, { useCallback, useRef } from 'react';
 import { FaSignOutAlt } from 'react-icons/fa';
 import useClickOutside from '../../hooks/useClickOutside';
 
-const Sidebar = React.memo(({ sidebarOpen, handleSidebarClose}) => {
+const Sidebar = React.memo(({ sidebarOpen, handleSidebarClose }) => {
     const sidebarRef = useRef(null);
     const setUser = useUserUpdate();
 
@@ -46,9 +46,7 @@ Sidebar.displayName = 'Sidebar';
 Sidebar.propTypes = {
     sidebarOpen: PropTypes.bool.isRequired,
     handleSidebarClose: PropTypes.func.isRequired,
-    hamburgerRef: PropTypes.shape({
-        current: PropTypes.instanceOf(HTMLElement),
-    }).isRequired,
+    // Removed hamburgerRef prop
 };
 
 export default Sidebar;

@@ -1,9 +1,9 @@
 // src/contexts/UserContext.jsx
 
-import PropTypes from 'prop-types'; // Import PropTypes
+import { userService } from '@services/api';
+import PropTypes from 'prop-types';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import Cookies from 'universal-cookie';
-import UserService from '../services/api/UserService';
 import logger from '../utils/logger';
 
 export const UserContext = createContext();
@@ -38,7 +38,11 @@ export const UserProvider = ({ children }) => {
 
     const fetchUserData = async (userId) => {
         try {
-            const fetchedUser = await UserService.fetchUserById(userId);
+            // Ensure userId is a string
+            const validUserId = String(userId);
+            logger.info(`UserContext: Fetching user data for userId: ${validUserId}`);
+
+            const fetchedUser = await userService.fetchUserById(validUserId);
             const userWithId = {
                 ...fetchedUser,
                 userId: fetchedUser.userId || fetchedUser._id,
@@ -48,6 +52,7 @@ export const UserProvider = ({ children }) => {
         } catch (error) {
             logger.error('UserContext: Error fetching user data', error);
             setUser(null);
+            setError(error.message);
         }
     };
 
@@ -55,9 +60,31 @@ export const UserProvider = ({ children }) => {
         const initializeUser = async () => {
             const cookies = new Cookies();
             const token = cookies.get('BlogdPass');
-            const userId = cookies.get('userId');
+            let userId = cookies.get('userId');
+
+            logger.info(`UserContext: Retrieved token: ${token}`);
+            logger.info(`UserContext: Retrieved userId: ${userId}`);
 
             if (!token || !userId) {
+                setLoading(false);
+                return;
+            }
+
+            // Validate userId type
+            if (typeof userId !== 'string') {
+                logger.error('UserContext: userId from cookies is not a string', userId);
+                setError('Invalid userId format in cookies');
+                setUser(null);
+                setLoading(false);
+                return;
+            }
+
+            // Optional: Further validate userId format
+            const isValidFormat = /^[a-fA-F0-9]{24}$/.test(userId);
+            if (!isValidFormat) {
+                logger.error('UserContext: userId does not match expected format', userId);
+                setError('Invalid userId format');
+                setUser(null);
                 setLoading(false);
                 return;
             }
@@ -78,13 +105,18 @@ export const UserProvider = ({ children }) => {
 
             try {
                 setLoading(true);
-                const currentUserId = user.userId || user._id;
-                const usersData = await UserService.fetchUsersExcept(currentUserId);
+                const currentUserId = String(user.userId || user._id);
+                const isValidFormat = /^[a-fA-F0-9]{24}$/.test(currentUserId);
+                if (!isValidFormat) {
+                    throw new Error('Invalid currentUserId format');
+                }
+
+                const usersData = await userService.fetchUsersExcept(currentUserId);
                 setUsers(usersData);
                 logger.info('UserContext: Fetched users excluding current user');
-            } catch (error) { // Unused error, prefix or remove
-                setError("Failed to fetch users");
+            } catch (error) {
                 logger.error('UserContext: FetchData error', error);
+                setError("Failed to fetch users");
             } finally {
                 setLoading(false);
             }
@@ -97,14 +129,18 @@ export const UserProvider = ({ children }) => {
 
     const login = async (loginData) => {
         try {
-            const response = await UserService.loginUser(loginData);
+            const response = await userService.loginUser(loginData);
             const { token, user: userData } = response;
             const cookies = new Cookies();
             cookies.set('BlogdPass', token, { path: '/' });
-            cookies.set('userId', userData.userId || userData._id, { path: '/' });
+
+            // Ensure userId is a string
+            const userId = String(userData.userId || userData._id);
+            cookies.set('userId', userId, { path: '/' });
+
             setUser({
                 ...userData,
-                userId: userData.userId || userData._id,
+                userId,
             });
             logger.info('UserContext: User logged in successfully');
             return { success: true };
@@ -116,7 +152,7 @@ export const UserProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            await UserService.logoutUser();
+            await userService.logoutUser();
             const cookies = new Cookies();
             cookies.remove('BlogdPass', { path: '/' });
             cookies.remove('userId', { path: '/' });
@@ -129,7 +165,7 @@ export const UserProvider = ({ children }) => {
 
     const register = async (userData) => {
         try {
-            const response = await UserService.registerUser(userData);
+            const response = await userService.registerUser(userData);
             logger.info('UserContext: User registered successfully', response);
             return { success: true, data: response };
         } catch (error) {
@@ -140,10 +176,11 @@ export const UserProvider = ({ children }) => {
 
     const updateUser = async (userId, updatedData) => {
         try {
-            const updatedUser = await UserService.updateUserById(userId, updatedData);
+            const validUserId = String(userId);
+            const updatedUser = await userService.updateUserById(validUserId, updatedData);
             setUser({
                 ...updatedUser,
-                userId: updatedUser.userId || updatedUser._id,
+                userId: String(updatedUser.userId || updatedUser._id),
             });
             logger.info('UserContext: User updated successfully');
             return { success: true };

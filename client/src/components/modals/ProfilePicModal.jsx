@@ -1,7 +1,7 @@
 // ProfilePicModal.jsx
 import { Button } from '@components';
 import { useUser, useUserUpdate } from '@contexts';
-import UserService from '@services/api/UserService';
+import userService from '@services/api/userService';
 import FocusTrap from 'focus-trap-react';
 import PropTypes from 'prop-types';
 import { useEffect, useRef } from 'react';
@@ -36,7 +36,7 @@ const ProfilePicModal = ({ imageUrl, onClose }) => {
 
     const handleDelete = async () => {
         try {
-            await UserService.deleteProfilePicture(user.userId);
+            await userService.deleteProfilePicture(user.userId);
             await updateUser(user.userId, { profilePicture: null });
             onClose();
         } catch (error) {

@@ -1,16 +1,19 @@
 // src/contexts/index.js
 
 // Notification Context
-export { useNotificationContext, NotificationProvider } from './NotificationContext';
+export { NotificationProvider, useNotificationContext } from './NotificationContext';
 
 // Post Context
-export { usePostContext, PostProvider } from './PostContext';
+export { PostProvider, usePostContext } from './PostContext';
 
 // Private Modal Context
-export { usePrivateModalContext, PrivateModalProvider } from './PrivateModalContext';
+export { PrivateModalProvider, usePrivateModalContext } from './PrivateModalContext';
 
 // Public Modal Context
-export { usePublicModalContext, PublicModalProvider } from './PublicModalContext';
+export { PublicModalProvider, usePublicModalContext } from './PublicModalContext';
 
 // User Context
-export { useUser, useUserUpdate, UserProvider } from './UserContext';
+export { UserProvider, useUser, useUserUpdate } from './UserContext';
+
+// Comment Context
+export { CommentProvider, useCommentActions, useComments } from './CommentContext';
