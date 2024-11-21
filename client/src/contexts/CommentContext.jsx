@@ -1,13 +1,21 @@
 // src/contexts/CommentContext.jsx
 
-
-import { createComment, deleteComment, fetchCommentsByPostId, likeComment, replyToComment, unlikeComment, updateComment, } from '@services/api';
+import {
+    createComment,
+    deleteComment,
+    fetchCommentsByPostId,
+    likeComment,
+    replyToComment,
+    unlikeComment,
+    updateComment,
+} from '@services/api';
 import { logger } from '@utils';
 import PropTypes from 'prop-types';
 import { createContext, useCallback, useContext, useState } from 'react';
 
 // Create contexts
-const CommentContext = createContext(); const CommentUpdateContext = createContext();
+const CommentContext = createContext();
+const CommentUpdateContext = createContext();
 
 // Custom hooks for using the contexts
 export const useComments = () => useContext(CommentContext);
@@ -15,9 +23,28 @@ export const useCommentActions = () => useContext(CommentUpdateContext);
 
 // Provider component
 export const CommentProvider = ({ children }) => {
-    const [comments, setComments] = useState({}); const [loadingComments, setLoadingComments] = useState(false); const [errorComments, setErrorComments] = useState(null);
-    // Removed the unused 'user' variable
-    // const { user } = useUser(); // No longer needed
+    const [comments, setComments] = useState({});
+    const [loadingComments, setLoadingComments] = useState(false);
+    const [errorComments, setErrorComments] = useState(null);
+
+    // Function to build a comment tree
+    const buildCommentTree = (comments) => {
+        const commentMap = {};
+        comments.forEach((comment) => {
+            comment.replies = [];
+            commentMap[comment._id] = comment;
+        });
+
+        const commentTree = [];
+        comments.forEach((comment) => {
+            if (comment.parentId && commentMap[comment.parentId]) {
+                commentMap[comment.parentId].replies.push(comment);
+            } else {
+                commentTree.push(comment);
+            }
+        });
+        return commentTree;
+    };
 
     // Function to fetch comments for a post
     const loadCommentsForPost = useCallback(async (postId) => {
@@ -25,9 +52,11 @@ export const CommentProvider = ({ children }) => {
         setErrorComments(null);
         try {
             const fetchedComments = await fetchCommentsByPostId(postId);
+            // Build the comment tree
+            const commentTree = buildCommentTree(fetchedComments);
             setComments((prev) => ({
                 ...prev,
-                [postId]: fetchedComments,
+                [postId]: commentTree,
             }));
             logger.info(`Comments loaded for post ${postId}`);
         } catch (error) {
@@ -39,11 +68,20 @@ export const CommentProvider = ({ children }) => {
     }, []);
 
     // Function to add a new comment
-    const addComment = useCallback(async (postId, content) => {
+    const addComment = useCallback(async (postId, content, user) => {
         try {
             const commentData = { content, postId };
             const newCommentResponse = await createComment(commentData);
             const newComment = newCommentResponse.comment;
+
+            // Attach user details
+            newComment.userId = {
+                _id: user._id || user.id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                profilePicture: user.profilePicture,
+            };
+
             setComments((prev) => ({
                 ...prev,
                 [postId]: [newComment, ...(prev[postId] || [])],
@@ -54,7 +92,7 @@ export const CommentProvider = ({ children }) => {
             logger.error('Error adding comment:', error);
             throw error;
         }
-    }, []); // Removed 'user' from dependencies
+    }, []);
 
     // Function to update a comment
     const updateExistingComment = useCallback(async (commentId, content) => {
@@ -62,12 +100,28 @@ export const CommentProvider = ({ children }) => {
             const updatedData = { content };
             const updatedCommentResponse = await updateComment(commentId, updatedData);
             const updatedComment = updatedCommentResponse.comment;
+            const postId = updatedComment.postId;
+
             // Update the comment in state
+            const updateCommentInState = (commentsArray) => {
+                return commentsArray.map((comment) => {
+                    if (comment._id === commentId) {
+                        return {
+                            ...comment,
+                            content: updatedComment.content,
+                        };
+                    } else if (comment.replies && comment.replies.length > 0) {
+                        return {
+                            ...comment,
+                            replies: updateCommentInState(comment.replies),
+                        };
+                    }
+                    return comment;
+                });
+            };
+
             setComments((prevComments) => {
-                const postId = updatedComment.postId;
-                const updatedPostComments = prevComments[postId].map((comment) =>
-                    comment._id === commentId ? updatedComment : comment
-                );
+                const updatedPostComments = updateCommentInState(prevComments[postId]);
                 return {
                     ...prevComments,
                     [postId]: updatedPostComments,
@@ -85,16 +139,25 @@ export const CommentProvider = ({ children }) => {
     const removeComment = useCallback(async (commentId, postId) => {
         try {
             await deleteComment(commentId);
+
+            const removeCommentFromState = (commentsArray) => {
+                return commentsArray
+                    .filter((comment) => comment._id !== commentId)
+                    .map((comment) => ({
+                        ...comment,
+                        replies: removeCommentFromState(comment.replies || []),
+                    }))
+                    .filter((comment) => comment.replies.length > 0 || comment._id !== commentId);
+            };
+
             setComments((prevComments) => {
-                const updatedPostComments = prevComments[postId].filter(
-                    (comment) => comment._id !== commentId
-                );
+                const updatedPostComments = removeCommentFromState(prevComments[postId]);
                 return {
                     ...prevComments,
                     [postId]: updatedPostComments,
                 };
             });
-            logger.info(`Comment ${commentId} deleted from post ${postId}`);
+            logger.info(`Comment ${commentId} and its replies deleted from post ${postId}`);
         } catch (error) {
             logger.error('Error deleting comment:', error);
             throw error;
@@ -106,17 +169,27 @@ export const CommentProvider = ({ children }) => {
         try {
             const response = await likeComment(commentId);
             const updatedLikes = response.likes;
-            // Update the likes and likesBy in state
-            setComments((prevComments) => {
-                const updatedPostComments = prevComments[postId].map((comment) =>
-                    comment._id === commentId
-                        ? {
+
+            const updateLikesInState = (commentsArray) => {
+                return commentsArray.map((comment) => {
+                    if (comment._id === commentId) {
+                        return {
                             ...comment,
                             likes: updatedLikes,
-                            likesBy: [...comment.likesBy, userId], // Add userId
-                        }
-                        : comment
-                );
+                            likesBy: [...comment.likesBy, userId],
+                        };
+                    } else if (comment.replies && comment.replies.length > 0) {
+                        return {
+                            ...comment,
+                            replies: updateLikesInState(comment.replies),
+                        };
+                    }
+                    return comment;
+                });
+            };
+
+            setComments((prevComments) => {
+                const updatedPostComments = updateLikesInState(prevComments[postId]);
                 return {
                     ...prevComments,
                     [postId]: updatedPostComments,
@@ -134,17 +207,27 @@ export const CommentProvider = ({ children }) => {
         try {
             const response = await unlikeComment(commentId);
             const updatedLikes = response.likes;
-            // Update the likes and likesBy in state
-            setComments((prevComments) => {
-                const updatedPostComments = prevComments[postId].map((comment) =>
-                    comment._id === commentId
-                        ? {
+
+            const updateLikesInState = (commentsArray) => {
+                return commentsArray.map((comment) => {
+                    if (comment._id === commentId) {
+                        return {
                             ...comment,
                             likes: updatedLikes,
-                            likesBy: comment.likesBy.filter(id => id !== userId), // Remove userId
-                        }
-                        : comment
-                );
+                            likesBy: comment.likesBy.filter((id) => id !== userId),
+                        };
+                    } else if (comment.replies && comment.replies.length > 0) {
+                        return {
+                            ...comment,
+                            replies: updateLikesInState(comment.replies),
+                        };
+                    }
+                    return comment;
+                });
+            };
+
+            setComments((prevComments) => {
+                const updatedPostComments = updateLikesInState(prevComments[postId]);
                 return {
                     ...prevComments,
                     [postId]: updatedPostComments,
@@ -158,23 +241,42 @@ export const CommentProvider = ({ children }) => {
     }, []);
 
     // Function to reply to a comment
-    const replyToAComment = useCallback(async (commentId, content) => {
+    const replyToAComment = useCallback(async (commentId, content, user) => {
         try {
             const replyData = { content };
             const response = await replyToComment(commentId, replyData);
             const newReply = response.comment;
+
+            // Attach user details to the new reply
+            newReply.userId = {
+                _id: user._id || user.id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                profilePicture: user.profilePicture,
+            };
+
             const postId = newReply.postId;
-            // Update the comments in state
-            setComments((prevComments) => {
-                const updatedPostComments = prevComments[postId].map((comment) => {
+
+            const addReplyToState = (commentsArray) => {
+                return commentsArray.map((comment) => {
                     if (comment._id === commentId) {
                         return {
                             ...comment,
-                            replies: [...comment.replies, newReply],
+                            replies: [...(comment.replies || []), newReply],
+                        };
+                    } else if (comment.replies && comment.replies.length > 0) {
+                        return {
+                            ...comment,
+                            replies: addReplyToState(comment.replies),
                         };
                     }
                     return comment;
                 });
+            };
+
+            // Update the comments in state
+            setComments((prevComments) => {
+                const updatedPostComments = addReplyToState(prevComments[postId]);
                 return {
                     ...prevComments,
                     [postId]: updatedPostComments,
@@ -193,7 +295,7 @@ export const CommentProvider = ({ children }) => {
         comments,
         loadingComments,
         loadCommentsForPost,
-        errorComments, // Added errorComments
+        errorComments,
     };
 
     const commentActionsContextValue = {
@@ -212,9 +314,10 @@ export const CommentProvider = ({ children }) => {
             </CommentUpdateContext.Provider>
         </CommentContext.Provider>
     );
-
 };
 
-CommentProvider.propTypes = { children: PropTypes.node.isRequired, };
+CommentProvider.propTypes = {
+    children: PropTypes.node.isRequired,
+};
 
 export default CommentProvider;

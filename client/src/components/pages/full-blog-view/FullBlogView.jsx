@@ -1,12 +1,13 @@
 // FullBlogView.jsx
 import { Button, Comment, ErrorBoundary, Spinner } from '@components';
-// Import Comment styles
 import { useCommentActions, useComments } from '@contexts/CommentContext';
 import { useUser } from '@contexts/UserContext';
 import { fetchPostById } from '@services/api';
 import { logger } from '@utils';
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+
+const COMMENTS_PER_PAGE = 5;
 
 const FullBlogView = () => {
     const { id } = useParams();
@@ -15,15 +16,14 @@ const FullBlogView = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [commentText, setCommentText] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
 
-    // Destructure only the functions that are used
-    const { comments, loadingComments, loadCommentsForPost, errorComments } = useComments(); // Include errorComments
-    const { addComment } = useCommentActions(); // Removed 'likeAComment' and 'unlikeAComment'
+    const { comments, loadingComments, loadCommentsForPost, errorComments } = useComments();
+    const { addComment } = useCommentActions();
 
     const fetchPost = useCallback(async () => {
         try {
             const fetchedPost = await fetchPostById(id);
-            // Map _id to postId for consistency
             setPost({ ...fetchedPost, postId: fetchedPost._id });
             setLoading(false);
         } catch (error) {
@@ -51,27 +51,37 @@ const FullBlogView = () => {
     const handleCommentSubmit = async (e) => {
         e.preventDefault();
 
-        if (!user || !user.id) { // Adjust based on user object
+        const userId = user?.id || user?._id;
+
+        if (!user || !userId) {
             logger.error("User must be logged in to submit comments.");
             setError("You must be logged in to submit comments.");
             return;
         }
 
         try {
-            await addComment(post.postId, commentText);
+            await addComment(post.postId, commentText, user); // Removed 'const newComment ='
             logger.info(`Comment submitted for post ${post.postId}: ${commentText}`);
             setCommentText("");
-            loadCommentsForPost(post.postId);
+            // Removed 'loadCommentsForPost' call to prevent full re-render
         } catch (error) {
             logger.error("Error submitting comment:", error);
             setError("Failed to submit comment.");
         }
     };
 
+    const handleLoadMore = () => {
+        setCurrentPage(prevPage => prevPage + 1);
+    };
+
     if (loading) return <Spinner message="Loading post..." />;
     if (error) return <div>Error: {error}</div>;
 
     const authorInfo = post.userId.aboutAuthor || `${post.userId.firstName} ${post.userId.lastName}, ${post.userId.occupation}`;
+
+    const allComments = comments[post.postId] || [];
+    const displayedComments = allComments.slice(0, currentPage * COMMENTS_PER_PAGE);
+    const hasMoreComments = displayedComments.length < allComments.length;
 
     return (
         <ErrorBoundary>
@@ -101,13 +111,20 @@ const FullBlogView = () => {
                     ) : errorComments ? (
                         <div>Error: {errorComments}</div>
                     ) : (
-                        comments[post.postId] && comments[post.postId].length > 0 ? (
-                            comments[post.postId].map((comment) => (
-                                <Comment key={comment._id} comment={comment} />
-                            ))
-                        ) : (
-                            <p>No comments yet.</p>
-                        )
+                        <div>
+                            {displayedComments.length > 0 ? (
+                                displayedComments.map((comment) => (
+                                    <Comment key={comment._id} comment={comment} />
+                                ))
+                            ) : (
+                                <p>No comments yet.</p>
+                            )}
+                            {hasMoreComments && (
+                                <Button onClick={handleLoadMore} variant="secondary" className="load-more-button">
+                                    Load More Comments
+                                </Button>
+                            )}
+                        </div>
                     )}
                     <form
                         className="comment-form"
@@ -124,7 +141,7 @@ const FullBlogView = () => {
                         <Button
                             type="submit"
                             variant="submit"
-                            className="submit-comment-button"
+
                             disabled={!commentText.trim()}
                         >
                             Submit

@@ -1,0 +1,185 @@
+.comment {
+    @include card-style;
+    margin-bottom: $spacing-lg;
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: $spacing-sm;
+
+        &__date {
+            font-size: $small-font-size;
+            color: $secondary-text-color;
+        }
+
+        &__controls {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: $spacing-xs;
+        }
+
+        .comment__author-info {
+            display: flex;
+            align-items: center;
+
+            .comment__profile-picture {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+                margin-right: $spacing-sm;
+                border: 2px solid $accent-color-1;
+            }
+
+            .comment__header__author {
+                font-weight: bold;
+                font-size: $sub-heading-font-size;
+                color: $highlight-color;
+                margin-left: $spacing-xs;
+            }
+        }
+    }
+
+    &__body {
+        margin-block: $spacing-md;
+        background-color: $secondary-bg-color;
+        padding: $spacing-md;
+        @include border-radius($border-radius-lg);
+        font-size: $body-font-size;
+        line-height: $line-height;
+        color: $primary-text-color;
+        box-shadow: $box-shadow-small;
+
+        &:hover {
+            box-shadow: $box-shadow-medium;
+        }
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: $spacing-sm;
+
+        .like-section {
+            display: flex;
+            align-items: center;
+            gap: $spacing-xs;
+
+            .like-button {
+                @include button-style($success-color, $primary-text-color);
+            }
+
+            .like-count {
+                font-size: $small-font-size;
+                color: $secondary-text-color;
+            }
+        }
+
+        .reply-button {
+            @include button-style($highlight-color, $primary-text-color);
+        }
+    }
+
+    .reply-form {
+        background-color: lighten($primary-bg-color, 2%);
+        padding: $spacing-md;
+        @include border-radius($border-radius-sm);
+        box-shadow: $box-shadow-small;
+        margin-block: $spacing-md;
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-sm;
+
+        textarea {
+            width: 100%;
+            padding: $input-padding;
+            @include border-radius($border-radius-sm);
+            border: 1px solid $border-color;
+            background-color: $secondary-bg-color;
+            color: $primary-text-color;
+            font-family: $font-family-primary;
+            font-size: $body-font-size;
+            line-height: $line-height;
+
+            &:focus {
+                outline: none;
+                box-shadow: $input-focus-box-shadow;
+                border-color: $highlight-color;
+            }
+        }
+
+        .submit-button {
+            @include button-style($success-color, #fff);
+        }
+    }
+
+    .replies {
+        margin-left: $spacing-unit * 2;
+        padding-left: $spacing-unit;
+        border-left: 2px solid lighten($secondary-bg-color, 20%);
+
+        .nested-comment {
+            margin-top: $spacing-md;
+        }
+
+        & > .comment {
+            background-color: lighten($primary-bg-color, 3%);
+
+            &:nth-child(2n) {
+                background-color: darken($primary-bg-color, 1%);
+            }
+
+            & .replies > .comment {
+                background-color: lighten($primary-bg-color, 1%);
+            }
+
+            &:hover {
+                box-shadow: $box-shadow-medium;
+            }
+        }
+    }
+}
+
+.comment__controls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: $spacing-xs;
+}
+
+.comment__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: $spacing-sm;
+    margin-bottom: $spacing-md;
+
+    .comment__actions-left {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+
+        .like-count {
+            font-size: $small-font-size;
+            color: $secondary-text-color;
+        }
+
+        .submit {
+            // Add any specific styles for the Reply button if needed
+        }
+    }
+
+    .comment__controls {
+        display: flex;
+        align-items: center;
+        gap: $spacing-xs;
+
+        .edit,
+        .delete {
+            // Add specific styles for Edit and Delete buttons if needed
+        }
+    }
+}

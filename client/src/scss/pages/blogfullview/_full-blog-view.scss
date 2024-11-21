@@ -1,0 +1,113 @@
+.full-blog-view {
+    padding: $spacing-unit * 1;
+    background-color: $secondary-bg-color;
+    color: $primary-text-color;
+    max-width: 1200px;
+    margin: 0 auto;
+    line-height: $line-height;
+    position: relative;
+    z-index: 14;
+
+    .blog-images {
+        float: left;
+        margin-right: $spacing-unit * 2;
+        margin-bottom: $spacing-unit * 2;
+        width: 50%;
+        height: auto;
+
+        .blog-image {
+            max-width: 100%;
+            @include border-radius($border-radius);
+            object-fit: cover;
+            margin-top: -12rem;
+            width: 100%;
+            height: auto;
+            padding: 0;
+        }
+    }
+
+    .blog-content {
+        font-size: $body-font-size;
+        color: $primary-text-color;
+        line-height: $line-height;
+        padding: 0 $spacing-unit * 2;
+        max-width: 90%;
+        margin: 0 auto;
+
+        p {
+            margin-bottom: $spacing-unit * 1.5;
+        }
+
+        img {
+            max-width: 100%;
+            @include border-radius($border-radius);
+            margin: $spacing-unit * 2 0;
+        }
+
+        blockquote {
+            font-style: italic;
+            color: $secondary-text-color;
+            padding-left: $spacing-unit;
+            border-left: 4px solid $accent-color-2;
+            margin: $spacing-unit * 2 0;
+        }
+    }
+
+    .about-author {
+        margin-top: $spacing-unit * 4;
+        text-align: center;
+
+        h3 {
+            font-size: $heading-font-size-md;
+            margin-bottom: $spacing-unit;
+        }
+
+        p {
+            font-size: $body-font-size;
+            color: $secondary-text-color;
+        }
+    }
+
+    .comments-section {
+        margin-top: $spacing-unit * 4;
+        border-top: 1px solid lighten($secondary-bg-color, 10%);
+        padding-top: $spacing-unit;
+        width: 80%;
+        align-items: center;
+        margin: 0 auto;
+
+        .comment {
+            background-color: lighten($primary-bg-color, 4%);
+
+            &:hover {
+                box-shadow: $box-shadow-medium;
+            }
+        }
+
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            margin-top: $spacing-unit * 1.5;
+
+            textarea {
+                padding: $spacing-unit;
+                border: 1px solid lighten($secondary-bg-color, 20%);
+                @include border-radius($border-radius);
+                resize: vertical;
+                font-size: $body-font-size;
+                color: $primary-text-color;
+                background-color: lighten($primary-bg-color, 4%);
+                margin-bottom: $spacing-unit;
+                transition:
+                    border-color 0.3s ease,
+                    box-shadow 0.3s ease;
+
+                &:focus {
+                    border-color: $accent-color-2;
+                    box-shadow: $input-focus-box-shadow;
+                    outline: none;
+                }
+            }
+        }
+    }
+}

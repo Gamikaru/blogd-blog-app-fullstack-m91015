@@ -22,7 +22,7 @@ export const fetchCommentById = async (commentId) => {
 
 // Function to update a comment by ID
 export const updateComment = async (commentId, updatedData) => {
-    const response = await ApiClient.patch(`/comment/${commentId}`, updatedData);
+    const response = await ApiClient.put(`/comment/${commentId}`, updatedData);
     return response.data;
 };
 

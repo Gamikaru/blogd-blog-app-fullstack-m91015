@@ -118,32 +118,51 @@ export const updateComment = async (req, res) => {
 };
 
 /**
- * Delete a comment by ID.
+ * Delete a comment and all its child replies recursively.
  */
 export const deleteComment = async (req, res) => {
-    const { userId } = req.user;
-    const { commentId } = req.params;
+  const { userId } = req.user;
+  const { commentId } = req.params;
 
-    logger.info('Deleting comment with ID:', commentId);
-    try {
-        const comment = await Comment.findById(commentId);
+  logger.info('Deleting comment with ID:', commentId);
+  try {
+    const comment = await Comment.findById(commentId);
 
-        if (!comment) {
-            logger.error('Comment not found with ID:', commentId);
-            return sendError(res, new Error('Comment Not Found'), 'Comment not found', 404);
-        }
-
-        if (comment.userId.toString() !== userId.toString()) {
-            logger.error('Unauthorized user ID:', userId, 'attempted to delete comment ID:', commentId);
-            return sendError(res, new Error('Unauthorized'), 'Unauthorized user', 401);
-        }
-
-        await comment.deleteOne();
-        logger.info('Comment deleted successfully with ID:', commentId);
-        return res.status(200).json({ message: 'Comment deleted successfully' });
-    } catch (error) {
-        sendError(res, error, 'Server error during comment deletion');
+    if (!comment) {
+      logger.error('Comment not found with ID:', commentId);
+      return sendError(res, new Error('Comment Not Found'), 'Comment not found', 404);
     }
+
+    if (comment.userId.toString() !== userId.toString()) {
+      logger.error('Unauthorized user ID:', userId, 'attempted to delete comment ID:', commentId);
+      return sendError(res, new Error('Unauthorized'), 'Unauthorized user', 401);
+    }
+
+    // Recursive deletion function
+    const deleteCommentAndReplies = async (commentId) => {
+      const commentsToDelete = [commentId];
+      const queue = [commentId];
+
+      while (queue.length > 0) {
+        const currentId = queue.shift();
+        const childComments = await Comment.find({ parentId: currentId }).select('_id').exec();
+        for (const childComment of childComments) {
+          commentsToDelete.push(childComment._id);
+          queue.push(childComment._id);
+        }
+      }
+
+      // Delete all comments in the list
+      await Comment.deleteMany({ _id: { $in: commentsToDelete } });
+    };
+
+    await deleteCommentAndReplies(commentId);
+
+    logger.info('Comment and its replies deleted successfully with ID:', commentId);
+    return res.status(200).json({ message: 'Comment and its replies deleted successfully' });
+  } catch (error) {
+    sendError(res, error, 'Server error during comment deletion');
+  }
 };
 
 /**
