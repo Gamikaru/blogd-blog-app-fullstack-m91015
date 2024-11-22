@@ -101,36 +101,25 @@
                 gap: $spacing-sm;
                 padding-top: $spacing-md;
 
-                .button {
-                    @extend .button;
-                    width: 100%;
-                    justify-content: center;
+                // .button {
+                //     @extend .button;
+                //     width: 100%;
+                //     justify-content: center;
 
-                    &.button-profile,
-                    &.button-edit { // Add .button-edit to extend .button-profile styles
-                        @extend .button-profile;
-                    }
+                //     &.button-profile,
+                //     &.button-edit { // Add .button-edit to extend .button-profile styles
+                //         @extend .button-profile;
+                //     }
 
-                    &.button-delete {
-                        @extend .button-delete;
-                    }
-                }
+                //     &.button-delete {
+                //         @extend .button-delete;
+                //     }
+                // }
             }
         }
     }
 }
 
-// Animations
-@keyframes dropdownFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 
 // Responsive Design
 @media (max-width: $breakpoint-md) {
@@ -164,9 +153,7 @@
                 flex-direction: row;
                 justify-content: space-around;
 
-                .button {
-                    width: 45%;
-                }
+
             }
         }
     }

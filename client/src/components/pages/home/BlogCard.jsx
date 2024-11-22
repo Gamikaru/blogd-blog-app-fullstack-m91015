@@ -1,12 +1,10 @@
-import { Button, CustomTagIcon, LazyImage } from '@components';
-import { usePostContext } from '@contexts/PostContext';
+// src/components/BlogCard.jsx
+import { CustomTagIcon, LazyImage } from '@components';
 import { useUser } from '@contexts/UserContext';
 import logger from '@utils/logger'; // Ensure logger is imported
 import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 import { memo, useCallback } from 'react';
-import { FaHeart } from 'react-icons/fa';
-import { FiHeart } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 
 const cardVariants = {
@@ -20,47 +18,27 @@ const cardVariants = {
         },
     },
     hover: {
-        scale: 1.02,
-        boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.1)',
+        scale: 1.01,
+        boxShadow: '0px 6px 20px rgba(0, 0, 0, 0.08)',
+        transition: {
+            duration: 0.3,
+            ease: 'easeInOut',
+        },
     },
 };
 
 const BlogCard = memo(function BlogCard({ post, author }) {
     const navigate = useNavigate();
-    const { like, unlike } = usePostContext();
     const { user } = useUser();
 
-    const userId = user?.userId || user?._id;
-
     // Log userId and post.likesBy
+    const userId = user?.userId || user?._id;
     logger.info(`BlogCard Rendered: postId=${post.postId}, userId=${userId}, likesBy=${JSON.stringify(post.likesBy)}`);
-
-    const handleLikeClick = useCallback(
-        async (e) => {
-            e.stopPropagation();
-            if (!userId) {
-                console.warn('User not authenticated');
-                return;
-            }
-            const postId = post.postId || post._id;
-            if (post.likesBy?.includes(userId)) {
-                await unlike(postId);
-            } else {
-                await like(postId);
-            }
-        },
-        [post, userId, like, unlike]
-    );
 
     const navigateToPost = useCallback(() => navigate(`/blog/${post.postId || post._id}`), [
         navigate,
         post,
     ]);
-
-    const isLiked = userId && post.likesBy?.includes(userId);
-
-    // Log isLiked state
-    logger.info(`isLiked for postId=${post.postId}: ${isLiked}`);
 
     return (
         <motion.div
@@ -117,23 +95,7 @@ const BlogCard = memo(function BlogCard({ post, author }) {
                     </div>
                 </div>
 
-                <div className="blog-post-card__content__interactions">
-                    <Button
-                        onClick={handleLikeClick}
-                        variant="iconButton"
-                        aria-label={isLiked ? 'Unlike' : 'Like'}
-                        filled={isLiked}
-                    >
-                        <motion.div
-                            initial={{ scale: 1 }}
-                            animate={{ scale: 1 }}
-                            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                        >
-                            {isLiked ? <FaHeart /> : <FiHeart />}
-                        </motion.div>
-                    </Button>
-                    <span className="blog-post-card__content__interactions__like-button__likes-count">{post.likes}</span>
-                </div>
+                {/* Removed interactions section */}
             </div>
         </motion.div>
     );

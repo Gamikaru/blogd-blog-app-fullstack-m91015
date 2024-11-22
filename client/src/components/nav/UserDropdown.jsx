@@ -8,12 +8,9 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import {
     FaBirthdayCake,
     FaBriefcase,
-    FaCog,
     FaEnvelope,
-    FaMapMarkerAlt,
-    FaUser
+    FaMapMarkerAlt
 } from 'react-icons/fa';
-import { FiLogOut } from 'react-icons/fi'; // Kept FiLogOut
 import { useNavigate } from 'react-router-dom';
 
 const UserDropdown = React.memo(({ showDropdown, setShowDropdown, handleLogout, position }) => {
@@ -117,30 +114,31 @@ const UserDropdown = React.memo(({ showDropdown, setShowDropdown, handleLogout, 
                         </div>
                         <div className="dropdown-actions">
                             <Button
-                                variant="profile"
-                                icon={FaUser}
+                                variant="user"
+                                className="button button-edit" // Use button-profile for Settings
                                 onClick={handleProfileClick}
+
                             >
                                 Profile
                             </Button>
-                            <motion.button
-                                className="button button-edit" // Use button-profile for Settings
+                            <Button
                                 onClick={handleSettingsClick}
                                 whileHover={{ y: -1 }}
                                 whileTap={{ scale: 0.98 }}
+                                type="settings"
+                                variant="settings"
                             >
-                                <FaCog className="button-icon" />
                                 Settings
-                            </motion.button>
-                            <motion.button
-                                className="button button-delete"
+                            </Button>
+                            <Button
                                 onClick={handleLogout}
                                 whileHover={{ y: -1 }}
                                 whileTap={{ scale: 0.98 }}
+                                type="logout"
+                                variant="logout"
                             >
-                                <FiLogOut className="button-icon" />
                                 Logout
-                            </motion.button>
+                            </Button>
                         </div>
                     </div>
                 </div>

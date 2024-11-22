@@ -2,22 +2,19 @@
 
 .blog-post-card {
     @include card-style;
-    padding: spacing(0.85);
+    padding: spacing(1); // Increased padding for more vertical space
+    padding-bottom: spacing(1.5); // Reduced bottom padding
     overflow: hidden;
     cursor: pointer;
-    transition: transform $transitions-base;
+    transition: transform $transitions-base, box-shadow $transitions-base;
     display: flex;
     flex-direction: column;
-    height: 100%;
-
-    &:hover {
-        transform: translateY(-4px);
-        box-shadow: $box-shadow-strong;
-    }
+    height: 100%; // Ensure full height for consistency
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);
 
     &__image-container {
         width: 100%;
-        height: 25vh;
+        height: 28vh;
         overflow: hidden;
         border-radius: $border-radius;
 
@@ -41,13 +38,15 @@
         display: flex;
         flex-direction: column;
         flex-grow: 1;
-        justify-content: space-between;
+        justify-content: flex-start; // Align items to start
+        position: relative;
 
         &__header {
             @include flex-start;
             justify-content: space-between;
             color: $secondary-text-color;
-            margin-top: spacing(1);
+            margin-top: spacing(0.2);
+            min-height: spacing(4); // Ensure consistent height
 
             &__author-name {
                 font-weight: bold;
@@ -64,22 +63,20 @@
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            margin: spacing(1) 0 spacing(0.5) 0;
-            min-height: px-to-rem(60);
-            padding-top: spacing(1);
+            margin: spacing(0) 0 spacing(0.5) 0;
+            // padding-top: spacing(0.5);
+            margin-bottom: spacing(1); // Added margin for spacing below
 
             &__title {
-                flex: none;
                 font-family: $font-family-heading;
-                margin: 0 0 spacing(0.5) 0;
+                margin: 0;
                 color: $primary-text-color;
                 width: 100%;
                 line-height: 1.2;
-                display: -webkit-box;
-                line-clamp: 2;
-                -webkit-line-clamp: 2;
-                -webkit-box-orient: vertical;
                 overflow: hidden;
+                font-size: clamp(1.2rem, 2.5vw, 1.6rem); // Increased max size
+                margin-bottom: spacing(0.5);
+                padding-top: spacing(0.5); // Add padding to align vertically
             }
 
             &__category {
@@ -87,7 +84,6 @@
                 align-items: center;
                 font-size: $sub-heading-font-size;
                 color: $secondary-text-color;
-                height: px-to-rem(20);
 
                 &__icon {
                     margin-right: spacing(0.5);
@@ -142,7 +138,6 @@
                         font-weight: bold;
                         color: $primary-text-color;
                         vertical-align: baseline;
-                        font-family: $font-family-heading;
                     }
                 }
             }
@@ -151,7 +146,8 @@
         &__interactions {
             @include flex-start;
             gap: spacing(1);
-            margin-bottom: spacing(1);
+            margin-top: auto; // Push interactions to the bottom
+            margin-bottom: spacing(1.5); // Increased margin for more space
 
             &__like-button {
                 @include button-style(none, $primary-text-color);
@@ -159,15 +155,12 @@
                 font-size: $body-font-size;
                 display: flex;
                 align-items: center;
+                margin-top: spacing(0.5); // Shifted down
 
                 &__heart-icon {
                     margin-right: spacing(0.5);
                     font-size: px-to-rem(19.2);
                     transition: color $transitions-base;
-
-                    &--liked {
-                        color: $accent-color-2;
-                    }
                 }
 
                 &__likes-count {
@@ -180,64 +173,11 @@
                 }
             }
         }
+    }
 
-        &__content__interactions {
-            display: flex;
-            align-items: center;
-            gap: spacing(1);
-            margin-bottom: spacing(1);
-
-            &__like-button {
-                display: flex;
-                align-items: center;
-                padding: 0;
-                font-size: $body-font-size;
-
-                &__heart-icon {
-                    margin-right: spacing(0.5);
-                    font-size: px-to-rem(19.2);
-                    transition: color $transitions-base;
-
-                    &--liked {
-                        color: $accent-color-2;
-                    }
-                }
-
-                &__likes-count {
-                    font-size: $small-font-size;
-                    color: $secondary-text-color;
-                }
-
-                &:hover &__heart-icon {
-                    color: $accent-color-2;
-                }
-            }
-
-            .icon-only {
-                display: flex;
-                align-items: center;
-                padding: 0;
-                font-size: $body-font-size;
-
-                .button-icon {
-                    margin-right: spacing(0.5);
-                    font-size: px-to-rem(19.2);
-                    transition: color $transitions-base;
-
-                    &--liked {
-                        color: $accent-color-2;
-                    }
-                }
-
-                .button-text {
-                    font-size: $small-font-size;
-                    color: $secondary-text-color;
-                }
-
-                &:hover .button-icon {
-                    color: $accent-color-2;
-                }
-            }
-        }
+    /* Ensure consistent alignment */
+    .blog-post-card__content__title-category__title,
+    .blog-post-card__content__title-category__category {
+        margin-top: spacing(0);
     }
 }

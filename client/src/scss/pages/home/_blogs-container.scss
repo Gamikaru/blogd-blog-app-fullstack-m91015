@@ -26,7 +26,6 @@
             padding-inline: px-to-rem(50);
             max-width: 85%;
             position: relative;
-
         }
 
         &__subtitle {
@@ -38,8 +37,7 @@
             max-width: 70%;
             line-height: 1.6;
             position: relative;
-            left:spacing(10);
-
+            left: spacing(10);
         }
     }
 
@@ -156,6 +154,7 @@
         display: grid;
         gap: spacing(1.5);
         grid-template-columns: repeat(auto-fit, minmax(px-to-rem(280), 1fr));
+        align-items: stretch; // Ensure all cards have the same height
 
         @include respond-to(md) {
             grid-template-columns: repeat(auto-fit, minmax(px-to-rem(250), 1fr));
