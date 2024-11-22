@@ -106,7 +106,7 @@ const TextSlide = memo(({ posts, swiperProps }) => {
                                         <span className="cube-slider__text-slide__excerpt__opening-quote">"</span>
                                         {post.excerpt}
                                         <span className="cube-slider__text-slide__excerpt__closing-group">
-                                            <span className="cube-slider__text-slide__excerpt__closing-quote">"</span>
+                                            <span className="cube-slider__text-slide__excerpt__closing-group__closing-quote">"</span>
                                         </span>
                                     </span>
                                 </div>

@@ -38,10 +38,14 @@ export const PostProvider = ({ children }) => {
         setLoading(true);
         try {
             const data = await fetchAllPosts({ page, limit });
-            const postsWithId = data.posts.map(post => ({
-                ...post,
-                postId: post.postId || post._id,
-            }));
+            logger.info(`Fetched ${data.posts.length} posts. Each post should include likesBy.`);
+            const postsWithId = data.posts.map(post => {
+                logger.debug(`Post ID: ${post.postId || post._id}, likesBy: ${JSON.stringify(post.likesBy)}`);
+                return {
+                    ...post,
+                    postId: post.postId || post._id,
+                };
+            });
             setPosts(postsWithId);
             setPaginationInfo({
                 totalPosts: data.totalPosts,
@@ -113,6 +117,7 @@ export const PostProvider = ({ children }) => {
     const like = useCallback(async (postId) => {
         try {
             const data = await likePost(postId);
+            logger.info(`Post ${postId} liked by user.`);
             setPosts((prevPosts) =>
                 prevPosts.map((post) =>
                     post.postId === postId
@@ -128,6 +133,7 @@ export const PostProvider = ({ children }) => {
     const unlike = useCallback(async (postId) => {
         try {
             const data = await unlikePost(postId);
+            logger.info(`Post ${postId} unliked by user.`);
             setPosts((prevPosts) =>
                 prevPosts.map((post) =>
                     post.postId === postId

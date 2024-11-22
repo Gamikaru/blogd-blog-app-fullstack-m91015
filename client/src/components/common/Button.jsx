@@ -85,7 +85,7 @@ const variantIcons = {
 
     // Additional Variants
     noIcon: null,
-    iconButton: null, // Will be handled via variantClasses
+    iconButton: null, // Handled via icon prop
 };
 
 // Mapping button variants to SCSS classes
@@ -121,11 +121,17 @@ const Button = React.memo(
         // Determine the icon component to use
         const IconComponent = useMemo(() => icon || variantIcons[variant], [icon, variant]);
 
+        // Determine motion properties
+        const motionProps =
+            variant === 'iconButton' && !shouldReduceMotion
+                ? {}
+                : {
+                    whileHover: { scale: 1.01, transition: { duration: 0.2 } },
+                    whileTap: { scale: 0.99, transition: { duration: 0.1 } },
+                };
+
         return (
-            <motion.div
-                whileHover={!shouldReduceMotion ? { scale: 1.02 } : undefined}
-                whileTap={!shouldReduceMotion ? { scale: 0.98 } : undefined}
-            >
+            <motion.div {...motionProps}>
                 <Component
                     className={clsx(
                         'button',

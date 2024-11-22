@@ -1,11 +1,12 @@
-// src/components/BlogCard.jsx
-
 import { Button, CustomTagIcon, LazyImage } from '@components';
 import { usePostContext } from '@contexts/PostContext';
-import { useUser } from '@contexts/UserContext'; // Import useUser
+import { useUser } from '@contexts/UserContext';
+import logger from '@utils/logger'; // Ensure logger is imported
 import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 import { memo, useCallback } from 'react';
+import { FaHeart } from 'react-icons/fa';
+import { FiHeart } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 
 const cardVariants = {
@@ -24,30 +25,28 @@ const cardVariants = {
     },
 };
 
-const likeButtonVariants = {
-    tap: { scale: 0.9 },
-};
-
 const BlogCard = memo(function BlogCard({ post, author }) {
     const navigate = useNavigate();
     const { like, unlike } = usePostContext();
-    const { user } = useUser(); // Access user from context
+    const { user } = useUser();
 
-    const userId = user?.userId || user?._id; // Safely get userId
+    const userId = user?.userId || user?._id;
+
+    // Log userId and post.likesBy
+    logger.info(`BlogCard Rendered: postId=${post.postId}, userId=${userId}, likesBy=${JSON.stringify(post.likesBy)}`);
 
     const handleLikeClick = useCallback(
-        (e) => {
-            e.stopPropagation(); // Prevent card click
+        async (e) => {
+            e.stopPropagation();
             if (!userId) {
-                // Optionally, you can navigate to login or show a message
                 console.warn('User not authenticated');
                 return;
             }
             const postId = post.postId || post._id;
-            if (post.likesBy?.map(id => id.toString()).includes(userId)) { // Use userId from context
-                unlike(postId);
+            if (post.likesBy?.includes(userId)) {
+                await unlike(postId);
             } else {
-                like(postId);
+                await like(postId);
             }
         },
         [post, userId, like, unlike]
@@ -58,10 +57,10 @@ const BlogCard = memo(function BlogCard({ post, author }) {
         post,
     ]);
 
-    const isLiked = userId && post.likesBy?.map(id => id.toString()).includes(userId); // Use userId from context
+    const isLiked = userId && post.likesBy?.includes(userId);
 
-    // Debugging: Log post.category
-    console.log(`Rendering BlogCard for category: ${post.category}`);
+    // Log isLiked state
+    logger.info(`isLiked for postId=${post.postId}: ${isLiked}`);
 
     return (
         <motion.div
@@ -113,38 +112,27 @@ const BlogCard = memo(function BlogCard({ post, author }) {
                         {post.category ? (
                             <CustomTagIcon className="blog-post-card__content__title-category__category__icon" text={post.category} />
                         ) : (
-                            // Placeholder to maintain layout consistency
                             <span className="blog-post-card__content__title-category__category__text"></span>
                         )}
                     </div>
                 </div>
 
-                {/* <div className="blog-post-card__content__content-text">
-                    <span className="blog-post-card__content__content-text__quote">
-                        <span className="blog-post-card__content__content-text__quote__opening-quote">"</span>
-                        {truncatedContent}
-                        <span className="blog-post-card__content__content-text__quote__closing-group">
-                            <span className="blog-post-card__content__content-text__quote__closing-quote">"</span>
-                        </span>
-                    </span>
-                </div> */}
-
                 <div className="blog-post-card__content__interactions">
                     <Button
-                        className="blog-post-card__content__interactions__like-button"
                         onClick={handleLikeClick}
-                        aria-label={isLiked ? 'Unlike' : 'Like'}
                         variant="iconButton"
+                        aria-label={isLiked ? 'Unlike' : 'Like'}
                         filled={isLiked}
                     >
-                        <motion.span
-                            className={`blog-post-card__content__interactions__like-button__heart-icon ${isLiked ? 'blog-post-card__content__interactions__like-button__heart-icon--liked' : ''}`}
-                            variants={likeButtonVariants}
-                            whileTap="tap"
-                            aria-hidden="true"
-                        ></motion.span>
-                        <span className="blog-post-card__content__interactions__like-button__likes-count">{post.likes}</span>
+                        <motion.div
+                            initial={{ scale: 1 }}
+                            animate={{ scale: 1 }}
+                            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                        >
+                            {isLiked ? <FaHeart /> : <FiHeart />}
+                        </motion.div>
                     </Button>
+                    <span className="blog-post-card__content__interactions__like-button__likes-count">{post.likes}</span>
                 </div>
             </div>
         </motion.div>
@@ -176,7 +164,6 @@ BlogCard.propTypes = {
         category: PropTypes.string,
     }).isRequired,
     author: PropTypes.string.isRequired,
-    // Removed 'cookie' prop
 };
 
 export default BlogCard;

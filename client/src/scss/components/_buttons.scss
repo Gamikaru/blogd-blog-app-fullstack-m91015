@@ -17,9 +17,9 @@
     align-items: center; // Vertically center items
     justify-content: center; // Center align text and icons
     transition:
-        background-color 0.7s ease,
-        color 0.7s ease,
-        opacity 0.7s ease; // Smooth and subtle transitions
+        background-color 0.3s ease, // Reduced transition duration
+        color 0.3s ease,
+        opacity 0.3s ease; // Smooth and subtle transitions
     max-width: 100%; // Allow buttons to take full width of their container
     cursor: pointer; // Pointer cursor on hover
     height: 40px; // Increased height for better click area
@@ -46,6 +46,16 @@
         margin-right: 0.5rem; // Space between icon and text
         display: inline-flex;
         align-items: center;
+    }
+}
+
+// Icon-Only Button Modifier
+.icon-only {
+    width: 40px; // Fixed width
+    height: 40px; // Fixed height
+    padding: 0; // Remove padding
+    .button-icon {
+        margin-right: 0; // Remove margin
     }
 }
 
@@ -246,7 +256,8 @@
     .button-warning,
     .button-info,
     .button-settings,
-    .button-secondary {
+    .button-secondary,
+    .icon-only {
         max-width: 100%; // Override any max-width restrictions
         justify-content: center; // Center align text and icons
     }
@@ -259,7 +270,7 @@
     background: none;
     border: none;
     cursor: pointer;
-    transition: color 0.7s ease;
+    transition: color 0.3s ease;
 
     &:hover {
         color: $accent-color-2;

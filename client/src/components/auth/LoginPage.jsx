@@ -3,7 +3,6 @@
 
 import debounce from 'lodash.debounce';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Card } from 'react-bootstrap';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
@@ -96,75 +95,71 @@ const LoginPage = () => {
 
     return (
         <div className="login-page">
-            <div className="login-container d-flex flex-column justify-content-center align-items-center">
+            <div className="login-container">
                 <img
                     alt="CodeBlogs logo"
                     className="logo-image"
                     src="/assets/images/High-Resolution-Logo-Black-on-Transparent-Background.png"
                 />
 
-                <div className="login-card-container w-100 d-flex justify-content-center">
-                    <Card className="login-card">
-                        <Card.Body>
-                            <h1 className="login-card-header">Welcome</h1>
-                            <form onSubmit={handleLogin}>
-                                <div className="login-input-container">
-                                    <InputField
-                                        value={loginForm.email}
-                                        onChange={handleChange('email')}
-                                        onBlur={() => handleBlur('email')}
-                                        placeholder="Enter your email"
-                                        className={`login-input-field ${errors.email ? 'invalid-input' : ''}`}
-                                        error={errors.email}
-                                        type="email"
-                                    />
-                                </div>
+                <div className="login-card">
+                    <h1 className="login-card-header">Welcome</h1>
+                    <form onSubmit={handleLogin}>
+                        <div className="login-input-container">
+                            <InputField
+                                value={loginForm.email}
+                                onChange={handleChange('email')}
+                                onBlur={() => handleBlur('email')}
+                                placeholder="Enter your email"
+                                className={`login-input-field ${errors.email ? 'invalid-input' : ''}`}
+                                error={errors.email}
+                                type="email"
+                            />
+                        </div>
 
-                                <div className="login-input-container password-container">
-                                    <InputField
-                                        value={loginForm.password}
-                                        onChange={handleChange('password')}
-                                        placeholder="Enter your password"
-                                        type={showPassword ? 'text' : 'password'}
-                                        className={`login-input-field ${errors.password ? 'invalid-input' : ''}`}
-                                        error={errors.password}
-                                    />
-                                    <Button
-                                        type="button"
-                                        onClick={() => setShowPassword((prev) => !prev)}
-                                        className="button button-icon"
-                                        aria-label="Toggle password visibility"
-                                        variant="iconButton"
-                                        icon={showPassword ? FaEye : FaEyeSlash}
-                                        showIcon={true}
-                                        aria-pressed={showPassword}
-                                    />
-                                </div>
-
-                                <div className="login-submit-container">
-                                    <Button
-                                        variant="submit"
-                                        type="submit"
-                                    >
-                                        Log In
-                                    </Button>
-                                </div>
-                            </form>
-
-                            <div className="text-center">
-                                <p className="register-text">
-                                    Not yet registered?{' '}
-                                    <span
-                                        className="register-link"
-                                        onClick={() => togglePublicModal('register')}
-                                        aria-label="Sign up now!"
-                                    >
-                                        Sign up now!
-                                    </span>
-                                </p>
+                        <div className="login-input-container password-group">
+                            <div className="password-input-wrapper">
+                                <InputField
+                                    value={loginForm.password}
+                                    onChange={handleChange('password')}
+                                    placeholder="Enter your password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    className={`login-input-field ${errors.password ? 'invalid-input' : ''}`}
+                                    error={errors.password}
+                                />
+                                <Button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    variant="iconButton"
+                                    icon={showPassword ? FaEye : FaEyeSlash} // Pass the icon here
+                                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                                />
                             </div>
-                        </Card.Body>
-                    </Card>
+                        </div>
+
+                        <div className="login-submit-container">
+                            <Button
+                                type="submit"
+                                variant="submit"
+                            >
+                                Log In
+                            </Button>
+                        </div>
+                    </form>
+
+                    <div className="register-container">
+                        <p className="register-text">
+                            Not yet registered?{' '}
+                            <span
+                                className="register-link"
+                                onClick={() => togglePublicModal('register')}
+                                role="button"
+                                tabIndex={0}
+                            >
+                                Sign up now!
+                            </span>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -172,3 +167,4 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
