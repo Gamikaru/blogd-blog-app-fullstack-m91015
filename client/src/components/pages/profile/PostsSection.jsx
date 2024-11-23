@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { FiBook, FiFilter, FiSearch } from 'react-icons/fi';
 import Masonry from 'react-masonry-css';
 import PostCard from './PostCard';
+import { usePostContext } from '@contexts';
 
 const searchInputVariants = {
     hidden: { width: 0, opacity: 0 },
@@ -16,7 +17,8 @@ const filterDropdownVariants = {
     exit: { opacity: 0, y: -20, scale: 0.95 },
 };
 
-const PostsSection = ({ userPosts, isOwnProfile }) => {
+const PostsSection = ({ isOwnProfile }) => {
+    const { posts } = usePostContext();
     const [activeTab, setActiveTab] = useState('recent');
     const [searchQuery, setSearchQuery] = useState('');
     const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -45,7 +47,7 @@ const PostsSection = ({ userPosts, isOwnProfile }) => {
     };
 
     const filteredPosts = () => {
-        let filtered = userPosts;
+        let filtered = posts;
 
         if (activeTab === 'recent') {
             filtered = filtered
@@ -53,7 +55,7 @@ const PostsSection = ({ userPosts, isOwnProfile }) => {
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                 .slice(0, 10); // Example: latest 10 posts
         } else if (activeTab === 'all') {
-            filtered = userPosts;
+            filtered = posts;
         } else if (activeTab === 'archived' || activeTab === 'favorites') {
             filtered = [];
         }
@@ -237,25 +239,6 @@ const PostsSection = ({ userPosts, isOwnProfile }) => {
 };
 
 PostsSection.propTypes = {
-    userPosts: PropTypes.arrayOf(
-        PropTypes.shape({
-            postId: PropTypes.string,
-            _id: PropTypes.string,
-            content: PropTypes.string.isRequired,
-            createdAt: PropTypes.string.isRequired,
-            title: PropTypes.string,
-            category: PropTypes.string,
-            imageUrls: PropTypes.arrayOf(PropTypes.string),
-            images: PropTypes.arrayOf(
-                PropTypes.shape({
-                    data: PropTypes.string.isRequired,
-                })
-            ),
-            excerpt: PropTypes.string,
-            isArchived: PropTypes.bool,
-            isFavorite: PropTypes.bool,
-        })
-    ).isRequired,
     isOwnProfile: PropTypes.bool.isRequired,
 };
 

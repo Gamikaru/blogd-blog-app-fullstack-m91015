@@ -6,6 +6,7 @@ import {
     createPost,
     deletePostById,
     fetchAllPosts,
+    fetchPostsByUser,
     fetchTopLikedPosts,
     likePost,
     unlikePost,
@@ -79,6 +80,18 @@ export const PostProvider = ({ children }) => {
         }
     }, []);
 
+    const loadPostsByUser = useCallback(async (userId) => {
+        setLoading(true);
+        try {
+            const data = await fetchPostsByUser(userId);
+            setPosts(data.posts);
+        } catch (error) {
+            logger.error('Error loading user posts:', error);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
     const addPost = useCallback(async (formData) => {
         try {
             const newPost = await createPost(formData);
@@ -93,17 +106,20 @@ export const PostProvider = ({ children }) => {
         try {
             const response = await updatePostById(postId, formData);
             const updatedPost = response.post;
-            const postWithId = { ...updatedPost, postId: updatedPost.postId || updatedPost._id };
+            const postWithId = {
+                ...updatedPost,
+                postId: updatedPost.postId || updatedPost._id,
+            };
             setPosts((prevPosts) =>
                 prevPosts.map((post) => (post.postId === postId ? postWithId : post))
             );
-            // Optionally return success message or updated post
+            // No need to reload posts if state is updated correctly
             return { success: true, message: response.message };
         } catch (error) {
             logger.error('Error updating post:', error);
             throw error;
         }
-    }, []);
+    }, [setPosts]);
 
     const removePost = useCallback(async (postId) => {
         try {
@@ -163,6 +179,7 @@ export const PostProvider = ({ children }) => {
             selectedPost,       // Provided selectedPost
             setSelectedPost,    // Provided setSelectedPost
             refreshPosts,       // Provided refreshPosts
+            loadPostsByUser,    // Provided loadPostsByUser
         }),
         [
             posts,
@@ -178,6 +195,7 @@ export const PostProvider = ({ children }) => {
             removePost,
             like,
             unlike,
+            loadPostsByUser,
         ]
     );
 

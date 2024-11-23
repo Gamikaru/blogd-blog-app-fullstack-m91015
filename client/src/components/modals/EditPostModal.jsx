@@ -178,7 +178,7 @@ export default function EditPostModal() {
                 </div>
 
                 <div className="edit-post-modal__sidebar">
-                    <h2 className="edit-post-modal__sidebar-title">Edit Post Settings</h2>
+                    <h2 className="edit-post-modal__sidebar-title">Edit Your Post</h2>
 
                     {/* Category Selection */}
                     <div className="toolbar-group toolbar-group__basics">

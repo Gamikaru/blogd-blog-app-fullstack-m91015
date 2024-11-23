@@ -1,5 +1,5 @@
 import { Button } from '@components'; // Assuming you have a Modal component
-import { useNotificationContext, usePostContext, usePrivateModalContext } from '@contexts';
+import { useNotificationContext, usePostContext, usePrivateModalContext, useUser } from '@contexts';
 import { deletePostById } from '@services/api'; // Ensure these functions are correctly implemented
 import { logger } from '@utils';
 import { formatDistanceToNow } from 'date-fns';
@@ -9,7 +9,8 @@ import { memo, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const PostCard = memo(({ post, isOwnProfile }) => {
-    const { setPosts, refreshPosts, setSelectedPost } = usePostContext();
+    const { user } = useUser(); // Get the current user
+    const { setPosts, loadPostsByUser, setSelectedPost } = usePostContext();
     const { togglePrivateModal } = usePrivateModalContext();
     const { showNotification } = useNotificationContext();
     const [isDeleting, setIsDeleting] = useState(false);
@@ -24,7 +25,8 @@ const PostCard = memo(({ post, isOwnProfile }) => {
             // Small delay to allow animation to complete
             setTimeout(() => {
                 setPosts((prevPosts) => prevPosts.filter((p) => p.postId !== post.postId && p._id !== post._id));
-                refreshPosts();
+                // Refresh the current user's posts
+                loadPostsByUser(user.userId);
             }, 300);
             showNotification('Post deleted successfully!', 'success');
         } catch (error) {
@@ -33,7 +35,7 @@ const PostCard = memo(({ post, isOwnProfile }) => {
         } finally {
             setIsDeleting(false);
         }
-    }, [post, setPosts, refreshPosts, showNotification]);
+    }, [post, setPosts, loadPostsByUser, user.userId, showNotification]);
 
     // Confirmation before deleting a post using toast
     const confirmDeletePost = useCallback((e) => {

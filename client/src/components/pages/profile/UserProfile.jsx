@@ -1,7 +1,7 @@
 // src/components/UserProfile/UserProfile.jsx
 
-import { useNotificationContext, useUser, useUserUpdate } from '@contexts';
-import { fetchPostsByUser, userService } from '@services/api';
+import { useNotificationContext, useUser, useUserUpdate, usePostContext } from '@contexts';
+import { userService } from '@services/api';
 import { logger } from '@utils';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -14,8 +14,8 @@ const UserProfile = () => {
     const { user, loading: userLoading } = useUser();
     const { updateUser } = useUserUpdate();
     const { showNotification } = useNotificationContext();
+    const { loadPostsByUser, posts } = usePostContext();
     const [profileUser, setProfileUser] = useState(user);
-    const [userPosts, setUserPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [status, setStatus] = useState(user.status || '');
     const [statusLoading, setStatusLoading] = useState(false);
@@ -32,18 +32,16 @@ const UserProfile = () => {
                     setStatus(user.status || '');
                 }
 
-                const response = await fetchPostsByUser(userId || user.userId);
-                setUserPosts(Array.isArray(response.posts) ? response.posts : []);
+                loadPostsByUser(userId || user.userId);
             } catch (error) {
                 logger.error('Error loading profile:', error);
-                setUserPosts([]);
             } finally {
                 setLoading(false);
             }
         };
 
         loadProfile();
-    }, [userId, user]);
+    }, [userId, user, loadPostsByUser]);
 
     if (loading || userLoading) {
         return <div className="profile-page-container__loading-spinner">Loading profile...</div>;
@@ -95,7 +93,7 @@ const UserProfile = () => {
                 {/* Sidebar Column */}
                 <ProfileSidebar
                     profileUser={profileUser}
-                    userPosts={userPosts}
+                    userPosts={posts}
                     isOwnProfile={isOwnProfile}
                 />
 
@@ -103,7 +101,7 @@ const UserProfile = () => {
                 <div className="profile-page-container__profile-main">
                     {/* Posts Section */}
                     <PostsSection
-                        userPosts={userPosts}
+                        userPosts={posts}
                         isOwnProfile={isOwnProfile}
                     />
                 </div>

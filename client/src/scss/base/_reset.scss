@@ -75,6 +75,8 @@ h1 {
 
 h2 {
     @include heading-style($heading-font-size-md, $heading-font-size-sm);
+
+    font-family: $font-family-heading;
 }
 
 h3,

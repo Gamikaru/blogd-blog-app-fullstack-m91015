@@ -99,7 +99,7 @@ export default function PostModal() {
                 </div>
 
                 <div className="post-modal__sidebar">
-                    <h2 className="post-modal__title">Create a Blog</h2>
+                    <h2 className="post-modal__title">Create a Post</h2>
                     <div className="toolbar-group toolbar-group__basics">
                         <h6 className="toolbar-group__title">Category</h6>
                         <div className="toolbar-group__content">
