@@ -1,53 +1,70 @@
-// _footer.scss
-
+// Footer Styles
 .footer {
     background-color: $primary-bg-color;
-    padding: $spacing-lg;
-    text-align: center;
     border-top: 1px solid $border-color;
+    box-shadow: $box-shadow-strong;
+    color: $primary-text-color;
+    margin-top: $spacing-xxl2;
+    padding: $spacing-lg;
     position: relative;
-    z-index: -3;
-    margin-top: $spacing-xxl;
+    z-index: map.get($z-indices, modal) + 1; // Ensure higher z-index
 
-    .footer-content {
-        display: flex;
+    .footer__content {
+        @include flex-center;
+
         flex-direction: column;
-        align-items: center;
+        gap: $spacing-lg;
+        padding: $spacing-md;
+
+        @include respond-to(md) {
+            flex-direction: column;
+        }
+    }
+
+    .footer__links {
+        @include flex-center;
+
         gap: $spacing-md;
 
-        .footer-links {
-            display: flex;
-            gap: $spacing-md;
+        a {
+            color: $primary-text-color;
+            font-size: $body-font-size;
+            text-decoration: none;
+            transition: color $transitions-base;
 
-            a {
-                color: $primary-text-color;
-                text-decoration: none;
-                font-size: $body-font-size;
-
-                &:hover {
-                    color: $highlight-color;
-                    text-decoration: underline;
-                }
+            &:hover {
+                color: $highlight-color;
+                text-decoration: underline;
             }
         }
+    }
 
-        .footer-social {
-            display: flex;
-            gap: $spacing-md;
+    .footer__social {
+        @include flex-center;
 
-            a {
-                color: $primary-text-color;
-                font-size: $heading-font-size-md;
+        gap: $spacing-md;
 
-                &:hover {
-                    color: $highlight-color;
-                }
+        a {
+            color: $primary-text-color;
+            font-size: $heading-font-size-md;
+            transition: color $transitions-base;
+
+            &:hover {
+                color: $highlight-color;
             }
         }
+    }
 
-        .footer-copy {
-            color: $secondary-text-color;
-            font-size: $small-font-size;
-        }
+    .footer__copy {
+        color: $secondary-text-color;
+        font-size: $small-font-size;
+        margin-top: $spacing-md;
+        text-align: center;
+    }
+}
+
+@media (max-width: $breakpoint-md) {
+    .footer {
+        padding: $spacing-md;
     }
 }

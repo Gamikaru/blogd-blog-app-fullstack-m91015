@@ -1,173 +1,162 @@
 // src/components/BlogsContainer.scss
 
 .blogs-container {
-    padding: spacing(4);
-    padding-top: spacing(12);
     background-color: $primary-bg-color;
     color: $primary-text-color;
+    justify-self: center;
+    padding: spacing(4);
+    padding-bottom: spacing(5);
+    padding-top: spacing(12);
+    position: relative;
     width: 75vw;
     z-index: 0;
+}
+
+.blogs-container__header {
+    left: spacing(8);
     position: relative;
-    justify-self: center;
-    padding-bottom: spacing(5);
+    text-align: right;
+    top: spacing(-18);
+}
 
-    &__header {
-        text-align: right;
-        position: relative;
-        top: spacing(-18);
-        left: spacing(8);
+.blogs-container__title {
+    @include page-title;
 
-        &__title {
-            @include page-title;
-            font-weight: bold;
-            color: $primary-text-color;
-            margin: 0;
-            margin-left: $spacing-xs;
-            padding-inline: px-to-rem(50);
-            max-width: 85%;
-            position: relative;
-        }
+    margin: 0;
+    margin-left: $spacing-xs;
+    max-width: 85%;
+    padding-inline: px-to-rem(50);
+    position: relative;
+}
 
-        &__subtitle {
-            @include page-subtitle;
-            font-size: clamp(1rem, 2.5vw, 1.5rem);
-            font-family: $font-family-primary;
-            font-style: italic;
-            color: $secondary-text-color;
-            max-width: 70%;
-            line-height: 1.6;
-            position: relative;
-            left: spacing(10);
-        }
+.blogs-container__subtitle {
+    @include page-subtitle;
+
+    left: spacing(10);
+    line-height: 1.6;
+    max-width: 70%;
+    position: relative;
+}
+
+.blogs-container__filter-search-container {
+    align-items: center;
+    display: flex;
+    gap: spacing(1);
+    margin-top: spacing(-15);
+    padding-top: spacing(1);
+    position: relative;
+}
+
+.blogs-container__filter-container,
+.blogs-container__search-container {
+    align-items: center;
+    display: flex;
+    margin-top: spacing(-5);
+    position: relative;
+}
+
+.blogs-container__icon {
+    @include filter-search-icon;
+}
+
+.blogs-container__dropdown {
+    background-color: $secondary-bg-color;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow-strong;
+    left: 0;
+    opacity: 1;
+    padding: spacing(1);
+    pointer-events: auto;
+    position: absolute;
+    top: calc(100% + spacing(1));
+    transform: translateY(0);
+    width: px-to-rem(250);
+    z-index: 1000;
+}
+
+.blogs-container__option {
+    margin-bottom: spacing(1);
+}
+
+.blogs-container__option label {
+    color: $primary-text-color;
+    display: block;
+    font-size: $small-font-size;
+    margin-bottom: spacing(0.5);
+}
+
+.blogs-container__option input,
+.blogs-container__option select {
+    background-color: color.adjust($primary-bg-color, $lightness: 5%);
+    border: 1px solid color.adjust($secondary-bg-color, $lightness: 20%);
+    border-radius: $border-radius;
+    color: $primary-text-color;
+    font-size: $body-font-size;
+    padding: spacing(0.5);
+    transition: border-color $transitions-base;
+    width: 100%;
+}
+
+.blogs-container__option input:focus,
+.blogs-container__option select:focus {
+    border-color: $accent-color-2;
+    outline: none;
+}
+
+.blogs-container__actions {
+    text-align: center;
+}
+
+.blogs-container__actions button {
+    @include button-style($accent-color-2, $primary-text-color);
+
+    font-size: $body-font-size;
+    padding: spacing(0.5) spacing(1);
+}
+
+.blogs-container__actions button:hover {
+    background-color: color.adjust($accent-color-2, $lightness: -10%);
+}
+
+.blogs-container__search-input {
+    background-color: color.adjust($primary-bg-color, $lightness: 5%);
+    border: 1px solid color.adjust($secondary-bg-color, $lightness: 20%);
+    border-radius: $border-radius;
+    color: $primary-text-color;
+    display: block;
+    font-size: $body-font-size;
+    left: calc(100% + spacing(1));
+    opacity: 1;
+    padding: spacing(0.5);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: border-color $transitions-base;
+    width: px-to-rem(200);
+}
+
+.blogs-container__search-input:focus {
+    border-color: $accent-color-2;
+    outline: none;
+}
+
+.blogs-container__posts-grid {
+    align-items: stretch; // Ensure all cards have the same height
+    display: grid;
+    gap: spacing(1.5);
+    grid-template-columns: repeat(auto-fit, minmax(px-to-rem(280), 1fr));
+
+    @include respond-to(md) {
+        grid-template-columns: repeat(auto-fit, minmax(px-to-rem(250), 1fr));
     }
 
-    &__filter-search-container {
-        display: flex;
-        align-items: center;
-        gap: spacing(1);
-        padding-top: spacing(1);
-        margin-top: spacing(-15);
-        position: relative;
-
-        &__filter-container,
-        &__search-container {
-            position: relative;
-            display: flex;
-            align-items: center;
-            margin-top: spacing(-5);
-
-            &__icon {
-                font-size: px-to-rem(21);
-                color: $primary-text-color;
-                background: none;
-                border: none;
-                cursor: pointer;
-                transition: color $transitions-base;
-
-                &:hover {
-                    color: $accent-color-2;
-                }
-            }
-
-            &__dropdown {
-                position: absolute;
-                top: calc(100% + spacing(1));
-                left: 0;
-                background-color: $secondary-bg-color;
-                border-radius: $border-radius;
-                box-shadow: $box-shadow-strong;
-                padding: spacing(1);
-                z-index: 1000;
-                width: px-to-rem(250);
-                opacity: 1;
-                transform: translateY(0);
-                pointer-events: auto;
-
-                &__option {
-                    margin-bottom: spacing(1);
-
-                    label {
-                        display: block;
-                        font-size: $small-font-size;
-                        color: $primary-text-color;
-                        margin-bottom: spacing(0.5);
-                    }
-
-                    input,
-                    select {
-                        width: 100%;
-                        padding: spacing(0.5);
-                        border: 1px solid lighten($secondary-bg-color, 20%);
-                        border-radius: $border-radius;
-                        font-size: $body-font-size;
-                        color: $primary-text-color;
-                        background-color: lighten($primary-bg-color, 5%);
-                        transition: border-color $transitions-base;
-
-                        &:focus {
-                            border-color: $accent-color-2;
-                            outline: none;
-                        }
-                    }
-                }
-
-                &__actions {
-                    text-align: center;
-
-                    button {
-                        @include button-style($accent-color-2, $primary-text-color);
-                        padding: spacing(0.5) spacing(1);
-                        font-size: $body-font-size;
-
-                        &:hover {
-                            background-color: darken($accent-color-2, 10%);
-                        }
-                    }
-                }
-            }
-
-            &__search-input {
-                position: absolute;
-                top: 50%;
-                left: calc(100% + spacing(1));
-                transform: translateY(-50%);
-                width: px-to-rem(200);
-                padding: spacing(0.5);
-                border: 1px solid lighten($secondary-bg-color, 20%);
-                border-radius: $border-radius;
-                font-size: $body-font-size;
-                color: $primary-text-color;
-                background-color: lighten($primary-bg-color, 5%);
-                transition: border-color $transitions-base;
-                opacity: 1;
-                display: block;
-
-                &:focus {
-                    border-color: $accent-color-2;
-                    outline: none;
-                }
-            }
-        }
+    @include respond-to(lg) {
+        grid-template-columns: repeat(auto-fit, minmax(px-to-rem(300), 1fr));
     }
+}
 
-    &__posts-grid {
-        display: grid;
-        gap: spacing(1.5);
-        grid-template-columns: repeat(auto-fit, minmax(px-to-rem(280), 1fr));
-        align-items: stretch; // Ensure all cards have the same height
-
-        @include respond-to(md) {
-            grid-template-columns: repeat(auto-fit, minmax(px-to-rem(250), 1fr));
-        }
-
-        @include respond-to(lg) {
-            grid-template-columns: repeat(auto-fit, minmax(px-to-rem(300), 1fr));
-        }
-    }
-
-    &__no-posts-message {
-        text-align: center;
-        font-size: $sub-heading-font-size;
-        color: $secondary-text-color;
-    }
+.blogs-container__no-posts-message {
+    color: $secondary-text-color;
+    font-size: $sub-heading-font-size;
+    text-align: center;
 }

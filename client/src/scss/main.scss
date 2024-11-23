@@ -1,8 +1,10 @@
 // Import styles
 // Import sass modules
+@use "sass:color";
 @use "sass:math";
-
-@import 'bootstrap/scss/bootstrap.scss';
+@use "sass:meta";
+@use "sass:map";
+@import 'bootstrap/scss/bootstrap';
 
 
 
@@ -13,30 +15,17 @@
 
 // Import base styles
 @import "base/reset";
-@import "base/typography";
-@import "base/utilities";
-@import "base/responsive";
-@import "base/animations";
 
 // Import component styles
 @import "components/buttons";
 @import "components/spinner";
 @import "components/carousel";
-
 @import "components/nav/index";
-@import "components/modals/postmodal.variables";
-@import "components/modals/postmodal.layout";
-@import "components/modals/postmodal.components";
-@import "components/modals/editpostmodal";
-@import "components/modals/usermanager";
-@import "components/modals/registermodal";
 @import "components/toast";
 @import "components/forms";
 @import "components/error-boundary";
-@import "components/modals/profile-pic-modal";
-
-
 @import "./layout/footer";
+@import './components/modals/index';
 
 // Import page-specific styles
 @import "pages/blogfullview/index";

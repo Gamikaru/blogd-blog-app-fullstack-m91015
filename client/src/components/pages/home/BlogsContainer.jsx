@@ -6,7 +6,6 @@ import { logger } from '@utils';
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import debounce from 'lodash.debounce';
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-// Removed import of useCookies
 import { FaFilter, FaSearch } from "react-icons/fa";
 import BlogCard from './BlogCard';
 
@@ -32,7 +31,6 @@ const filterDropdownVariants = {
 };
 
 const BlogsContainer = () => {
-    // Removed useCookies
     const { posts, loading, loadPosts } = usePostContext();
     const [showFilterDropdown, setShowFilterDropdown] = useState(false);
     const [showSearchInput, setShowSearchInput] = useState(false);
@@ -153,16 +151,16 @@ const BlogsContainer = () => {
         <div className="blogs-container">
             {/* Title and Subtitle Section */}
             <div className="blogs-container__header">
-                <h1 className="blogs-container__header__title">Discover</h1>
-                <p className="blogs-container__header__subtitle">
+                <h1 className="blogs-container__title">Discover</h1>
+                <p className="blogs-container__subtitle">
                     Explore the best blogs crafted by creative minds around the world. Search, filter, and dive into stories that inspire.
                 </p>
             </div>
             <div className="blogs-container__filter-search-container">
                 {/* Filter Functionality */}
-                <div className="blogs-container__filter-search-container__filter-container" ref={filterRef}>
+                <div className="blogs-container__filter-container" ref={filterRef}>
                     <Button
-                        className="blogs-container__filter-search-container__filter-container__icon"
+                        className="blogs-container__icon"
                         onClick={() => setShowFilterDropdown((prev) => !prev)}
                         variant="iconButton"
                         aria-label="Filter"
@@ -172,14 +170,14 @@ const BlogsContainer = () => {
                     <AnimatePresence>
                         {showFilterDropdown && (
                             <motion.div
-                                className="blogs-container__filter-search-container__filter-container__dropdown"
+                                className="blogs-container__dropdown"
                                 initial="hidden"
                                 animate="visible"
                                 exit="exit"
                                 variants={filterDropdownVariants}
                                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
                             >
-                                <div className="blogs-container__filter-search-container__filter-container__dropdown__option">
+                                <div className="blogs-container__option">
                                     <label htmlFor="author">Author:</label>
                                     <input
                                         type="text"
@@ -190,7 +188,7 @@ const BlogsContainer = () => {
                                         aria-label="Filter by author"
                                     />
                                 </div>
-                                <div className="blogs-container__filter-search-container__filter-container__dropdown__option">
+                                <div className="blogs-container__option">
                                     <label htmlFor="category">Category:</label>
                                     <select
                                         id="category"
@@ -213,7 +211,7 @@ const BlogsContainer = () => {
                                         <option value="Other">Other</option>
                                     </select>
                                 </div>
-                                <div className="blogs-container__filter-search-container__filter-container__dropdown__option">
+                                <div className="blogs-container__option">
                                     <label htmlFor="sortBy">Sort By:</label>
                                     <select
                                         id="sortBy"
@@ -228,7 +226,7 @@ const BlogsContainer = () => {
                                     </select>
                                 </div>
                                 {/* Reset Filters Button */}
-                                <div className="blogs-container__filter-search-container__filter-container__dropdown__option blogs-container__filter-search-container__filter-container__dropdown__option--actions">
+                                <div className="blogs-container__option blogs-container__option--actions">
                                     <Button
                                         onClick={resetFilters}
                                         variant="reset"
@@ -241,9 +239,9 @@ const BlogsContainer = () => {
                         )}
                     </AnimatePresence>
                 </div>
-                <div className="blogs-container__filter-search-container__search-container" ref={searchRef}>
+                <div className="blogs-container__search-container" ref={searchRef}>
                     <Button
-                        className="blogs-container__filter-search-container__search-container__icon"
+                        className="blogs-container__icon"
                         onClick={() => setShowSearchInput((prev) => !prev)}
                         variant="iconButton"
                         aria-label="Search"
@@ -255,7 +253,7 @@ const BlogsContainer = () => {
                         {showSearchInput && (
                             <motion.input
                                 type="text"
-                                className="blogs-container__filter-search-container__search-container__search-input"
+                                className="blogs-container__search-input"
                                 placeholder="Search by author or title"
                                 onChange={handleSearchChange}
                                 initial="hidden"
@@ -287,7 +285,6 @@ const BlogsContainer = () => {
                                     key={post.postId || post._id}
                                     post={post}
                                     author={getAuthor(post)}
-                                    // Removed 'cookie' prop
                                 />
                             ))
                         ) : (

@@ -1,0 +1,74 @@
+// src/components/AccountTab.scss
+// Updated styles for AccountTab component
+
+.account-tab__form {
+    display: grid;
+    gap: $spacing-md;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.account-tab__form-group {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+
+    label {
+        color: $primary-text-color;
+        font-size: $small-font-size;
+    }
+
+    input,
+    select {
+        background: $primary-bg-color;
+        border: 1px solid rgb(0 0 0 / 8%);
+        border-radius: $border-radius;
+        color: $primary-text-color;
+        font-size: $body-font-size;
+        padding: $spacing-sm;
+        transition: all 0.2s ease;
+
+        &:focus {
+            border-color: $highlight-color;
+            box-shadow: 0 0 0 3px rgba($highlight-color, 0.25);
+            outline: none;
+        }
+    }
+
+    input[type="file"] {
+        padding: $spacing-xs;
+
+        &::-webkit-file-upload-button {
+            display: none;
+        }
+
+        &::before {
+            background-color: $accent-color-2;
+            border: 1px solid $accent-color-1;
+            border-radius: $border-radius;
+            color: $secondary-text-color;
+            content: "Choose file";
+            cursor: pointer;
+            display: inline-block;
+            margin-right: $spacing-xs;
+            padding: $spacing-xs $spacing-sm;
+        }
+    }
+
+    .account-tab__error {
+        color: $error-color;
+        font-size: $xsmall-font-size;
+        margin-top: 2px;
+    }
+}
+
+.account-tab__form > .button {
+    grid-column: 1 / -1;
+    justify-self: end;
+    margin-top: $spacing-md;
+}
+
+@media (max-width: $breakpoint-md) {
+    .account-tab__form {
+        grid-template-columns: 1fr;
+    }
+}

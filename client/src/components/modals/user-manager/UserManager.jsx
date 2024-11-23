@@ -1,22 +1,26 @@
 // UserManager.jsx
-import { Button } from '@components';
 import { useNotificationContext, useUser, useUserUpdate } from '@contexts';
 import { AnimatePresence, motion } from 'framer-motion';
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { FiLock, FiMail, FiSettings, FiUser } from 'react-icons/fi';
 import AccountTab from './AccountTab';
 import NotificationsTab from './NotificationsTab';
 import ProfileTab from './ProfileTab';
 import SecurityTab from './SecurityTab';
-import PropTypes from 'prop-types';
-
 
 const tabs = [
     { id: 'profile', label: 'Profile', icon: <FiUser /> },
     { id: 'account', label: 'Account', icon: <FiSettings /> },
     { id: 'security', label: 'Security', icon: <FiLock /> },
-    { id: 'notifications', label: 'Notifications', icon: <FiMail /> }
+    { id: 'notifications', label: 'Notifications', icon: <FiMail /> },
 ];
+
+const tabVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: 20 },
+};
 
 const UserManager = ({ onClose }) => {
     const { user, loading } = useUser();
@@ -24,99 +28,131 @@ const UserManager = ({ onClose }) => {
     const { showNotification } = useNotificationContext();
     const [activeTab, setActiveTab] = useState('profile');
 
+    const handleTabClick = (tabId) => {
+        setActiveTab(tabId);
+    };
+
     const renderTabContent = () => {
+        let ContentComponent;
+
         switch (activeTab) {
             case 'profile':
-                return (
+                ContentComponent = (
                     <ProfileTab
                         user={user}
                         setUser={setUser}
                         showNotification={showNotification}
                     />
                 );
+                break;
             case 'account':
-                return (
+                ContentComponent = (
                     <AccountTab
                         user={user}
                         setUser={setUser}
                         showNotification={showNotification}
                         loading={loading}
-                        // Pass setLoading if AccountTab requires it
                     />
                 );
+                break;
             case 'security':
-                return (
+                ContentComponent = (
                     <SecurityTab
                         user={user}
                         setUser={setUser}
                         showNotification={showNotification}
                         loading={loading}
-                        // Pass setLoading if SecurityTab requires it
                     />
                 );
+                break;
             case 'notifications':
-                return (
+                ContentComponent = (
                     <NotificationsTab
                         user={user}
                         setUser={setUser}
                         showNotification={showNotification}
                         loading={loading}
-                        // Pass setLoading if NotificationsTab requires it
                     />
                 );
+                break;
             default:
-                return <div className="usermanager-content__coming-soon">Content coming soon.</div>;
+                ContentComponent = (
+                    <div className="user-manager__no-content-message">
+                        Content coming soon.
+                    </div>
+                );
+                break;
         }
+
+        return (
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={activeTab}
+                    variants={tabVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    transition={{ duration: 0.3 }}
+                    className="user-manager__tab-content"
+                >
+                    {ContentComponent}
+                </motion.div>
+            </AnimatePresence>
+        );
     };
+
+
 
     return (
         <AnimatePresence>
             <motion.div
-                className="usermanager-wrapper"
+                className="user-manager"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
             >
                 <motion.div
-                    className="usermanager-backdrop"
+                    className="user-manager__backdrop"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     onClick={onClose}
                 />
                 <motion.div
-                    className="usermanager-container"
+                    className="user-manager__container"
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 20 }}
                     transition={{ type: 'spring', damping: 25, stiffness: 300 }}
                 >
-                    <div className="usermanager-header">
-                        <h2 className="usermanager-header__title">Settings</h2>
-                        <Button
-                            variant="close"
-                            className="usermanager-header__close"
+                    <div className="user-manager__header">
+                        <h2 className="user-manager__title">Settings</h2>
+                        <button
+                            className="user-manager__close-button"
                             onClick={onClose}
-                            showIcon={true}
-                        />
+                            aria-label="Close"
+                        >
+                            &times;
+                        </button>
                     </div>
 
-                    <div className="usermanager-tabs">
-                        {tabs.map(tab => (
-                            <Button
-                                key={tab.id}
-                                className={`usermanager-tabs__button ${activeTab === tab.id ? 'active' : ''}`}
-                                onClick={() => setActiveTab(tab.id)}
-                                variant="noIcon"
-                            >
-                                {tab.label}
-                            </Button>
-                        ))}
+                    <div className="user-manager__tabs-and-controls">
+                        <div className="user-manager__tabs">
+                            {tabs.map((tab) => (
+                                <button
+                                    key={tab.id}
+                                    className={`user-manager__tab ${activeTab === tab.id ? 'user-manager__tab--active' : ''
+                                        }`}
+                                    onClick={() => handleTabClick(tab.id)}
+                                >
+                                    {tab.icon}
+                                    {tab.label}
+                                </button>
+                            ))}
+                        </div>
                     </div>
 
-                    <div className="usermanager-content">
-                        {renderTabContent()}
-                    </div>
+                    <div className="user-manager__content">{renderTabContent()}</div>
                 </motion.div>
             </motion.div>
         </AnimatePresence>
@@ -124,7 +160,7 @@ const UserManager = ({ onClose }) => {
 };
 
 UserManager.propTypes = {
-    onClose: PropTypes.func.isRequired, // Declare that onClose is a required function prop
+    onClose: PropTypes.func.isRequired,
 };
 
 export default UserManager;

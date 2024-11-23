@@ -1,48 +1,48 @@
 // ProfilePicModal.scss
 
 .profile-pic-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    align-items: center;
+    animation: fadeIn 0.3s ease-out;
     background-color: $modal-backdrop-color;
     display: flex;
+    height: 100vh;
     justify-content: center;
-    align-items: center;
-    z-index: map-get($z-indices, modal);
-    animation: fadeIn 0.3s ease-out;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    z-index: map.get($z-indices, modal);
 }
 
 .profile-pic-modal-content {
+    align-items: center;
+    animation: slideDown 0.3s ease-out;
     background-color: $secondary-bg-color;
     border: 1px solid $border-color;
     border-radius: $border-radius;
-    padding: $spacing-md;
     box-shadow: $box-shadow-strong;
-    max-width: 500px;
-    width: 90%;
-    position: relative;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    animation: slideDown 0.3s ease-out;
+    max-width: 500px;
+    padding: $spacing-md;
+    position: relative;
+    width: 90%;
 
     img {
-        max-width: 100%;
-        height: auto;
         border-radius: $border-radius;
+        height: auto;
+        max-width: 100%;
     }
 
     .profile-pic-modal-close {
-        position: absolute;
-        top: $spacing-sm;
-        right: $spacing-sm;
         background: none;
         border: none;
-        font-size: 1.5rem;
         color: $primary-text-color;
         cursor: pointer;
+        font-size: 1.5rem;
+        position: absolute;
+        right: $spacing-sm;
+        top: $spacing-sm;
         transition: color $transitions-base;
 
         &:hover {
@@ -55,19 +55,9 @@
     }
 
     .profile-pic-modal-buttons {
-        margin-top: $spacing-md;
         display: flex;
         gap: $spacing-sm;
-
-        .profile-pic-modal-button-replace {
-            @extend .button-edit;
-            /* Additional styles if needed */
-        }
-
-        .profile-pic-modal-button-delete {
-            @extend .button-delete;
-            /* Additional styles if needed */
-        }
+        margin-top: $spacing-md;
 
         @media (max-width: $breakpoint-sm) {
             flex-direction: column;
@@ -75,31 +65,33 @@
 
             .profile-pic-modal-button-replace,
             .profile-pic-modal-button-delete {
-                width: 100%;
                 justify-content: center;
+                width: 100%;
             }
         }
     }
 }
 
 /* Animations */
-@keyframes fadeIn {
+@keyframes fade-in {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
 }
 
-@keyframes slideDown {
+@keyframes slide-down {
     from {
-        transform: translateY(-20px);
         opacity: 0;
+        transform: translateY(-20px);
     }
+
     to {
-        transform: translateY(0);
         opacity: 1;
+        transform: translateY(0);
     }
 }
 

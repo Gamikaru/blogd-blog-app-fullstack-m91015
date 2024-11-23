@@ -1,8 +1,9 @@
 // src/components/SecurityTab.jsx
+
+import { Button } from '@components';
 import { userService } from '@services/api';
 import { logger } from '@utils';
 import { Field, Form, Formik } from 'formik';
-import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 
@@ -44,93 +45,96 @@ const SecurityTab = ({ user, setUser, showNotification, loading, setLoading }) =
         // Add your edit logic here
     };
 
-    const handleDeleteAccount = () => {
-        // Add your delete logic here
+    const handleManageSessions = () => {
+        // Add your manage sessions logic here
     };
 
     return (
-        <Formik
-            initialValues={securityInitialValues}
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-        >
-            {({ errors, touched }) => (
-                <Form className="usermanager-content__form">
-                    <div className="form-group">
-                        <label htmlFor="currentPassword">Current Password</label>
-                        <Field
-                            type="password"
-                            id="currentPassword"
-                            name="currentPassword"
-                            placeholder="Enter current password"
-                        />
-                        {errors.currentPassword && touched.currentPassword && (
-                            <div className="error">{errors.currentPassword}</div>
-                        )}
-                    </div>
+        <div className="security-tab">
+            <Formik
+                initialValues={securityInitialValues}
+                validationSchema={validationSchema}
+                onSubmit={handleSubmit}
+            >
+                {({ errors, touched, isSubmitting }) => (
+                    <Form className="security-tab__form">
+                        <div className="security-tab__form-group">
+                            <label htmlFor="currentPassword">Current Password</label>
+                            <Field
+                                type="password"
+                                id="currentPassword"
+                                name="currentPassword"
+                                placeholder="Enter current password"
+                            />
+                            {errors.currentPassword && touched.currentPassword && (
+                                <div className="security-tab__error">{errors.currentPassword}</div>
+                            )}
+                        </div>
 
-                    <div className="form-group">
-                        <label htmlFor="newPassword">New Password</label>
-                        <Field
-                            type="password"
-                            id="newPassword"
-                            name="newPassword"
-                            placeholder="Enter new password"
-                        />
-                        {errors.newPassword && touched.newPassword && (
-                            <div className="error">{errors.newPassword}</div>
-                        )}
-                    </div>
+                        <div className="security-tab__form-group">
+                            <label htmlFor="newPassword">New Password</label>
+                            <Field
+                                type="password"
+                                id="newPassword"
+                                name="newPassword"
+                                placeholder="Enter new password"
+                            />
+                            {errors.newPassword && touched.newPassword && (
+                                <div className="security-tab__error">{errors.newPassword}</div>
+                            )}
+                        </div>
 
-                    <div className="form-group">
-                        <label htmlFor="confirmPassword">Confirm New Password</label>
-                        <Field
-                            type="password"
-                            id="confirmPassword"
-                            name="confirmPassword"
-                            placeholder="Confirm new password"
-                        />
-                        {errors.confirmPassword && touched.confirmPassword && (
-                            <div className="error">{errors.confirmPassword}</div>
-                        )}
-                    </div>
+                        <div className="security-tab__form-group">
+                            <label htmlFor="confirmPassword">Confirm New Password</label>
+                            <Field
+                                type="password"
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                placeholder="Confirm new password"
+                            />
+                            {errors.confirmPassword && touched.confirmPassword && (
+                                <div className="security-tab__error">{errors.confirmPassword}</div>
+                            )}
+                        </div>
 
-                    <div className="form-group">
-                        <label>Two-Factor Authentication</label>
-                        <motion.button
-                            type="button"
-                            className="button swiper-button-next"
-                            onClick={handleEditNotifications}
+                        <div className="security-tab__form-group">
+                            <label>Two-Factor Authentication</label>
+                            <Button
+                                onClick={handleEditNotifications}
+                                variant="settings"
+                            >
+                                Enable 2FA
+                            </Button>
+                        </div>
+
+                        <div className="security-tab__form-group">
+                            <label>Active Sessions</label>
+                            <Button
+                                type="button"
+                                onClick={handleManageSessions}
+                                variant="settings2"
+                            >
+                                Manage Sessions
+                            </Button>
+                        </div>
+
+                        {errors.general && (
+                            <div className="security-tab__error security-tab__general-error">
+                                {errors.general}
+                            </div>
+                        )}
+
+                        <Button
+                            type="submit"
+                            disabled={isSubmitting || loading}
+                            variant="submit"
                         >
-                            Enable 2FA
-                        </motion.button>
-                    </div>
-
-                    <div className="form-group">
-                        <label>Active Sessions</label>
-                        <motion.button
-                            type="button"
-                            className="button button-general"
-                            onClick={handleDeleteAccount}
-                        >
-                            Manage Sessions
-                        </motion.button>
-                    </div>
-
-                    {errors.general && (
-                        <div className="error general-error">{errors.general}</div>
-                    )}
-
-                    <motion.button
-                        className="button button-submit"
-                        type="submit"
-                        disabled={loading}
-                    >
-                        Update Security Settings
-                    </motion.button>
-                </Form>
-            )}
-        </Formik>
+                            Update Security Settings
+                        </Button>
+                    </Form>
+                )}
+            </Formik>
+        </div>
     );
 };
 

@@ -2,21 +2,22 @@
 
 .navbar-links {
     @include flex-center;
+
     align-items: center;
-    justify-content: right;
     gap: px-to-rem(24); // 1.5rem
+    justify-content: right;
     margin: 0;
     padding-right: px-to-rem(16); // 1rem
 
     .nav-link {
-        font-size: $small-font-size; // 0.875rem
-        color: $secondary-text-color;
-        text-decoration: none;
-        padding: px-to-rem(8) px-to-rem(3.2); // 0.5rem 0.2rem
         border-radius: $border-radius;
-        white-space: nowrap;
-        transition: color $transitions-base;
+        color: $secondary-text-color;
+        font-size: $small-font-size; // 0.875rem
         font-weight: 500;
+        padding: px-to-rem(8) px-to-rem(3.2); // 0.5rem 0.2rem
+        text-decoration: none;
+        transition: color $transitions-base;
+        white-space: nowrap;
 
         &.active {
             color: $primary-text-color;
@@ -30,30 +31,33 @@
 
 .navbar-right {
     @include flex-center;
+
     align-items: center;
     gap: $spacing-sm; // 1rem
 
     .create-post-icon,
     .search-icon,
     .user-icon {
-        font-size: px-to-rem(19.2); // 1.2rem
-        color: $primary-text-color;
+        align-items: center;
         background: none;
         border: none;
+        color: $primary-text-color;
         cursor: pointer;
+        display: flex;
+        font-size: px-to-rem(19.2); // 1.2rem
+        justify-content: center;
         padding: $spacing-xs; // 0.25rem
         transition: color $transitions-base;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        &:hover {
-            color: $accent-color-1;
-        }
     }
 
     .user-icon {
         position: relative;
+    }
+
+    .create-post-icon:hover,
+    .search-icon:hover,
+    .user-icon:hover {
+        color: $accent-color-1;
     }
 }
 

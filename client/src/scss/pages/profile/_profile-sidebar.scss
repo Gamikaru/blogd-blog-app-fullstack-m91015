@@ -1,38 +1,28 @@
 // client/src/scss/pages/profile/_profile-sidebar.scss
 
 .profile-sidebar {
-    position: sticky;
-    top: 2rem; // Stay in view on scroll
-    height: fit-content;
-    width: 20vw;
-
-    @media (max-width: 1200px) {
-        width: 25vw;
-    }
-
-    @media (max-width: 992px) {
-        width: 30vw;
-    }
-
-    @media (max-width: 768px) {
-        width: 100%;
-        margin-bottom: $spacing-lg;
-    }
-
-    // Importing Stats Card
-    @import './_stats-card';
-
-    // Importing User Card
-    @import './_user-card';
-
-    // Importing Quick Actions
-    @import './_quick-actions';
-
     display: flex;
     flex-direction: column;
     gap: $spacing-lg;
+    height: fit-content;
+    position: sticky;
+    top: 2rem; // Stay in view on scroll
+    width: 20vw;
 
-    @media (max-width: 768px) {
+    @media (width <= 1200px) {
+        width: 25vw;
+    }
+
+    @media (width <= 992px) {
+        width: 30vw;
+    }
+
+    @media (width <= 768px) {
+        margin-bottom: $spacing-lg;
+        width: 100%;
+    }
+
+    @media (width <= 768px) {
         /* On small screens, stack the components vertically */
         align-items: center;
     }

@@ -160,12 +160,12 @@ const Network = () => {
     }
 
     return (
-        <div className="network-page__container">
+        <div className="network-page">
             <div className="network-page__filter-search">
                 {/* Search Functionality */}
-                <div className="network-page__filter-search__search" ref={searchRef}>
+                <div className="network-page__search" ref={searchRef}>
                     <Button
-                        className="network-page__filter-search__search-icon"
+                        className="network-page__search-icon"
                         onClick={() => setShowSearchInput((prev) => !prev)}
                         variant="iconButton"
                         aria-label="Search"
@@ -176,7 +176,7 @@ const Network = () => {
                         {showSearchInput && (
                             <motion.input
                                 type="text"
-                                className="network-page__filter-search__input"
+                                className="network-page__input"
                                 placeholder="Search by name or location"
                                 onChange={handleSearchChange}
                                 initial={{ width: 0, opacity: 0 }}
@@ -190,9 +190,9 @@ const Network = () => {
                 </div>
 
                 {/* Filter Functionality */}
-                <div className="network-page__filter-search__filter" ref={filterRef}>
+                <div className="network-page__filter" ref={filterRef}>
                     <Button
-                        className="network-page__filter-search__filter-icon"
+                        className="network-page__filter-icon"
                         onClick={() => setShowFilterDropdown((prev) => !prev)}
                         variant="iconButton"
                         aria-label="Filter"
@@ -202,13 +202,13 @@ const Network = () => {
                     <AnimatePresence>
                         {showFilterDropdown && (
                             <motion.div
-                                className="network-page__filter-search__dropdown"
+                                className="network-page__dropdown"
                                 initial={{ opacity: 0, y: -20, scale: 0.95 }}
                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                 exit={{ opacity: 0, y: -20, scale: 0.95 }}
                                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
                             >
-                                <div className="network-page__filter-search__dropdown__option">
+                                <div className="network-page__option">
                                     <label htmlFor="name">Name:</label>
                                     <input
                                         type="text"
@@ -219,7 +219,7 @@ const Network = () => {
                                         aria-label="Filter by name"
                                     />
                                 </div>
-                                <div className="network-page__filter-search__dropdown__option">
+                                <div className="network-page__option">
                                     <label htmlFor="location">Location:</label>
                                     <input
                                         type="text"
@@ -230,7 +230,7 @@ const Network = () => {
                                         aria-label="Filter by location"
                                     />
                                 </div>
-                                <div className="network-page__filter-search__dropdown__option">
+                                <div className="network-page__option">
                                     <label htmlFor="sortBy">Sort By:</label>
                                     <select
                                         id="sortBy"
@@ -247,7 +247,7 @@ const Network = () => {
                                     </select>
                                 </div>
                                 {/* Reset Filters Button */}
-                                <div className="network-page__filter-search__dropdown__actions">
+                                <div className="network-page__actions">
                                     <Button
                                         onClick={resetFilters}
                                         variant="reset"

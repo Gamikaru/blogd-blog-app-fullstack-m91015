@@ -1,217 +1,217 @@
+/* _network-card.scss */
+
 /* --------------------------------------------------------------------------
    Network Card Styling
 -------------------------------------------------------------------------- */
 .network-card {
-    background: linear-gradient(145deg, $secondary-bg-color, darken($secondary-bg-color, 2%));
-    border-radius: 4rem 2rem 4rem 2rem;
-    box-shadow:
-        0 4px 6px rgba(0, 0, 0, 0.02),
-        0 10px 15px rgba(0, 0, 0, 0.03);
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    position: relative;
-    overflow: visible; // Allow overflow
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(145deg, $secondary-bg-color, color.adjust($secondary-bg-color, $lightness: -2%));
+    border: 1px solid rgb(255 255 255 / 10%);
+    border-radius: 4rem 2rem;
+    box-shadow:
+        0 4px 6px rgb(0 0 0 / 2%),
+        0 10px 15px rgb(0 0 0 / 3%);
+    overflow: visible; // Allow overflow
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 
     &:hover {
         box-shadow:
-            0 8px 12px rgba(0, 0, 0, 0.04),
-            0 16px 24px rgba(0, 0, 0, 0.06);
+            0 8px 12px rgb(0 0 0 / 4%),
+            0 16px 24px rgb(0 0 0 / 6%);
     }
+}
 
-    .network-card-body {
-        padding: $spacing-lg;
-        font-size: $body-font-size;
+.network-card-body {
+    color: $primary-text-color;
+    font-size: $body-font-size;
+    overflow: visible; // Ensure bubbles are not clipped
+    padding: $spacing-lg;
+}
+
+.top-section {
+    align-items: center;
+    display: flex;
+    gap: $spacing-md;
+    margin-bottom: $spacing-lg;
+    position: relative; // Ensure positioning context
+}
+
+.initials-wrapper {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+.initials-circle {
+    align-items: center;
+    background: linear-gradient(135deg, $accent-color-2, color.adjust($accent-color-2, $lightness: -10%));
+    border: 2px solid rgb(255 255 255 / 10%);
+    border-radius: 50%;
+    color: $primary-text-color;
+    cursor: pointer;
+    display: flex;
+    flex-shrink: 0;
+    font-size: $heading-font-size-md;
+    font-weight: 600;
+    height: clamp(80px, 15vw, 120px); // Responsive height
+    justify-content: center;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    width: clamp(80px, 15vw, 120px); // Responsive width
+}
+
+.profile-picture {
+    border-radius: 50%;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+}
+
+.bubble-container {
+    left: 50%;
+    overflow: visible;
+    pointer-events: none;
+    position: absolute;
+    top: -100px; // Adjust as needed
+    transform: translateX(-50%);
+    z-index: 2; // Ensure bubbles are above other elements
+}
+
+.bubble {
+    background: $accent-color-1;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.small-bubble {
+    bottom: 50px;
+    height: 10px;
+    width: 10px;
+}
+
+.medium-bubble {
+    bottom: 70px;
+    height: 15px;
+    width: 15px;
+}
+
+.status-bubble {
+    backdrop-filter: blur(4px);
+    background: linear-gradient(135deg, $accent-color-1, color.adjust($accent-color-1, $lightness: -5%));
+    border-radius: 20px;
+    bottom: 90px;
+    box-shadow: 0 4px 8px rgb(0 0 0 / 10%);
+    font-size: $small-font-size;
+    font-weight: 500;
+    padding: $spacing-xs $spacing-md;
+    position: absolute;
+    white-space: nowrap;
+    z-index: 3;
+
+    span {
         color: $primary-text-color;
-        overflow: visible; // Ensure bubbles are not clipped
+    }
 
-        .top-section {
-            display: flex;
-            align-items: center;
-            gap: $spacing-md;
-            margin-bottom: $spacing-lg;
-            position: relative; // Ensure positioning context
+    &::before {
+        border: 6px solid transparent;
+        border-top-color: $accent-color-1;
+        bottom: -6px;
+        content: "";
+        left: 50%;
+        position: absolute;
+        transform: translateX(-50%);
+    }
+}
 
-            .initials-wrapper {
-                position: relative;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
+.user-info {
+    flex: 1;
+}
 
-            .initials-circle {
-                width: clamp(80px, 15vw, 120px); // Responsive width
-                height: clamp(80px, 15vw, 120px); // Responsive height
-                flex-shrink: 0;
-                border-radius: 50%;
-                background: linear-gradient(135deg, $accent-color-2, darken($accent-color-2, 10%));
-                color: $primary-text-color;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: $heading-font-size-md;
-                font-weight: 600;
-                transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-                border: 2px solid rgba(255, 255, 255, 0.1);
-                cursor: pointer;
-                overflow: hidden;
+.card-title {
+    color: $primary-text-color;
+    font-size: $heading-font-size-md;
+    font-weight: 600;
+    margin-bottom: $spacing-sm;
+}
 
-                .profile-picture {
-                    width: 100%;
-                    height: 100%;
-                    border-radius: 50%;
-                    object-fit: cover;
-                }
+.user-details {
+    .detail-item {
+        align-items: center;
+        color: $secondary-text-color;
+        display: flex;
+        font-size: $small-font-size;
+        gap: $spacing-sm;
+        margin-bottom: $spacing-xxs;
 
-                .bubble-container {
-                    position: absolute;
-                    top: -100px; // Adjust as needed
-                    left: 50%;
-                    transform: translateX(-50%);
-                    pointer-events: none;
-                    overflow: visible;
-                    z-index: 2; // Ensure bubbles are above other elements
-                }
-
-                .bubble {
-                    position: absolute;
-                    background: $accent-color-1;
-                    border-radius: 50%;
-                }
-
-                .small-bubble {
-                    width: 10px;
-                    height: 10px;
-                    bottom: 50px;
-                }
-
-                .medium-bubble {
-                    width: 15px;
-                    height: 15px;
-                    bottom: 70px;
-                }
-
-                .status-bubble {
-                    background: linear-gradient(135deg, $accent-color-1, darken($accent-color-1, 5%));
-                    padding: $spacing-xs $spacing-md;
-                    border-radius: 20px;
-                    font-size: $small-font-size;
-                    font-weight: 500;
-                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                    backdrop-filter: blur(4px);
-                    white-space: nowrap;
-                    z-index: 3;
-                    position: absolute;
-                    bottom: 90px;
-
-                    span {
-                        color: $primary-text-color;
-                    }
-
-                    &::before {
-                        content: "";
-                        position: absolute;
-                        bottom: -6px;
-                        left: 50%;
-                        transform: translateX(-50%);
-                        border: 6px solid transparent;
-                        border-top-color: $accent-color-1;
-                    }
-                }
-            }
-
-            .user-info {
-                flex: 1;
-
-                .card-title {
-                    font-size: $heading-font-size-md;
-                    font-weight: 600;
-                    margin-bottom: $spacing-sm;
-                    color: $primary-text-color;
-                }
-
-                .user-details {
-                    .detail-item {
-                        display: flex;
-                        align-items: center;
-                        gap: $spacing-sm;
-                        font-size: $small-font-size;
-                        color: $secondary-text-color;
-                        margin-bottom: $spacing-xs;
-
-                        svg {
-                            font-size: 1.1rem;
-                            color: $accent-color-2;
-                        }
-                    }
-                }
-            }
-        }
-
-        h6 {
-            font-size: $sub-heading-font-size;
-            margin-bottom: $spacing-xs;
-        }
-
-        .recent-post {
-            background: rgba($primary-bg-color, 0.5);
-            padding: $spacing-md;
-            border-radius: $border-radius;
-            margin-top: $spacing-md;
-
-            h6 {
-                font-size: $sub-heading-font-size;
-                color: $primary-text-color;
-                margin-bottom: $spacing-sm;
-                font-weight: 500;
-            }
-
-            .post-content {
-                font-size: $body-font-size;
-                color: $secondary-text-color;
-                line-height: 1.6;
-            }
-        }
-
-        .button {
-            margin-top: $spacing-md;
+        svg {
+            color: $accent-color-2;
+            font-size: 1.1rem;
         }
     }
+}
+
+h6 {
+    font-size: $sub-heading-font-size;
+    margin-bottom: $spacing-xxs;
+}
+
+.recent-post {
+    background: rgba($primary-bg-color, 0.5);
+    border-radius: $border-radius;
+    margin-top: $spacing-md;
+    padding: $spacing-md;
+}
+
+.recent-post h6 {
+    color: $primary-text-color;
+    font-size: $sub-heading-font-size;
+    font-weight: 500;
+    margin-bottom: $spacing-sm;
+}
+
+.post-content {
+    color: $secondary-text-color;
+    font-size: $body-font-size;
+    line-height: 1.6;
+}
+
+.button {
+    margin-top: $spacing-md;
 }
 
 /* --------------------------------------------------------------------------
    Responsive Design for the Network Card
 -------------------------------------------------------------------------- */
 @media (max-width: $breakpoint-md) {
-    .network-card {
-        .network-card-body {
-            padding: $spacing-md;
+    .network-card-body {
+        padding: $spacing-md;
+    }
 
-            .top-section {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
+    .top-section {
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+    }
 
-                .initials-wrapper {
-                    margin-bottom: $spacing-md;
-                }
+    .initials-wrapper {
+        margin-bottom: $spacing-md;
+    }
 
-                .initials-circle {
-                    margin-right: 0;
-                }
+    .initials-circle {
+        margin-right: 0;
+    }
 
-                .user-info {
-                    text-align: center;
+    .user-info {
+        text-align: center;
+    }
 
-                    .user-details {
-                        align-items: center;
+    .user-details {
+        align-items: center;
+    }
 
-                        .detail-item {
-                            justify-content: center;
-                        }
-                    }
-                }
-            }
-        }
+    .detail-item {
+        justify-content: center;
     }
 }

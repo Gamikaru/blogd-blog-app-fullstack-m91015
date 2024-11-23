@@ -1,41 +1,41 @@
 // client/src/scss/pages/profile/_profile-header.scss
 
 .profile-header {
-    display: flex;
     align-items: center;
-    justify-content: center;
-    position: relative;
     bottom: 3rem;
-    width: 100%;
+    display: flex;
+    justify-content: center;
     left: 20rem;
+    position: relative;
+    width: 100%;
 
     &__left {
-        display: flex;
         align-items: center;
+        display: flex;
         gap: $spacing-md; // Adds space between picture and user info
-        width: 100%;
         justify-content: flex-start;
+        width: 100%;
     }
 
     &__user-picture {
-        width: 20vw; // Updated width
-        height: 15vw; // Updated height
         border-radius: 50%;
+        height: 15vw; // Updated height
         overflow: hidden;
         position: relative;
         right: 12rem;
+        width: 20vw; // Updated width
 
         &__image {
-            width: 100%;
             height: 100%;
             object-fit: cover;
+            width: 100%;
         }
     }
 
     &__user-image {
-        width: 100%;
         height: 100%;
         object-fit: cover;
+        width: 100%;
     }
 
     &__user-info {
@@ -48,26 +48,26 @@
     }
 
     &__user-name {
+        color: $primary-text-color;
         font-family: $font-family-heading;
         font-size: $heading-font-size-lg;
-        color: $primary-text-color;
-        margin: 0 0 $spacing-sm 0;
+        margin: 0 0 $spacing-sm;
     }
 
     &__user-status {
+        align-items: baseline;
+        color: $secondary-text-color;
+        display: flex;
         font-family: $font-family-heading;
         font-size: $sub-heading-font-size;
-        color: $secondary-text-color;
         font-style: italic;
-        display: flex;
-        align-items: baseline;
         width: 70%;
 
         .profile-header__opening-quote,
         .profile-header__closing-quote {
-            font-weight: bold;
-            font-size: 1.2em;
             color: $primary-text-color;
+            font-size: 1.2em;
+            font-weight: bold;
         }
 
         .profile-header__opening-quote {
@@ -80,69 +80,61 @@
     }
 
     &__status-container {
+        align-items: stretch;
         display: flex;
         flex-direction: column;
         gap: $spacing-xs;
         margin-top: $spacing-sm;
-        align-items: stretch;
         width: 70%;
     }
 
     &__status-textarea {
-        width: 100%;
-        padding: $spacing-sm;
-        font-size: $heading-font-size-xxlg;
-        font-family: $font-family-primary;
-        color: $secondary-text-color;
-        font-style: italic;
-        border-radius: $border-radius;
-        resize: none;
         background-color: $primary-bg-color;
         border: none;
+        border-radius: $border-radius;
+        color: $secondary-text-color;
+        font-family: $font-family-primary;
+        font-size: $heading-font-size-xxlg;
+        font-style: italic;
         overflow-wrap: break-word;
+        padding: $spacing-sm;
+        resize: none;
+        width: 100%;
         word-wrap: break-word;
 
         &:focus {
-            outline: none;
             border-color: $highlight-color;
             box-shadow: 0 0 0 2px rgba($highlight-color, 0.2);
+            outline: none;
         }
     }
 
     &__status-submit-button {
+        align-items: center;
         align-self: flex-end;
-        padding: $spacing-xs $spacing-sm;
         background-color: $highlight-color;
-        color: #fff;
         border: none;
         border-radius: $border-radius;
+        color: #fff;
         cursor: pointer;
-        font-size: 1rem; // Increased font size
         display: flex;
-        align-items: center;
-        gap: $spacing-xs;
-        transition: background-color $transitions-base;
         display: none; // Initially hidden
+        font-size: 1rem; // Increased font size
+        gap: $spacing-xs;
+        padding: $spacing-xs $spacing-sm;
+        transition: background-color $transitions-base;
 
         &:hover {
-            background-color: darken($highlight-color, 10%);
+            background-color: color.adjust($highlight-color, $lightness: -10%);
         }
 
         &:disabled {
-            background-color: lighten($highlight-color, 30%);
+            background-color: color.adjust($highlight-color, $lightness: 30%);
             cursor: not-allowed;
         }
 
         &.active {
             display: flex; // Display when active (focused)
-        }
-
-        &.active {
-            display: flex; // Ensure display when active
-        }
-
-        &.active {
-            display: flex; // Redundant but ensures active state
         }
 
         // position: absolute;
@@ -151,18 +143,18 @@
 
         @media (max-width: $breakpoint-md) {
             bottom: 5px;
-            right: 5px;
             font-size: 0.9rem; // Adjusted for smaller screens
             padding: $spacing-xs;
+            right: 5px;
         }
     }
 
     &__status-input-container {
-        width: 100%;
+        align-items: center;
         display: flex;
         flex-direction: column;
-        align-items: center;
         margin-top: $spacing-sm;
+        width: 100%;
     }
 
     &__status-textarea-wrapper {
@@ -171,23 +163,23 @@
     }
 
     &__user-status.quote-style {
-        font-size: clamp(1.2rem, 1.3vw, $body-font-size * 1.3); // Increased font size
+        align-items: baseline;
         color: $secondary-text-color;
+        display: flex;
+        font-size: clamp(1.2rem, 1.3vw, $body-font-size * 1.3); // Increased font size
         font-style: italic;
         line-height: 1.6rem;
+        margin-top: $spacing-xl;
+        padding: 0 $spacing-md;
         text-overflow: ellipsis;
         white-space: normal;
-        display: flex;
-        align-items: baseline;
-        padding: 0 $spacing-md;
-        margin-top: $spacing-xl;
 
         .profile-header__opening-quote,
         .profile-header__closing-quote {
-            font-size: 2rem;
-            font-weight: bold;
             color: $primary-text-color;
             font-family: $font-family-heading;
+            font-size: 2rem;
+            font-weight: bold;
         }
 
         .profile-header__opening-quote {
@@ -195,24 +187,24 @@
         }
 
         .profile-header__closing-group {
-            display: inline-flex;
             align-items: center;
+            display: inline-flex;
             margin-left: 0.25rem;
             position: relative;
             top: 0.3rem;
         }
 
         .profile-header__status-text {
-            font-family: $font-family-heading;
             color: $secondary-text-color;
+            font-family: $font-family-heading;
             font-style: italic;
         }
     }
 
     @media (max-width: $breakpoint-md) {
+        bottom: 2rem;
         display: block; // Ensure proper stacking on smaller screens
         left: 0;
-        bottom: 2rem;
 
         &__left {
             justify-content: center;
@@ -220,8 +212,8 @@
         }
 
         &__user-info {
-            right: 0;
             align-items: flex-start;
+            right: 0;
         }
 
         &__user-status.quote-style {
@@ -234,11 +226,11 @@
         }
 
         &__status-submit-button {
-            width: 100%;
             bottom: 5px;
-            right: 5px;
             font-size: 0.9rem;
             padding: $spacing-xs;
+            right: 5px;
+            width: 100%;
         }
     }
 }

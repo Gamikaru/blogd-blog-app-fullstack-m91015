@@ -1,8 +1,6 @@
-// src/components/nav/UserDropdown.jsx
-
 import { Button, Portal } from '@components';
 import { usePrivateModalContext, useUser } from '@contexts';
-import { motion } from 'framer-motion'; // Removed AnimatePresence
+import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useRef } from 'react';
 import {
@@ -20,7 +18,7 @@ const UserDropdown = React.memo(({ showDropdown, setShowDropdown, handleLogout, 
     const navigate = useNavigate();
 
     const handleSettingsClick = useCallback(() => {
-        togglePrivateModal('userSettings'); // Ensure this matches ModalManager
+        togglePrivateModal('userSettings');
         setShowDropdown(false);
     }, [togglePrivateModal, setShowDropdown]);
 
@@ -84,7 +82,7 @@ const UserDropdown = React.memo(({ showDropdown, setShowDropdown, handleLogout, 
                                 whileTap={{ scale: 0.95 }}
                             >
                                 {user.profilePicture ? (
-                                    <img src={user.profilePicture} alt="Profile" className="avatar-image" />
+                                    <img src={user.profilePicture} alt="Profile" className="user-avatar__image" />
                                 ) : (
                                     <div className="initials-avatar">
                                         {`${user.firstName[0]}${user.lastName[0]}`.toUpperCase()}
@@ -93,52 +91,51 @@ const UserDropdown = React.memo(({ showDropdown, setShowDropdown, handleLogout, 
                             </motion.div>
                             <div className="user-details">
                                 <motion.div className="detail-item" whileHover={{ x: 4 }}>
-                                    <FaEnvelope className="detail-icon" />
-                                    <span className="detail-text">{user?.email}</span>
+                                    <FaEnvelope className="detail-item__icon" />
+                                    <span className="detail-item__text">{user?.email}</span>
                                 </motion.div>
                                 <motion.div className="detail-item" whileHover={{ x: 4 }}>
-                                    <FaBirthdayCake className="detail-icon" />
-                                    <span className="detail-text">
+                                    <FaBirthdayCake className="detail-item__icon" />
+                                    <span className="detail-item__text">
                                         {user?.birthDate ? new Date(user.birthDate).toLocaleDateString() : 'Not set'}
                                     </span>
                                 </motion.div>
                                 <motion.div className="detail-item" whileHover={{ x: 4 }}>
-                                    <FaBriefcase className="detail-icon" />
-                                    <span className="detail-text">{user?.occupation || 'Not set'}</span>
+                                    <FaBriefcase className="detail-item__icon" />
+                                    <span className="detail-item__text">{user?.occupation || 'Not set'}</span>
                                 </motion.div>
                                 <motion.div className="detail-item" whileHover={{ x: 4 }}>
-                                    <FaMapMarkerAlt className="detail-icon" />
-                                    <span className="detail-text">{user?.location || 'Not set'}</span>
+                                    <FaMapMarkerAlt className="detail-item__icon" />
+                                    <span className="detail-item__text">{user?.location || 'Not set'}</span>
                                 </motion.div>
                             </div>
                         </div>
                         <div className="dropdown-actions">
-                            <Button
-                                variant="user"
-                                className="button button-edit" // Use button-profile for Settings
-                                onClick={handleProfileClick}
+                            <div className="dropdown-actions__button">
+                                <Button
+                                    onClick={handleProfileClick}
+                                    variant="profile"
 
-                            >
-                                Profile
-                            </Button>
-                            <Button
-                                onClick={handleSettingsClick}
-                                whileHover={{ y: -1 }}
-                                whileTap={{ scale: 0.98 }}
-                                type="settings"
-                                variant="settings"
-                            >
-                                Settings
-                            </Button>
-                            <Button
-                                onClick={handleLogout}
-                                whileHover={{ y: -1 }}
-                                whileTap={{ scale: 0.98 }}
-                                type="logout"
-                                variant="logout"
-                            >
-                                Logout
-                            </Button>
+                                >
+                                    Profile
+                                </Button>
+                            </div>
+                            <div className="dropdown-actions__button">
+                                <Button
+                                    onClick={handleSettingsClick}
+                                    variant="settings2"
+                                >
+                                    Settings
+                                </Button>
+                            </div>
+                            <div className="dropdown-actions__button">
+                                <Button
+                                    onClick={handleLogout}
+                                    variant="logout"
+                                >
+                                    Logout
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </div>

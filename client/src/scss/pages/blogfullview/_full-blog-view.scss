@@ -1,55 +1,57 @@
 .full-blog-view {
-    padding: $spacing-unit * 1;
     background-color: $secondary-bg-color;
     color: $primary-text-color;
-    max-width: 1200px;
-    margin: 0 auto;
     line-height: $line-height;
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: $spacing-unit * 1;
     position: relative;
     z-index: 14;
 
     .blog-images {
         float: left;
-        margin-right: $spacing-unit * 2;
-        margin-bottom: $spacing-unit * 2;
-        width: 50%;
         height: auto;
+        margin-bottom: $spacing-unit * 2;
+        margin-right: $spacing-unit * 2;
+        width: 50%;
 
         .blog-image {
-            max-width: 100%;
-            @include border-radius($border-radius);
-            object-fit: cover;
-            margin-top: -12rem;
-            width: 100%;
             height: auto;
+            margin-top: -12rem;
+            max-width: 100%;
+            object-fit: cover;
             padding: 0;
+            width: 100%;
+
+            @include border-radius($border-radius);
         }
     }
 
     .blog-content {
-        font-size: $body-font-size;
         color: $primary-text-color;
+        font-size: $body-font-size;
         line-height: $line-height;
-        padding: 0 $spacing-unit * 2;
-        max-width: 90%;
         margin: 0 auto;
+        max-width: 90%;
+        padding: 0 $spacing-unit * 2;
 
         p {
             margin-bottom: $spacing-unit * 1.5;
         }
 
         img {
-            max-width: 100%;
-            @include border-radius($border-radius);
             margin: $spacing-unit * 2 0;
+            max-width: 100%;
+
+            @include border-radius($border-radius);
         }
 
         blockquote {
-            font-style: italic;
-            color: $secondary-text-color;
-            padding-left: $spacing-unit;
             border-left: 4px solid $accent-color-2;
+            color: $secondary-text-color;
+            font-style: italic;
             margin: $spacing-unit * 2 0;
+            padding-left: $spacing-unit;
         }
     }
 
@@ -63,21 +65,21 @@
         }
 
         p {
-            font-size: $body-font-size;
             color: $secondary-text-color;
+            font-size: $body-font-size;
         }
     }
 
     .comments-section {
+        align-items: center;
+        border-top: 1px solid color.adjust($secondary-bg-color, $lightness: 10%);
+        margin: 0 auto;
         margin-top: $spacing-unit * 4;
-        border-top: 1px solid lighten($secondary-bg-color, 10%);
         padding-top: $spacing-unit;
         width: 80%;
-        align-items: center;
-        margin: 0 auto;
 
         .comment {
-            background-color: lighten($primary-bg-color, 4%);
+            background-color: color.adjust($primary-bg-color, $lightness: 4%);
 
             &:hover {
                 box-shadow: $box-shadow-medium;
@@ -90,17 +92,18 @@
             margin-top: $spacing-unit * 1.5;
 
             textarea {
-                padding: $spacing-unit;
-                border: 1px solid lighten($secondary-bg-color, 20%);
-                @include border-radius($border-radius);
-                resize: vertical;
-                font-size: $body-font-size;
+                background-color: color.adjust($primary-bg-color, $lightness: 4%);
+                border: 1px solid color.adjust($secondary-bg-color, $lightness: 20%);
                 color: $primary-text-color;
-                background-color: lighten($primary-bg-color, 4%);
+                font-size: $body-font-size;
                 margin-bottom: $spacing-unit;
+                padding: $spacing-unit;
+                resize: vertical;
                 transition:
                     border-color 0.3s ease,
                     box-shadow 0.3s ease;
+
+                @include border-radius($border-radius);
 
                 &:focus {
                     border-color: $accent-color-2;

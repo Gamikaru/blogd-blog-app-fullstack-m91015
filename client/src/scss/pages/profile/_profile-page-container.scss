@@ -1,19 +1,19 @@
 // client/src/scss/pages/profile/_profile-page-container.scss
 
 .profile-page-container {
-    padding: $spacing-lg;
-    max-width: 80vw;
+    justify-content: center;
+    justify-items: center;
     margin: 0 auto;
     margin-top: -22rem;
+    max-width: 80vw;
+    padding: $spacing-lg;
     position: relative;
     z-index: 10;
-    justify-items: center;
-    justify-content: center;
 
     &__profile-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr 3fr; // Adjust sidebar width as needed
         gap: $spacing-lg;
+        grid-template-columns: 1fr 1fr 3fr; // Adjust sidebar width as needed
 
         @media (max-width: $breakpoint-md) {
             grid-template-columns: 1fr;
@@ -21,16 +21,17 @@
     }
 
     &__loading-spinner {
-        display: flex;
-        justify-content: center;
         align-items: center;
-        height: 100vh;
-        font-size: 1.2rem;
         color: $primary-text-color;
+        display: flex;
+        font-size: 1.2rem;
+        height: 100vh;
+        justify-content: center;
     }
 
     &__profile-main {
         grid-column: 2;
+
         @media (max-width: $breakpoint-md) {
             grid-column: 1;
         }

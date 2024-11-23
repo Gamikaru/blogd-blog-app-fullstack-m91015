@@ -1,56 +1,62 @@
 .comment {
     @include card-style;
+
     margin-bottom: $spacing-lg;
 
     &__header {
+        align-items: center;
         display: flex;
         justify-content: space-between;
-        align-items: center;
         margin-bottom: $spacing-sm;
 
         &__date {
-            font-size: $small-font-size;
             color: $secondary-text-color;
+            font-size: $small-font-size;
         }
 
         &__controls {
+            align-items: center;
             display: flex;
             flex-direction: row;
-            align-items: center;
             gap: $spacing-xs;
         }
 
         .comment__author-info {
-            display: flex;
             align-items: center;
+            display: flex;
 
             .comment__profile-picture {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                object-fit: cover;
-                margin-right: $spacing-sm;
                 border: 2px solid $accent-color-1;
+                border-radius: 50%;
+                height: 40px;
+                margin-right: $spacing-sm;
+                object-fit: cover;
+                width: 40px;
             }
 
             .comment__header__author {
-                font-weight: bold;
-                font-size: $sub-heading-font-size;
                 color: $highlight-color;
+                font-size: $sub-heading-font-size;
+                font-weight: bold;
                 margin-left: $spacing-xs;
             }
         }
     }
 
     &__body {
-        margin-block: $spacing-md;
         background-color: $secondary-bg-color;
-        padding: $spacing-md;
-        @include border-radius($border-radius-lg);
+        box-shadow: $box-shadow-small;
+        color: $primary-text-color;
         font-size: $body-font-size;
         line-height: $line-height;
-        color: $primary-text-color;
-        box-shadow: $box-shadow-small;
+        margin-block: $spacing-md;
+        padding: $spacing-md;
+
+        @include border-radius($border-radius-lg);
+
+        & .replies > .comment {
+            background-color: color.adjust($primary-bg-color, $lightness: 1%);
+        }
 
         &:hover {
             box-shadow: $box-shadow-medium;
@@ -58,14 +64,14 @@
     }
 
     &__actions {
-        display: flex;
         align-items: center;
-        justify-content: flex-end;
+        display: flex;
         gap: $spacing-sm;
+        justify-content: flex-end;
 
         .like-section {
-            display: flex;
             align-items: center;
+            display: flex;
             gap: $spacing-xs;
 
             .like-button {
@@ -73,113 +79,102 @@
             }
 
             .like-count {
-                font-size: $small-font-size;
                 color: $secondary-text-color;
+                font-size: $small-font-size;
             }
         }
 
         .reply-button {
             @include button-style($highlight-color, $primary-text-color);
+
         }
-    }
 
-    .reply-form {
-        background-color: lighten($primary-bg-color, 2%);
-        padding: $spacing-md;
-        @include border-radius($border-radius-sm);
-        box-shadow: $box-shadow-small;
-        margin-block: $spacing-md;
-        display: flex;
-        flex-direction: column;
-        gap: $spacing-sm;
+        .reply-form {
+            background-color: color.adjust($primary-bg-color, $lightness: 2%);
+            box-shadow: $box-shadow-small;
+            display: flex;
+            flex-direction: column;
+            gap: $spacing-sm;
+            margin-block: $spacing-md;
+            padding: $spacing-md;
 
-        textarea {
-            width: 100%;
-            padding: $input-padding;
             @include border-radius($border-radius-sm);
-            border: 1px solid $border-color;
-            background-color: $secondary-bg-color;
-            color: $primary-text-color;
-            font-family: $font-family-primary;
-            font-size: $body-font-size;
-            line-height: $line-height;
 
-            &:focus {
-                outline: none;
-                box-shadow: $input-focus-box-shadow;
-                border-color: $highlight-color;
-            }
-        }
+            textarea {
+                background-color: $secondary-bg-color;
+                border: 1px solid $border-color;
+                color: $primary-text-color;
+                font-family: $font-family-primary;
+                font-size: $body-font-size;
+                line-height: $line-height;
+                padding: $input-padding;
+                width: 100%;
 
-        .submit-button {
-            @include button-style($success-color, #fff);
-        }
-    }
+                @include border-radius($border-radius-sm);
 
-    .replies {
-        margin-left: $spacing-unit * 2;
-        padding-left: $spacing-unit;
-        border-left: 2px solid lighten($secondary-bg-color, 20%);
-
-        .nested-comment {
-            margin-top: $spacing-md;
-        }
-
-        & > .comment {
-            background-color: lighten($primary-bg-color, 3%);
-
-            &:nth-child(2n) {
-                background-color: darken($primary-bg-color, 1%);
+                &:focus {
+                    border-color: $highlight-color;
+                    box-shadow: $input-focus-box-shadow;
+                    outline: none;
+                }
             }
 
-            & .replies > .comment {
-                background-color: lighten($primary-bg-color, 1%);
+            .replies {
+                background-color: color.adjust($primary-bg-color, $lightness: -1%);
+                background-color: color.adjust($primary-bg-color, $lightness: 3%);
+                border-left: 2px solid color.adjust($secondary-bg-color, $lightness: 20%);
+                margin-left: $spacing-unit * 2;
+                padding-left: $spacing-unit;
+
+                .nested-comment {
+                    background-color: color.adjust($primary-bg-color, $lightness: 3%);
+                }
+
+                &:nth-child(2n) {
+                    background-color: color.adjust($primary-bg-color, $lightness: 1%);
+                }
+
+                & .replies > .comment {
+                    background-color: color.adjust($primary-bg-color, $lightness: 1%);
+                }
+
+                &:hover {
+                    box-shadow: $box-shadow-medium;
+                }
             }
-
-            &:hover {
-                box-shadow: $box-shadow-medium;
-            }
-        }
-    }
-}
-
-.comment__controls {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: $spacing-xs;
-}
-
-.comment__footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: $spacing-sm;
-    margin-bottom: $spacing-md;
-
-    .comment__actions-left {
-        display: flex;
-        align-items: center;
-        gap: $spacing-sm;
-
-        .like-count {
-            font-size: $small-font-size;
-            color: $secondary-text-color;
-        }
-
-        .submit {
-            // Add any specific styles for the Reply button if needed
         }
     }
 
     .comment__controls {
-        display: flex;
         align-items: center;
+        display: flex;
+        flex-direction: row;
         gap: $spacing-xs;
+    }
 
-        .edit,
-        .delete {
-            // Add specific styles for Edit and Delete buttons if needed
+    .comment__footer {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: $spacing-md;
+        margin-top: $spacing-sm;
+
+        .comment__actions-left {
+            align-items: center;
+            display: flex;
+            gap: $spacing-sm;
+
+            .like-count {
+                color: $secondary-text-color;
+                font-size: $small-font-size;
+            }
+
+        }
+
+        .comment__controls {
+            align-items: center;
+            display: flex;
+            gap: $spacing-xs;
         }
     }
 }

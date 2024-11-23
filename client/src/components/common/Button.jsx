@@ -20,6 +20,7 @@ import {
     FiPlus,
     FiSearch,
     FiSend,
+    FiSettings,
     FiShare2,
     FiTrash,
     FiUser,
@@ -57,7 +58,7 @@ const variantIcons = {
     like: FiHeart,
     search: FiSearch,
     feather: FiFeather,
-    user: FiUser,
+    profile: FiUser,
     upgrade: FiArrowUpCircle,
     share: FiShare2,
     link: FiLink,
@@ -66,6 +67,7 @@ const variantIcons = {
     book: FiBook,
     fileText: FiFileText,
     reset: FiXCircle,
+    settings2: FiSettings,
     // settings: FiCog,
 
     // Font Awesome Icons
@@ -100,6 +102,7 @@ const variantClasses = {
     replace: 'button-edit',
     send: 'button-send', // Added send variant
     settings: 'button-settings', // Added settings variant
+    settings2: 'button-settings2', // Added settings2 variant
     iconButton: 'icon-only', // Map 'iconButton' to 'icon-only' class
 };
 

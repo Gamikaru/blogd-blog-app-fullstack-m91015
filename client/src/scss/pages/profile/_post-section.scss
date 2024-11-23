@@ -3,82 +3,83 @@
 .posts-section {
     background: $secondary-bg-color;
     border-radius: $border-radius;
-    padding: $spacing-lg;
     margin-bottom: $spacing-lg;
+    padding: $spacing-lg;
     width: 62vw;
 
-    @media (max-width: 768px) {
+    @media (width <= 768px) {
         padding: $spacing-md;
     }
 
     &__header {
+        align-items: center;
         display: flex;
         justify-content: space-between;
-        align-items: center;
         margin-bottom: $spacing-md;
     }
 
     &__title {
-        display: flex;
         align-items: center;
-        font-size: $heading-font-size-lg;
         color: $primary-text-color;
+        display: flex;
         font-family: $font-family-heading;
+        font-size: $heading-font-size-lg;
 
         svg {
-            margin-right: $spacing-sm;
-            font-size: 1.5em;
             color: $highlight-color;
+            font-size: 1.5em;
+            margin-right: $spacing-sm;
         }
     }
 
     &__action {
-        font-size: $body-font-size;
         color: $info-color;
         cursor: pointer;
+        font-size: $body-font-size;
         transition: color $transitions-base;
 
         &:hover,
         &:focus {
-            color: lighten($info-color, 10%);
+            color: color.adjust($info-color, $lightness: 10%);
         }
     }
 
     &__tabs-and-controls {
-        display: flex;
-        justify-content: space-between;
         align-items: center;
-        margin-bottom: $spacing-md;
+        display: flex;
         flex-wrap: wrap;
+        justify-content: space-between;
+        margin-bottom: $spacing-md;
 
-        @media (max-width: 768px) {
-            flex-direction: column;
+        @media (width <= 768px) {
             align-items: flex-start;
+            flex-direction: column;
         }
     }
 
     // Updated tabs styling to match user manager modal
     &__tabs {
-        display: flex;
-        gap: $spacing-sm;
         border-bottom: 1px solid $border-color;
-        margin-bottom: $spacing-md;
-        justify-content: space-around;
+        display: flex;
         flex-wrap: wrap;
+        gap: $spacing-sm;
+        justify-content: space-around;
+        margin-bottom: $spacing-md;
     }
 
     &__tab {
         @include reset-button; // Reset button styles
-        display: flex;
+
         align-items: center;
+        border-radius: $border-radius $border-radius 0 0;
+        color: $secondary-text-color;
+        cursor: pointer;
+        display: flex;
+        font-size: $small-font-size;
         gap: $spacing-xs;
         padding: $spacing-sm $spacing-md;
-        color: $secondary-text-color;
-        font-size: $small-font-size;
-        border-radius: $border-radius $border-radius 0 0;
-        transition: all 0.3s ease; // Increased transition duration for smoother effect
-        cursor: pointer;
         position: relative;
+        transition: all 0.3s ease; // Increased transition duration for smoother effect
 
         &:hover {
             background: rgba($accent-color-1, 0.2); // Stronger background on hover
@@ -94,31 +95,31 @@
 
 
             &::after {
-                content: "";
-                position: absolute;
-                bottom: -1px;
-                left: 0;
-                width: 100%;
-                height: 2px;
                 background: $accent-color-1; // Match the border-bottom color
+                bottom: -1px;
+                content: "";
+                height: 2px;
+                left: 0;
+                position: absolute;
+                width: 100%;
             }
         }
 
         &:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba($accent-color-2, 0.3);
             background: rgba($accent-color-1, 0.2); // Stronger background on hover
+            box-shadow: 0 0 0 3px rgba($accent-color-2, 0.3);
+            outline: none;
 
         }
     }
 
     &__controls {
-        display: flex;
         align-items: center;
+        display: flex;
         gap: $spacing-sm;
         justify-content: center;
 
-        @media (max-width: 768px) {
+        @media (width <= 768px) {
             justify-content: flex-start;
             width: 100%;
         }
@@ -132,50 +133,50 @@
     &__search-icon {
         background: none;
         border: none;
+        color: $primary-text-color;
         cursor: pointer;
         font-size: 1.2em;
-        color: $primary-text-color;
         transition: color $transitions-base;
 
         &:hover {
-            color: lighten($primary-text-color, 10%);
+            color: color.adjust($primary-text-color, $lightness: 10%);
         }
     }
 
     &__filter-dropdown {
-        position: absolute;
-        top: 100%;
-        right: 0;
         background: $primary-bg-color;
         border: 1px solid $border-color;
         border-radius: $border-radius;
-        padding: $spacing-sm;
         box-shadow: $card-shadow;
-        z-index: 10;
+        padding: $spacing-sm;
+        position: absolute;
+        right: 0;
+        top: 100%;
         width: 200px;
+        z-index: 10;
 
-        @media (max-width: 768px) {
+        @media (width <= 768px) {
             width: 100%;
         }
     }
 
     &__search-container {
-        position: relative;
-        display: flex;
         align-items: center;
+        display: flex;
+        position: relative;
     }
 
     &__search-input {
-        margin-left: $spacing-sm;
-        padding: $spacing-xs $spacing-sm;
         border: 1px solid $border-color;
         border-radius: $border-radius;
-        outline: none;
         font-size: 0.9rem; // Reduced from $body-font-size
-        width: 200px;
+        margin-left: $spacing-sm;
         max-width: 100%;
+        outline: none;
+        padding: $spacing-xs $spacing-sm;
+        width: 200px;
 
-        @media (max-width: 768px) {
+        @media (width <= 768px) {
             width: 100%;
         }
     }
@@ -187,11 +188,11 @@
     }
 
     &__posts-gallery-column {
-        padding: 1rem; /* Adjust gutter size */
         background-clip: padding-box;
+        padding: 1rem; /* Adjust gutter size */
     }
 
-    @media (max-width: 768px) {
+    @media (width <= 768px) {
         &__posts-gallery {
             margin-left: 0;
         }
@@ -202,9 +203,9 @@
     }
 
     &__no-posts-message {
-        text-align: center;
-        font-size: 0.9rem; // Reduced
         color: $secondary-text-color;
+        font-size: 0.9rem; // Reduced
         padding: $spacing-md 0;
+        text-align: center;
     }
 }

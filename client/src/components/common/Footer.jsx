@@ -13,14 +13,14 @@ const Footer = React.memo(() => {
 
     return (
         <footer className="footer">
-            <div className="footer-content">
-                <div className="footer-links">
+            <div className="footer__content">
+                <div className="footer__links">
                     <Link to="/about">About Us</Link>
                     <Link to="/contact">Contact</Link>
                     <Link to="/privacy">Privacy Policy</Link>
                     <Link to="/terms">Terms of Service</Link>
                 </div>
-                <div className="footer-social">
+                <div className="footer__social">
                     {socialLinks.map(({ href, label, Icon }) => (
                         <a
                             key={label}
@@ -33,7 +33,7 @@ const Footer = React.memo(() => {
                         </a>
                     ))}
                 </div>
-                <div className="footer-copy">
+                <div className="footer__copy">
                     &copy; {currentYear} Blogd. All rights reserved.
                 </div>
             </div>
@@ -44,5 +44,3 @@ const Footer = React.memo(() => {
 Footer.displayName = 'Footer';
 
 export default Footer;
-
-

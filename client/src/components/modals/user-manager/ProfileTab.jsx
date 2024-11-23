@@ -69,92 +69,95 @@ const ProfileTab = ({ user, setUser, showNotification, loading }) => {
     };
 
     return (
-        <Formik
-            initialValues={profileInitialValues}
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-        >
-            {({ isSubmitting, errors, touched, setFieldValue }) => (
-                <Form className="usermanager-content__form">
-                    <div className="form-group">
-                        <label htmlFor="firstName">First Name</label>
-                        <Field type="text" id="firstName" name="firstName" placeholder="Enter first name" />
-                        {errors.firstName && touched.firstName && (
-                            <div className="error">{errors.firstName}</div>
+        <div className="profile-tab">
+            <Formik
+                initialValues={profileInitialValues}
+                validationSchema={validationSchema}
+                onSubmit={handleSubmit}
+            >
+                {({ isSubmitting, errors, touched, setFieldValue }) => (
+                    <Form className="profile-tab__form">
+                        <div className="profile-tab__form-group">
+                            <label htmlFor="firstName">First Name</label>
+                            <Field type="text" id="firstName" name="firstName" placeholder="Enter first name" />
+                            {errors.firstName && touched.firstName && (
+                                <div className="profile-tab__error">{errors.firstName}</div>
+                            )}
+                        </div>
+
+                        <div className="profile-tab__form-group">
+                            <label htmlFor="lastName">Last Name</label>
+                            <Field type="text" id="lastName" name="lastName" placeholder="Enter last name" />
+                            {errors.lastName && touched.lastName && (
+                                <div className="profile-tab__error">{errors.lastName}</div>
+                            )}
+                        </div>
+
+                        <div className="profile-tab__form-group">
+                            <label htmlFor="email">Email</label>
+                            <Field type="email" id="email" name="email" placeholder="Enter email" />
+                            {errors.email && touched.email && (
+                                <div className="profile-tab__error">{errors.email}</div>
+                            )}
+                        </div>
+
+                        <div className="profile-tab__form-group">
+                            <label htmlFor="location">Location</label>
+                            <Field type="text" id="location" name="location" placeholder="Enter location" />
+                            {errors.location && touched.location && (
+                                <div className="profile-tab__error">{errors.location}</div>
+                            )}
+                        </div>
+
+                        <div className="profile-tab__form-group">
+                            <label htmlFor="occupation">Occupation</label>
+                            <Field type="text" id="occupation" name="occupation" placeholder="Enter occupation" />
+                            {errors.occupation && touched.occupation && (
+                                <div className="profile-tab__error">{errors.occupation}</div>
+                            )}
+                        </div>
+
+                        <div className="profile-tab__form-group">
+                            <label htmlFor="birthDate">Birth Date</label>
+                            <Field type="date" id="birthDate" name="birthDate" />
+                            {errors.birthDate && touched.birthDate && (
+                                <div className="profile-tab__error">{errors.birthDate}</div>
+                            )}
+                        </div>
+
+                        <div className="profile-tab__form-group">
+                            <label htmlFor="profilePicture">Profile Picture</label>
+                            <input
+                                id="profilePicture"
+                                name="profilePicture"
+                                type="file"
+                                accept="image/*"
+                                onChange={(event) => {
+                                    setFieldValue('profilePicture', event.currentTarget.files[0]);
+                                }}
+                            />
+                            {errors.profilePicture && touched.profilePicture && (
+                                <div className="profile-tab__error">{errors.profilePicture}</div>
+                            )}
+                        </div>
+
+                        {errors.general && (
+                            <div className="profile-tab__error profile-tab__general-error">
+                                {errors.general}
+                            </div>
                         )}
-                    </div>
 
-                    <div className="form-group">
-                        <label htmlFor="lastName">Last Name</label>
-                        <Field type="text" id="lastName" name="lastName" placeholder="Enter last name" />
-                        {errors.lastName && touched.lastName && (
-                            <div className="error">{errors.lastName}</div>
-                        )}
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="email">Email</label>
-                        <Field type="email" id="email" name="email" placeholder="Enter email" />
-                        {errors.email && touched.email && (
-                            <div className="error">{errors.email}</div>
-                        )}
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="location">Location</label>
-                        <Field type="text" id="location" name="location" placeholder="Enter location" />
-                        {errors.location && touched.location && (
-                            <div className="error">{errors.location}</div>
-                        )}
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="occupation">Occupation</label>
-                        <Field type="text" id="occupation" name="occupation" placeholder="Enter occupation" />
-                        {errors.occupation && touched.occupation && (
-                            <div className="error">{errors.occupation}</div>
-                        )}
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="birthDate">Birth Date</label>
-                        <Field type="date" id="birthDate" name="birthDate" />
-                        {errors.birthDate && touched.birthDate && (
-                            <div className="error">{errors.birthDate}</div>
-                        )}
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="profilePicture">Profile Picture</label>
-                        <input
-                            id="profilePicture"
-                            name="profilePicture"
-                            type="file"
-                            accept="image/*"
-                            onChange={(event) => {
-                                setFieldValue('profilePicture', event.currentTarget.files[0]);
-                            }}
-                        />
-                        {errors.profilePicture && touched.profilePicture && (
-                            <div className="error">{errors.profilePicture}</div>
-                        )}
-                    </div>
-
-                    {errors.general && (
-                        <div className="error general-error">{errors.general}</div>
-                    )}
-
-                    <Button
-                        type="submit"
-                        className="usermanager-content__submit"
-                        disabled={isSubmitting || loading || localLoading}
-                        variant="submit"
-                    >
-                        {localLoading ? 'Saving...' : 'Save Profile Settings'}
-                    </Button>
-                </Form>
-            )}
-        </Formik>
+                        <Button
+                            type="submit"
+                            disabled={isSubmitting || loading || localLoading}
+                            variant="submit"
+                        >
+                            {localLoading ? 'Saving...' : 'Save Profile Settings'}
+                        </Button>
+                    </Form>
+                )}
+            </Formik>
+        </div>
     );
 };
 

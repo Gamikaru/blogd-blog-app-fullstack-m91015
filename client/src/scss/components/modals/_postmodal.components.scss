@@ -6,40 +6,39 @@
 .post-modal,
 .edit-post-modal {
     &__sidebar {
-        position: absolute;
-        top: var(--sidebar-top);
-        left: var(--sidebar-left);
-        width: map-get($modal-dimensions, sidebar-width);
-        height: map-get($modal-dimensions, sidebar-height);
         background: $secondary-bg-color;
-        box-shadow: $box-shadow-medium;
         border-radius: $border-radius;
-        z-index: var(--sidebar-z);
-        padding: map-get($modal-spacing, sidebar-padding);
+        box-shadow: $box-shadow-medium;
         display: flex;
         flex-direction: column;
-        gap: map-get($modal-spacing, content-gap);
+        gap: map.get($modal-spacing, content-gap);
+        height: map.get($modal-dimensions, sidebar-height);
+        left: var(--sidebar-left);
         overflow-y: auto;
-        background-color: $secondary-bg-color;
+        padding: map.get($modal-spacing, sidebar-padding);
+        position: absolute;
+        top: var(--sidebar-top);
+        width: map.get($modal-dimensions, sidebar-width);
+        z-index: var(--sidebar-z);
 
         .toolbar-section {
+            border-top: 1px solid rgb(0 0 0 / 5%);
             display: flex;
             flex-direction: column;
-            gap: map-get($modal-spacing, form-gap);
-            padding-top: map-get($modal-spacing, input-gap);
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            gap: map.get($modal-spacing, form-gap);
+            padding-top: map.get($modal-spacing, input-gap);
         }
 
         .toolbar-group {
             &:not(:last-child) {
                 border-bottom: 1px solid $border-color;
-                padding-bottom: map-get($modal-spacing, input-gap);
+                padding-bottom: map.get($modal-spacing, input-gap);
             }
 
             &__title {
-                font-size: $small-font-size;
                 color: $primary-text-color;
-                margin-bottom: map-get($modal-spacing, input-gap);
+                font-size: $small-font-size;
+                margin-bottom: map.get($modal-spacing, input-gap);
             }
 
             &__buttons {
@@ -47,255 +46,256 @@
             }
 
             &__content {
-                width: 100%;
                 display: flex;
                 flex-direction: column;
-                gap: map-get($modal-spacing, input-gap);
-            }
-
-            .toolbar-button {
-                @include reset-button;
-                padding: 0.5rem;
-                color: $primary-text-color;
-                font-size: 1.1rem;
-                @include highlight-hover();
-
-                // Remove button-like borders
-                background: transparent;
-            }
-
-            .toolbar-input {
+                gap: map.get($modal-spacing, input-gap);
                 width: 100%;
-                padding: 0.5rem;
-                font-size: $small-font-size;
-                color: $primary-text-color;
-                background: $secondary-bg-color;
-                border: 1px solid $border-color;
-                @include subtle-border;
-                transition: all 0.2s ease;
-
-                &::placeholder {
-                    color: $secondary-text-color;
-                }
-
-                &:focus {
-                    border-color: $highlight-color;
-                    outline: none;
-                }
-
-                &--file {
-                    border: 1px dashed rgba(0, 0, 0, 0.1);
-                    padding: 0.75rem;
-                    cursor: pointer;
-
-                    &::-webkit-file-upload-button {
-                        display: none;
-                    }
-
-                    &::before {
-                        content: "Choose files";
-                        color: $highlight-color;
-                        margin-right: 0.5rem;
-                    }
-
-                    &:hover {
-                        border-color: $highlight-color;
-                    }
-                }
-
-                &--select {
-                    cursor: pointer;
-                }
-
-                &--title {
-                    font-weight: 500;
-                }
             }
         }
 
-        .font-size-options {
-            @include grid-layout(4);
+        .toolbar-button {
+            @include reset-button;
 
-            .font-size-btn {
-                @include reset-button;
-                padding: 0.4rem;
-                color: $primary-text-color;
-                font-size: $small-font-size;
-                @include highlight-hover();
-            }
-        }
-
-        .typeface-select {
-            width: 100%;
-            padding: 0.5rem;
-            @include subtle-border;
-            border-radius: 4px;
-            font-size: $small-font-size;
+            background: transparent;
             color: $primary-text-color;
-            background-color: transparent;
-            cursor: pointer;
-            transition: border-color 0.2s ease;
+            font-size: 1.1rem;
+            padding: 0.5rem;
 
-            &:focus {
-                border-color: $highlight-color;
-                outline: none;
-            }
+            @include highlight-hover;
         }
 
-        .color-options {
-            @include grid-layout(3);
+        .toolbar-input {
+            background: $secondary-bg-color;
+            border: 1px solid $border-color;
+            color: $primary-text-color;
+            font-size: $small-font-size;
+            padding: 0.5rem;
+            transition: all 0.2s ease;
+            width: 100%;
 
-            .color-btn {
-                width: 20px;
-                height: 20px;
-                border-radius: 50%;
-                @include subtle-border;
-                cursor: pointer;
+            @include subtle-border;
+        }
+    }
 
-                &.active {
-                    box-shadow: 0 0 0 2px $highlight-color;
-                }
+    // Flattened selectors to reduce nesting depth
+    .toolbar-input::placeholder {
+        color: $secondary-text-color;
+    }
+
+    .toolbar-input:focus {
+        border-color: $highlight-color;
+        outline: none;
+    }
+
+    .toolbar-input--file {
+        border: 1px dashed rgb(0 0 0 / 10%);
+        cursor: pointer;
+        padding: 0.75rem;
+    }
+
+    .toolbar-input--file::-webkit-file-upload-button {
+        display: none;
+    }
+
+    .toolbar-input--file::before {
+        color: $highlight-color;
+        content: "Choose files";
+        margin-right: 0.5rem;
+    }
+
+    .toolbar-input--file:hover {
+        border-color: $highlight-color;
+    }
+
+    .toolbar-input--select {
+        cursor: pointer;
+    }
+
+    .toolbar-input--title {
+        font-weight: 500;
+    }
+
+    .font-size-options {
+        @include grid-layout(4);
+
+        .font-size-btn {
+            @include reset-button;
+
+            color: $primary-text-color;
+            font-size: $small-font-size;
+            padding: 0.4rem;
+
+            @include highlight-hover;
+        }
+    }
+
+    .typeface-select {
+        background-color: transparent;
+        border-radius: 4px;
+        color: $primary-text-color;
+        cursor: pointer;
+        font-size: $small-font-size;
+        padding: 0.5rem;
+        transition: border-color 0.2s ease;
+        width: 100%;
+
+        @include subtle-border;
+
+        &:focus {
+            border-color: $highlight-color;
+            outline: none;
+        }
+    }
+
+    .color-options {
+        @include grid-layout(3);
+
+        .color-btn {
+            border-radius: 50%;
+            cursor: pointer;
+            height: 20px;
+            width: 20px;
+
+            @include subtle-border;
+
+            &.active {
+                box-shadow: 0 0 0 2px $highlight-color;
             }
         }
     }
 
-    // Preview/Editor Styles
     &__preview {
-        position: relative; // Add this to contain absolute positioning
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        padding-top: var(--sidebar-top);
-        padding-left: calc(var(--sidebar-left) + #{map-get($modal-dimensions, sidebar-width)} + 2rem);
         background-color: $secondary-bg-color;
+        height: 100%;
+        left: 0;
         overflow-y: auto;
+        padding-left: calc(var(--sidebar-left) + #{map.get($modal-dimensions, sidebar-width)} + 2rem);
+        padding-top: var(--sidebar-top);
+        position: relative;
+        top: 0;
+        width: 100%;
 
         .ql-container {
-            height: calc(100vh - var(--sidebar-top) - #{map-get($modal-spacing, container-padding)});
             border: none !important;
+            height: calc(100vh - var(--sidebar-top) - #{map.get($modal-spacing, container-padding)});
         }
 
         .ql-editor {
-            padding: $spacing-md;
-            min-height: 100%;
             background-color: $secondary-bg-color;
-            border-radius: $border-radius;
             border: none;
+            border-radius: $border-radius;
             box-shadow: none;
             color: $primary-text-color;
 
+            // Merged styles from duplicate selector
+            font-family: inherit;
+            font-size: $body-font-size;
+            line-height: 1.8;
+            min-height: 100%;
+            padding: $spacing-md;
+            padding-right: 10rem;
+            padding-top: 2rem;
+
             &:focus {
                 outline: none;
+            }
+
+            p {
+                margin-bottom: 1.2rem;
             }
 
             p:first-child {
                 margin-top: 0;
             }
 
-            // Adjust top padding to accommodate title input
-            padding-top: 1rem; // Increase top padding for better spacing
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6 {
+                font-family: $font-family-heading;
+                margin: 1.5rem 0 1rem;
+            }
         }
 
-        // Title Input Styles
         .post-modal__title-input,
         .edit-post-modal__title-input {
-            background-color: $secondary-bg-color;
-            width: 100%;
-            max-width: 52vw; // Set a maximum width of 52vw
-            padding: 2rem 10rem 1rem 1rem; // Increased padding
-            font-size: $heading-font-size-lg; // Larger font size
-            font-family: $font-family-heading;
-            font-weight: 500;
-            border: none;
-            outline: none;
             background: transparent;
+            background-color: $secondary-bg-color;
+            border: none;
             color: $primary-text-color;
+            display: block;
+            font-family: $font-family-heading;
+            font-size: $heading-font-size-lg;
+            font-weight: 500;
+            line-height: 1.2;
             margin-bottom: 0.5rem;
-            text-overflow: hidden;
+            max-height: calc($heading-font-size-lg * 3);
+            max-width: 52vw;
+            outline: none;
             overflow: hidden;
+            overflow-wrap: break-word;
+            padding: 2rem 10rem 1rem 1rem;
+            text-overflow: hidden;
             text-wrap: normal;
-            word-wrap: break-word; // Allow wrapping of long words
-            overflow-wrap: break-word; // Ensure compatibility across browsers
-            white-space: normal; // Allow normal wrapping behavior
-            display: block; // Ensure it behaves as a block element
-            max-height: calc($heading-font-size-lg * 3); // Limit to 3 lines based on font size
-            line-height: 1.2; // Adjust line height for better readability
+            width: 100%;
+            word-wrap: break-word;
 
             &::placeholder {
                 color: $secondary-text-color;
-                opacity: 0.6;
                 font-weight: normal;
+                opacity: 0.6;
             }
         }
 
-        // Separator Line
         .post-modal__title-separator,
         .edit-post-modal__title-separator {
-            position: relative;
-            width: calc(100% - 20rem) !important; // Subtracting 6rem from right side and 2rem from left
-            height: 1px;
-            background-color: rgba(0, 0, 0, 0.08);
-            margin: 1rem 0 1rem 2rem !important; // Remove auto, use explicit margins
+            background-color: rgb(0 0 0 / 8%);
             display: block;
+            height: 1px;
+            margin: 1rem 0 1rem 2rem !important;
+            position: relative;
+            width: calc(100% - 20rem) !important;
         }
 
-        // Quill Editor Adjustments
-        .ql-container {
+        .ql-toolbar {
             border: none !important;
+            border-bottom: 1px solid rgb(0 0 0 / 8%) !important;
 
-            .ql-editor {
-                padding-top: 2rem; // Increase top and bottom padding
-                padding-right: 10rem;
-                font-family: inherit;
-                font-size: $body-font-size;
-                line-height: 1.8;
-                color: $primary-text-color;
-
-                // Style inheritance for editor content
-                h1,
-                h2,
-                h3,
-                h4,
-                h5,
-                h6 {
-                    font-family: $font-family-heading;
-                    margin: 1.5rem 0 1rem;
-                }
-
-                p {
-                    margin-bottom: 1.2rem;
-                }
+            &::after {
+                background-color: rgb(0 0 0 / 8%) !important;
+                bottom: 0 !important;
+                content: "" !important;
+                display: block !important;
+                height: 1px !important;
+                left: -1rem !important;
+                margin-left: 2rem !important;
+                position: absolute !important;
+                width: calc(100% - 15rem) !important;
             }
         }
 
-        // Remove default Quill borders
-        .ql-toolbar {
-            border: none !important;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
-        }
-
-        // Add close button styles within preview
         .modal-header {
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
-            border: none;
-            z-index: 1060;
-            padding: 0;
             background: transparent;
+            border: none;
+            padding: 0;
+            position: absolute;
+            right: 2rem;
+            top: 2rem;
+            z-index: 1060;
 
             .close {
-                width: 40px;
-                height: 40px;
-                padding: 0.5rem;
-                margin: 0;
-                border-radius: 50%;
-                background: rgba(255, 255, 255, 0.9);
                 backdrop-filter: blur(4px);
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                background: rgb(255 255 255 / 90%);
+                border-radius: 50%;
+                box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
+                height: 40px;
+                margin: 0;
                 opacity: 0.8;
+                padding: 0.5rem;
                 transition: opacity 0.2s ease;
+                width: 40px;
 
                 &:hover {
                     opacity: 1;
@@ -307,36 +307,12 @@
                 }
             }
         }
-
-        .ql-snow.ql-toolbar {
-            position: relative; // Ensure pseudo-element positioning works
-            border-bottom: none !important; // Remove default border if any
-
-            &:after {
-                content: "" !important; // Add required content property
-                position: absolute !important;
-                bottom: 0 !important;
-                left: -1rem !important;
-                width: calc(100% - 15rem) !important; // Increase right-side reduction
-                height: 1px !important;
-                margin-left: 2rem !important;
-                background-color: rgba(0, 0, 0, 0.08) !important;
-                display: block !important;
-            }
-        }
     }
 
-    // Remove default header styles if present
-    .modal-header {
-        border: none;
-        padding: 0;
-    }
-
-    // Add action buttons styling
     .toolbar-group__actions {
-        margin-top: auto; // Push to bottom
+        border-top: 1px solid rgb(0 0 0 / 8%);
+        margin-top: auto;
         padding-top: 1rem;
-        border-top: 1px solid rgba(0, 0, 0, 0.08);
 
         .toolbar-group__content {
             display: flex;
@@ -349,6 +325,51 @@
         }
     }
 
-    // Additional Styles Specific to EditPostModal (if any)
-    // No additional styles needed as the title input is already handled above
+    // Animations
+    @keyframes modal-fade-in {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes backdrop-fade-in {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    // Responsive Design
+    @media (max-width: $breakpoint-md) {
+        .usermanager-form {
+            grid-template-columns: 1fr;
+
+            &__submit {
+                grid-column: 1;
+            }
+        }
+
+        .usermanager-modal {
+            padding: $spacing-lg;
+        }
+
+        .usermanager-modal__tabs {
+            justify-content: center;
+        }
+
+        .usermanager-modal__tab {
+            flex: none;
+            justify-content: center;
+            width: 100%;
+        }
+    }
 }

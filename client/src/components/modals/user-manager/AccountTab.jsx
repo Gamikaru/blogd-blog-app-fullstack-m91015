@@ -1,6 +1,6 @@
-
-// AccountTab.jsx
+// src/components/AccountTab.jsx
 // Desc: A tab component for the user account settings
+
 import { Button } from '@components';
 import { userService } from '@services/api';
 import { logger } from '@utils';
@@ -67,72 +67,80 @@ const AccountTab = ({ user, setUser, showNotification, loading, setLoading }) =>
     };
 
     return (
-        <Formik
-            initialValues={accountInitialValues}
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-        >
-            {({ isSubmitting, errors, touched }) => (
-                <Form className="usermanager-content__form">
-                    <div className="form-group">
-                        <label htmlFor="username">Username</label>
-                        <Field type="text" id="username" name="username" placeholder="Change username" />
-                        {errors.username && touched.username && (
-                            <div className="error">{errors.username}</div>
-                        )}
-                    </div>
+        <div className="account-tab">
+            <Formik
+                initialValues={accountInitialValues}
+                validationSchema={validationSchema}
+                onSubmit={handleSubmit}
+            >
+                {({ isSubmitting, errors, touched }) => (
+                    <Form className="account-tab__form">
+                        <div className="account-tab__form-group">
+                            <label htmlFor="username">Username</label>
+                            <Field type="text" id="username" name="username" placeholder="Change username" />
+                            {errors.username && touched.username && (
+                                <div className="account-tab__error">{errors.username}</div>
+                            )}
+                        </div>
 
-                    <div className="form-group">
-                        <label htmlFor="language">Preferred Language</label>
-                        <Field as="select" id="language" name="language">
-                            <option value="en">English</option>
-                            <option value="es">Spanish</option>
-                            <option value="fr">French</option>
-                        </Field>
-                        {errors.language && touched.language && (
-                            <div className="error">{errors.language}</div>
-                        )}
-                    </div>
+                        <div className="account-tab__form-group">
+                            <label htmlFor="language">Preferred Language</label>
+                            <Field as="select" id="language" name="language">
+                                <option value="en">English</option>
+                                <option value="es">Spanish</option>
+                                <option value="fr">French</option>
+                            </Field>
+                            {errors.language && touched.language && (
+                                <div className="account-tab__error">{errors.language}</div>
+                            )}
+                        </div>
 
-                    <div className="form-group">
-                        <label>
-                            <Field type="checkbox" name="darkMode" />
-                            Enable Dark Mode
-                        </label>
-                    </div>
+                        <div className="account-tab__form-group">
+                            <label>
+                                <Field type="checkbox" name="darkMode" />
+                                Enable Dark Mode
+                            </label>
+                        </div>
 
-                    <div className="form-group">
-                        <label>Account Type: {accountInitialValues.accountType.charAt(0).toUpperCase() + accountInitialValues.accountType.slice(1)}</label>
+                        <div className="account-tab__form-group">
+                            <label>
+                                Account Type: {accountInitialValues.accountType.charAt(0).toUpperCase() + accountInitialValues.accountType.slice(1)}
+                            </label>
+                            <Button
+                                type="button"
+                                variant="upgrade"
+                                onClick={handleUpgrade}
+                            >
+                                Upgrade Your Account
+                            </Button>
+                        </div>
+
                         <Button
                             type="button"
-                            className="button button-upgrade"
-                            variant="upgrade"
-                            onClick={handleUpgrade}
+                            onClick={handleDeleteAccount}
+                            variant="delete"
+                            showIcon={false}
                         >
-                            Upgrade Your Account
+                            Delete Account
                         </Button>
-                    </div>
 
-                    <Button
-                        variant="delete"
-                        className="button button-delete"
-                        onClick={handleDeleteAccount}
-                        showIcon={false}
-                    >
-                        Delete Account
-                    </Button>
+                        <Button
+                            type="submit"
+                            disabled={isSubmitting || loading}
+                            variant="submit"
+                        >
+                            Save Account Settings
+                        </Button>
 
-                    <Button
-                        type="submit"
-                        className="usermanager-content__submit"
-                        disabled={isSubmitting || loading}
-                        variant="submit"
-                    >
-                        Save Account Settings
-                    </Button>
-                </Form>
-            )}
-        </Formik>
+                        {errors.general && (
+                            <div className="account-tab__error account-tab__general-error">
+                                {errors.general}
+                            </div>
+                        )}
+                    </Form>
+                )}
+            </Formik>
+        </div>
     );
 };
 

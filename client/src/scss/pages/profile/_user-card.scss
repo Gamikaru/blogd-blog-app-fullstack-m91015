@@ -3,43 +3,43 @@
 .user-card {
     background: $secondary-bg-color;
     border-radius: $border-radius;
-    overflow: hidden;
-    margin-bottom: $spacing-lg;
     box-shadow: $box-shadow-medium;
-    padding: $spacing-md;
-    width: 100%;
-    max-width: 400px;
     display: flex;
     flex-direction: column;
+    margin-bottom: $spacing-lg;
+    max-width: 400px;
+    overflow: hidden;
+    padding: $spacing-md;
+    width: 100%;
     word-wrap: break-word;
 
-    @media (max-width: 768px) {
+    @media (width <= 768px) {
         padding: $spacing-sm;
     }
 
     &__header {
-        background: linear-gradient(135deg, $accent-color-1, $accent-color-2);
-        padding: $spacing-lg;
-        display: flex;
         align-items: center;
+        background: linear-gradient(135deg, $accent-color-1, $accent-color-2);
+        display: flex;
         gap: $spacing-md;
+        padding: $spacing-lg;
 
-        @media (max-width: 768px) {
-            padding: $spacing-sm;
+        @media (width <= 768px) {
             flex-direction: column;
+            padding: $spacing-sm;
             text-align: center;
         }
     }
 
     &__info-strip {
-        display: flex;
         align-items: center;
-        gap: $spacing-sm;
-        margin-top: $spacing-md;
-        padding: $spacing-sm;
         background-color: $accent-color-1;
         border-radius: $border-radius;
         color: $secondary-bg-color;
+        display: flex;
+        gap: $spacing-sm;
+        margin-top: $spacing-md;
+        padding: $spacing-sm;
         word-wrap: break-word;
 
         .fi-user-icon {
@@ -57,25 +57,25 @@
 
     &__detail-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
         gap: $spacing-md;
+        grid-template-columns: 1fr 1fr;
 
-        @media (max-width: 768px) {
+        @media (width <= 768px) {
             grid-template-columns: 1fr;
         }
     }
 
     &__detail-item {
-        display: flex;
         align-items: center;
+        display: flex;
         gap: $spacing-sm;
         word-wrap: break-word;
     }
 
     &__detail-icon {
         color: $accent-color-1;
-        font-size: 1rem;
         flex-shrink: 0;
+        font-size: 1rem;
     }
 
     &__detail-content {
@@ -85,13 +85,13 @@
     }
 
     &__detail-label {
-        font-size: 0.75rem;
         color: $secondary-text-color;
+        font-size: 0.75rem;
     }
 
     &__detail-value {
-        font-size: 0.85rem;
         color: $primary-text-color;
+        font-size: 0.85rem;
         word-break: break-word;
     }
 }

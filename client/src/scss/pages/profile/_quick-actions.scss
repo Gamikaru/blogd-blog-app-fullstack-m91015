@@ -3,19 +3,19 @@
 .quick-actions {
     background: $secondary-bg-color;
     border-radius: $border-radius;
-    padding: $spacing-md;
-    margin-bottom: $spacing-lg;
     box-shadow: $box-shadow-medium;
-    width: 100%;
+    margin-bottom: $spacing-lg;
     max-width: 400px;
+    padding: $spacing-md;
+    width: 100%;
 
-    @media (max-width: 768px) {
+    @media (width <= 768px) {
         padding: $spacing-sm;
     }
 
     &__title {
-        font-size: 1rem; // Slightly reduced for consistency
         color: $primary-text-color;
+        font-size: 1rem; // Slightly reduced for consistency
         margin-bottom: $spacing-md;
         text-align: center;
     }
@@ -29,20 +29,20 @@
 
     &__button {
         &--edit {
-            padding: $spacing-xs $spacing-sm;
+            align-items: center;
             background-color: $button-primary;
-            color: #fff;
             border: none;
             border-radius: $border-radius;
+            color: #fff;
             cursor: pointer;
-            font-size: 0.85rem; // Slightly reduced for consistency
             display: flex;
-            align-items: center;
+            font-size: 0.85rem; // Slightly reduced for consistency
             gap: $spacing-xs;
+            padding: $spacing-xs $spacing-sm;
             transition: background-color $transitions-base;
 
             &:hover {
-                background-color: darken($button-primary, 10%);
+                background-color: color.adjust($button-primary, $lightness: -10%);
             }
 
             &:disabled {

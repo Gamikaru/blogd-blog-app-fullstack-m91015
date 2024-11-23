@@ -1,178 +1,166 @@
+/* _network-page.scss */
+
 /* --------------------------------------------------------------------------
    Network Page Styling
 -------------------------------------------------------------------------- */
-
 .network-page {
-    &__container {
-        padding: $spacing-xxl $spacing-lg;
-        background-color: $primary-bg-color;
-        color: $primary-text-color;
-        width: 80vw;
-        margin: 0 auto;
+    background-color: $primary-bg-color;
+    color: $primary-text-color;
+    margin: 0 auto;
+    padding: $spacing-xxl $spacing-lg;
+    width: 80vw;
+}
+
+.network-page__filter-search {
+    align-items: center;
+    display: flex;
+    gap: $spacing-lg;
+    justify-content: flex-start;
+    margin-bottom: $spacing-lg;
+    margin-top: -15rem;
+}
+
+.network-page__search {
+    align-items: center;
+    display: flex;
+    position: relative;
+}
+
+.network-page__filter {
+    align-items: center;
+    display: flex;
+    position: relative;
+}
+
+.network-page__search-icon,
+.network-page__filter-icon {
+    @include filter-search-icon;
+}
+
+.network-page__input {
+    background-color: $input-bg-color;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    color: $primary-text-color;
+    font-size: $body-font-size;
+    outline: none;
+    padding: $spacing-xs $spacing-sm;
+    transition:
+        width 0.3s ease,
+        opacity 0.3s ease;
+    width: 200px;
+
+    &:focus {
+        border-color: $accent-color-2;
+        box-shadow: 0 0 0 2px rgba($accent-color-2, 0.5);
+    }
+}
+
+.network-page__dropdown {
+    background-color: $secondary-bg-color;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow-strong;
+    left: 0;
+    opacity: 1;
+    padding: $spacing-sm;
+    pointer-events: auto;
+    position: absolute;
+    top: calc(100% + $spacing-sm);
+    transform: translateY(0);
+    width: px-to-rem(250);
+    z-index: 1000;
+}
+
+.network-page__option {
+    margin-bottom: $spacing-sm;
+}
+
+.network-page__option label {
+    color: $primary-text-color;
+    display: block;
+    font-size: $small-font-size;
+    margin-bottom: $spacing-xxs;
+}
+
+.network-page__option input,
+.network-page__option select {
+    background-color: color.adjust($primary-bg-color, $lightness: 5%);
+    border: 1px solid color.adjust($secondary-bg-color, $lightness: 20%);
+    border-radius: $border-radius;
+    color: $primary-text-color;
+    font-size: $body-font-size;
+    padding: $spacing-xxs $spacing-sm;
+    transition: border-color $transitions-base;
+    width: 100%;
+
+    &:focus {
+        border-color: $accent-color-2;
+        outline: none;
+    }
+}
+
+.network-page__actions {
+    text-align: center;
+}
+
+.network-page__actions button {
+    font-size: $body-font-size;
+    padding: $spacing-xxs $spacing-sm;
+
+    &:hover {
+        background-color: color.adjust($accent-color-2, $lightness: -10%);
+    }
+}
+
+.network-page__grid {
+    display: grid;
+    gap: $spacing-xl;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    margin: 0 auto;
+    max-width: 80vw;
+    padding: $spacing-lg;
+}
+
+.network-page__messages--loading,
+.network-page__messages--error {
+    background: $secondary-bg-color;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow-medium;
+    color: $secondary-text-color;
+    font-size: $heading-font-size-md;
+    margin: $spacing-xl auto;
+    max-width: 400px;
+    padding: $spacing-xl;
+    text-align: center;
+}
+
+.network-page__messages--error {
+    border-left: 4px solid $error-color;
+}
+
+.network-page__messages--no-users {
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.network-page__grid__item {
+    /* Add any specific styles for grid items if needed */
+}
+
+@media (max-width: $breakpoint-md) {
+    .network-page {
+        padding: $spacing-lg $spacing-md;
     }
 
-    &__filter-search {
-        display: flex;
-        justify-content:first baseline;
-        align-items: center;
+    .network-page__filter-search {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: $spacing-md;
+    }
+
+    .network-page__grid {
         gap: $spacing-lg;
-        margin-bottom: $spacing-lg;
-        margin-top: -15rem;
-
-        &__search,
-        &__filter {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        &__filter {
-            &-icon {
-                @extend .filter-icon;
-            }
-        }
-
-        &__search {
-            &-icon {
-                @extend .search-icon;
-            }
-        }
-
-        &__input {
-            width: 200px;
-            padding: $spacing-xs $spacing-sm;
-            border: 1px solid $border-color;
-            border-radius: $border-radius;
-            outline: none;
-            transition:
-                width 0.3s ease,
-                opacity 0.3s ease;
-            font-size: $body-font-size;
-            color: $primary-text-color;
-            background-color: $input-bg-color;
-
-            &:focus {
-                border-color: $accent-color-2;
-                box-shadow: 0 0 0 2px rgba($accent-color-2, 0.5);
-            }
-        }
-
-        &__dropdown {
-            position: absolute;
-            top: calc(100% + spacing(1));
-            left: 0;
-            background-color: $secondary-bg-color;
-            border-radius: $border-radius;
-            box-shadow: $box-shadow-strong;
-            padding: spacing(1);
-            z-index: 1000;
-            width: px-to-rem(250);
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: auto;
-
-            &__option {
-                margin-bottom: spacing(1);
-
-                label {
-                    display: block;
-                    font-size: $small-font-size;
-                    color: $primary-text-color;
-                    margin-bottom: spacing(0.5);
-                }
-
-                input,
-                select {
-                    width: 100%;
-                    padding: spacing(0.5);
-                    border: 1px solid lighten($secondary-bg-color, 20%);
-                    border-radius: $border-radius;
-                    font-size: $body-font-size;
-                    color: $primary-text-color;
-                    background-color: lighten($primary-bg-color, 5%);
-                    transition: border-color $transitions-base;
-
-                    &:focus {
-                        border-color: $accent-color-2;
-                        outline: none;
-                    }
-                }
-            }
-
-            &__actions {
-                text-align: center;
-
-                button {
-                    @include button-style($accent-color-2, $primary-text-color);
-                    padding: spacing(0.5) spacing(1);
-                    font-size: $body-font-size;
-
-                    &:hover {
-                        background-color: darken($accent-color-2, 10%);
-                    }
-                }
-            }
-        }
-    }
-
-    &__grid {
-        max-width: 80vw;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-        gap: $spacing-xl;
-        padding: $spacing-lg;
-
-        &-item {
-            /* Add any specific styles for grid items if needed */
-        }
-    }
-
-    &__messages {
-        &--loading,
-        &--error {
-            text-align: center;
-            padding: $spacing-xl;
-            background: $secondary-bg-color;
-            border-radius: $border-radius;
-            box-shadow: $box-shadow-medium;
-            max-width: 400px;
-            margin: $spacing-xl auto;
-            color: $secondary-text-color;
-            font-size: $heading-font-size-md;
-        }
-
-        &--error {
-            border-left: 4px solid $error-color;
-        }
-
-        &--no-users {
-            /* Styles for no users message */
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-    }
-
-    /* --------------------------------------------------------------------------
-       Responsive Design for the Network Page
-    -------------------------------------------------------------------------- */
-    @media (max-width: $breakpoint-md) {
-        .network-page {
-            &__container {
-                padding: $spacing-lg $spacing-md;
-            }
-
-            &__filter-search {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: $spacing-md;
-            }
-
-            &__grid {
-                grid-template-columns: 1fr;
-                gap: $spacing-lg;
-                padding: $spacing-md;
-            }
-        }
+        grid-template-columns: 1fr;
+        padding: $spacing-md;
     }
 }

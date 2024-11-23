@@ -1,160 +1,140 @@
-// _user-dropdown.scss
-
 .user-dropdown-portal {
+    align-items: flex-start;
+    display: flex;
+    height: 100%;
+    justify-content: flex-end;
+    left: 0;
+    padding: $spacing-md;
+    pointer-events: none;
     position: fixed;
     top: 0;
-    left: 0;
     width: 100%;
-    height: 100%;
-    pointer-events: none; // Allow interactions only when visible
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-end;
-    padding: $spacing-md;
-    z-index: get-z-index(modal); // Ensure it appears above other elements
+    z-index: get-z-index(modal);
 
     .user-dropdown {
         background-color: $secondary-bg-color;
         border-radius: $border-radius;
-        min-width: 280px;
-        width: 25%;
-        overflow: hidden;
-        pointer-events: auto; // Enable interactions
-        position: relative;
-        top: 3rem;
-        right: 2rem;
         box-shadow: $box-shadow-medium;
-
-        &__content {
-            padding: $spacing-lg;
-            display: flex;
-            flex-direction: column;
-            gap: $spacing-md;
-
-            .user-info {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: $spacing-md;
-                padding-bottom: $spacing-md;
-                border-bottom: 1px solid $border-color;
-
-                .user-avatar {
-                    width: 80px;
-                    height: 80px;
-                    border-radius: 50%;
-                    overflow: hidden;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    box-shadow: $box-shadow-small;
-                    background-color: $accent-color-1;
-
-                    img.avatar-image {
-                        width: 100%;
-                        height: 100%;
-                        object-fit: cover;
-                    }
-
-                    .initials-avatar {
-                        font-size: $heading-font-size-lg;
-                        color: $secondary-bg-color;
-                        text-transform: uppercase;
-                    }
-                }
-
-                .user-details {
-                    width: 100%;
-
-                    .detail-item {
-                        display: flex;
-                        align-items: center;
-                        gap: $spacing-sm;
-                        padding: $spacing-xs 0;
-                        color: $primary-text-color;
-                        cursor: pointer;
-                        transition: color $transitions-base;
-
-                        .detail-icon {
-                            font-size: $sub-heading-font-size;
-                            color: $highlight-color;
-                        }
-
-                        .detail-text {
-                            font-size: $body-font-size;
-                        }
-
-                        &:hover {
-                            color: $highlight-color;
-
-                            .detail-icon {
-                                color: darken($highlight-color, 10%);
-                            }
-                        }
-                    }
-                }
-            }
-
-            .dropdown-actions {
-                display: flex;
-                flex-direction: column;
-                gap: $spacing-sm;
-                padding-top: $spacing-md;
-
-                // .button {
-                //     @extend .button;
-                //     width: 100%;
-                //     justify-content: center;
-
-                //     &.button-profile,
-                //     &.button-edit { // Add .button-edit to extend .button-profile styles
-                //         @extend .button-profile;
-                //     }
-
-                //     &.button-delete {
-                //         @extend .button-delete;
-                //     }
-                // }
-            }
-        }
+        min-width: 280px;
+        overflow: hidden;
+        pointer-events: auto;
+        position: relative;
+        right: 2rem;
+        top: 3rem;
+        width: 25%;
     }
 }
 
+.user-dropdown__content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    padding: $spacing-lg;
+}
 
-// Responsive Design
+.user-info {
+    align-items: center;
+    border-bottom: 1px solid $border-color;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    padding-bottom: $spacing-md;
+}
+
+.user-avatar {
+    align-items: center;
+    background-color: $accent-color-1;
+    border-radius: 50%;
+    box-shadow: $box-shadow-small;
+    display: flex;
+    height: 80px;
+    justify-content: center;
+    overflow: hidden;
+    width: 80px;
+}
+
+.user-avatar__image {
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+}
+
+.initials-avatar {
+    color: $secondary-bg-color;
+    font-size: $heading-font-size-lg;
+    text-transform: uppercase;
+}
+
+.user-details {
+    width: 100%;
+}
+
+.detail-item {
+    align-items: center;
+    color: $primary-text-color;
+    cursor: pointer;
+    display: flex;
+    gap: $spacing-sm;
+    padding: $spacing-xs 0;
+    transition: color $transitions-base;
+}
+
+.detail-item__icon {
+    color: $highlight-color;
+    font-size: $sub-heading-font-size;
+}
+
+.detail-item__text {
+    font-size: $body-font-size;
+}
+
+.detail-item:hover {
+    color: $highlight-color;
+}
+
+.detail-item:hover .detail-item__icon--hover {
+    color: color.adjust($highlight-color, $lightness: -10%);
+}
+
+.dropdown-actions {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    padding-top: $spacing-md;
+
+    .dropdown-actions__button {
+        display: flex;
+        justify-content: center;
+    }
+}
+
 @media (max-width: $breakpoint-md) {
     .user-dropdown-portal {
         align-items: center;
         justify-content: center;
         padding: $spacing-sm;
+    }
 
-        .user-dropdown {
-            min-width: 90%;
-            max-width: 400px;
-        }
+    .user-dropdown {
+        max-width: 400px;
+        min-width: 90%;
+    }
 
-        .user-dropdown__content {
-            padding: $spacing-md;
+    .user-dropdown__content {
+        padding: $spacing-md;
+    }
 
-            .user-info {
-                .user-avatar {
-                    width: 70px;
-                    height: 70px;
-                }
+    .user-avatar {
+        height: 70px;
+        width: 70px;
+    }
 
-                .user-details {
-                    .detail-item {
-                        justify-content: center;
-                    }
-                }
-            }
+    .detail-item {
+        justify-content: center;
+    }
 
-            .dropdown-actions {
-                flex-direction: row;
-                justify-content: space-around;
-
-
-            }
-        }
+    .dropdown-actions {
+        flex-direction: row;
+        justify-content: space-around;
     }
 }

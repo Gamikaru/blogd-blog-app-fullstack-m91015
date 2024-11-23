@@ -8,7 +8,7 @@ $theme: light; // Set to 'light' or 'dark' to switch themes
 // Light theme colors
 $light-theme: (
     primary-bg-color: #f3f0ed,
-    secondary-bg-color: #ffffff,
+    secondary-bg-color: #fff,
     primary-text-color: #3d3d3d,
     secondary-text-color: #9c9c9c,
     accent-color-1: #e2e3d5,
@@ -17,9 +17,9 @@ $light-theme: (
     success-color: #28a745,
     error-color: #e74c3c,
     warning-color: #f39c12,
-    hover-color: darken(#f1f1f1, 10%),
-    modal-backdrop-color: rgba(0, 0, 0, 0.2),
-    border-color: rgba(0, 0, 0, 0.1)
+    hover-color: color.adjust(#f1f1f1, $lightness: -10%),
+    modal-backdrop-color: rgb(0 0 0 / 20%),
+    border-color: rgb(0 0 0 / 10%)
 );
 
 // Dark theme colors
@@ -29,33 +29,33 @@ $dark-theme: (
     primary-text-color: #f0f0f0,
     secondary-text-color: #bfbfbf,
     accent-color-1: #2a2a2a,
-    accent-color-2: #333333,
+    accent-color-2: #333,
     highlight-color: #75a2a4,
     success-color: #28a745,
     error-color: #e74c3c,
     warning-color: #f39c12,
-    hover-color: lighten(#333333, 10%),
-    modal-backdrop-color: rgba(255, 255, 255, 0.2),
-    border-color: rgba(255, 255, 255, 0.1)
+    hover-color: color.adjust(#333, $lightness: 10%),
+    modal-backdrop-color: rgb(255 255 255 / 20%),
+    border-color: rgb(255 255 255 / 10%)
 );
 
 // Choose theme colors based on $theme variable
 $theme-colors: if($theme == "dark", $dark-theme, $light-theme);
 
 // Assign colors
-$primary-bg-color: map-get($theme-colors, primary-bg-color);
-$secondary-bg-color: map-get($theme-colors, secondary-bg-color);
-$primary-text-color: map-get($theme-colors, primary-text-color);
-$secondary-text-color: map-get($theme-colors, secondary-text-color);
-$accent-color-1: map-get($theme-colors, accent-color-1);
-$accent-color-2: map-get($theme-colors, accent-color-2);
-$highlight-color: map-get($theme-colors, highlight-color);
-$success-color: map-get($theme-colors, success-color);
-$error-color: map-get($theme-colors, error-color);
-$warning-color: map-get($theme-colors, warning-color);
-$hover-color: map-get($theme-colors, hover-color);
-$modal-backdrop-color: map-get($theme-colors, modal-backdrop-color);
-$border-color: map-get($theme-colors, border-color);
+$primary-bg-color: map.get($theme-colors, primary-bg-color);
+$secondary-bg-color: map.get($theme-colors, secondary-bg-color);
+$primary-text-color: map.get($theme-colors, primary-text-color);
+$secondary-text-color: map.get($theme-colors, secondary-text-color);
+$accent-color-1: map.get($theme-colors, accent-color-1);
+$accent-color-2: map.get($theme-colors, accent-color-2);
+$highlight-color: map.get($theme-colors, highlight-color);
+$success-color: map.get($theme-colors, success-color);
+$error-color: map.get($theme-colors, error-color);
+$warning-color: map.get($theme-colors, warning-color);
+$hover-color: map.get($theme-colors, hover-color);
+$modal-backdrop-color: map.get($theme-colors, modal-backdrop-color);
+$border-color: map.get($theme-colors, border-color);
 
 // Typography - Fluid Responsive
 $font-family-primary: "Segoe UI", sans-serif;
@@ -66,7 +66,6 @@ $heading-font-size-xxlg: fluid-type(400px, 1400px, 5rem, 4rem);
 $heading-font-size-lg: fluid-type(320px, 1200px, 1.75rem, 2.5rem);
 $heading-font-size-md: fluid-type(320px, 1200px, 1.5rem, 2rem);
 $heading-font-size-sm: fluid-type(320px, 1200px, 1.25rem, 1.5rem);
-
 $sub-heading-font-size: fluid-type(320px, 1200px, 1rem, 1.25rem);
 $body-font-size: fluid-type(320px, 1200px, 0.9rem, 1rem);
 $small-font-size: fluid-type(320px, 1200px, 0.8rem, 0.9rem);
@@ -87,15 +86,15 @@ $spacing-scale: (
 );
 
 // Spacing and Layout
-$spacing-unit: map-get($spacing-scale, md);
-$navbar-padding: map-get($spacing-scale, sm) map-get($spacing-scale, md);
-$card-padding: map-get($spacing-scale, lg);
+$spacing-unit: map.get($spacing-scale, md);
+$navbar-padding: map.get($spacing-scale, sm) map.get($spacing-scale, md);
+$card-padding: map.get($spacing-scale, lg);
 $button-padding: (
     sm: 0.5rem 0.75rem,
     md: 0.75rem 1.25rem,
     lg: 1rem 1.5rem
 );
-$input-padding: map-get($spacing-scale, sm) map-get($spacing-scale, md);
+$input-padding: map.get($spacing-scale, sm) map.get($spacing-scale, md);
 $sidebar-width: 12rem;
 
 // Responsive Borders and Shadows
@@ -103,11 +102,11 @@ $border-radius: clamp(4px, 0.5vw, 8px);
 $border-radius-lg: 1rem;
 $border-radius-sm: 0.25rem;
 $button-border-radius: clamp(20px, 2vw, 30px);
-$card-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-$box-shadow-small: 0 clamp(1px, 0.25vw, 2px) clamp(2px, 0.5vw, 4px) rgba(0, 0, 0, 0.1);
-$box-shadow-medium: 0 clamp(2px, 0.5vw, 4px) clamp(4px, 0.75vw, 8px) rgba(0, 0, 0, 0.1);
-$box-shadow-strong: 0 clamp(4px, 1vw, 8px) clamp(8px, 1.5vw, 12px) rgba(0, 0, 0, 0.4);
-$shadow-color: rgba(0, 0, 0, 0.08);
+$card-shadow: 0 2px 4px rgb(0 0 0 / 10%);
+$box-shadow-small: 0 clamp(1px, 0.25vw, 2px) clamp(2px, 0.5vw, 4px) rgb(0 0 0 / 10%);
+$box-shadow-medium: 0 clamp(2px, 0.5vw, 4px) clamp(4px, 0.75vw, 8px) rgb(0 0 0 / 10%);
+$box-shadow-strong: 0 clamp(4px, 1vw, 8px) clamp(8px, 1.5vw, 12px) rgb(0 0 0 / 40%);
+$shadow-color: rgb(0 0 0 / 8%);
 
 // Breakpoints with em units
 $breakpoints: (
@@ -147,18 +146,18 @@ $container-max-widths: (
 );
 
 // Utility Variables
-$spacing-xxs: map-get($spacing-scale, xxs);
-$spacing-xs: map-get($spacing-scale, xs);
-$spacing-sm: map-get($spacing-scale, sm);
-$spacing-md: map-get($spacing-scale, md);
-$spacing-lg: map-get($spacing-scale, lg);
-$spacing-xl: map-get($spacing-scale, xl);
-$spacing-xxl: map-get($spacing-scale, xxl);
-$spacing-xxxl: map-get($spacing-scale, xxxl);
-$spacing-xxl2: map-get($spacing-scale, xxl2);
+$spacing-xxs: map.get($spacing-scale, xxs);
+$spacing-xs: map.get($spacing-scale, xs);
+$spacing-sm: map.get($spacing-scale, sm);
+$spacing-md: map.get($spacing-scale, md);
+$spacing-lg: map.get($spacing-scale, lg);
+$spacing-xl: map.get($spacing-scale, xl);
+$spacing-xxl: map.get($spacing-scale, xxl);
+$spacing-xxxl: map.get($spacing-scale, xxxl);
+$spacing-xxl2: map.get($spacing-scale, xxl2);
 
 // **Added Variables**
-$button-hover-bg-color: lighten($highlight-color, 5%); // Hover background color for buttons
+$button-hover-bg-color: color.adjust($highlight-color, $lightness: 5%); // Hover background color for buttons
 $input-focus-box-shadow: 0 0 0 2px rgba($highlight-color, 0.2); // Box shadow for focused inputs
 
 // **New Variables for Button Variants**
@@ -169,7 +168,7 @@ $button-grey: #6c757d;
 $button-grey-hover: #5a6268;
 $button-grey-disabled: #343a40;
 $button-primary: $highlight-color;
-$button-primary-hover: darken($highlight-color, 10%);
+$button-primary-hover: color.adjust($highlight-color, $lightness: -10%);
 $button-primary-disabled: #343a40;
 $button-secondary: #6c757d;
 $button-secondary-hover: #5a6268;
@@ -193,13 +192,12 @@ $button-dark: #343a40;
 $button-dark-hover: #212529;
 $button-dark-disabled: #212529;
 $button-link: $highlight-color;
-$button-link-hover: darken($highlight-color, 10%);
+$button-link-hover: color.adjust($highlight-color, $lightness: -10%);
 $button-link-disabled: #343a40;
 $info-color: #17a2b8;
 
 // Transition Variables
 $transitions-base: 0.3s ease-out;
-
 $transitions: (
     base: 0.2s ease,
     button: 0.2s ease-in-out
@@ -215,7 +213,7 @@ $z-indices: (
 $input-bg-color: #f3f0ed; // Adjust if needed for dark theme
 
 // Padding Variables (If Used)
-$padding-xs: map-get($spacing-scale, xs);
-$padding-sm: map-get($spacing-scale, sm);
-$padding-md: map-get($spacing-scale, md);
-$padding-lg: map-get($spacing-scale, lg);
+$padding-xs: map.get($spacing-scale, xs);
+$padding-sm: map.get($spacing-scale, sm);
+$padding-md: map.get($spacing-scale, md);
+$padding-lg: map.get($spacing-scale, lg);

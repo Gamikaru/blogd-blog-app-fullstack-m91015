@@ -7,25 +7,26 @@
 
 .input-label {
     display: block;
-    margin-bottom: $spacing-xs;
-    font-weight: 600;
-    text-align: left; // Assuming text-left is handled via utility classes
-    //in px only
+
+    // in px only
     font-size: fluid-type(320px, 1200px, 16px, 20px); // Responsive font size
+    font-weight: 600;
+    margin-bottom: $spacing-xs;
+    text-align: left; // Assuming text-left is handled via utility classes
 }
 
 .input-control {
-    width: 100%;
-    padding: $input-padding;
+    background-color: $input-bg-color;
     border: 1px solid $border-color;
     border-radius: $border-radius;
-    font-size: fluid-type(320px, 1200px, 16px, 20px); // Responsive font size
     color: $primary-text-color;
-    background-color: $input-bg-color;
+    font-size: fluid-type(320px, 1200px, 16px, 20px); // Responsive font size
+    padding: $input-padding;
     transition:
         background-color $transitions-base,
         border-color $transitions-base,
         box-shadow $transitions-base;
+    width: 100%;
 
     &:focus {
         border-color: $accent-color-2;
@@ -40,25 +41,25 @@
 }
 
 .error-label {
-    display: block;
-    margin-top: $spacing-xs;
     color: $error-color;
+    display: block;
     font-size: fluid-type(320px, 1200px, 16px, 20px); // Responsive font size
+    margin-top: $spacing-xs;
 }
 
 .helper-text {
-    display: block;
-    margin-top: $spacing-xs;
     color: $secondary-text-color;
+    display: block;
     font-size: fluid-type(320px, 1200px, 16px, 20px); // Responsive font size
+    margin-top: $spacing-xs;
 }
 
 /* Optional: Specific Select Field Styles if Needed */
 select {
     appearance: none;
     background-image: url("path-to-dropdown-icon.svg");
-    background-repeat: no-repeat;
     background-position: right $spacing-sm center;
+    background-repeat: no-repeat;
     font-size: fluid-type(320px, 1200px, 16px, 20px); // Responsive font size
 }
 

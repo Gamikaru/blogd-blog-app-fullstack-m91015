@@ -1,27 +1,29 @@
 // navbar.scss
 
 .nav-header {
-    position: fixed;
     background-color: $primary-bg-color;
+    border-radius: 0 0 px-to-rem(80);
+    border-right: 0.1rem solid $border-color;
+    height: px-to-rem(500);
+    margin-right: px-to-rem(32); // 2rem
     padding-bottom: px-to-rem(160); // 10rem
     padding-inline: $navbar-padding;
-    margin-right: px-to-rem(32); // 2rem
+    position: fixed;
     position: relative;
-    border-radius: 0 0 px-to-rem(80) 0;
-    height: px-to-rem(500);
-    border-right: 0.1rem solid $border-color;
 }
 
 .navbar {
     @include flex-center;
-    justify-content: space-between;
+
     align-items: center;
-    max-width: px-to-rem(1200); // 1200px
+    justify-content: space-between;
     margin: 0 auto;
+    max-width: px-to-rem(1200); // 1200px
 }
 
 .navbar-left {
     @include flex-center;
+
     gap: $spacing-md; // 1rem
     margin-left: px-to-rem(30); // -5rem
 }

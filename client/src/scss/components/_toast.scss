@@ -1,50 +1,50 @@
 // src/scss/components/_toast.scss
 
 .custom-toast {
-    min-width: fluid-width(320px, 1200px, 320px, 480px); // Consistent units
-    max-width: fluid-width(320px, 1200px, 320px, 480px);
-    background: $secondary-bg-color;
     backdrop-filter: blur(10px);
+    background: $secondary-bg-color;
     border-radius: $border-radius;
+    max-width: fluid-width(320px, 1200px, 320px, 480px);
+    min-width: fluid-width(320px, 1200px, 320px, 480px); // Consistent units
     overflow: hidden;
 
     .custom-toast-content {
-        display: flex;
         align-items: center;
+        display: flex;
         gap: $spacing-md;
         padding: $spacing-md;
 
         .toast-icon-wrapper {
-            display: flex;
             align-items: center;
-            justify-content: center;
+            display: flex;
             flex-shrink: 0;
-            width: fluid-width(320px, 1200px, 32px, 48px); // Converted rem to px (assuming 1rem = 16px)
             height: fluid-width(320px, 1200px, 32px, 48px);
+            justify-content: center;
+            width: fluid-width(320px, 1200px, 32px, 48px); // Converted rem to px (assuming 1rem = 16px)
 
             .toast-icon {
-                font-size: fluid-type(320px, 1200px, 16px, 20px); // Converted rem to px
                 color: $primary-text-color;
+                font-size: fluid-type(320px, 1200px, 16px, 20px); // Converted rem to px
             }
         }
 
         .toast-message {
+            color: $primary-text-color;
             flex: 1;
             font-size: fluid-type(320px, 1200px, 16px, 19.2px); // Converted rem to px
-            color: $primary-text-color;
             line-height: 1.5;
         }
 
         .toast-close {
+            align-items: center;
             background: none;
             border: none;
-            padding: $spacing-xs;
             color: $secondary-text-color;
             cursor: pointer;
             display: flex;
-            align-items: center;
-            justify-content: center;
             font-size: fluid-type(320px, 1200px, 16px, 20px); // Converted rem to px
+            justify-content: center;
+            padding: $spacing-xs;
 
             &:hover {
                 color: $primary-text-color;
@@ -53,27 +53,27 @@
     }
 
     .toast-actions {
+        border-top: 1px solid fade-color($primary-text-color, 0.1);
         display: flex;
         gap: $spacing-sm;
         padding: $spacing-sm $spacing-md $spacing-md;
-        border-top: 1px solid fade-color($primary-text-color, 0.1);
 
         .toast-action-btn {
-            flex: 1;
-            padding: $spacing-sm $spacing-md;
             border: none;
             border-radius: $button-border-radius;
+            cursor: pointer;
+            flex: 1;
             font-size: fluid-type(320px, 1200px, 12px, 13.6px); // Converted rem to px
             font-weight: 500;
-            cursor: pointer;
+            padding: $spacing-sm $spacing-md;
             transition: all 0.2s ease;
 
             &.primary {
-                background: linear-gradient(135deg, $accent-color-1, darken($accent-color-1, 5%));
+                background: linear-gradient(135deg, $accent-color-1, color.adjust($accent-color-1, $lightness: -5%));
                 color: $primary-text-color;
 
                 &:hover {
-                    background: linear-gradient(135deg, darken($accent-color-1, 2%), darken($accent-color-1, 7%));
+                    background: linear-gradient(135deg, color.adjust($accent-color-1, $lightness: -2%), color.adjust($accent-color-1, $lightness: -7%));
                 }
             }
 
@@ -107,9 +107,9 @@
 
 @media (max-width: $breakpoint-md) {
     .custom-toast {
-        width: 100%; // Set to full width for smaller screens
+        margin: 0 $spacing-md;
         max-width: 100%;
         min-width: 0;
-        margin: 0 $spacing-md;
+        width: 100%; // Set to full width for smaller screens
     }
 }

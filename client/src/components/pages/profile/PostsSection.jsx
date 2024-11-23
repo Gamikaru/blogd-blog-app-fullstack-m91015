@@ -1,5 +1,3 @@
-// components/pages/profile/PostsSection.jsx
-
 import { AnimatePresence, motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
@@ -78,15 +76,46 @@ const PostsSection = ({ userPosts, isOwnProfile }) => {
         const posts = filteredPosts();
 
         return posts.length > 0 ? (
-            <Masonry
-                breakpointCols={breakpointColumnsObj}
-                className="posts-section__posts-gallery"
-                columnClassName="posts-section__posts-gallery-column"
-            >
-                {posts.map((post) => (
-                    <PostCard key={post.postId || post._id} post={post} isOwnProfile={isOwnProfile} />
-                ))}
-            </Masonry>
+            <AnimatePresence mode="popLayout">
+                <motion.div
+                    className="posts-section__posts-container"
+                    layout
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{
+                        duration: 0.3,
+                        layout: { duration: 0.3 }
+                    }}
+                >
+                    <Masonry
+                        breakpointCols={breakpointColumnsObj}
+                        className="posts-section__posts-gallery"
+                        columnClassName="posts-section__posts-gallery-column"
+                    >
+                        {posts.map((post) => (
+                            <motion.div
+                                key={post.postId || post._id}
+                                layout
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.8 }}
+                                transition={{
+                                    duration: 0.2,
+                                    layout: { duration: 0.3 },
+                                    opacity: { duration: 0.2 },
+                                    scale: { duration: 0.2 }
+                                }}
+                            >
+                                <PostCard
+                                    post={post}
+                                    isOwnProfile={isOwnProfile}
+                                />
+                            </motion.div>
+                        ))}
+                    </Masonry>
+                </motion.div>
+            </AnimatePresence>
         ) : (
             <div className="posts-section__no-posts-message">No posts available.</div>
         );

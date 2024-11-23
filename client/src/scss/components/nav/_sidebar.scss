@@ -1,62 +1,57 @@
 // sidebar.scss
 
 .sidebar {
-    position: fixed;
-    left: 0;
-    top: 5rem;
-    width: $sidebar-width;
-    height: 22vh;
     background-color: transparent;
-    padding-inline: $spacing-md;
+    height: 22vh;
+    left: 0;
     opacity: 0;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     overflow-y: auto;
+    padding-inline: $spacing-md;
+    position: fixed;
+    top: 5rem;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    width: $sidebar-width;
     z-index: get-z-index(modal); // Ensure it's below the modal
 
     &.open {
+        animation: slide-in-from-top 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         opacity: 1;
         transform: translateY(0);
-        animation: slideInFromTop 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-
-        .sidebar-content {
-            opacity: 1;
-            transform: translateY(0);
-            transition-delay: 0.2s;
-        }
     }
 
     &:not(.open) {
-        animation: slideOutToBottom 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        animation: slide-out-to-bottom 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
 
+
     .sidebar-content {
-        opacity: 0;
-        transform: translateY(-20px);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         display: flex;
         flex-direction: column;
         gap: $spacing-xl;
-        padding-top: $spacing-xl;
+        opacity: 0;
         padding-left: $spacing-md;
+        padding-top: $spacing-xl;
+        transform: translateY(-20px);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
         .button {
-            width: 80%;
-            max-width: 100%;
-            padding: map-get($button-padding, md);
-            display: flex;
             align-items: center;
-            gap: $spacing-sm;
-            font-weight: 500;
             border-radius: $button-border-radius;
+            display: flex;
+            font-weight: 500;
+            gap: $spacing-sm;
+            max-width: 100%;
+            padding: map.get($button-padding, md);
             transition: all 0.2s ease;
+            width: 80%;
 
             .icon {
                 font-size: 1.1rem;
             }
 
             &:hover {
-                transform: translateY(-1px);
                 box-shadow: $box-shadow-medium;
+                transform: translateY(-1px);
             }
         }
 
@@ -68,24 +63,24 @@
             padding-top: $spacing-lg;
 
             .button {
-                justify-content: flex-start;
                 background-color: transparent;
                 box-shadow: none;
                 color: $primary-text-color;
+                justify-content: flex-start;
                 padding: $spacing-sm $spacing-md;
 
                 &:hover {
                     background-color: fade-color($accent-color-2, 0.1);
-                    transform: none;
                     box-shadow: none;
+                    transform: none;
                 }
 
                 &.button-delete {
                     color: $error-color;
+                }
 
-                    &:hover {
-                        background-color: fade-color($error-color, 0.05);
-                    }
+                &.button-delete:hover {
+                    background-color: fade-color($error-color, 0.05);
                 }
             }
         }
@@ -93,22 +88,24 @@
 }
 
 // Animations
-@keyframes slideInFromTop {
+@keyframes slide-in-from-top {
     from {
         opacity: 0;
         transform: translateY(-20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
 
-@keyframes slideOutToBottom {
+@keyframes slide-out-to-bottom {
     from {
         opacity: 1;
         transform: translateY(0);
     }
+
     to {
         opacity: 0;
         transform: translateY(20px);

@@ -4,31 +4,31 @@
     background: $primary-bg-color;
     border-radius: $border-radius;
     box-shadow: $card-shadow;
-    overflow: hidden;
     cursor: pointer;
     display: flex;
     flex-direction: column;
+    font-family: $font-family-primary;
+    overflow: hidden;
     transition:
         transform $transitions-base,
         box-shadow $transitions-base;
-    font-family: $font-family-primary;
 
     &:hover {
-        transform: scale(1.02);
         box-shadow: $box-shadow-medium;
+        transform: scale(1.02);
     }
 
     &__image-container {
-        width: 100%;
         height: 200px;
         overflow: hidden;
+        width: 100%;
     }
 
     &__image {
-        width: 100%;
         height: 100%;
         object-fit: cover;
         transition: transform $transitions-base;
+        width: 100%;
 
         &:hover {
             transform: scale(1.05);
@@ -36,45 +36,45 @@
     }
 
     &__image-placeholder {
-        width: 100%;
-        height: 100%;
-        background: lighten($secondary-bg-color, 10%);
-        display: flex;
         align-items: center;
-        justify-content: center;
+        background: color.adjust($secondary-bg-color, $lightness: 10%);
         color: $secondary-text-color;
+        display: flex;
         font-size: $body-font-size;
+        height: 100%;
+        justify-content: center;
+        width: 100%;
     }
 
     &__content {
-        padding: $spacing-md;
-        flex-grow: 1;
         display: flex;
         flex-direction: column;
+        flex-grow: 1;
+        padding: $spacing-md;
     }
 
     &__header {
+        align-items: center;
         display: flex;
         justify-content: space-between;
-        align-items: center;
         margin-bottom: $spacing-sm;
     }
 
     &__title {
-        font-size: $heading-font-size-md;
         color: $primary-text-color;
-        margin: 0;
         flex: 1;
+        font-family: $font-family-heading;
+        font-size: $heading-font-size-md;
+        margin: 0;
         margin-right: $spacing-sm;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        font-family: $font-family-heading;
     }
 
     &__date {
-        font-size: $small-font-size;
         color: $secondary-text-color;
+        font-size: $small-font-size;
     }
 
     &__category {
@@ -82,57 +82,57 @@
     }
 
     &__category-tag {
-        display: inline-block;
         background: $accent-color-1;
-        color: $primary-text-color;
-        padding: 0.2em 0.6em;
         border-radius: 999px;
+        color: $primary-text-color;
+        display: inline-block;
         font-size: $small-font-size;
-        text-transform: capitalize;
         font-weight: bold;
+        padding: 0.2em 0.6em;
+        text-transform: capitalize;
     }
 
     &__excerpt {
+        -webkit-box-orient: vertical;
+        color: $primary-text-color;
+        display: -webkit-box;
         flex-grow: 1;
         font-size: $body-font-size;
-        color: $primary-text-color;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
         margin-bottom: $spacing-md;
         overflow: hidden;
         text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        line-clamp: 3;
-        -webkit-box-orient: vertical;
     }
 
     &__actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: $spacing-sm;
-        padding: $spacing-md;
         border-top: 1px solid $border-color;
+        display: flex;
+        gap: $spacing-sm;
+        justify-content: flex-end;
+        padding: $spacing-md;
     }
 
     &__button {
-        padding: 0.4em 0.8em;
-        font-size: $small-font-size;
-        display: flex;
         align-items: center;
         border: none;
         border-radius: $button-border-radius;
         cursor: pointer;
-        transition:
-            background-color map-get($transitions, button),
-            opacity map-get($transitions, button);
-        opacity: $button-opacity-default;
+        display: flex;
         font-family: $font-family-primary;
+        font-size: $small-font-size;
+        opacity: $button-opacity-default;
+        padding: 0.4em 0.8em;
+        transition:
+            background-color map.get($transitions, button),
+            opacity map.get($transitions, button);
 
         &--edit {
             background-color: $button-primary;
             color: #fff;
 
             &:hover {
-                background-color: darken($button-primary, 10%);
+                background-color: color.adjust($button-primary, $lightness: -10%);
             }
 
             &:disabled {
@@ -145,7 +145,7 @@
             color: #fff;
 
             &:hover {
-                background-color: darken($button-danger, 10%);
+                background-color: color.adjust($button-danger, $lightness: -10%);
             }
 
             &:disabled {
@@ -154,44 +154,44 @@
         }
 
         &__icon {
-            margin-right: 0.4em;
             font-size: 1em;
+            margin-right: 0.4em;
         }
     }
 
     /* Modal Actions Specific to Profile */
     &__modal-title {
-        font-size: $heading-font-size-md;
         color: $primary-text-color;
+        font-size: $heading-font-size-md;
         margin-bottom: $spacing-sm;
     }
 
     &__modal-message {
-        font-size: $body-font-size;
         color: $secondary-text-color;
+        font-size: $body-font-size;
         margin-bottom: $spacing-md;
     }
 
     &__modal-actions {
         display: flex;
-        justify-content: flex-end;
         gap: $spacing-sm;
+        justify-content: flex-end;
         margin-top: $spacing-md;
     }
 
     &__modal-button {
         &--delete {
-            padding: 0.4em 0.8em;
-            font-size: $small-font-size;
             background-color: $button-danger;
-            color: #fff;
             border: none;
             border-radius: $button-border-radius;
+            color: #fff;
             cursor: pointer;
+            font-size: $small-font-size;
+            padding: 0.4em 0.8em;
             transition: background-color $transitions-base;
 
             &:hover {
-                background-color: darken($button-danger, 10%);
+                background-color: color.adjust($button-danger, $lightness: -10%);
             }
 
             &:disabled {
@@ -201,17 +201,17 @@
         }
 
         &--cancel {
-            padding: 0.4em 0.8em;
-            font-size: $small-font-size;
             background-color: $button-primary;
-            color: #fff;
             border: none;
             border-radius: $button-border-radius;
+            color: #fff;
             cursor: pointer;
+            font-size: $small-font-size;
+            padding: 0.4em 0.8em;
             transition: background-color $transitions-base;
 
             &:hover {
-                background-color: darken($button-primary, 10%);
+                background-color: color.adjust($button-primary, $lightness: -10%);
             }
         }
     }

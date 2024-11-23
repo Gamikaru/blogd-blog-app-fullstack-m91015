@@ -1,58 +1,49 @@
 /* _cube-slider.scss */
 
 .cube-slider {
-    max-width: 80vw;
-    min-height: 20rem; // Ensure it never collapses to 0
+    background-color: $primary-bg-color;
     display: flex;
-
+    flex-direction: row;
     height: 100%;
     justify-content: center;
     margin: 0 0 $spacing-xxxl auto;
-    padding-bottom: $spacing-xxxl;
+    max-width: 80vw;
+    min-height: 20rem; // Ensure it never collapses to 0
     overflow: visible;
+    padding-bottom: $spacing-xxxl;
     z-index: 2;
-    background-color: $primary-bg-color;
-    flex-direction: row;
-    justify-content: center;
 
     &__container {
-        position: relative;
         margin-top: -13rem;
-
-        &--image {
-            @import "./_image-slide.scss";
-        }
-
-        &--text {
-            @import "./_text-slide.scss";
-        }
+        position: relative;
     }
 
     &__slider {
-        width: 100%;
         height: 25rem;
+        margin-top: -2rem;
         min-height: 15rem;
+        width: 100%;
 
         @include flex-center;
-        margin-top: -2rem;
 
         &__slide {
-            width: 100%;
             height: 100%;
             position: relative;
+            width: 100%;
+
             @include flex-center;
         }
     }
 
     @media (max-width: $breakpoint-md) {
-        flex-direction: column;
         align-items: center;
+        flex-direction: column;
         margin-top: -5rem;
 
         &__container {
-            max-width: 100%;
             margin-left: 0;
             margin-top: 0;
+            max-width: 100%;
         }
 
         &__container--image,
@@ -65,52 +56,53 @@
         }
 
         &__slider {
-            width: 100%;
             height: auto; // Let the height adjust automatically
             margin-top: 0;
+            width: 100%;
         }
 
         &__slider__slide {
-            width: 100%;
             height: auto;
+            width: 100%;
         }
 
         &__text-slide {
             padding: $spacing-md;
 
             &__title {
-                margin: $spacing-md 0;
                 font-size: clamp(1.2rem, 2.2vw, $heading-font-size-md);
+                margin: $spacing-md 0;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
             }
 
             &__excerpt {
-                margin-left: 0;
-                padding-right: 0;
-                max-width: 100%;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                display: -webkit-box;
                 -webkit-box-orient: vertical;
+                display: -webkit-box;
+
                 /* Default line clamp */
                 -webkit-line-clamp: 2;
                 line-clamp: 2;
+                margin-left: 0;
+                max-width: 100%;
+                overflow: hidden;
+                padding-right: 0;
+                text-overflow: ellipsis;
             }
 
             &__meta {
-                padding-left: 0;
-                flex-direction: column;
                 align-items: flex-start;
+                flex-direction: column;
+                padding-left: 0;
+            }
 
-                &__author,
-                &__date {
-                    margin-right: 0;
+            &__meta .author,
+            &__meta .date {
+                margin-right: 0;
 
-                    &::after {
-                        content: none;
-                    }
+                &::after {
+                    content: none;
                 }
             }
         }
@@ -118,22 +110,24 @@
 
     &__loading,
     &__error {
-        height: 300px;
-        @include flex-center;
+        color: #fff;
         font-family: $font-family-primary;
-        color: #ffffff;
         font-size: $body-font-size;
+        height: 300px;
+
+        @include flex-center;
     }
 }
-@media (max-width: 768px) {
+
+@media (width <= 768px) {
     .cube-slider {
         min-height: 60vh; // Always keep slider visible within viewport
     }
 
     .cube-slider__container {
-        margin: 0 auto; // Center container at all sizes
         height: auto; // Let it adapt dynamically
-        top: 0;
+        margin: 0 auto; // Center container at all sizes
         overflow: visible; // Avoid hiding content
+        top: 0;
     }
 }

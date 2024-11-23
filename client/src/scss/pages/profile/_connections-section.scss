@@ -3,41 +3,41 @@
 .connections-section {
     background: $secondary-bg-color;
     border-radius: $border-radius;
-    padding: $spacing-md;
     box-shadow: $box-shadow-medium;
+    padding: $spacing-md;
 
     &__header {
-        display: flex;
         align-items: center;
+        display: flex;
         gap: $spacing-sm;
     }
 
     &__icon {
-        font-size: 1.2em;
         color: $primary-text-color;
+        font-size: 1.2em;
     }
 
     &__action {
-        margin-left: auto;
-        font-size: $body-font-size;
         color: $info-color;
         cursor: pointer;
+        font-size: $body-font-size;
+        margin-left: auto;
         transition: color $transitions-base;
 
         &:hover,
         &:focus {
-            color: lighten($info-color, 10%);
+            color: color.adjust($info-color, $lightness: 10%);
         }
     }
 
     &__placeholder-content {
-        height: 200px;
+        align-items: center;
         background: $primary-bg-color;
         border-radius: $border-radius;
-        display: flex;
-        align-items: center;
-        justify-content: center;
         color: $secondary-text-color;
+        display: flex;
         font-size: $sub-heading-font-size;
+        height: 200px;
+        justify-content: center;
     }
 }

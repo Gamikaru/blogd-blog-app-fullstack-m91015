@@ -2,31 +2,35 @@
 
 .blog-post-card {
     @include card-style;
-    padding: spacing(1); // Increased padding for more vertical space
-    padding-bottom: spacing(1.5); // Reduced bottom padding
-    overflow: hidden;
+
+    box-shadow: 0 2px 5px rgb(0 0 0 / 5%);
     cursor: pointer;
-    transition: transform $transitions-base, box-shadow $transitions-base;
     display: flex;
     flex-direction: column;
     height: 100%; // Ensure full height for consistency
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    padding: spacing(1); // Increased padding for more vertical space
+    padding-bottom: spacing(1.5); // Reduced bottom padding
+    transition:
+        transform $transitions-base,
+        box-shadow $transitions-base;
 
     &__image-container {
-        width: 100%;
+        border-radius: $border-radius;
         height: 28vh;
         overflow: hidden;
-        border-radius: $border-radius;
+        width: 100%;
 
         &__cover-image,
         &__cover-placeholder {
-            width: 100%;
             height: 100%;
             object-fit: cover;
+            width: 100%;
         }
 
         &__cover-placeholder {
             @include flex-center;
+
             background-color: $accent-color-1;
             color: $secondary-text-color;
             font-size: $body-font-size;
@@ -34,138 +38,142 @@
     }
 
     &__content {
-        padding-inline: spacing(0.5);
         display: flex;
         flex-direction: column;
         flex-grow: 1;
         justify-content: flex-start; // Align items to start
+        padding-inline: spacing(0.5);
         position: relative;
 
         &__header {
             @include flex-start;
-            justify-content: space-between;
+
             color: $secondary-text-color;
+            justify-content: space-between;
             margin-top: spacing(0.2);
             min-height: spacing(4); // Ensure consistent height
 
             &__author-name {
-                font-weight: bold;
                 color: $primary-text-color;
+                font-weight: bold;
             }
 
             &__post-date {
-                font-size: $small-font-size;
                 color: $secondary-text-color;
+                font-size: $small-font-size;
             }
         }
 
         &__title-category {
+            align-items: flex-start;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
-            margin: spacing(0) 0 spacing(0.5) 0;
+            margin: spacing(0) 0 spacing(0.5);
+
             // padding-top: spacing(0.5);
             margin-bottom: spacing(1); // Added margin for spacing below
 
             &__title {
-                font-family: $font-family-heading;
-                margin: 0;
                 color: $primary-text-color;
-                width: 100%;
-                line-height: 1.2;
-                overflow: hidden;
+                font-family: $font-family-heading;
                 font-size: clamp(1.2rem, 2.5vw, 1.6rem); // Increased max size
+                line-height: 1.2;
+                margin: 0;
                 margin-bottom: spacing(0.5);
+                overflow: hidden;
                 padding-top: spacing(0.5); // Add padding to align vertically
+                width: 100%;
             }
 
             &__category {
-                display: flex;
                 align-items: center;
-                font-size: $sub-heading-font-size;
                 color: $secondary-text-color;
-
-                &__icon {
-                    margin-right: spacing(0.5);
-                }
-
-                &__text {
-                    font-size: $sub-heading-font-size;
-                    color: $secondary-text-color;
-                }
+                display: flex;
+                font-size: $sub-heading-font-size;
 
                 &:empty::before {
                     content: "\00a0";
                     visibility: hidden;
                 }
             }
+
+            &__category-icon {
+                margin-right: spacing(0.5);
+            }
+
+            &__category-text {
+                color: $secondary-text-color;
+                font-size: $sub-heading-font-size;
+            }
         }
 
         &__content-text {
-            margin: spacing(1) 0;
-            font-size: $body-font-size;
             color: $primary-text-color;
+            font-size: $body-font-size;
             line-height: $line-height;
+            margin: spacing(1) 0;
             max-height: px-to-rem(80);
             overflow: hidden;
             text-overflow: ellipsis;
 
             &__quote {
-                font-size: $sub-heading-font-size;
                 color: $secondary-text-color;
+                display: inline;
+                font-size: $sub-heading-font-size;
                 font-style: italic;
                 line-height: px-to-rem(25.6);
-                display: inline;
+            }
 
-                &__opening-quote {
-                    font-size: px-to-rem(32);
-                    font-weight: bold;
-                    color: $primary-text-color;
-                    margin-right: px-to-rem(8);
-                    vertical-align: text-top;
-                    font-family: $font-family-heading;
-                }
+            &__opening-quote {
+                color: $primary-text-color;
+                font-family: $font-family-heading;
+                font-size: px-to-rem(32);
+                font-weight: bold;
+                margin-right: px-to-rem(8);
+                vertical-align: text-top;
+            }
 
-                &__closing-group {
-                    display: inline-flex;
-                    align-items: center;
-                    margin-left: px-to-rem(4);
-                    position: relative;
-                    top: px-to-rem(4.8);
+            &__closing-group {
+                align-items: center;
+                display: inline-flex;
+                margin-left: px-to-rem(4);
+                position: relative;
+                top: px-to-rem(4.8);
+            }
 
-                    &__closing-quote {
-                        font-size: px-to-rem(32);
-                        font-weight: bold;
-                        color: $primary-text-color;
-                        vertical-align: baseline;
-                    }
-                }
+            &__closing-quote {
+                color: $primary-text-color;
+                font-size: px-to-rem(32);
+                font-weight: bold;
+                vertical-align: baseline;
             }
         }
 
         &__interactions {
             @include flex-start;
+
             gap: spacing(1);
-            margin-top: auto; // Push interactions to the bottom
             margin-bottom: spacing(1.5); // Increased margin for more space
+            margin-top: auto; // Push interactions to the bottom
 
             &__like-button {
                 @include button-style(none, $primary-text-color);
-                padding: 0;
-                font-size: $body-font-size;
-                display: flex;
+
                 align-items: center;
+                display: flex;
+                font-size: $body-font-size;
                 margin-top: spacing(0.5); // Shifted down
+                padding: 0;
 
                 &__heart-icon {
-                    margin-right: spacing(0.5);
                     font-size: px-to-rem(19.2);
+                    margin-right: spacing(0.5);
                     transition: color $transitions-base;
                 }
 
                 &__likes-count {
-                    font-size: $small-font-size;
                     color: $secondary-text-color;
+                    font-size: $small-font-size;
                 }
 
                 &:hover &__heart-icon {

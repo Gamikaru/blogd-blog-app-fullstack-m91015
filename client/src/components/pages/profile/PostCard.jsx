@@ -3,45 +3,53 @@ import { useNotificationContext, usePostContext, usePrivateModalContext } from '
 import { deletePostById } from '@services/api'; // Ensure these functions are correctly implemented
 import { logger } from '@utils';
 import { formatDistanceToNow } from 'date-fns';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 import { memo, useCallback, useState } from 'react';
-import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 
 const PostCard = memo(({ post, isOwnProfile }) => {
     const { setPosts, refreshPosts, setSelectedPost } = usePostContext();
     const { togglePrivateModal } = usePrivateModalContext();
     const { showNotification } = useNotificationContext();
-
     const [isDeleting, setIsDeleting] = useState(false);
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [isVisible, setIsVisible] = useState(true);
 
     // Handler to delete a post
     const handleDeletePost = useCallback(async () => {
         try {
             setIsDeleting(true);
             await deletePostById(post.postId || post._id);
-            setPosts((prevPosts) => prevPosts.filter((p) => p.postId !== post.postId && p._id !== post._id));
-            refreshPosts();
+            setIsVisible(false); // Trigger exit animation
+            // Small delay to allow animation to complete
+            setTimeout(() => {
+                setPosts((prevPosts) => prevPosts.filter((p) => p.postId !== post.postId && p._id !== post._id));
+                refreshPosts();
+            }, 300);
             showNotification('Post deleted successfully!', 'success');
         } catch (error) {
             logger.error("Error deleting post:", error);
             showNotification('Failed to delete the post. Please try again.', 'error');
         } finally {
             setIsDeleting(false);
-            setShowDeleteModal(false);
         }
     }, [post, setPosts, refreshPosts, showNotification]);
 
-    // Confirmation before deleting a post
-    const confirmDeletePost = useCallback(() => {
-        setShowDeleteModal(true);
-    }, []);
+    // Confirmation before deleting a post using toast
+    const confirmDeletePost = useCallback((e) => {
+        e.stopPropagation();
+        showNotification(
+            'Are you sure you want to delete this post?',
+            'warning',
+            false,
+            handleDeletePost,
+            () => {} // Just closes the toast
+        );
+    }, [showNotification, handleDeletePost]);
 
     // Handler to open edit post modal
     const handleEditPostModal = useCallback(() => {
-        setSelectedPost(post); // Set the selected post before opening the modal
+        setSelectedPost(post);
         togglePrivateModal('editPost');
         logger.info("EditPostModal opened for post:", post);
     }, [togglePrivateModal, post, setSelectedPost]);
@@ -52,118 +60,101 @@ const PostCard = memo(({ post, isOwnProfile }) => {
         post,
     ]);
 
+    // Return null if not visible
+    if (!isVisible) return null;
+
     return (
-        <motion.div
-            className="profile-post-card"
-            whileHover={{ scale: 1.02, boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.1)' }}
-            onClick={navigateToPost}
-            role="button"
-            tabIndex={0}
-            onKeyPress={(e) => {
-                if (e.key === 'Enter') navigateToPost();
-            }}
-            aria-label={`Go to blog post titled ${post.title || 'Untitled'}`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-        >
-            {/* Post Image */}
-            <div className="profile-post-card__image-container">
-                {post.imageUrls?.length ? (
-                    <img
-                        src={post.imageUrls[0]}
-                        alt={`Cover image for ${post.title || 'Untitled'}`}
-                        className="profile-post-card__image"
-                        loading="lazy"
-                    />
-                ) : post.images?.length ? (
-                    <img
-                        src={`data:image/jpeg;base64,${post.images[0].data}`}
-                        alt={`Cover image for ${post.title || 'Untitled'}`}
-                        className="profile-post-card__image"
-                        loading="lazy"
-                    />
-                ) : (
-                    <div className="profile-post-card__image-placeholder" aria-label="No cover image available">
-                        No Image
+        <AnimatePresence>
+            <motion.div
+                className="profile-post-card"
+                layout // Add this
+                layoutId={post.postId || post._id} // Add this
+                whileHover={{ scale: 1.02, boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.1)' }}
+                onClick={navigateToPost}
+                role="button"
+                tabIndex={0}
+                onKeyPress={(e) => {
+                    if (e.key === 'Enter') navigateToPost();
+                }}
+                aria-label={`Go to blog post titled ${post.title || 'Untitled'}`}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{
+                    opacity: { duration: 0.2 },
+                    layout: { duration: 0.3 },
+                    scale: { duration: 0.2 }
+                }}
+            >
+                {/* Post Image */}
+                <div className="profile-post-card__image-container">
+                    {post.imageUrls?.length ? (
+                        <img
+                            src={post.imageUrls[0]}
+                            alt={`Cover image for ${post.title || 'Untitled'}`}
+                            className="profile-post-card__image"
+                            loading="lazy"
+                        />
+                    ) : post.images?.length ? (
+                        <img
+                            src={`data:image/jpeg;base64,${post.images[0].data}`}
+                            alt={`Cover image for ${post.title || 'Untitled'}`}
+                            className="profile-post-card__image"
+                            loading="lazy"
+                        />
+                    ) : (
+                        <div className="profile-post-card__image-placeholder" aria-label="No cover image available">
+                            No Image
+                        </div>
+                    )}
+                </div>
+
+                {/* Post Content */}
+                <div className="profile-post-card__content">
+                    <div className="profile-post-card__header">
+                        <h4 className="profile-post-card__title">{post.title || 'Untitled'}</h4>
+                        <span className="profile-post-card__date">
+                            {post.createdAt
+                                ? formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })
+                                : "Date Unavailable"}
+                        </span>
                     </div>
-                )}
-            </div>
-
-            {/* Post Content */}
-            <div className="profile-post-card__content">
-                <div className="profile-post-card__header">
-                    <h4 className="profile-post-card__title">{post.title || 'Untitled'}</h4>
-                    <span className="profile-post-card__date">
-                        {post.createdAt
-                            ? formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })
-                            : "Date Unavailable"}
-                    </span>
+                    <div className="profile-post-card__category">
+                        {post.category && <span className="profile-post-card__category-tag">{post.category}</span>}
+                    </div>
                 </div>
-                <div className="profile-post-card__category">
-                    {post.category && <span className="profile-post-card__category-tag">{post.category}</span>}
-                </div>
-                {/* <p className="profile-post-card__excerpt">
-                    {post.excerpt ? post.excerpt : sanitizeContent(post.content).substring(0, 100) + '...'}
-                </p> */}
-            </div>
 
-            {/* Post Actions */}
-            {isOwnProfile && (
-                <div className="profile-post-card__actions">
-                    <Button
-                        className="profile-post-card__button profile-post-card__button--edit"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            handleEditPostModal();
-                        }}
-                        showIcon={true}
-                        aria-label="Edit post"
-                    >
-                        <FiEdit className="profile-post-card__icon" /> Edit
-                    </Button>
-                    <Button
-                        className="profile-post-card__button profile-post-card__button--delete"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            confirmDeletePost();
-                        }}
-                        showIcon={true}
-                        aria-label="Delete post"
-                        disabled={isDeleting}
-                    >
-                        <FiTrash2 className="profile-post-card__icon" /> Delete
-                    </Button>
-                </div>
-            )}
-
-            {/* Delete Confirmation Modal */}
-            {showDeleteModal && (
-                <Modal onClose={() => setShowDeleteModal(false)}>
-                    <h2 className="profile-post-card__modal-title">Confirm Deletion</h2>
-                    <p className="profile-post-card__modal-message">Are you sure you want to delete this post?</p>
-                    <div className="profile-post-card__modal-actions">
+                {/* Post Actions */}
+                {isOwnProfile && (
+                    <div className="profile-post-card__actions">
                         <Button
-                            className="profile-post-card__modal-button profile-post-card__modal-button--delete"
-                            onClick={handleDeletePost}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleEditPostModal();
+                            }}
+                            showIcon={true}
+                            aria-label="Edit post"
+                            variant="edit"
                             disabled={isDeleting}
                         >
-                            {isDeleting ? 'Deleting...' : 'Yes, Delete'}
+                            Edit
                         </Button>
                         <Button
-                            className="profile-post-card__modal-button profile-post-card__modal-button--cancel"
-                            onClick={() => setShowDeleteModal(false)}
+                            onClick={confirmDeletePost}
+                            showIcon={true}
+                            aria-label="Delete post"
+                            disabled={isDeleting}
+                            variant="delete"
                         >
-                            Cancel
+                            {isDeleting ? 'Deleting...' : 'Delete'}
                         </Button>
                     </div>
-                </Modal>
-            )}
-        </motion.div>
-);
+                )}
+            </motion.div>
+        </AnimatePresence>
+    );
 });
 
-//display name
 PostCard.displayName = 'PostCard';
 
 PostCard.propTypes = {

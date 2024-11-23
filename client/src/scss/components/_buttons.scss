@@ -2,58 +2,60 @@
 
 // Base Button Styles
 .button {
+    align-items: center; // Vertically center items
     background-color: transparent; // No background by default for non-icon buttons
-    color: $primary-text-color; // Default text color
-    padding: map-get($button-padding, md); // Medium padding
+    border: 1px solid transparent; // Default border
     border-radius: $button-border-radius;
+    box-shadow: none; // Remove box-shadow for a clean look
+    color: $primary-text-color; // Default text color
+    cursor: pointer; // Pointer cursor on hover
+    display: flex; // Flex layout for icon and text alignment
     font-family: $font-family-primary; // Consistent font family
     font-size: $base-font-size; // Base font size
     font-weight: 500; // Medium font weight for prominence
-    letter-spacing: 0.1px; // Subtle letter spacing for readability
-    text-transform: none; // No text transformation for a modern feel
-    border: 1px solid transparent; // Default border
-    box-shadow: none; // Remove box-shadow for a clean look
-    display: flex; // Flex layout for icon and text alignment
-    align-items: center; // Vertically center items
+    height: 40px; // Increased height for better click area
     justify-content: center; // Center align text and icons
+    letter-spacing: 0.1px; // Subtle letter spacing for readability
+    max-width: 100%; // Allow buttons to take full width of their container
+    padding: map.get($button-padding, md); // Medium padding
+    text-transform: none; // No text transformation for a modern feel
     transition:
-        background-color 0.3s ease, // Reduced transition duration
+        background-color 0.3s ease,
+        // Reduced transition duration
         color 0.3s ease,
         opacity 0.3s ease; // Smooth and subtle transitions
-    max-width: 100%; // Allow buttons to take full width of their container
-    cursor: pointer; // Pointer cursor on hover
-    height: 40px; // Increased height for better click area
+
     width: auto; // Adjust width based on content
 
     &:hover {
-        background-color: rgba(255, 255, 255, 0.6); // Slightly more opaque on hover
+        background-color: rgb(255 255 255 / 60%); // Slightly more opaque on hover
         opacity: 1; // Fully opaque on hover
     }
 
     &:active {
-        background-color: rgba(255, 255, 255, 0.7); // Even more opaque on click
+        background-color: rgb(255 255 255 / 70%); // Even more opaque on click
     }
 
     &:disabled,
     &.button-disabled {
-        background-color: rgba(255, 255, 255, 0.05); // Maintain translucent background
-        color: lighten($primary-text-color, 30%); // Lighter text color when disabled
+        background-color: rgb(255 255 255 / 5%); // Maintain translucent background
+        color: color.adjust($primary-text-color, $lightness: 30%); // Lighter text color when disabled
         cursor: not-allowed; // Indicate disabled state
         opacity: 0.5; // Reduced opacity when disabled
     }
 
     .button-icon {
-        margin-right: 0.5rem; // Space between icon and text
-        display: inline-flex;
         align-items: center;
+        display: inline-flex;
+        margin-right: 0.5rem; // Space between icon and text
     }
 }
 
 // Icon-Only Button Modifier
 .icon-only {
-    width: 40px; // Fixed width
     height: 40px; // Fixed height
     padding: 0; // Remove padding
+    width: 40px; // Fixed width
     .button-icon {
         margin-right: 0; // Remove margin
     }
@@ -61,20 +63,16 @@
 
 // Button Variants with No Background by Default and Colored on Hover/Active
 .button-profile {
-    color: $secondary-bg-color;
-
     &:hover {
-        background-color: rgba($secondary-bg-color, 0.2); // Colored background on hover
+        background-color: rgba(silver, 0.2);
     }
 
     &:active {
-        background-color: rgba($secondary-bg-color, 0.4); // Darker/more opaque on click
+        background-color: rgba(silver, 0.4);
     }
 }
 
 .button-edit {
-    color: silver;
-
     &:hover {
         background-color: rgba(silver, 0.2);
     }
@@ -132,6 +130,18 @@
     }
 }
 
+.button-logout {
+    color: $error-color;
+
+    &:hover {
+        background-color: rgba($error-color, 0.2);
+    }
+
+    &:active {
+        background-color: rgba($error-color, 0.4);
+    }
+}
+
 .button-delete {
     color: $error-color;
 
@@ -180,49 +190,26 @@
     }
 }
 
-.button-settings {
-    background-color: rgba(#007bff, 0.6); // Retain background for icon buttons if needed
-    color: #fff;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: $button-border-radius;
-    display: flex;
+.button-settings,.button-settings2 {
     align-items: center;
-    justify-content: center;
+    color: $primary-text-color;
     cursor: pointer;
-    transition: background-color 0.7s ease;
+    display: flex;
+    justify-content: center;
 
     &:hover {
-        background-color: rgba(#007bff, 0.8);
+        background-color: rgba(silver, 0.2);
     }
 
     &:active {
-        background-color: rgba(#007bff, 0.6);
+        background-color: rgba(silver, 0.4);
     }
-
-    &.dark {
-        background-color: rgba(#343a40, 0.6);
-        color: #fff;
-
-        &:hover {
-            background-color: rgba(#343a40, 0.8);
-        }
-
-        &:active {
-            background-color: rgba(#343a40, 0.6);
-        }
-    }
-
-    &.icon-only {
-        padding: 0.5rem;
-    }
-
-    /* Add any other styles as needed */
 }
 
 // Add Secondary Button Variant for Consistent Styling in Edit Form
 .button-secondary {
     color: $secondary-bg-color;
+
     // border: 1px solid $secondary-bg-color;
 
     &:hover {
@@ -237,11 +224,11 @@
 // Responsive adjustments for mobile
 @media (max-width: $breakpoint-md) {
     .button {
-        padding: map-get($button-padding, sm); // Small padding for smaller screens
         font-size: clamp(0.875rem, 1vw, $body-font-size); // Adjust font size responsively
         height: clamp(32px, 3vw, 40px); // Responsive height
-        width: 100%; // Full width on mobile
         justify-content: center; // Center align text and icons
+        padding: map.get($button-padding, sm); // Small padding for smaller screens
+        width: 100%; // Full width on mobile
     }
 
     // Ensure all button variants take full width on mobile
@@ -258,18 +245,18 @@
     .button-settings,
     .button-secondary,
     .icon-only {
-        max-width: 100%; // Override any max-width restrictions
         justify-content: center; // Center align text and icons
+        max-width: 100%; // Override any max-width restrictions
     }
 }
 
 .filter-icon,
 .search-icon {
-    font-size: 1.3rem;
-    color: $primary-text-color;
     background: none;
     border: none;
+    color: $primary-text-color;
     cursor: pointer;
+    font-size: 1.3rem;
     transition: color 0.3s ease;
 
     &:hover {

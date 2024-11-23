@@ -1,0 +1,53 @@
+// src/components/SecurityTab.scss
+// Updated styles for SecurityTab component
+
+.security-tab__form {
+    display: grid;
+    gap: $spacing-md;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.security-tab__form-group {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+
+    label {
+        color: $primary-text-color;
+        font-size: $small-font-size;
+    }
+
+    input {
+        background: $primary-bg-color;
+        border: 1px solid rgb(0 0 0 / 8%);
+        border-radius: $border-radius;
+        color: $primary-text-color;
+        font-size: $body-font-size;
+        padding: $spacing-sm;
+        transition: all 0.2s ease;
+
+        &:focus {
+            border-color: $highlight-color;
+            box-shadow: 0 0 0 3px rgba($highlight-color, 0.25);
+            outline: none;
+        }
+    }
+
+    .security-tab__error {
+        color: $error-color;
+        font-size: $xsmall-font-size;
+        margin-top: 2px;
+    }
+}
+
+.security-tab__form > .button {
+    grid-column: 1 / -1;
+    justify-self: end;
+    margin-top: $spacing-md;
+}
+
+@media (max-width: $breakpoint-md) {
+    .security-tab__form {
+        grid-template-columns: 1fr;
+    }
+}

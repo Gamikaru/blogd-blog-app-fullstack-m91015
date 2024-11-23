@@ -2,45 +2,48 @@
 
 .info-and-explore-container {
     @include flex-center;
-    flex-direction: column;
+
     align-items: flex-start;
+    flex-direction: column;
     margin-left: px-to-rem(128); // 8rem
 
     .page-info-message {
+        margin-top: $spacing-xxl;
         text-align: left;
         width: 100%;
-        margin-top: $spacing-xxl;
 
         .page-title {
             @include heading-style($heading-font-size-xxlg);
-            font-weight: bold;
+
             color: $primary-text-color;
+            font-weight: bold;
             margin: 0;
             margin-left: $spacing-xs;
             padding-inline: px-to-rem(50); // 12.5rem
         }
 
         .page-subtitle {
-            font-size: clamp(1rem, 2.5vw, 1.5rem); // Responsive subtitle size
             color: $secondary-text-color;
-            margin-top: $spacing-sm;
-            margin-left: px-to-rem(50);
+            font-size: clamp(1rem, 2.5vw, 1.5rem); // Responsive subtitle size
             font-style: italic;
+            margin-left: px-to-rem(50);
+            margin-top: $spacing-sm;
         }
     }
 
     .explore-links {
         @include flex-center;
-        justify-content: flex-start;
+
         gap: $spacing-md;
+        justify-content: flex-start;
+        margin-left: px-to-rem(50); // 15rem
         margin-top: $spacing-xxs;
         padding-top: $spacing-xxs;
-        margin-left: px-to-rem(50); // 15rem
 
         .explore-link {
+            color: $primary-text-color;
             font-size: $small-font-size;
             font-weight: 600;
-            color: $primary-text-color;
             text-decoration: none;
 
             &:hover {
@@ -65,17 +68,18 @@
         .explore-links {
             flex-wrap: wrap;
             gap: $spacing-sm;
-            padding: $spacing-xs $spacing-sm;
             margin-left: $spacing-sm;
+            padding: $spacing-xs $spacing-sm;
         }
     }
 }
 
 /* Blog Page Specific Styling */
 .page-info-message.blog-page-info .page-title {
+    color: #333;
+
     /* Styles specific to blog page titles */
     font-size: $heading-font-size-xxlg;
-    color: #333;
     margin-top:2rem;
     width: 70%;
 }
@@ -83,6 +87,6 @@
 .page-info-message.blog-page-info .blog-subtitle {
     /* Styles specific to blog page subtitles (author and date) */
     color: #777;
-    margin-top: 0.3rem;
     font-style: italic;
+    margin-top: 0.3rem;
 }

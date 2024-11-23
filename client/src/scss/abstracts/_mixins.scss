@@ -2,16 +2,16 @@
 
 // Mixin for Flex Centering
 @mixin flex-center {
-    display: flex;
-    justify-content: center;
     align-items: center;
+    display: flex;
     flex: 1 1 auto; // Allow shrinking but keep proportions
+    justify-content: center;
 }
 
 @mixin flex-start {
+    align-items: center;
     display: flex;
     justify-content: flex-start;
-    align-items: center;
 }
 
 // Mixin for Box Shadows
@@ -22,8 +22,8 @@
 // Mixin for Responsive Grids
 @mixin responsive-grid($columns) {
     display: grid;
-    grid-template-columns: repeat($columns, 1fr);
     gap: $spacing-unit;
+    grid-template-columns: repeat($columns, 1fr);
 
     @media (max-width: $breakpoint-md) {
         grid-template-columns: repeat(2, 1fr);
@@ -36,38 +36,15 @@
 
 // Mixin for Button Styling
 @mixin button-style($bg-color, $text-color) {
-    background-color: if($bg-color != none, $bg-color, transparent);
-    color: $text-color;
-    padding: map-get($button-padding, md);
-    border-radius: $button-border-radius;
-    border: none;
-    cursor: pointer;
-    transition:
-        background-color $transitions-base,
-        color $transitions-base,
-        opacity $transitions-base;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    height: 38.4px;
-    width: auto;
-    max-width: 100%;
-    font-family: $font-family-primary;
-    font-size: $base-font-size;
-    font-weight: 500;
-    letter-spacing: 0.1px;
-    text-transform: none;
-    box-shadow: none;
-
     &:hover {
-        background-color: if($bg-color != none, darken($bg-color, 10%), transparent);
+        background-color: if($bg-color != none, color.adjust($bg-color, $lightness: -10%), transparent);
         opacity: $button-opacity-default; // Slightly more opaque on hover
     }
 
     &:disabled,
     &.button-disabled {
-        background-color: rgba(0, 0, 0, 0); // Maintain transparent background
-        color: lighten($primary-text-color, 30%); // Lighter text color when disabled
+        background-color: rgb(0 0 0 / 0%); // Maintain transparent background
+        color: color.adjust($primary-text-color, $lightness: 30%); // Lighter text color when disabled
         cursor: not-allowed; // Indicate disabled state
         opacity: $button-opacity-disabled; // Reduced opacity when disabled
     }
@@ -86,7 +63,7 @@
     &:disabled,
     &.button-disabled {
         background-color: rgba($variant-color, $bg-opacity);
-        color: lighten($variant-color, 30%);
+        color: color.adjust($variant-color, $lightness: 30%);
         cursor: not-allowed;
         opacity: $button-opacity-disabled;
     }
@@ -94,10 +71,10 @@
 
 // Mixin for Heading Styles
 @mixin heading-style($size, $font-family: $font-family-heading, $weight: 700) {
-    font-size: $size;
-    font-family: $font-family;
-    font-weight: $weight;
     color: $primary-text-color;
+    font-family: $font-family;
+    font-size: $size;
+    font-weight: $weight;
     line-height: 1.2;
 }
 
@@ -106,24 +83,26 @@
     background-color: $secondary-bg-color;
     border-radius: $border-radius;
     box-shadow: $card-shadow;
-    padding: $card-padding;
     color: $primary-text-color;
+    padding: $card-padding;
 
     @include respond-to(md) {
-        padding: map-get($spacing-scale, md);
+        padding: map.get($spacing-scale, md);
     }
 
     @include respond-to(sm) {
-        padding: map-get($spacing-scale, sm);
+        padding: map.get($spacing-scale, sm);
     }
 }
 
 // Responsive Typography Mixin
 @mixin responsive-typography($small, $medium, $large) {
     font-size: $small;
+
     @include respond-to(sm) {
         font-size: $medium;
     }
+
     @include respond-to(lg) {
         font-size: $large;
     }
@@ -131,14 +110,14 @@
 
 // Mixin for Media Queries
 @mixin respond-to($breakpoint) {
-    @media (max-width: map-get($breakpoints, $breakpoint)) {
+    @media (max-width: map.get($breakpoints, $breakpoint)) {
         @content;
     }
 }
 
 // Mixin to Hide on Specific Breakpoint
 @mixin hide-on($breakpoint) {
-    @media (max-width: map-get($breakpoints, $breakpoint)) {
+    @media (max-width: map.get($breakpoints, $breakpoint)) {
         display: none !important;
     }
 }
@@ -147,7 +126,7 @@
 @mixin show-on($breakpoint) {
     display: none;
 
-    @media (min-width: map-get($breakpoints, $breakpoint)) {
+    @media (min-width: map.get($breakpoints, $breakpoint)) {
         display: block !important;
     }
 }
@@ -174,6 +153,7 @@
     @include respond-to(xs) {
         padding: $padding-xs;
     }
+
     @include respond-to(sm) {
         padding: $padding-sm;
     }
@@ -189,31 +169,31 @@
 
 @mixin responsive-grid-auto($min-size) {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax($min-size, 1fr));
     gap: $spacing-unit;
+    grid-template-columns: repeat(auto-fit, minmax($min-size, 1fr));
 }
 
 // Mixin for Container
 @mixin container {
-    width: 100%;
-    max-width: map-get($container-max-widths, sm);
     margin: 0 auto;
-    padding: 0 map-get($spacing-scale, sm);
+    max-width: map.get($container-max-widths, sm);
+    padding: 0 map.get($spacing-scale, sm);
+    width: 100%;
 
     @include respond-to(md) {
-        max-width: map-get($container-max-widths, md);
+        max-width: map.get($container-max-widths, md);
     }
 
     @include respond-to(lg) {
-        max-width: map-get($container-max-widths, lg);
+        max-width: map.get($container-max-widths, lg);
     }
 
     @include respond-to(xl) {
-        max-width: map-get($container-max-widths, xl);
+        max-width: map.get($container-max-widths, xl);
     }
 
     @include respond-to(xxl) {
-        max-width: map-get($container-max-widths, xxl);
+        max-width: map.get($container-max-widths, xxl);
     }
 }
 
@@ -221,29 +201,56 @@
 @mixin fluid-font-size($min-size, $max-size) {
     font-size: $min-size;
 
-    @media (min-width: map-get($breakpoints, xxs)) and (max-width: map-get($breakpoints, xxl)) {
+    @media (min-width: map.get($breakpoints, xxs)) and (max-width: map.get($breakpoints, xxl)) {
         font-size: calc(#{$min-size} + (#{$max-size} - #{$min-size}) * ((100vw - 320px) / (1440 - 320)));
     }
 
-    @media (min-width: map-get($breakpoints, xxl)) {
+    @media (min-width: map.get($breakpoints, xxl)) {
         font-size: $max-size;
     }
 }
 
 @mixin page-title {
     @include heading-style($heading-font-size-xxlg);
-    font-weight: bold;
+
     color: $primary-text-color;
+    font-weight: bold;
     margin: 0;
     margin-left: $spacing-xs;
     padding-inline: px-to-rem(50);
 }
 
 @mixin page-subtitle {
-    font-size: clamp(1rem, 2.5vw, 1.5rem);
-    font-family: $font-family-primary;
-    font-style: italic;
     color: $secondary-text-color;
-    margin-top: $spacing-sm;
+    font-family: $font-family-primary;
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    font-style: italic;
     line-height: 1.6;
+    margin-top: $spacing-sm;
+}
+
+@mixin input {
+    @include input-style($input-font-size-sm);
+}
+
+// Mixin for Filter and Search Icon Styling
+@mixin filter-search-icon {
+    background: none;
+    border: none;
+    color: $primary-text-color;
+    cursor: pointer;
+    font-size: px-to-rem(21);
+    transition: color $transitions-base;
+
+    &:hover {
+        color: $accent-color-2;
+    }
+}
+
+@mixin reset-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: $small-font-size;
+    padding: 0;
 }

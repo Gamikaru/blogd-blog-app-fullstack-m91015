@@ -1,23 +1,32 @@
 @use "sass:math";
+@use "sass:selector";
+@use "sass:string";
+@use "sass:color";
+@use "sass:list";
+@use "sass:map";
+@use "sass:meta";
+
 
 // Function for Rem Conversion
 @function px-to-rem($px) {
-    @if type-of($px) != "number" {
+    @if meta.type-of($px) != "number" {
         @error "px-to-rem: Expected a numeric value, got #{type-of($px)}.";
     }
+
     $base: 16;
     $value: $px / $base;
+
     @return #{$value}rem;
 }
 
 // Function for Calculating Lightness Adjustments
 @function adjust-color-lightness($color, $percent) {
-    @return lighten($color, $percent);
+    @return color.adjust($color, $lightness: $percent);
 }
 
 // Function to Darken Color by Percentage
 @function darken-color($color, $percent) {
-    @return darken($color, $percent);
+    @return color.adjust($color, $lightness: - $percent);
 }
 
 // Function to Fade Color by Percentage
@@ -39,68 +48,76 @@
     $r: get-color-channel($color, "red");
     $g: get-color-channel($color, "green");
     $b: get-color-channel($color, "blue");
+
     @return (0.299 * $r + 0.587 * $g + 0.114 * $b);
 }
 
 // Function for Color Channel
 @function get-color-channel($color, $channel) {
     @if $channel == "red" {
-        @return red($color);
+        @return color.red($color);
     } @else if $channel == "green" {
-        @return green($color);
+        @return color.green($color);
     } @else if $channel == "blue" {
-        @return blue($color);
+        @return color.blue($color);
     }
+
     @return 0;
 }
 
 // Utility Functions
 @function modal-spacing($key) {
-    @return map-get($modal-spacing, $key);
+    @return map.get($modal-spacing, $key);
 }
 
 @function modal-dimension($key) {
-    @return map-get($modal-dimensions, $key);
+    @return map.get($modal-dimensions, $key);
 }
 
 @function get-z-index($key) {
-    @return map-get($z-indices, $key);
+    @return map.get($z-indices, $key);
 }
 
 // Function for Fluid Width
 @function fluid-width($min-vw, $max-vw, $min-width, $max-width) {
-    @if unit($min-width) != unit($max-width) {
+    @if math.unit($min-width) != math.unit($max-width) {
         @error "fluid-width: $min-width and $max-width must have the same units.";
     }
-    @if unit($min-vw) != unit($max-vw) {
+
+    @if math.unit($min-vw) != math.unit($max-vw) {
         @error "fluid-width: $min-vw and $max-vw must have the same units.";
     }
+
     $slope: math.div($max-width - $min-width, $max-vw - $min-vw);
     $intercept: $min-width - ($slope * $min-vw);
+
     @return clamp(#{$min-width}, calc(#{$slope} * 100vw + #{$intercept}), #{$max-width});
 }
 
 // Function for Fluid Typography
 @function fluid-type($min-vw, $max-vw, $min-size, $max-size) {
-    @if unit($min-size) != unit($max-size) {
+    @if math.unit($min-size) != math.unit($max-size) {
         @error "fluid-type: $min-size and $max-size must have the same units.";
     }
-    @if unit($min-vw) != unit($max-vw) {
+
+    @if math.unit($min-vw) != math.unit($max-vw) {
         @error "fluid-type: $min-vw and $max-vw must have the same units.";
     }
+
     $slope: math.div($max-size - $min-size, $max-vw - $min-vw);
     $intercept: $min-size - ($slope * $min-vw);
+
     @return clamp(#{$min-size}, calc(#{$slope} * 100vw + #{$intercept}), #{$max-size});
 }
 
 // Function for Responsive Breakpoint
 @function breakpoint($name) {
-    @return map-get($breakpoints, $name);
+    @return map.get($breakpoints, $name);
 }
 
 
 
 // Function to Calculate Container Width
 @function container-width($size) {
-    @return map-get($container-max-widths, $size);
+    @return map.get($container-max-widths, $size);
 }

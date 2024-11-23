@@ -1,135 +1,153 @@
+/* _login.scss */
+
 .login-page {
+    align-items: center;
+    background-color: $primary-bg-color;
     display: flex;
     justify-content: center;
-    align-items: center;
     min-height: 100vh;
-    background-color: $primary-bg-color;
     padding: $spacing-unit * 2;
+}
+
+.login-container {
+    align-items: center;
+    background-color: $secondary-bg-color;
+    border-radius: $border-radius;
+    box-shadow: $card-shadow;
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    padding: $spacing-unit * 2;
+    width: 100%;
+}
+
+.logo-image {
+    margin-bottom: $spacing-unit * 2;
+    width: 150px;
+}
+
+.login-card {
+    background-color: $secondary-bg-color;
+    border: none;
+    width: 100%;
+}
+
+.login-card-header {
+    color: $primary-text-color;
+    font-size: $heading-font-size-md;
+    font-weight: 600;
+    margin-bottom: $spacing-unit * 2;
+    text-align: center;
+}
+
+.login-input-container {
+    margin-bottom: $spacing-unit * 1.5;
+}
+
+.password-container {
+    position: relative;
+}
+
+.password-toggle-btn {
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+    position: absolute;
+    right: $spacing-unit;
+    top: 50%;
+    transform: translateY(-50%);
+
+    &:hover {
+        color: $accent-color-2;
+    }
+}
+
+.password-group {
+    .password-input-wrapper {
+        position: relative;
+    }
+}
+
+.password-input-field {
+    padding-right: spacing(3); // Make room for the toggle button
+}
+
+.password-toggle-button {
+    background: transparent;
+    border: none;
+    color: $secondary-text-color;
+    position: absolute;
+    right: spacing(0.75);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+
+    &:hover {
+        color: $primary-text-color;
+    }
+}
+
+.login-submit-container {
+    display: flex;
+    justify-content: center;
+    margin-top: $spacing-unit * 2;
+}
+
+.submit-btn {
+    width: 100%;
+}
+
+.register-text {
+    color: $secondary-text-color;
+    font-size: $small-font-size;
+    margin-top: $spacing-unit * 2;
+}
+
+.register-link {
+    color: $accent-color-2;
+    cursor: pointer;
+    text-decoration: underline;
+
+    &:hover {
+        color: color.adjust($accent-color-2, $lightness: -10%);
+    }
+}
+
+@media (max-width: $breakpoint-md) {
+    .login-page {
+        padding: $spacing-unit;
+    }
 
     .login-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-        max-width: 400px;
-        background-color: $secondary-bg-color;
-        border-radius: $border-radius;
-        box-shadow: $card-shadow;
-        padding: $spacing-unit * 2;
+        padding: $spacing-unit;
+    }
 
-        .logo-image {
-            width: 150px;
-            margin-bottom: $spacing-unit * 2;
-        }
+    .login-text-slide {
+        overflow: hidden;
+        padding: $spacing-md;
+    }
 
-        .login-card {
-            width: 100%;
-            border: none;
-            background-color: $secondary-bg-color;
+    .login-input-field {
+        font-size: clamp(1.2rem, 2vw, $heading-font-size-md);
+        margin: $spacing-md 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 
-            .login-card-header {
-                font-size: $heading-font-size-md;
-                color: $primary-text-color;
-                font-weight: 600;
-                text-align: center;
-                margin-bottom: $spacing-unit * 2;
-            }
+    .login-input-container {
+        font-size: clamp(0.8rem, 1vw, 0.9rem);
+        margin-bottom: $spacing-lg;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal; // Allow wrapping
+    }
 
-            .login-input-container {
-                margin-bottom: $spacing-unit * 1.5;
-
-                .login-input-field {
-                    @extend input;
-                    // width: 100%;
-                    // padding: $input-padding;
-                    // border: 1px solid lighten($secondary-bg-color, 20%);
-                    // border-radius: $border-radius;
-                    // font-size: $body-font-size;
-                    // color: $primary-text-color;
-                    // background-color: $secondary-bg-color;
-
-                    // &:focus {
-                    //     border-color: $accent-color-2;
-                    //     outline: none;
-                    // }
-
-                    // &.invalid-input {
-                    //     border-color: $error-color;
-                    // }
-                }
-
-                .password-container {
-                    position: relative;
-
-                    .password-toggle-btn {
-                        position: absolute;
-                        top: 50%;
-                        right: $spacing-unit;
-                        transform: translateY(-50%);
-                        background: none;
-                        border: none;
-                        cursor: pointer;
-                        color: red;
-
-                        &:hover {
-                            color: $accent-color-2;
-                        }
-                    }
-                }
-
-                &.password-group {
-                    .password-input-wrapper {
-                        position: relative;
-
-                        .login-input-field {
-                            padding-right: spacing(3); // Make room for the toggle button
-                        }
-
-                        // Position the toggle button inside the input
-                        button {
-                            position: absolute;
-                            right: spacing(0.75);
-                            top: 50%;
-                            transform: translateY(-50%);
-                            z-index: 2;
-                            background: transparent;
-                            border: none;
-                            color: $secondary-text-color;
-
-                            &:hover {
-                                color: $primary-text-color;
-                            }
-                        }
-                    }
-                }
-            }
-
-            .login-submit-container {
-                display: flex;
-                justify-content: center;
-                margin-top: $spacing-unit * 2;
-
-                .submit-btn {
-                    @extend .button;
-                    width: 100%;
-                }
-            }
-
-            .register-text {
-                font-size: $small-font-size;
-                color: $secondary-text-color;
-                margin-top: $spacing-unit * 2;
-
-                .register-link {
-                    color: $accent-color-2;
-                    cursor: pointer;
-                    text-decoration: underline;
-
-                    &:hover {
-                        color: darken($accent-color-2, 10%);
-                    }
-                }
-            }
-        }
+    .login-meta {
+        overflow: hidden;
+        padding-top: $spacing-sm;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 }
