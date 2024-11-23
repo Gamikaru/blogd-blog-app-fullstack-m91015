@@ -8,6 +8,26 @@
     min-width: fluid-width(320px, 1200px, 320px, 480px); // Consistent units
     overflow: hidden;
 
+    @media (max-width: $breakpoint-sm) {
+        padding: $spacing-sm;
+
+        .custom-toast-content {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .toast-actions {
+            align-items: stretch;
+            flex-direction: column;
+        }
+    }
+
+    @media (min-width: $breakpoint-lg) {
+        max-width: fluid-width(320px, 1200px, 400px, 600px);
+        min-width: fluid-width(320px, 1200px, 400px, 600px);
+        padding: $spacing-lg;
+    }
+
     .custom-toast-content {
         align-items: center;
         display: flex;
@@ -73,7 +93,11 @@
                 color: $primary-text-color;
 
                 &:hover {
-                    background: linear-gradient(135deg, color.adjust($accent-color-1, $lightness: -2%), color.adjust($accent-color-1, $lightness: -7%));
+                    background: linear-gradient(
+                        135deg,
+                        color.adjust($accent-color-1, $lightness: -2%),
+                        color.adjust($accent-color-1, $lightness: -7%)
+                    );
                 }
             }
 
