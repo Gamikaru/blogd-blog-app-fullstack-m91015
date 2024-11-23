@@ -1,8 +1,8 @@
-// sidebar.scss
+/* sidebar.scss */
 
-.sidebar {
-    background-color: transparent;
-    height: 22vh;
+.custom-sidebar {
+    background: transparent;
+    height: 35vh;
     left: 0;
     opacity: 0;
     overflow-y: auto;
@@ -11,103 +11,98 @@
     top: 5rem;
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     width: $sidebar-width;
-    z-index: get-z-index(modal); // Ensure it's below the modal
 
-    &.open {
+    &--open {
         animation: slide-in-from-top 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         opacity: 1;
         transform: translateY(0);
     }
 
-    &:not(.open) {
-        animation: slide-out-to-bottom 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    &:not(&--open) {
+        animation: slide-out-to-top 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        transform: translateY(-100%);
     }
 
-
-    .sidebar-content {
+    &__content {
         display: flex;
         flex-direction: column;
-        gap: $spacing-xl;
-        opacity: 0;
-        padding-left: $spacing-md;
-        padding-top: $spacing-xl;
-        transform: translateY(-20px);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        height: 100%;
+        justify-content: space-between;
+    }
 
-        .button {
-            align-items: center;
-            border-radius: $button-border-radius;
-            display: flex;
+    &__nav {
+        align-items: center; // Center links horizontally
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-lg;
+        margin-top: $spacing-lg;
+
+        .custom-sidebar__link {
+            color: $primary-text-color;
+            font-size: $body-font-size;
             font-weight: 500;
-            gap: $spacing-sm;
-            max-width: 100%;
-            padding: map.get($button-padding, md);
-            transition: all 0.2s ease;
-            width: 80%;
-
-            .icon {
-                font-size: 1.1rem;
-            }
+            padding: $spacing-sm 0;
+            text-align: center; // Ensure text is centered
+            text-decoration: none;
+            transition: color $transitions-base;
 
             &:hover {
-                box-shadow: $box-shadow-medium;
-                transform: translateY(-1px);
+                color: $accent-color-1;
+            }
+
+            &.active {
+                color: $secondary-text-color;
+                font-weight: bold;
+            }
+        }
+    }
+
+    &__account-options {
+        align-items: center; // Center buttons horizontally
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-md;
+        padding-bottom: $spacing-lg;
+    }
+
+    &__button {
+        align-items: center;
+        border-radius: $button-border-radius;
+        display: flex;
+        gap: $spacing-sm;
+        justify-content: center; // Center content within buttons
+        max-width: 200px; // Optional: set a max width
+        padding: $spacing-sm;
+        transition: all 0.2s ease;
+        width: 80%; // Reduce width for better centering
+
+        &--edit {
+            background-color: transparent;
+            color: $primary-text-color;
+
+            &:hover {
+                background-color: fade-color($accent-color-2, 0.1);
             }
         }
 
-        .account-options {
-            display: flex;
-            flex-direction: column;
-            gap: $spacing-md;
-            margin-top: auto;
-            padding-top: $spacing-lg;
+        &--delete {
+            background-color: transparent;
+            color: $error-color;
 
-            .button {
-                background-color: transparent;
-                box-shadow: none;
-                color: $primary-text-color;
-                justify-content: flex-start;
-                padding: $spacing-sm $spacing-md;
+            &:hover {
+                background-color: fade-color($error-color, 0.05);
+            }
 
-                &:hover {
-                    background-color: fade-color($accent-color-2, 0.1);
-                    box-shadow: none;
-                    transform: none;
-                }
-
-                &.button-delete {
-                    color: $error-color;
-                }
-
-                &.button-delete:hover {
-                    background-color: fade-color($error-color, 0.05);
-                }
+            .custom-sidebar__icon {
+                margin-right: $spacing-xs;
             }
         }
     }
 }
 
-// Animations
-@keyframes slide-in-from-top {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes slide-out-to-bottom {
-    from {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    to {
-        opacity: 0;
-        transform: translateY(20px);
+// Responsive adjustments
+@media (max-width: $breakpoint-md) {
+    .custom-sidebar {
+        width: 80%;
     }
 }

@@ -8,10 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import Providers from './Providers';
 
-// Import styles
-// import 'bootstrap/scss/bootstrap.scss';
-import 'swiper/css'; // Global swiper styles
-import './scss/main.scss';
+
 
 // Select the root container
 const container = document.getElementById('root');

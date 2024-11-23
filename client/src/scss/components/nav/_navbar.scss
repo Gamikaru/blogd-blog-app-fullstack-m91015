@@ -25,7 +25,8 @@
     @include flex-center;
 
     gap: $spacing-md; // 1rem
-    margin-left: px-to-rem(30); // -5rem
+    position: relative;
+    right: px-to-rem(100); // 2rem
 }
 
 @media (max-width: $breakpoint-md) {

@@ -1,8 +1,6 @@
-// // base.scss
+// src/styles/_reset.scss
 
-
-
-// /* Reset Browser Defaults */
+/* Reset Browser Defaults */
 *,
 *::before,
 *::after {
@@ -10,7 +8,6 @@
     margin: 0;
     padding: 0;
 }
-
 
 .app-layout {
     background-color: color.adjust($primary-bg-color, $lightness: 5%);
@@ -28,44 +25,49 @@ a {
     }
 }
 
-// /* Images */
-// img {
-//     max-width: 100%;
-//     height: auto;
-//     display: block;
-// }
-
-// /* Buttons */
-// button {
-//     @include button-style($button-primary, #fff);
-// }
-
 /* Scrollbar Styles */
 
-/* WebKit browsers (Chrome, Safari, Edge) */
-::-webkit-scrollbar {
-    height: 12px;
-    width: 12px;
+/* Override SimpleBar styles for a minimalistic scrollbar */
+
+.app-scrollbar {
+    /* Ensure the scrollbar spans the entire viewport */
+    height: 100vh;
+
+    /* Optional: Smooth scrolling */
+    scroll-behavior: smooth;
+    width: 100vw;
+
+    /* Hide the default scrollbar track */
+    .simplebar-track {
+        background: transparent !important;
+    }
+
+    /* Customize the scrollbar thumb */
+    .simplebar-scrollbar::before {
+        background-color: rgba($primary-text-color, 0.6) !important;
+        border-radius: 8px !important; // Increased border-radius for more rounding
+        width: 8px !important;
+    }
+
+    /* Hover effect for the scrollbar thumb */
+    .simplebar-scrollbar:hover::before {
+        background-color: rgba($primary-text-color, 0.8) !important;
+    }
 }
 
-::-webkit-scrollbar-track {
-    background: $secondary-bg-color;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: $primary-text-color;
-    border: 3px solid $secondary-bg-color;
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background-color: adjust-color-lightness($primary-text-color, 10%);
+/* Optional: Hide scrollbar on touch devices */
+@media (hover: none) and (pointer: coarse) {
+    .app-scrollbar {
+        .simplebar-scrollbar::before {
+            display: none !important;
+        }
+    }
 }
 
 /* Firefox */
-* {
-    scrollbar-color: $primary-text-color $secondary-bg-color;
-    scrollbar-width: thin;
+body { // Changed from '*' to 'body' for better specificity
+    scrollbar-color: rgba($primary-text-color, 0.6) transparent !important;
+    scrollbar-width: thin !important;
 }
 
 /* Responsive Typography */
@@ -89,39 +91,6 @@ p {
     margin-bottom: $spacing-unit;
 }
 
-// /* Responsive Grid Adjustments */
-// @include respond-to(lg) {
-//     .grid-2 {
-//         grid-template-columns: 1fr;
-//     }
-// }
-
-// @include respond-to(md) {
-//     .grid-3 {
-//         grid-template-columns: 1fr 1fr;
-//     }
-//     .grid-2 {
-//         grid-template-columns: 1fr;
-//     }
-// }
-
-// /* Visibility on Mobile */
-// .show-mobile {
-//     display: none !important;
-
-//     @include respond-to(md) {
-//         display: block !important;
-//     }
-// }
-
-// .hide-mobile {
-//     display: block !important;
-
-//     @include respond-to(md) {
-//         display: none !important;
-//     }
-// }
-
 /* Reactive Loading Skeleton */
 .skeleton {
     animation: pulse 1.5s infinite ease-in-out;
@@ -130,28 +99,3 @@ p {
     height: 1rem;
     width: 100%;
 }
-
-// @keyframes pulse {
-//     0% {
-//         opacity: 0.6;
-//     }
-//     50% {
-//         opacity: 1;
-//     }
-//     100% {
-//         opacity: 0.6;
-//     }
-// }
-
-// /* Text Alignment Utilities */
-// .text-center {
-//     text-align: center;
-// }
-
-// .text-left {
-//     text-align: left;
-// }
-
-// .text-right {
-//     text-align: right;
-// }

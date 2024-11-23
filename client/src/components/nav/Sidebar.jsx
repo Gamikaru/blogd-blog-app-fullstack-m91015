@@ -1,10 +1,9 @@
-// client/src/components/nav/Sidebar.jsx
 import { Button, Portal } from '@components';
 import { useUserUpdate } from '@contexts';
 import { logger } from '@utils';
 import PropTypes from 'prop-types';
 import React, { useCallback, useRef } from 'react';
-import { FaSignOutAlt } from 'react-icons/fa';
+import { NavLink } from 'react-router-dom';
 import useClickOutside from '../../hooks/useClickOutside';
 
 const Sidebar = React.memo(({ sidebarOpen, handleSidebarClose }) => {
@@ -23,15 +22,29 @@ const Sidebar = React.memo(({ sidebarOpen, handleSidebarClose }) => {
     });
 
     const sidebarContent = (
-        <div className={`sidebar ${sidebarOpen ? 'open' : ''}`} ref={sidebarRef}>
-            <div className="sidebar-content">
-                <div className="account-options">
-                    <Button variant="settings" className="button button-edit">
+        <div className={`custom-sidebar ${sidebarOpen ? 'custom-sidebar--open' : ''}`} ref={sidebarRef}>
+            <div className="custom-sidebar__content">
+                <nav className="custom-sidebar__nav">
+                    <NavLink to="/explore" className="custom-sidebar__link" onClick={handleSidebarClose}>
+                        Explore
+                    </NavLink>
+                    <NavLink to="/learn" className="custom-sidebar__link" onClick={handleSidebarClose}>
+                        Learn
+                    </NavLink>
+                    <NavLink to="/about" className="custom-sidebar__link" onClick={handleSidebarClose}>
+                        About
+                    </NavLink>
+                    <NavLink to="/contact" className="custom-sidebar__link" onClick={handleSidebarClose}>
+                        Contact
+                    </NavLink>
+                </nav>
+                <div className="custom-sidebar__account-options">
+                    <Button variant="settings">
                         Settings
                     </Button>
 
-                    <Button className="button button-delete" variant="delete" onClick={handleLogout}>
-                        <FaSignOutAlt className="icon" /> Logout
+                    <Button variant="delete" onClick={handleLogout}>
+                        Logout
                     </Button>
                 </div>
             </div>
@@ -46,7 +59,6 @@ Sidebar.displayName = 'Sidebar';
 Sidebar.propTypes = {
     sidebarOpen: PropTypes.bool.isRequired,
     handleSidebarClose: PropTypes.func.isRequired,
-    // Removed hamburgerRef prop
 };
 
 export default Sidebar;

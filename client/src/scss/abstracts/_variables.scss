@@ -95,7 +95,7 @@ $button-padding: (
     lg: 1rem 1.5rem
 );
 $input-padding: map.get($spacing-scale, sm) map.get($spacing-scale, md);
-$sidebar-width: 12rem;
+$sidebar-width: 10rem;
 
 // Responsive Borders and Shadows
 $border-radius: clamp(4px, 0.5vw, 8px);
