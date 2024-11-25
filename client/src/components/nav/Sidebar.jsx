@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import React, { useCallback, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import useClickOutside from '../../hooks/useClickOutside';
+import SimpleBar from 'simplebar-react';
+import 'simplebar-react/dist/simplebar.min.css';
 
 const Sidebar = React.memo(({ sidebarOpen, handleSidebarClose }) => {
     const sidebarRef = useRef(null);
@@ -23,7 +25,7 @@ const Sidebar = React.memo(({ sidebarOpen, handleSidebarClose }) => {
 
     const sidebarContent = (
         <div className={`custom-sidebar ${sidebarOpen ? 'custom-sidebar--open' : ''}`} ref={sidebarRef}>
-            <div className="custom-sidebar__content">
+            <SimpleBar style={{ maxHeight: '100%' }} className="custom-sidebar__content">
                 <nav className="custom-sidebar__nav">
                     <NavLink to="/explore" className="custom-sidebar__link" onClick={handleSidebarClose}>
                         Explore
@@ -47,7 +49,7 @@ const Sidebar = React.memo(({ sidebarOpen, handleSidebarClose }) => {
                         Logout
                     </Button>
                 </div>
-            </div>
+            </SimpleBar>
         </div>
     );
 

@@ -6,6 +6,7 @@ export { default as LoginPage } from './auth/LoginPage';
 
 // Common Components
 export { default as Button } from './common/Button';
+export { default as CustomSimpleBar } from './common/CustomSimpleBar';
 export { default as CustomTagIcon } from './common/CustomTagIcon';
 export { default as CustomToast } from './common/CustomToast';
 export { default as ErrorBoundary } from './common/ErrorBoundary';

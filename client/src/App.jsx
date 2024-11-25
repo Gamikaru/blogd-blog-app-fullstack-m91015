@@ -31,7 +31,7 @@ const App = () => {
 
     return (
         <>
-            <SimpleBar className="app-scrollbar">
+            <SimpleBar style={{ maxHeight: '100vh' }} className="app-scrollbar">
 
                 <ErrorBoundary>
                     <AnimatePresence mode="wait">

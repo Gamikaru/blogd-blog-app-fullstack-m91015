@@ -37,7 +37,6 @@
 
             &__title {
                 color: $primary-text-color;
-                font-size: $small-font-size;
                 margin-bottom: map.get($modal-spacing, input-gap);
             }
 

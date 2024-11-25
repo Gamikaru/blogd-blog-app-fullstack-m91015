@@ -45,7 +45,7 @@ a {
     /* Customize the scrollbar thumb */
     .simplebar-scrollbar::before {
         background-color: rgba($primary-text-color, 0.6) !important;
-        border-radius: 8px !important; // Increased border-radius for more rounding
+        border-radius: 8px !important;
         width: 8px !important;
     }
 
@@ -65,7 +65,7 @@ a {
 }
 
 /* Firefox */
-body { // Changed from '*' to 'body' for better specificity
+body {
     scrollbar-color: rgba($primary-text-color, 0.6) transparent !important;
     scrollbar-width: thin !important;
 }
