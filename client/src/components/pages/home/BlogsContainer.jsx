@@ -1,6 +1,6 @@
 // src/components/BlogsContainer.jsx
 
-import { Button, InputField, Spinner } from '@components';
+import { Button, InputField, SelectField, Spinner } from '@components';
 import { usePostContext } from '@contexts';
 import { logger } from '@utils';
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
@@ -35,11 +35,11 @@ const BlogsContainer = () => {
     const [showFilterDropdown, setShowFilterDropdown] = useState(false);
     const [showSearchInput, setShowSearchInput] = useState(false);
     const [filters, setFilters] = useState({
-        author: "",
         category: "",
         sortBy: "",
     });
-    const [search, setSearch] = useState("");
+    const [searchInput, setSearchInput] = useState(""); // Immediate input value
+    const [search, setSearch] = useState(""); // Debounced search value
 
     const filterRef = useRef(null);
     const searchRef = useRef(null);
@@ -60,14 +60,16 @@ const BlogsContainer = () => {
         setFilters((prev) => ({ ...prev, [name]: value }));
     }, []);
 
-    const debouncedHandleSearchChange = useMemo(
+    // Debounce the search input to update the 'search' state
+    const debouncedSetSearch = useMemo(
         () => debounce((value) => setSearch(value), 300),
         []
     );
 
-    const handleSearchChange = useCallback((e) => {
-        debouncedHandleSearchChange(e.target.value);
-    }, [debouncedHandleSearchChange]);
+    const handleSearchInputChange = useCallback((value) => {
+        setSearchInput(value);
+        debouncedSetSearch(value);
+    }, [debouncedSetSearch]);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -81,9 +83,9 @@ const BlogsContainer = () => {
         document.addEventListener("mousedown", handleClickOutside);
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
-            debouncedHandleSearchChange.cancel();
+            debouncedSetSearch.cancel();
         };
-    }, [debouncedHandleSearchChange]);
+    }, [debouncedSetSearch]);
 
     const filteredPosts = useMemo(() => {
         if (!posts) return [];
@@ -97,8 +99,7 @@ const BlogsContainer = () => {
 
         const filtered = posts.filter((post) => {
             const postAuthor = getAuthor(post).toLowerCase();
-            const matchesAuthor = !filters.author ||
-                postAuthor.includes(filters.author.toLowerCase());
+            // Removed author filter logic
             const matchesCategory = !filters.category ||
                 post.category === filters.category;
             const matchesSearch = !search ||
@@ -110,12 +111,11 @@ const BlogsContainer = () => {
                 postId: post._id,
                 author: postAuthor,
                 category: post.category,
-                matchesAuthor,
                 matchesCategory,
                 matchesSearch
             });
 
-            return matchesAuthor && matchesCategory && matchesSearch;
+            return matchesCategory && matchesSearch;
         });
 
         logger.info('Filtered results:', {
@@ -137,11 +137,11 @@ const BlogsContainer = () => {
 
     const resetFilters = useCallback(() => {
         setFilters({
-            author: "",
             category: "",
             sortBy: "",
         });
         setSearch("");
+        setSearchInput("");
     }, []);
 
     if (loading) return <Spinner message="Loading blog posts..." />;
@@ -177,53 +177,56 @@ const BlogsContainer = () => {
                                 variants={filterDropdownVariants}
                                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
                             >
-                                <div className="blogs-container__option">
-                                    <label htmlFor="author">Author:</label>
-                                    <InputField
-                                        type="text"
-                                        id="author"
-                                        name="author"
-                                        value={filters.author}
-                                        onChange={handleFilterChange}
-                                        aria-label="Filter by author"
-                                    />
-                                </div>
+                                {/* Removed Author Filter */}
                                 <div className="blogs-container__option">
                                     <label htmlFor="category">Category:</label>
-                                    <select
-                                        id="category"
-                                        name="category"
+                                    <SelectField
+                                        name="category" // Added name prop
+                                        options={[
+                                            "Health and Fitness",
+                                            "Lifestyle",
+                                            "Technology",
+                                            "Cooking",
+                                            "Philosophy",
+                                            "Productivity",
+                                            "Art",
+                                            "Music",
+                                            "Business",
+                                            "Business & Finance",
+                                            "Other"
+                                        ]}
                                         value={filters.category}
                                         onChange={handleFilterChange}
+                                        className="blogs-container__select"
                                         aria-label="Filter by category"
-                                    >
-                                        <option value="">All</option>
-                                        <option value="Health and Fitness">Health and Fitness</option>
-                                        <option value="Lifestyle">Lifestyle</option>
-                                        <option value="Technology">Technology</option>
-                                        <option value="Cooking">Cooking</option>
-                                        <option value="Philosophy">Philosophy</option>
-                                        <option value="Productivity">Productivity</option>
-                                        <option value="Art">Art</option>
-                                        <option value="Music">Music</option>
-                                        <option value="Business">Business</option>
-                                        <option value="Business & Finance">Business & Finance</option>
-                                        <option value="Other">Other</option>
-                                    </select>
+                                    />
                                 </div>
+                                {/* Optional: Add Date Range Filter */}
+                                {/*
+                                <div className="blogs-container__option">
+                                    <label htmlFor="dateRange">Date Range:</label>
+                                    <DateRangePicker
+                                        startDate={filters.startDate}
+                                        endDate={filters.endDate}
+                                        onChange={handleDateRangeChange}
+                                        className="blogs-container__date-range"
+                                    />
+                                </div>
+                                */}
                                 <div className="blogs-container__option">
                                     <label htmlFor="sortBy">Sort By:</label>
-                                    <select
-                                        id="sortBy"
-                                        name="sortBy"
+                                    <SelectField
+                                        name="sortBy" // Added name prop
+                                        options={[
+                                            "None",
+                                            "Author Name",
+                                            "Title"
+                                        ]}
                                         value={filters.sortBy}
                                         onChange={handleFilterChange}
+                                        className="blogs-container__select"
                                         aria-label="Sort posts"
-                                    >
-                                        <option value="">None</option>
-                                        <option value="name">Author Name</option>
-                                        <option value="title">Title</option>
-                                    </select>
+                                    />
                                 </div>
                                 {/* Reset Filters Button */}
                                 <div className="blogs-container__option blogs-container__option--actions">
@@ -251,18 +254,23 @@ const BlogsContainer = () => {
 
                     <AnimatePresence>
                         {showSearchInput && (
-                            <motion.input
-                                type="text"
-                                className="blogs-container__search-input"
-                                placeholder="Search by author or title"
-                                onChange={handleSearchChange}
+                            <motion.div
                                 initial="hidden"
                                 animate="visible"
                                 exit="hidden"
                                 variants={searchInputVariants}
                                 transition={{ duration: 0.3 }}
-                                aria-label="Search input"
-                            />
+                                className="blogs-container__search-input-wrapper"
+                            >
+                                <InputField
+                                    type="text"
+                                    value={searchInput}
+                                    onChange={(e) => handleSearchInputChange(e.target.value)} // Immediate input update
+                                    placeholder="Search by author or title"
+                                    aria-label="Search input"
+                                    className="blogs-container__search-input"
+                                />
+                            </motion.div>
                         )}
                     </AnimatePresence>
                 </div>
@@ -295,6 +303,7 @@ const BlogsContainer = () => {
             </AnimatePresence>
         </div>
     );
+
 };
 
 export default BlogsContainer;

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo } from "react";
 import { FiChevronDown } from "react-icons/fi"; // Import FiChevronDown icon
 
-const SelectField = forwardRef(({ options, value, onChange, error, className }, ref) => {
+const SelectField = forwardRef(({ options, value, onChange, error, className, ...rest }, ref) => {
     const renderedOptions = useMemo(
         () =>
             options.map((option, index) => (
@@ -19,11 +19,13 @@ const SelectField = forwardRef(({ options, value, onChange, error, className }, 
         <div className="input-field-wrapper">
             <div className="select-container">
                 <select
+                    name={rest.name} // Ensure name is passed
                     value={value}
                     onChange={onChange}
                     className={`input-control ${className} ${error ? 'is-invalid' : ''}`}
                     ref={ref}
-                    aria-label="Select your location"
+                    {...rest} // Pass down additional props like 'name'
+                    aria-label={rest['aria-label'] || "Select input"}
                 >
                     <option value="">Select</option>
                     {renderedOptions}

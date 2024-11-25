@@ -35,7 +35,7 @@ export const PostProvider = ({ children }) => {
     const [loading, setLoading] = useState(false);
     const [selectedPost, setSelectedPost] = useState(null); // Added selectedPost state
 
-    const loadPosts = useCallback(async (page = 1, limit = 10) => {
+    const loadPosts = useCallback(async (page = 1, limit = 25) => {
         setLoading(true);
         try {
             const data = await fetchAllPosts({ page, limit });

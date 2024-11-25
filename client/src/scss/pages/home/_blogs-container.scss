@@ -10,153 +10,126 @@
     position: relative;
     width: 75vw;
     z-index: 0;
-}
 
-.blogs-container__header {
-    left: spacing(8);
-    position: relative;
-    text-align: right;
-    top: spacing(-18);
-}
-
-.blogs-container__title {
-    @include page-title;
-
-    margin: 0;
-    margin-left: $spacing-xs;
-    max-width: 85%;
-    padding-inline: px-to-rem(50);
-    position: relative;
-}
-
-.blogs-container__subtitle {
-    @include page-subtitle;
-
-    left: spacing(10);
-    line-height: 1.6;
-    max-width: 70%;
-    position: relative;
-}
-
-.blogs-container__filter-search-container {
-    align-items: center;
-    display: flex;
-    gap: spacing(1);
-    margin-top: spacing(-15);
-    padding-top: spacing(1);
-    position: relative;
-}
-
-.blogs-container__filter-container,
-.blogs-container__search-container {
-    align-items: center;
-    display: flex;
-    margin-top: spacing(-5);
-    position: relative;
-}
-
-.blogs-container__icon {
-    @include filter-search-icon;
-}
-
-.blogs-container__dropdown {
-    background-color: $secondary-bg-color;
-    border-radius: $border-radius;
-    box-shadow: $box-shadow-strong;
-    left: 0;
-    opacity: 1;
-    padding: spacing(1);
-    pointer-events: auto;
-    position: absolute;
-    top: calc(100% + spacing(1));
-    transform: translateY(0);
-    width: px-to-rem(250);
-    z-index: 1000;
-}
-
-.blogs-container__option {
-    margin-bottom: spacing(1);
-}
-
-.blogs-container__option label {
-    color: $primary-text-color;
-    display: block;
-    font-size: $small-font-size;
-    margin-bottom: spacing(0.5);
-}
-
-.blogs-container__option input,
-.blogs-container__option select {
-    background-color: color.adjust($primary-bg-color, $lightness: 5%);
-    border: 1px solid color.adjust($secondary-bg-color, $lightness: 20%);
-    border-radius: $border-radius;
-    color: $primary-text-color;
-    font-size: $body-font-size;
-    padding: spacing(0.5);
-    transition: border-color $transitions-base;
-    width: 100%;
-}
-
-.blogs-container__option input:focus,
-.blogs-container__option select:focus {
-    border-color: $accent-color-2;
-    outline: none;
-}
-
-.blogs-container__actions {
-    text-align: center;
-}
-
-.blogs-container__actions button {
-    @include button-style($accent-color-2, $primary-text-color);
-
-    font-size: $body-font-size;
-    padding: spacing(0.5) spacing(1);
-}
-
-.blogs-container__actions button:hover {
-    background-color: color.adjust($accent-color-2, $lightness: -10%);
-}
-
-.blogs-container__search-input {
-    background-color: color.adjust($primary-bg-color, $lightness: 5%);
-    border: 1px solid color.adjust($secondary-bg-color, $lightness: 20%);
-    border-radius: $border-radius;
-    color: $primary-text-color;
-    display: block;
-    font-size: $body-font-size;
-    left: calc(100% + spacing(1));
-    opacity: 1;
-    padding: spacing(0.5);
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    transition: border-color $transitions-base;
-    width: px-to-rem(200);
-}
-
-.blogs-container__search-input:focus {
-    border-color: $accent-color-2;
-    outline: none;
-}
-
-.blogs-container__posts-grid {
-    align-items: stretch; // Ensure all cards have the same height
-    display: grid;
-    gap: spacing(1.5);
-    grid-template-columns: repeat(auto-fit, minmax(px-to-rem(280), 1fr));
-
-    @include respond-to(md) {
-        grid-template-columns: repeat(auto-fit, minmax(px-to-rem(250), 1fr));
+    &__header {
+        left: spacing(8);
+        position: relative;
+        text-align: right;
+        top: spacing(-18);
     }
 
-    @include respond-to(lg) {
-        grid-template-columns: repeat(auto-fit, minmax(px-to-rem(300), 1fr));
-    }
-}
+    &__title {
+        @include page-title;
 
-.blogs-container__no-posts-message {
-    color: $secondary-text-color;
-    font-size: $sub-heading-font-size;
-    text-align: center;
+        margin: 0;
+        margin-left: $spacing-xs;
+        max-width: 85%;
+        padding-inline: px-to-rem(50);
+        position: relative;
+    }
+
+    &__subtitle {
+        @include page-subtitle;
+
+        left: spacing(10);
+        line-height: 1.6;
+        max-width: 70%;
+        position: relative;
+    }
+
+    &__filter-search-container {
+        align-items: center;
+        display: flex;
+        gap: spacing(1);
+        margin-top: spacing(-15);
+        padding-top: spacing(1);
+        position: relative;
+    }
+
+    &__filter-container,
+    &__search-container {
+        align-items: center;
+        display: flex;
+        margin-top: spacing(-5);
+        position: relative;
+    }
+
+    &__icon {
+        @include filter-search-icon;
+    }
+
+    &__dropdown {
+        background-color: $secondary-bg-color;
+        border-radius: $border-radius;
+        box-shadow: $box-shadow-strong;
+        left: 0;
+        opacity: 1;
+        padding: spacing(1);
+        pointer-events: auto;
+        position: absolute;
+        top: calc(100% + spacing(1));
+        transform: translateY(0);
+        width: px-to-rem(250);
+        z-index: 1000;
+    }
+
+    &__option {
+        margin-bottom: spacing(1);
+
+        label {
+            color: $primary-text-color;
+            display: block;
+            font-size: $small-font-size;
+            margin-bottom: spacing(0.5);
+        }
+
+        &--actions {
+            text-align: center;
+
+            button {
+                font-size: $body-font-size;
+                padding: spacing(0.5) spacing(1);
+
+                &:hover {
+                    background-color: color.adjust($accent-color-2, $lightness: -10%);
+                }
+            }
+        }
+    }
+
+    /* Styles for custom InputField and SelectField */
+    &__input,
+    &__select {
+        margin-top: spacing(0.5);
+        width: 100%; // Ensure full width for custom components
+    }
+
+    &__search-input-wrapper {
+        position: relative;
+    }
+
+    &__search-input {
+        /* Styles managed within the InputField component */
+    }
+
+    &__posts-grid {
+        align-items: stretch; // Ensure all cards have the same height
+        display: grid;
+        gap: spacing(1.5);
+        grid-template-columns: repeat(auto-fit, minmax(px-to-rem(280), 1fr));
+
+        @include respond-to(md) {
+            grid-template-columns: repeat(auto-fit, minmax(px-to-rem(250), 1fr));
+        }
+
+        @include respond-to(lg) {
+            grid-template-columns: repeat(auto-fit, minmax(px-to-rem(300), 1fr));
+        }
+    }
+
+    &__no-posts-message {
+        color: $secondary-text-color;
+        font-size: $sub-heading-font-size;
+        text-align: center;
+    }
 }
