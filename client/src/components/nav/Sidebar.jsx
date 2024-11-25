@@ -1,22 +1,15 @@
-import { Button, Portal } from '@components';
-import { useUserUpdate } from '@contexts';
-import { logger } from '@utils';
+import { Portal } from '@components';
 import PropTypes from 'prop-types';
-import React, { useCallback, useRef } from 'react';
+import React, { useRef } from 'react';
 import { NavLink } from 'react-router-dom';
-import useClickOutside from '../../hooks/useClickOutside';
 import SimpleBar from 'simplebar-react';
 import 'simplebar-react/dist/simplebar.min.css';
+import useClickOutside from '../../hooks/useClickOutside';
 
 const Sidebar = React.memo(({ sidebarOpen, handleSidebarClose }) => {
     const sidebarRef = useRef(null);
-    const setUser = useUserUpdate();
 
-    const handleLogout = useCallback(() => {
-        logger.info('Logging out user');
-        setUser(null);
-        handleSidebarClose();
-    }, [setUser, handleSidebarClose]);
+
 
     // Use the custom hook to handle click outside
     useClickOutside(sidebarRef, () => {
@@ -40,15 +33,6 @@ const Sidebar = React.memo(({ sidebarOpen, handleSidebarClose }) => {
                         Contact
                     </NavLink>
                 </nav>
-                <div className="custom-sidebar__account-options">
-                    <Button variant="settings">
-                        Settings
-                    </Button>
-
-                    <Button variant="delete" onClick={handleLogout}>
-                        Logout
-                    </Button>
-                </div>
             </SimpleBar>
         </div>
     );

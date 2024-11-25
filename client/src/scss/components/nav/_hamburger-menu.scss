@@ -1,34 +1,34 @@
 // _hamburger-menu.scss
 
 .hamburger-icon {
-    @include flex-center;
-
+    align-items:flex-start; // Center links horizontally
     background: none;
     border: none;
     cursor: pointer;
+    display: flex;
     flex-direction: column;
-    height: px-to-rem(18); // 18px
-    justify-content: end;
-    margin-left: $spacing-xxs; // 0.5rem
+    height: px-to-rem(24); // Icon height
+    justify-content:first baseline;
+    margin: 0;
     padding: 0;
     position: relative;
-    width: px-to-rem(24); // 24px
+    width: px-to-rem(24);  // Icon width
     z-index: 2000;
 
+
     .line {
-        align-self: start;
         background-color: $primary-text-color;
-        height: px-to-rem(2); // 2px
-        transition: all 0.3s ease;
+        height: px-to-rem(2); // Line thickness
+        transition: background-color 0.3s ease;
+    }
 
-        &:first-child {
-            margin-bottom: px-to-rem(4); // 4px
-            width: px-to-rem(24); // 24px
-        }
+    .line:first-child {
+        margin-bottom: px-to-rem(4);
+        width: 100%; // Longer line
+    }
 
-        &:last-child {
-            width: px-to-rem(17); // 18px
-        }
+    .line:last-child {
+        width: 70%; // Shorter line
     }
 
     &:hover .line {

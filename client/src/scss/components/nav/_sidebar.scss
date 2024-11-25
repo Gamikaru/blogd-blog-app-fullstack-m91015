@@ -14,12 +14,12 @@
     &--open {
         animation: slide-in-from-top 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         opacity: 1;
-        transform: translateY(0);
+        transform: translateX(0);
     }
 
     &:not(&--open) {
         animation: slide-out-to-top 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        transform: translateY(-100%);
+        transform: translateX(-100%);
     }
 
     &__content {
@@ -27,20 +27,21 @@
         flex-direction: column;
         height: 100%;
         justify-content: space-between;
+
     }
 
     &__nav {
-        align-items: center; // Center links horizontally
+        align-items:flex-start;
         display: flex;
         flex-direction: column;
         gap: $spacing-lg;
-        margin-top: $spacing-lg;
+        padding-left: $spacing-xl;
+
 
         .custom-sidebar__link {
             color: $primary-text-color;
             font-size: $body-font-size;
             font-weight: 500;
-            padding: $spacing-sm 0;
             text-align: center; // Ensure text is centered
             text-decoration: none;
             transition: color $transitions-base;
@@ -64,39 +65,6 @@
         padding-bottom: $spacing-lg;
     }
 
-    &__button {
-        align-items: center;
-        border-radius: $button-border-radius;
-        display: flex;
-        gap: $spacing-sm;
-        justify-content: center; // Center content within buttons
-        max-width: 200px; // Optional: set a max width
-        padding: $spacing-sm;
-        transition: all 0.2s ease;
-        width: 80%; // Reduce width for better centering
-
-        &--edit {
-            background-color: transparent;
-            color: $primary-text-color;
-
-            &:hover {
-                background-color: fade-color($accent-color-2, 0.1);
-            }
-        }
-
-        &--delete {
-            background-color: transparent;
-            color: $error-color;
-
-            &:hover {
-                background-color: fade-color($error-color, 0.05);
-            }
-
-            .custom-sidebar__icon {
-                margin-right: $spacing-xs;
-            }
-        }
-    }
 }
 
 // Responsive adjustments
