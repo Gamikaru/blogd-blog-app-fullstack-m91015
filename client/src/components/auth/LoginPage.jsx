@@ -1,5 +1,4 @@
 // src/components/LoginPage.jsx
-
 import debounce from 'lodash.debounce';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
@@ -15,7 +14,7 @@ const LoginPage = () => {
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [errors, setErrors] = useState({});
-    const { showNotification, hideNotification } = useNotificationContext();
+    const { showNotification } = useNotificationContext();
     const { togglePublicModal } = usePublicModalContext();
     const navigate = useNavigate();
     const { login } = useUserUpdate();
@@ -67,25 +66,18 @@ const LoginPage = () => {
         }
 
         setLoading(true);
-        try {
-            const result = await login(loginForm);
+        const result = await login(loginForm);
 
-            if (!result.success) {
-                const errorMsg = result.message || 'Login failed. Please try again.';
-                showNotification(errorMsg, 'error');
-                logger.error('Login failed', result);
-                return;
-            }
-
-            logger.info('Login successful.');
-            hideNotification();
-            navigate('/');
-        } catch (error) {
-            logger.error('Login error', error);
-            showNotification(error.message || 'An error occurred. Please try again.', 'error');
-        } finally {
+        if (!result.success) {
+            const errorMsg = result.message || 'Login failed. Please try again.';
+            showNotification(errorMsg, 'error');
+            logger.error('Login failed', result);
             setLoading(false);
+            return;
         }
+
+        logger.info('Login successful.');
+        navigate('/');
     };
 
     if (loading) {
@@ -116,26 +108,26 @@ const LoginPage = () => {
                             />
                         </div>
 
-                        <div className="login-input-container password-group">
-                            <div className="password-input-wrapper">
-                                <InputField
-                                    value={loginForm.password}
-                                    onChange={handleChange('password')}
-                                    onBlur={() => handleBlur('password')}
-                                    placeholder="Enter your password"
-                                    type={showPassword ? 'text' : 'password'}
-                                    className={`login-input-field ${errors.password ? 'invalid-input' : ''}`}
-                                    error={errors.password}
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    className="password-toggle-button"
-                                    aria-label={showPassword ? 'Hide password' : 'Show password'}
-                                >
-                                    {showPassword ? <FiEyeOff /> : <FiEye />}
-                                </button>
-                            </div>
+                        <div className="login-input-container">
+                            <InputField
+                                value={loginForm.password}
+                                onChange={handleChange('password')}
+                                onBlur={() => handleBlur('password')}
+                                placeholder="Enter your password"
+                                type={showPassword ? 'text' : 'password'}
+                                className={`login-input-field ${errors.password ? 'invalid-input' : ''}`}
+                                error={errors.password}
+                                suffix={
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="password-toggle-button"
+                                        aria-label={showPassword ? 'Hide password' : 'Show password'}
+                                    >
+                                        {showPassword ? <FiEyeOff /> : <FiEye />}
+                                    </button>
+                                }
+                            />
                         </div>
 
                         <div className="login-submit-container">

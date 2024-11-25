@@ -1,4 +1,4 @@
-/* _login.scss */
+// src/_login.scss
 
 .login-page {
     align-items: center;
@@ -30,81 +30,19 @@
     background-color: $secondary-bg-color;
     border: none;
     width: 100%;
-}
 
-.login-card-header {
-    color: $primary-text-color;
-    font-size: $heading-font-size-md;
-    font-weight: 600;
-    margin-bottom: $spacing-unit * 2;
-    text-align: center;
+    &-header {
+        color: $primary-text-color;
+        font-size: $heading-font-size-md;
+        font-weight: 600;
+        margin-bottom: $spacing-unit * 2;
+        text-align: center;
+    }
 }
 
 .login-input-container {
     margin-bottom: $spacing-unit * 1.5;
-
-    /* Ensure consistent sizing */
-    .input-field-wrapper {
-        width: 100%;
-    }
-}
-
-.password-group {
-    .password-input-wrapper {
-        position: relative;
-        width: 100%;
-
-        .login-input-field {
-            box-sizing: border-box;
-            padding-right: $spacing-unit * 4; // Space for toggle button
-            width: 100%;
-        }
-
-        .password-toggle-button {
-            align-items: center;
-            background: transparent;
-            border: none;
-            color: $secondary-text-color;
-            cursor: pointer;
-            display: flex;
-            height: 100%;
-            justify-content: center;
-            padding: 0; // Remove any default padding
-            position: absolute;
-            right: $spacing-unit;
-            top: 50%;
-            transform: translateY(-50%);
-            width: $spacing-unit * 3; // Adjust size as needed
-            z-index: 3; // Ensure it stays above the input
-
-            &:hover {
-                color: $primary-text-color;
-            }
-
-            svg {
-                height: 1.5em;
-                width: 1.5em;
-            }
-        }
-
-        /* Adjust InputField's error message positioning */
-        .input-field-wrapper {
-            position: relative;
-        }
-
-        .input-field-wrapper .error-label {
-            font-size: fluid-type(320px, 1200px, 14px, 18px);
-            margin-top: $spacing-xs;
-
-            /* Ensure the error label is below the input field */
-            position: static;
-        }
-    }
-}
-
-.login-input-field {
-    box-sizing: border-box;
-    width: 100%;
+    position: relative;
 }
 
 .login-submit-container {
@@ -113,14 +51,13 @@
     margin-top: $spacing-unit * 2;
 }
 
-.submit-btn {
-    width: 100%;
+.register-container {
+    margin-top: $spacing-unit * 2;
 }
 
 .register-text {
     color: $secondary-text-color;
     font-size: $small-font-size;
-    margin-top: $spacing-unit * 2;
 }
 
 .register-link {
@@ -133,6 +70,51 @@
     }
 }
 
+.input-field-wrapper {
+    box-sizing: border-box;
+    margin-bottom: $spacing-md;
+    position: relative;
+    width: 100%;
+
+    .input-control-wrapper {
+        position: relative;
+        width: 100%;
+    }
+}
+
+.input-control {
+    &[type="password"] {
+        padding-right: $spacing-unit * 4;
+    }
+}
+
+.password-toggle-button {
+    align-items: center;
+    background: transparent;
+    border: none;
+    color: $secondary-text-color;
+    cursor: pointer;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    padding: 0;
+    position: absolute;
+    right: $spacing-unit;
+    top: 50%;
+    transform: translateY(-50%);
+    width: $spacing-unit * 3;
+    z-index: 2;
+
+    &:hover {
+        color: $primary-text-color;
+    }
+
+    svg {
+        height: 1.2em;
+        width: 1.2em;
+    }
+}
+
 @media (max-width: $breakpoint-md) {
     .login-page {
         padding: $spacing-unit;
@@ -142,45 +124,13 @@
         padding: $spacing-unit;
     }
 
-    .login-text-slide {
-        overflow: hidden;
-        padding: $spacing-md;
-    }
-
-    .login-input-field {
-        font-size: clamp(1.2rem, 2vw, $heading-font-size-md);
-        margin: $spacing-md 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
     .login-input-container {
         font-size: clamp(0.8rem, 1vw, 0.9rem);
         margin-bottom: $spacing-lg;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: normal; // Allow wrapping
     }
 
-    .login-meta {
-        overflow: hidden;
-        padding-top: $spacing-sm;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    .password-group {
-        .password-input-wrapper {
-            padding-bottom: $spacing-unit * 3; // Increased padding for error on smaller screens
-
-            .password-toggle-button {
-                width: $spacing-unit * 3; // Adjust size for smaller screens
-            }
-
-            .input-field-wrapper .error-label {
-                font-size: fluid-type(320px, 1200px, 12px, 16px);
-            }
-        }
+    .password-toggle-button {
+        height: $spacing-unit * 3;
+        width: $spacing-unit * 3;
     }
 }

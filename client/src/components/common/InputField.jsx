@@ -17,6 +17,7 @@ const InputField = forwardRef(
             type = 'text',
             className = '',
             style,
+            suffix, // Add this prop
         },
         ref
     ) => {
@@ -33,21 +34,24 @@ const InputField = forwardRef(
                         {label}
                     </label>
                 )}
-                <input
-                    id={sanitizedId}
-                    type={type}
-                    value={value}
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    onKeyDown={onKeyDown}
-                    placeholder={placeholder}
-                    className={`input-control ${error ? 'input-error' : ''} ${className}`}
-                    style={style}
-                    ref={ref}
-                    aria-label={label || placeholder}
-                    aria-describedby={errorId}
-                    aria-invalid={!!error}
-                />
+                <div className="input-control-wrapper">
+                    <input
+                        id={sanitizedId}
+                        type={type}
+                        value={value}
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        onKeyDown={onKeyDown}
+                        placeholder={placeholder}
+                        className={`input-control ${error ? 'input-error' : ''} ${className}`}
+                        style={style}
+                        ref={ref}
+                        aria-label={label || placeholder}
+                        aria-describedby={errorId}
+                        aria-invalid={!!error}
+                    />
+                    {suffix}
+                </div>
                 {error && (
                     <span id={errorId} className="error-label">
                         {error}
@@ -70,6 +74,7 @@ InputField.propTypes = {
     type: PropTypes.string,
     className: PropTypes.string,
     style: PropTypes.object,
+    suffix: PropTypes.node
 };
 InputField.displayName = 'InputField';
 

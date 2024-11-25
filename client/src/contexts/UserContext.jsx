@@ -26,7 +26,7 @@ export const useUserUpdate = () => {
         logout: context.logout,
         register: context.register,
         updateUser: context.updateUser,
-        setUser: context.setUser,
+        // Removed setUser to prevent external manipulation
     };
 };
 
@@ -59,11 +59,38 @@ export const UserProvider = ({ children }) => {
     useEffect(() => {
         const initializeUser = async () => {
             const cookies = new Cookies();
-            const token = cookies.get('BlogdPass');
+            let token = cookies.get('BlogdPass');
             let userId = cookies.get('userId');
 
             logger.info(`UserContext: Retrieved token: ${token}`);
             logger.info(`UserContext: Retrieved userId: ${userId}`);
+
+            // Handle cases where token or userId might be objects
+            if (typeof token === 'object') {
+                logger.warn('UserContext: Token is an object. Attempting to extract string.');
+                // Attempt to extract the string token if possible
+                token = token?.token || '';
+                if (typeof token === 'string') {
+                    cookies.set('BlogdPass', token, { path: '/' });
+                } else {
+                    logger.error('UserContext: Failed to extract string from token object.');
+                    cookies.remove('BlogdPass', { path: '/' });
+                    token = '';
+                }
+            }
+
+            if (typeof userId === 'object') {
+                logger.warn('UserContext: userId is an object. Attempting to extract string.');
+                // Attempt to extract the string userId if possible
+                userId = userId?.id || '';
+                if (typeof userId === 'string') {
+                    cookies.set('userId', userId, { path: '/' });
+                } else {
+                    logger.error('UserContext: Failed to extract string from userId object.');
+                    cookies.remove('userId', { path: '/' });
+                    userId = '';
+                }
+            }
 
             if (!token || !userId) {
                 setLoading(false);
@@ -79,7 +106,7 @@ export const UserProvider = ({ children }) => {
                 return;
             }
 
-            // Optional: Further validate userId format
+            // Further validate userId format
             const isValidFormat = /^[a-fA-F0-9]{24}$/.test(userId);
             if (!isValidFormat) {
                 logger.error('UserContext: userId does not match expected format', userId);
@@ -89,12 +116,16 @@ export const UserProvider = ({ children }) => {
                 return;
             }
 
-            await fetchUserData(userId);
+            // Fetch user data only if user state is not already set
+            if (!user) {
+                await fetchUserData(userId);
+            }
+
             setLoading(false);
         };
 
         initializeUser();
-    }, []);
+    }, []); // Changed dependency array to run only once on mount
 
     useEffect(() => {
         const fetchData = async () => {
@@ -127,27 +158,31 @@ export const UserProvider = ({ children }) => {
         }
     }, [user]);
 
-    // Ensure that whenever you reference userId, you consistently use String(userData.userId || userData._id) to handle different cases.
+    // Login function handling authentication logic
     const login = async (loginData) => {
         try {
             const response = await userService.loginUser(loginData);
-            const { token, user: userData } = response;
+            const { token, user: loggedInUser } = response;
 
-            // If token is an object, extract the token string
-            const tokenString = typeof token === 'object' ? token.token : token;
+            // Ensure token is a string
+            const tokenString = typeof token === 'object' && token.token ? token.token : String(token);
 
             // Ensure userId is a string
-            const userId = String(userData.userId || userData._id);
+            const userId = String(loggedInUser.userId || loggedInUser._id);
 
             const cookies = new Cookies();
             cookies.set('BlogdPass', tokenString, { path: '/' });
             cookies.set('userId', userId, { path: '/' });
 
             setUser({
-                ...userData,
+                ...loggedInUser,
                 userId,
             });
             logger.info('UserContext: User logged in successfully');
+
+            // Fetch full user data to ensure all fields (e.g., profilePicture) are loaded
+            await fetchUserData(userId);
+
             return { success: true };
         } catch (error) {
             logger.error('UserContext: Login failed', error);
@@ -155,7 +190,7 @@ export const UserProvider = ({ children }) => {
         }
     };
 
-
+    // Logout function handling user sign-out
     const logout = async () => {
         try {
             await userService.logoutUser();
@@ -169,6 +204,7 @@ export const UserProvider = ({ children }) => {
         }
     };
 
+    // Register function for new user sign-up
     const register = async (userData) => {
         try {
             const response = await userService.registerUser(userData);
@@ -180,6 +216,7 @@ export const UserProvider = ({ children }) => {
         }
     };
 
+    // Update user profile information
     const updateUser = async (userId, updatedData) => {
         try {
             const validUserId = String(userId);
@@ -204,7 +241,7 @@ export const UserProvider = ({ children }) => {
             logout,
             register,
             updateUser,
-            setUser,
+            // Removed setUser to prevent external manipulation
             users,
             error,
         }),

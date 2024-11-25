@@ -1,5 +1,7 @@
-import { Button, Portal } from '@components';
-import { usePrivateModalContext, useUser } from '@contexts';
+// src/components/UserDropdown.jsx
+
+import { Button, Portal, Spinner } from '@components';
+import { usePrivateModalContext, useUser, useUserUpdate } from '@contexts';
 import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useRef } from 'react';
@@ -11,9 +13,10 @@ import {
 } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
-const UserDropdown = React.memo(({ showDropdown, setShowDropdown, handleLogout, position }) => {
+const UserDropdown = React.memo(({ showDropdown, setShowDropdown, position }) => {
     const dropdownRef = useRef(null);
-    const { user } = useUser();
+    const { user, loading } = useUser();
+    const { logout } = useUserUpdate();
     const { togglePrivateModal } = usePrivateModalContext();
     const navigate = useNavigate();
 
@@ -26,6 +29,12 @@ const UserDropdown = React.memo(({ showDropdown, setShowDropdown, handleLogout, 
         navigate('/profile');
         setShowDropdown(false);
     }, [navigate, setShowDropdown]);
+
+    const handleLogout = useCallback(async () => {
+        await logout();
+        setShowDropdown(false);
+        navigate('/login');
+    }, [logout, setShowDropdown, navigate]);
 
     const handleClickOutside = useCallback(
         (event) => {
@@ -56,6 +65,10 @@ const UserDropdown = React.memo(({ showDropdown, setShowDropdown, handleLogout, 
         exit: { opacity: 0, y: -20, scale: 0.95, transition: { duration: 0.2 } },
     };
 
+    if (loading) {
+        return <Spinner />; // Or any loading indicator
+    }
+
     if (!showDropdown) return null;
 
     return (
@@ -81,11 +94,11 @@ const UserDropdown = React.memo(({ showDropdown, setShowDropdown, handleLogout, 
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                             >
-                                {user.profilePicture ? (
+                                {user?.profilePicture ? (
                                     <img src={user.profilePicture} alt="Profile" className="user-avatar__image" />
                                 ) : (
                                     <div className="initials-avatar">
-                                        {`${user.firstName[0]}${user.lastName[0]}`.toUpperCase()}
+                                        {user ? `${user.firstName[0]}${user.lastName[0]}`.toUpperCase() : ''}
                                     </div>
                                 )}
                             </motion.div>
@@ -115,7 +128,6 @@ const UserDropdown = React.memo(({ showDropdown, setShowDropdown, handleLogout, 
                                 <Button
                                     onClick={handleProfileClick}
                                     variant="profile"
-
                                 >
                                     Profile
                                 </Button>
@@ -149,7 +161,6 @@ UserDropdown.displayName = 'UserDropdown';
 UserDropdown.propTypes = {
     showDropdown: PropTypes.bool.isRequired,
     setShowDropdown: PropTypes.func.isRequired,
-    handleLogout: PropTypes.func.isRequired,
     position: PropTypes.shape({
         top: PropTypes.number,
         right: PropTypes.number,

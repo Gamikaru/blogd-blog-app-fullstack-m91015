@@ -90,13 +90,13 @@
         .register-modal__footer {
             display: flex;
             gap: $spacing-md;
-            justify-content: flex-end;
+            justify-content: flex-center;
             margin-top: $spacing-md;
 
             .submit-container {
-                display: flex;
-                justify-content: flex-end;
-                width: 100%;
+                align-items: center;
+                display: flex-center;
+                justify-content: flex-center;
             }
         }
 
