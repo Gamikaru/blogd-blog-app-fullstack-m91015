@@ -277,7 +277,7 @@ const BlogsContainer = () => {
                                     onChange={(e) => handleSearchInputChange(e.target.value)}
                                     placeholder="Search by author, title, or content"
                                     aria-label="Search input"
-                                    className="blogs-container__search-input"
+                                    className="blogs-container__search-input" // Custom class
                                 />
                             </motion.div>
                         )}

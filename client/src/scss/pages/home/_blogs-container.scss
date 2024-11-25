@@ -1,5 +1,6 @@
 // src/components/BlogsContainer.scss
 
+
 .blogs-container {
     background-color: $primary-bg-color;
     color: $primary-text-color;
@@ -105,11 +106,17 @@
     }
 
     &__search-input-wrapper {
+        left: 1rem;
         position: relative;
+        top:0.5rem;
+
+        .input-control.search-input {
+            @include search-input-custom;
+        }
     }
 
     &__search-input {
-        /* Styles managed within the InputField component */
+        /* Additional specific styles if needed */
     }
 
     &__posts-grid {

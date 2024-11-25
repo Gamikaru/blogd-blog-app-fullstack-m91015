@@ -1,5 +1,3 @@
-// src/components/InputField.jsx
-
 import PropTypes from 'prop-types';
 import { forwardRef, memo, useMemo } from 'react';
 
@@ -17,7 +15,7 @@ const InputField = forwardRef(
             type = 'text',
             className = '',
             style,
-            suffix, // Add this prop
+            suffix,
         },
         ref
     ) => {
@@ -26,6 +24,9 @@ const InputField = forwardRef(
             [label, placeholder]
         );
         const errorId = error ? `${sanitizedId}-error` : undefined;
+
+        // Calculate the min-width based on the placeholder length
+        const minWidth = `${placeholder.length + 1}ch`;
 
         return (
             <div className="input-field-wrapper">
@@ -44,7 +45,7 @@ const InputField = forwardRef(
                         onKeyDown={onKeyDown}
                         placeholder={placeholder}
                         className={`input-control ${error ? 'input-error' : ''} ${className}`}
-                        style={style}
+                        style={{ ...style, minWidth }}
                         ref={ref}
                         aria-label={label || placeholder}
                         aria-describedby={errorId}
@@ -62,6 +63,7 @@ const InputField = forwardRef(
         );
     }
 );
+
 InputField.propTypes = {
     label: PropTypes.string,
     value: PropTypes.string,
@@ -76,6 +78,7 @@ InputField.propTypes = {
     style: PropTypes.object,
     suffix: PropTypes.node
 };
+
 InputField.displayName = 'InputField';
 
 export default memo(InputField);

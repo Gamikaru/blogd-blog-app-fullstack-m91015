@@ -2,7 +2,7 @@
 
 import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo } from "react";
-import { FiChevronDown } from "react-icons/fi"; // Import FiChevronDown icon
+import { FiChevronDown } from "react-icons/fi";
 
 const SelectField = forwardRef(
     ({ options, value, onChange, error, className, ...rest }, ref) => {
@@ -26,22 +26,20 @@ const SelectField = forwardRef(
         );
 
         return (
-            <div className="input-field-wrapper">
-                <div className="select-container">
-                    <select
-                        name={rest.name} // Ensure name is passed
-                        value={value}
-                        onChange={onChange}
-                        className={`input-control ${className} ${error ? 'is-invalid' : ''}`}
-                        ref={ref}
-                        {...rest} // Pass down additional props like 'name'
-                        aria-label={rest['aria-label'] || "Select input"}
-                    >
-                        <option value="">Select</option>
-                        {renderedOptions}
-                    </select>
-                    <FiChevronDown className="select-icon" /> {/* Add Chevron Icon */}
-                </div>
+            <div className="select-container">
+                <select
+                    name={rest.name}
+                    value={value}
+                    onChange={onChange}
+                    className={`input-control ${className} ${error ? 'is-invalid' : ''}`}
+                    ref={ref}
+                    {...rest}
+                    aria-label={rest['aria-label'] || "Select input"}
+                >
+                    <option value="">Select</option>
+                    {renderedOptions}
+                </select>
+                <FiChevronDown className="select-icon" />
                 {error && <span className="error-label">{error}</span>}
             </div>
         );

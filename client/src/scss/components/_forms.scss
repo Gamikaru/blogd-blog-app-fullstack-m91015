@@ -1,5 +1,7 @@
 // src/_forms.scss
 
+
+
 /* Input and Select Field Styles */
 .input-field-wrapper {
     box-sizing: border-box; // Prevent padding from affecting total width
@@ -20,35 +22,10 @@
 }
 
 .input-control {
-    appearance: none; // Remove default select arrow for consistency
-    background-color: $input-bg-color;
-    border: 1px solid $border-color;
-    border-radius: $border-radius;
-    box-sizing: border-box; // Include padding and border in element's total width
-    color: $primary-text-color;
-    font-size: $body-font-size;
-    padding: $input-padding;
-    padding-right: 2.5rem; // Increased space for the chevron icon
-    transition:
-        background-color $transitions-base,
-        border-color $transitions-base,
-        box-shadow $transitions-base;
-    width: 100%;
+    @include input-field-base;
 
-    &:focus {
-        border-color: $accent-color-2;
-        box-shadow: $input-focus-box-shadow;
-        outline: none;
-    }
-
-    &.input-error,
     &.is-invalid {
         border-color: $error-color;
-    }
-
-    ::placeholder {
-        color: $secondary-text-color;
-        opacity: 1; // Ensure placeholder is visible
     }
 }
 
@@ -74,6 +51,16 @@
     display: block;
     font-size: $xsmall-font-size;
     margin-top: $spacing-xs;
+}
+
+/* Apply Select Field Mixin */
+.select-container .input-control {
+    @include select-field-base;
+}
+
+/* Custom Styles for Specific Instances */
+.input-control.search-input {
+    @include search-input-custom;
 }
 
 /* Input Field Styles (for InputField component) */
