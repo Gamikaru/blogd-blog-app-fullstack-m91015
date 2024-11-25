@@ -1,27 +1,34 @@
 // src/_forms.scss
 
-/* Input Field Styles */
+/* Input and Select Field Styles */
 .input-field-wrapper {
+    box-sizing: border-box; // Prevent padding from affecting total width
     margin-bottom: $spacing-md;
+    position: relative; // Ensure proper positioning for pseudo-elements if needed
 }
 
 .input-label {
     display: block;
-
-    // in px only
-    font-size: fluid-type(320px, 1200px, 16px, 20px); // Responsive font size
+    font-size: $body-font-size; // Ensure label is readable
     font-weight: 600;
     margin-bottom: $spacing-xs;
-    text-align: left; // Assuming text-left is handled via utility classes
+    text-align: left;
+}
+
+.select-container {
+    position: relative; // Position relative to place the chevron icon
 }
 
 .input-control {
+    appearance: none; // Remove default select arrow for consistency
     background-color: $input-bg-color;
     border: 1px solid $border-color;
     border-radius: $border-radius;
+    box-sizing: border-box; // Include padding and border in element's total width
     color: $primary-text-color;
-    font-size: fluid-type(320px, 1200px, 16px, 20px); // Responsive font size
+    font-size: $body-font-size;
     padding: $input-padding;
+    padding-right: 2.5rem; // Increased space for the chevron icon
     transition:
         background-color $transitions-base,
         border-color $transitions-base,
@@ -38,34 +45,41 @@
     &.is-invalid {
         border-color: $error-color;
     }
+
+    ::placeholder {
+        color: $secondary-text-color;
+        opacity: 1; // Ensure placeholder is visible
+    }
+}
+
+.select-icon {
+    color: $secondary-text-color;
+    font-size: 1rem;
+    pointer-events: none; // Allow clicks to pass through to the select
+    position: absolute;
+    right: $spacing-sm;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .error-label {
     color: $error-color;
     display: block;
-    font-size: fluid-type(320px, 1200px, 16px, 20px); // Responsive font size
+    font-size: $xsmall-font-size;
     margin-top: $spacing-xs;
 }
 
 .helper-text {
     color: $secondary-text-color;
     display: block;
-    font-size: fluid-type(320px, 1200px, 16px, 20px); // Responsive font size
+    font-size: $xsmall-font-size;
     margin-top: $spacing-xs;
 }
 
-/* Optional: Specific Select Field Styles if Needed */
-select {
-    appearance: none;
-    background-image: url("path-to-dropdown-icon.svg");
-    background-position: right $spacing-sm center;
-    background-repeat: no-repeat;
-    font-size: fluid-type(320px, 1200px, 16px, 20px); // Responsive font size
-}
-
-@media (max-width: $breakpoint-md) {
-    input,
-    select {
-        font-size: fluid-type(320px, 1200px, 16px, 20px); // Adjust font size responsively
-    }
+/* Input Field Styles (for InputField component) */
+.input-control[type="text"],
+.input-control[type="email"],
+.input-control[type="password"],
+.input-control[type="date"] {
+    /* Additional styles if needed */
 }

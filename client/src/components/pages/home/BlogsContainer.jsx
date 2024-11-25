@@ -1,6 +1,6 @@
 // src/components/BlogsContainer.jsx
 
-import { Button, Spinner } from '@components';
+import { Button, InputField, Spinner } from '@components';
 import { usePostContext } from '@contexts';
 import { logger } from '@utils';
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
@@ -179,7 +179,7 @@ const BlogsContainer = () => {
                             >
                                 <div className="blogs-container__option">
                                     <label htmlFor="author">Author:</label>
-                                    <input
+                                    <InputField
                                         type="text"
                                         id="author"
                                         name="author"

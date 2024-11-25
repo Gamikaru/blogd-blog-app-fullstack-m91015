@@ -1,9 +1,8 @@
 // src/components/LoginPage.jsx
-// Desc: Login page for the application
 
 import debounce from 'lodash.debounce';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 
 import { Button, InputField, Spinner } from '@components';
@@ -122,18 +121,20 @@ const LoginPage = () => {
                                 <InputField
                                     value={loginForm.password}
                                     onChange={handleChange('password')}
+                                    onBlur={() => handleBlur('password')}
                                     placeholder="Enter your password"
                                     type={showPassword ? 'text' : 'password'}
                                     className={`login-input-field ${errors.password ? 'invalid-input' : ''}`}
                                     error={errors.password}
                                 />
-                                <Button
+                                <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    variant="iconButton"
-                                    icon={showPassword ? FaEye : FaEyeSlash} // Pass the icon here
+                                    className="password-toggle-button"
                                     aria-label={showPassword ? 'Hide password' : 'Show password'}
-                                />
+                                >
+                                    {showPassword ? <FiEyeOff /> : <FiEye />}
+                                </button>
                             </div>
                         </div>
 
@@ -167,4 +168,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
-

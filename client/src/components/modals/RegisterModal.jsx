@@ -1,18 +1,21 @@
-//RegisterModal.jsx
-import { InputField, SelectField } from '@components';
+// src/components/RegisterModal.jsx
+
+import { Button, InputField, SelectField } from '@components';
 import { useNotificationContext, usePublicModalContext, useUserUpdate } from '@contexts';
 import { userService } from '@services/api';
 import { capitalizeFirstLetter, logger, validateRegForm } from '@utils';
 import { useEffect, useRef, useState } from "react";
-import { Button, Form, Modal } from "react-bootstrap";
+import { Form, Modal } from "react-bootstrap";
 import { useCookies } from "react-cookie";
+import SimpleBar from 'simplebar-react';
+import 'simplebar-react/dist/simplebar.min.css';
 
 const initialFormState = {
     firstName: "",
     lastName: "",
     email: "",
     password: "",
-    confirmPassword: "",  // Added confirm password
+    confirmPassword: "",
     birthDate: "",
     occupation: "",
     location: "",
@@ -24,7 +27,7 @@ export default function RegisterModal() {
     const [registerForm, setRegisterForm] = useState(initialFormState);
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
-    const setUser = useUserUpdate();
+    const { setUser } = useUserUpdate();
     const [setCookie] = useCookies(["BlogdPass", "userId"]);
     const { showModal, togglePublicModal } = usePublicModalContext();
     const { showNotification, setPosition } = useNotificationContext();
@@ -108,6 +111,7 @@ export default function RegisterModal() {
             }
         } catch (error) {
             showNotification(error.message || "Registration failed due to an unexpected error.", "error");
+            logger.error("Registration failed", { error });
         } finally {
             setLoading(false);
         }
@@ -125,18 +129,18 @@ export default function RegisterModal() {
             onHide={togglePublicModal}
             centered
             className="register-modal"
-            backdrop="static" // Prevents closing on backdrop click
-            keyboard={false} // Prevents closing on ESC key
+            backdropClassName="register-modal__backdrop"
+            container={document.body}
         >
-            <Modal.Header closeButton className="modal-header">
-                <Modal.Title className="modal-title">REGISTER</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className="modal-body">
-                <Form onSubmit={handleRegister} className="register-form">
-                    <div className="form-row">
+            <SimpleBar style={{ maxHeight: '100%' }} className="register-modal-container">
+                <Form onSubmit={handleRegister} className="register-modal__form">
+                    <Modal.Header closeButton className="modal-header">
+                        <Modal.Title className="register-modal__title">REGISTER</Modal.Title>
+                    </Modal.Header>
+
+                    <div className="register-modal__body">
                         <div className="form-column">
                             <InputField
-                                label="First Name"
                                 placeholder="Enter your first name"
                                 value={registerForm.firstName}
                                 onChange={(e) => updateRegisterForm({ firstName: e.target.value })}
@@ -145,9 +149,8 @@ export default function RegisterModal() {
                                 ref={(el) => (inputRefs.current.firstName = el)}
                             />
                             <InputField
-                                label="Email"
                                 placeholder="Enter your email"
-                                type="text"
+                                type="email"
                                 value={registerForm.email}
                                 onChange={(e) => updateRegisterForm({ email: e.target.value })}
                                 error={errors.email}
@@ -155,7 +158,6 @@ export default function RegisterModal() {
                                 ref={(el) => (inputRefs.current.email = el)}
                             />
                             <InputField
-                                label="Birth Date"
                                 type="date"
                                 value={registerForm.birthDate}
                                 onChange={(e) => updateRegisterForm({ birthDate: e.target.value })}
@@ -165,10 +167,8 @@ export default function RegisterModal() {
                             />
                         </div>
 
-                        {/* Second Column */}
                         <div className="form-column">
                             <InputField
-                                label="Last Name"
                                 placeholder="Enter your last name"
                                 value={registerForm.lastName}
                                 onChange={(e) => updateRegisterForm({ lastName: e.target.value })}
@@ -177,7 +177,6 @@ export default function RegisterModal() {
                                 ref={(el) => (inputRefs.current.lastName = el)}
                             />
                             <InputField
-                                label="Password"
                                 placeholder="Enter your password"
                                 type="password"
                                 value={registerForm.password}
@@ -187,7 +186,6 @@ export default function RegisterModal() {
                                 ref={(el) => (inputRefs.current.password = el)}
                             />
                             <InputField
-                                label="Confirm Password"
                                 placeholder="Confirm your password"
                                 type="password"
                                 value={registerForm.confirmPassword}
@@ -197,7 +195,6 @@ export default function RegisterModal() {
                                 ref={(el) => (inputRefs.current.confirmPassword = el)}
                             />
                             <InputField
-                                label="Occupation"
                                 placeholder="Enter your occupation"
                                 value={registerForm.occupation}
                                 onChange={(e) => updateRegisterForm({ occupation: e.target.value })}
@@ -206,33 +203,31 @@ export default function RegisterModal() {
                                 ref={(el) => (inputRefs.current.occupation = el)}
                             />
                         </div>
+
+                        <div className="form-row">
+                            <SelectField
+                                options={capitalCities}
+                                value={registerForm.location}
+                                onChange={(e) => updateRegisterForm({ location: e.target.value })}
+                                error={errors.location}
+                                className="register-modal-input"
+                                ref={(el) => (inputRefs.current.location = el)}
+                            />
+                        </div>
                     </div>
 
-                    {/* Third Row */}
-                    <div className="form-row">
-                        <SelectField
-                            label="Location"
-                            options={capitalCities}
-                            value={registerForm.location}
-                            onChange={(e) => updateRegisterForm({ location: e.target.value })}
-                            error={errors.location}
-                            className="register-modal-input"
-                            ref={(el) => (inputRefs.current.location = el)}
-                        />
-                    </div>
-
-                    <div className="submit-container">
-                        <Button
-                            type="submit"
-                            variant="submit"
-                            disabled={loading}
-                            className="button button-submit"
-                        >
-                            {loading ? 'Registering...' : 'REGISTER'}
-                        </Button>
+                    <div className="register-modal__footer">
+                        <div className="submit-container">
+                            <Button
+                                variant="submit"
+                                disabled={loading}
+                            >
+                                {loading ? 'Registering...' : 'Register'}
+                            </Button>
+                        </div>
                     </div>
                 </Form>
-            </Modal.Body>
+            </SimpleBar>
         </Modal>
     );
-}
+};

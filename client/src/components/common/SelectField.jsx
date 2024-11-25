@@ -1,8 +1,10 @@
-// client/src/components/SelectField.jsx
+// src/components/SelectField.jsx
+
 import PropTypes from "prop-types";
 import { forwardRef, memo, useMemo } from "react";
+import { FiChevronDown } from "react-icons/fi"; // Import FiChevronDown icon
 
-const SelectField = forwardRef(({ label, options, value, onChange, error, className }, ref) => {
+const SelectField = forwardRef(({ options, value, onChange, error, className }, ref) => {
     const renderedOptions = useMemo(
         () =>
             options.map((option, index) => (
@@ -14,19 +16,19 @@ const SelectField = forwardRef(({ label, options, value, onChange, error, classN
     );
 
     return (
-        <div className="select-field-wrapper">
-            {label && <label className="select-label">{label}</label>}
+        <div className="input-field-wrapper">
             <div className="select-container">
                 <select
                     value={value}
                     onChange={onChange}
-                    className={`select-control ${className} ${error ? 'is-invalid' : ''}`}
+                    className={`input-control ${className} ${error ? 'is-invalid' : ''}`}
                     ref={ref}
-                    aria-label={label}
+                    aria-label="Select your location"
                 >
                     <option value="">Select</option>
                     {renderedOptions}
                 </select>
+                <FiChevronDown className="select-icon" /> {/* Add Chevron Icon */}
             </div>
             {error && <span className="error-label">{error}</span>}
         </div>
@@ -36,7 +38,6 @@ const SelectField = forwardRef(({ label, options, value, onChange, error, classN
 SelectField.displayName = 'SelectField';
 
 SelectField.propTypes = {
-    label: PropTypes.string,
     options: PropTypes.arrayOf(PropTypes.string).isRequired,
     value: PropTypes.oneOfType([
         PropTypes.string,

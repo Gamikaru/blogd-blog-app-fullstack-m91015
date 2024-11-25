@@ -42,50 +42,69 @@
 
 .login-input-container {
     margin-bottom: $spacing-unit * 1.5;
-}
 
-.password-container {
-    position: relative;
-}
-
-.password-toggle-btn {
-    background: none;
-    border: none;
-    color: red;
-    cursor: pointer;
-    position: absolute;
-    right: $spacing-unit;
-    top: 50%;
-    transform: translateY(-50%);
-
-    &:hover {
-        color: $accent-color-2;
+    /* Ensure consistent sizing */
+    .input-field-wrapper {
+        width: 100%;
     }
 }
 
 .password-group {
     .password-input-wrapper {
         position: relative;
+        width: 100%;
+
+        .login-input-field {
+            box-sizing: border-box;
+            padding-right: $spacing-unit * 4; // Space for toggle button
+            width: 100%;
+        }
+
+        .password-toggle-button {
+            align-items: center;
+            background: transparent;
+            border: none;
+            color: $secondary-text-color;
+            cursor: pointer;
+            display: flex;
+            height: 100%;
+            justify-content: center;
+            padding: 0; // Remove any default padding
+            position: absolute;
+            right: $spacing-unit;
+            top: 50%;
+            transform: translateY(-50%);
+            width: $spacing-unit * 3; // Adjust size as needed
+            z-index: 3; // Ensure it stays above the input
+
+            &:hover {
+                color: $primary-text-color;
+            }
+
+            svg {
+                height: 1.5em;
+                width: 1.5em;
+            }
+        }
+
+        /* Adjust InputField's error message positioning */
+        .input-field-wrapper {
+            position: relative;
+        }
+
+        .input-field-wrapper .error-label {
+            font-size: fluid-type(320px, 1200px, 14px, 18px);
+            margin-top: $spacing-xs;
+
+            /* Ensure the error label is below the input field */
+            position: static;
+        }
     }
 }
 
-.password-input-field {
-    padding-right: spacing(3); // Make room for the toggle button
-}
-
-.password-toggle-button {
-    background: transparent;
-    border: none;
-    color: $secondary-text-color;
-    position: absolute;
-    right: spacing(0.75);
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 2;
-
-    &:hover {
-        color: $primary-text-color;
-    }
+.login-input-field {
+    box-sizing: border-box;
+    width: 100%;
 }
 
 .login-submit-container {
@@ -149,5 +168,19 @@
         padding-top: $spacing-sm;
         text-overflow: ellipsis;
         white-space: nowrap;
+    }
+
+    .password-group {
+        .password-input-wrapper {
+            padding-bottom: $spacing-unit * 3; // Increased padding for error on smaller screens
+
+            .password-toggle-button {
+                width: $spacing-unit * 3; // Adjust size for smaller screens
+            }
+
+            .input-field-wrapper .error-label {
+                font-size: fluid-type(320px, 1200px, 12px, 16px);
+            }
+        }
     }
 }

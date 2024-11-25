@@ -1,3 +1,5 @@
+// src/components/InputField.jsx
+
 import PropTypes from 'prop-types';
 import { forwardRef, memo, useMemo } from 'react';
 

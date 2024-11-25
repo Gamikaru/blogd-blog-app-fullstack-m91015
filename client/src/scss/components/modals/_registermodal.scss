@@ -1,11 +1,10 @@
-// _registermodal.scss
+// src/components/_registermodal.scss
 
-// Ensure consistent z-index usage by using the same method as other modals
 .register-modal {
+    // Base modal styles
     align-items: center;
-    animation: backdropFadeIn $transitions-base;
+    animation: backdrop-fade-in 0.3s ease;
     backdrop-filter: blur(5px);
-    background: rgb(0 0 0 / 50%);
     display: flex;
     height: 100%;
     justify-content: center;
@@ -13,174 +12,158 @@
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 4000; // Use get-z-index consistently
-}
+    z-index: 4000; // Ensure it's above other elements
 
-// Backdrop to capture clicks outside the modal
-.register-modal-backdrop {
-    background-color: $modal-backdrop-color;
-    cursor: pointer;
-    height: 100%;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 100%;
-}
-
-// Modal container
-.register-modal-container {
-    animation: modalFadeIn $transitions-base;
-    background-color: $secondary-bg-color;
-    border-radius: $border-radius;
-    box-shadow: $box-shadow-medium;
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    max-height: 90vh;
-    max-width: map.get($container-max-widths, md);
-    overflow-y: auto;
-    padding: $spacing-lg;
-    position: relative;
-    width: 90%;
-    z-index: get-z-index(40001); // Use get-z-index consistently
-}
-
-// Modal Header
-.modal-header {
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: $spacing-md;
-
-    .modal-title {
-        color: $primary-text-color;
-        font-size: $heading-font-size-md;
-        margin: 0;
-    }
-
-    &__close {
-        background: none;
-        border: none;
-        color: $secondary-text-color;
+    // Backdrop styling
+    &__backdrop {
+        background-color: rgb(0 0 0 / 50%);
         cursor: pointer;
-        font-size: 1.5rem;
-        transition: color $transitions-base;
-
-        &:hover {
-            color: $accent-color-1;
-        }
-
-        &:focus {
-            outline: none;
-        }
-    }
-}
-
-// Modal Body
-.modal-body {
-    background-color: $primary-bg-color;
-    border-radius: $border-radius;
-    box-shadow: $box-shadow-medium;
-    flex: 1;
-    padding: $spacing-md;
-
-}
-
-// Register Form Styling
-.register-form {
-    display: grid;
-    gap: $spacing-md;
-    grid-template-columns: repeat(2, 1fr);
-
-    .form-row {
-        display: flex;
-        flex-direction: column;
-        gap: $spacing-md;
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
     }
 
-    .form-column {
-        display: flex;
-        flex-direction: column;
-        gap: $spacing-xs;
-    }
-
-    .register-modal-input {
-        background-color: $input-bg-color;
-        border: 1px solid $border-color;
+    // Modal container
+    &-container {
+        animation: modal-fade-in 0.3s ease;
+        background-color: $secondary-bg-color; // Use theme color for better contrast
         border-radius: $border-radius;
-        color: $primary-text-color;
-        font-size: $body-font-size;
-        padding: $input-padding;
-        transition:
-            border-color $transitions-base,
-            box-shadow $transitions-base;
-
-        &:focus {
-            border-color: $highlight-color;
-            box-shadow: 0 0 0 3px rgba($highlight-color, 0.25);
-            outline: none;
-        }
-    }
-
-    .error {
-        color: $error-color;
-        font-size: $xsmall-font-size;
-        margin-top: 2px;
-    }
-
-    .submit-container {
+        box-shadow: $box-shadow-strong;
         display: flex;
-        grid-column: span 2;
-        justify-content: flex-end;
-        margin-top: $spacing-md;
-    }
-}
+        flex-direction: column;
+        max-height: 100%;
+        max-width: 100%;
+        overflow-y: auto;
+        padding: $spacing-lg;
+        position: relative;
+        width: 100%;
+        z-index: 4001; // Above the backdrop
 
-// Animations
-@keyframes modal-fade-in {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
+        // Modal Header
+        .modal-header {
+            border-bottom: 1px solid $border-color; // Add subtle divider
+            padding-bottom: $spacing-sm;
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes backdrop-fade-in {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-// Responsive Design
-@media (max-width: $breakpoint-md) {
-    .register-form {
-        grid-template-columns: 1fr;
-
-        .submit-container {
-            grid-column: 1;
-            justify-content: center;
-
-            .button-submit {
+            .register-modal__title {
+                color: $primary-text-color;
+                font-size: $heading-font-size-lg;
+                margin: 0;
+                text-align: center; // Center the title
                 width: 100%;
             }
         }
-    }
 
-    .register-modal-container {
-        padding: $spacing-lg;
-    }
+        // Modal Body
+        .register-modal__body {
+            display: grid;
+            gap: $spacing-md;
+            grid-template-columns: repeat(2, 1fr); // Two columns on larger screens
+            margin-top: $spacing-md;
 
-    .modal-header {
-        .modal-title {
-            font-size: $heading-font-size-lg;
+            .form-column {
+                display: flex;
+                flex-direction: column;
+                gap: $spacing-xs;
+            }
+
+            .form-row {
+                display: flex;
+                flex-direction: column;
+                gap: $spacing-md;
+                grid-column: 1 / -1; // Span all columns
+            }
+
+            .register-modal-input {
+                // Input styles are handled by InputField component.
+            }
+
+            .error-label {
+                color: $error-color;
+                font-size: $xsmall-font-size;
+                margin-top: 2px;
+            }
+        }
+
+        // Modal Footer
+        .register-modal__footer {
+            display: flex;
+            gap: $spacing-md;
+            justify-content: flex-end;
+            margin-top: $spacing-md;
+
+            .submit-container {
+                display: flex;
+                justify-content: flex-end;
+                width: 100%;
+            }
+        }
+
+        // Animations
+        @keyframes modal-fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes backdrop-fade-in {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        // Responsive Design
+        @media (max-width: $breakpoint-md) {
+            &-container {
+                padding: $spacing-md; // Reduce padding on smaller screens
+            }
+
+            .register-modal__body {
+                grid-template-columns: 1fr; // Single column on smaller screens
+            }
+
+            .register-modal__footer {
+                .submit-container {
+                    justify-content: center;
+                }
+            }
+
+            .modal-header {
+                .register-modal__title {
+                    font-size: $heading-font-size-md;
+                }
+            }
+
+            .input-control {
+                font-size: $body-font-size; // Ensure readable text
+                padding: $input-padding; // Adjust padding if necessary
+            }
+        }
+
+        @media (max-width: $breakpoint-xs) {
+            .register-modal__body {
+                gap: $spacing-sm; // Reduce gap for very small screens
+            }
+
+            .register-modal__title {
+                font-size: $heading-font-size-sm;
+            }
+
+            .input-control {
+                font-size: $body-font-size; // Maintain readability
+                padding: $input-padding; // Adjust padding to prevent text overflow
+            }
         }
     }
 }
