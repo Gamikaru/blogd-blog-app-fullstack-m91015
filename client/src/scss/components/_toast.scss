@@ -4,9 +4,11 @@
     backdrop-filter: blur(10px);
     background: $secondary-bg-color;
     border-radius: $border-radius;
+    box-shadow: 0 4px 8px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
     max-width: fluid-width(320px, 1200px, 320px, 480px);
-    min-width: fluid-width(320px, 1200px, 320px, 480px); // Consistent units
+    min-width: fluid-width(320px, 1200px, 320px, 480px);
     overflow: hidden;
+    transition: transform 0.3s ease, opacity 0.3s ease;
 
     @media (max-width: $breakpoint-sm) {
         padding: $spacing-sm;
@@ -40,18 +42,18 @@
             flex-shrink: 0;
             height: fluid-width(320px, 1200px, 32px, 48px);
             justify-content: center;
-            width: fluid-width(320px, 1200px, 32px, 48px); // Converted rem to px (assuming 1rem = 16px)
+            width: fluid-width(320px, 1200px, 32px, 48px);
 
             .toast-icon {
                 color: $primary-text-color;
-                font-size: fluid-type(320px, 1200px, 16px, 20px); // Converted rem to px
+                font-size: fluid-type(320px, 1200px, 16px, 20px);
             }
         }
 
         .toast-message {
             color: $primary-text-color;
             flex: 1;
-            font-size: fluid-type(320px, 1200px, 16px, 19.2px); // Converted rem to px
+            font-size: fluid-type(320px, 1200px, 16px, 19.2px);
             line-height: 1.5;
         }
 
@@ -62,7 +64,7 @@
             color: $secondary-text-color;
             cursor: pointer;
             display: flex;
-            font-size: fluid-type(320px, 1200px, 16px, 20px); // Converted rem to px
+            font-size: fluid-type(320px, 1200px, 16px, 20px);
             justify-content: center;
             padding: $spacing-xs;
 
@@ -83,7 +85,7 @@
             border-radius: $button-border-radius;
             cursor: pointer;
             flex: 1;
-            font-size: fluid-type(320px, 1200px, 12px, 13.6px); // Converted rem to px
+            font-size: fluid-type(320px, 1200px, 12px, 13.6px);
             font-weight: 500;
             padding: $spacing-sm $spacing-md;
             transition: all 0.2s ease;
@@ -134,6 +136,6 @@
         margin: 0 $spacing-md;
         max-width: 100%;
         min-width: 0;
-        width: 100%; // Set to full width for smaller screens
+        width: 100%;
     }
 }

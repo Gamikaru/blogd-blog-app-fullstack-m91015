@@ -32,35 +32,22 @@
         .toolbar-group {
             &:not(:last-child) {
                 border-bottom: 1px solid $border-color;
-                padding-bottom: map.get($modal-spacing, input-gap);
+                padding-block: map.get($modal-spacing, input-gap);
             }
 
             &__title {
                 color: $primary-text-color;
                 margin-bottom: map.get($modal-spacing, input-gap);
+
+
             }
 
-            &__buttons {
-                @include grid-layout(3);
-            }
 
             &__content {
                 display: flex;
-                flex-direction: column;
-                gap: map.get($modal-spacing, input-gap);
+                gap: 1rem;
                 width: 100%;
             }
-        }
-
-        .toolbar-button {
-            @include reset-button;
-
-            background: transparent;
-            color: $primary-text-color;
-            font-size: 1.1rem;
-            padding: 0.5rem;
-
-            @include highlight-hover;
         }
 
         .toolbar-input {
@@ -372,3 +359,4 @@
         }
     }
 }
+

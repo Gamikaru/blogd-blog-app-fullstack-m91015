@@ -1,8 +1,6 @@
 /* _network-page.scss */
 
-/* --------------------------------------------------------------------------
-   Network Page Styling
--------------------------------------------------------------------------- */
+
 .network-page {
     background-color: $secondary-bg-color;
     color: $primary-text-color;
@@ -11,107 +9,84 @@
     width: 80vw;
 }
 
-.network-page__filter-search {
+.network-container__filter-search-container {
     align-items: center;
     display: flex;
-    gap: $spacing-lg;
-    justify-content: flex-start;
-    margin-bottom: $spacing-lg;
-    margin-top: -15rem;
-}
-
-.network-page__search {
-    align-items: center;
-    display: flex;
+    gap: spacing(1);
+    margin-top: spacing(-15);
+    padding-top: spacing(1);
     position: relative;
 }
 
-.network-page__filter {
+.network-container__filter-container,
+.network-container__search-container {
     align-items: center;
     display: flex;
+    margin-top: spacing(-5);
     position: relative;
 }
 
-.network-page__search-icon,
-.network-page__filter-icon {
+.network-container__icon {
     @include filter-search-icon;
 }
 
-.network-page__input {
-    background-color: $input-bg-color;
-    border: 1px solid $border-color;
-    border-radius: $border-radius;
-    color: $primary-text-color;
-    font-size: $body-font-size;
-    outline: none;
-    padding: $spacing-xs $spacing-sm;
-    transition:
-        width 0.3s ease,
-        opacity 0.3s ease;
-    width: 200px;
-
-    &:focus {
-        border-color: $accent-color-2;
-        box-shadow: 0 0 0 2px rgba($accent-color-2, 0.5);
-    }
-}
-
-.network-page__dropdown {
+.network-container__dropdown {
     background-color: $secondary-bg-color;
     border-radius: $border-radius;
     box-shadow: $box-shadow-strong;
     left: 0;
     opacity: 1;
-    padding: $spacing-sm;
+    padding: spacing(1);
     pointer-events: auto;
     position: absolute;
-    top: calc(100% + $spacing-sm);
+    top: calc(100% + spacing(1));
     transform: translateY(0);
     width: px-to-rem(250);
     z-index: 1000;
 }
 
-.network-page__option {
-    margin-bottom: $spacing-sm;
-}
+.network-container__option {
+    margin-bottom: spacing(1);
 
-.network-page__option label {
-    color: $primary-text-color;
-    display: block;
-    font-size: $small-font-size;
-    margin-bottom: $spacing-xxs;
-}
+    label {
+        color: $primary-text-color;
+        display: block;
+        font-size: $small-font-size;
+        margin-bottom: spacing(0.5);
+    }
 
-.network-page__option input,
-.network-page__option select {
-    background-color: color.adjust($primary-bg-color, $lightness: 5%);
-    border: 1px solid color.adjust($secondary-bg-color, $lightness: 20%);
-    border-radius: $border-radius;
-    color: $primary-text-color;
-    font-size: $body-font-size;
-    padding: $spacing-xxs $spacing-sm;
-    transition: border-color $transitions-base;
-    width: 100%;
+    &--actions {
+        text-align: center;
 
-    &:focus {
-        border-color: $accent-color-2;
-        outline: none;
+        button {
+            font-size: $body-font-size;
+            padding: spacing(0.5) spacing(1);
+
+            &:hover {
+                background-color: color.adjust($accent-color-2, $lightness: -10%);
+            }
+        }
     }
 }
 
-.network-page__actions {
-    text-align: center;
+/* Styles for custom InputField and SelectField */
+.network-container__input,
+.network-container__select {
+    margin-top: spacing(0.5);
+    width: 100%; // Ensure full width for custom components
 }
 
-.network-page__actions button {
-    font-size: $body-font-size;
-    padding: $spacing-xxs $spacing-sm;
+.network-container__search-input-wrapper {
+    left: 1rem;
+    position: relative;
+    top: 0.5rem;
 
-    &:hover {
-        background-color: color.adjust($accent-color-2, $lightness: -10%);
+    .input-control.search-input {
+        @include search-input-custom;
     }
 }
 
+/* Existing Styles Remaining Unchanged */
 .network-page__grid {
     display: grid;
     gap: $spacing-xl;
@@ -152,7 +127,8 @@
         padding: $spacing-lg $spacing-md;
     }
 
-    .network-page__filter-search {
+    .network-page__filter-search-container {
+        // Adjusted for consistency
         align-items: flex-start;
         flex-direction: column;
         gap: $spacing-md;

@@ -11,7 +11,7 @@ const CustomToast = React.memo(
         type = 'info',
         onClose,
         delay = 5000,
-        position = { top: '5rem', right: '2rem' }, // Default as object
+        position = { top: '1rem', right: '1rem' }, // Default as object
         autoClose = true,
         onConfirm,
         onCancel,
@@ -64,7 +64,7 @@ const CustomToast = React.memo(
                         onDragEnd={handleDragEnd}
                         style={{
                             position: 'fixed',
-                            ...position, // Use the position object directly
+                            ...position,
                             zIndex: 3060,
                         }}
                         role="alert"
@@ -125,7 +125,7 @@ CustomToast.propTypes = {
     type: PropTypes.oneOf(['success', 'error', 'info', 'warning']),
     onClose: PropTypes.func.isRequired,
     delay: PropTypes.number,
-    position: PropTypes.object, // Changed from specific strings to object
+    position: PropTypes.object,
     autoClose: PropTypes.bool,
     onConfirm: PropTypes.func,
     onCancel: PropTypes.func,

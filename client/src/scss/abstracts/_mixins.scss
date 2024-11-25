@@ -229,9 +229,9 @@
     margin-top: $spacing-sm;
 }
 
-@mixin input {
-    @include input-style($input-font-size-sm);
-}
+
+
+
 
 // Mixin for Filter and Search Icon Styling
 @mixin filter-search-icon {
@@ -301,7 +301,7 @@
 @mixin search-input-custom {
     @include input-field-base;
 
-
+    background-color: $secondary-bg-color;
     border-color: $accent-color-1;
 
     ::placeholder {

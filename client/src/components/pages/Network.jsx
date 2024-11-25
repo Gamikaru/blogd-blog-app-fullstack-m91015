@@ -1,5 +1,5 @@
 // Network.jsx
-import { Button, NetworkCard } from '@components';
+import { Button, InputField, NetworkCard, SelectField } from '@components';
 import { useUser } from '@contexts/UserContext';
 import userService from '@services/api/userService'; // Ensure this path is correct
 import { AnimatePresence, motion } from "framer-motion";
@@ -7,6 +7,36 @@ import debounce from 'lodash.debounce';
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FaFilter, FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+
+const searchInputVariants = {
+    hidden: { width: 0, opacity: 0 },
+    visible: { width: '200px', opacity: 1 },
+};
+
+const filterDropdownVariants = {
+    hidden: { opacity: 0, y: -20, scale: 0.95 },
+    visible: { opacity: 1, y: 0, scale: 1 },
+    exit: { opacity: 0, y: -20, scale: 0.95 },
+};
+
+const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.1,
+        },
+    },
+};
+
+const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.3, ease: "easeOut" },
+    },
+};
 
 const Network = () => {
     const { user, loading: userLoading } = useUser();
@@ -131,26 +161,6 @@ const Network = () => {
         setSearch("");
     }, []);
 
-    // Animation Variants
-    const containerVariants = useMemo(() => ({
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.1,
-            },
-        },
-    }), []);
-
-    const cardVariants = useMemo(() => ({
-        hidden: { opacity: 0, y: 20 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: { duration: 0.3, ease: "easeOut" },
-        },
-    }), []);
-
     if (loading || userLoading) {
         return <div className="network-page__messages--loading">Loading...</div>;
     }
@@ -161,38 +171,12 @@ const Network = () => {
 
     return (
         <div className="network-page">
-            <div className="network-page__filter-search">
-                {/* Search Functionality */}
-                <div className="network-page__search" ref={searchRef}>
-                    <Button
-                        className="network-page__search-icon"
-                        onClick={() => setShowSearchInput((prev) => !prev)}
-                        variant="iconButton"
-                        aria-label="Search"
-                    >
-                        <FaSearch />
-                    </Button>
-                    <AnimatePresence>
-                        {showSearchInput && (
-                            <motion.input
-                                type="text"
-                                className="network-page__input"
-                                placeholder="Search by name or location"
-                                onChange={handleSearchChange}
-                                initial={{ width: 0, opacity: 0 }}
-                                animate={{ width: '200px', opacity: 1 }}
-                                exit={{ width: 0, opacity: 0 }}
-                                transition={{ duration: 0.3 }}
-                                aria-label="Search input"
-                            />
-                        )}
-                    </AnimatePresence>
-                </div>
+            <div className="network-container__filter-search-container">
 
                 {/* Filter Functionality */}
-                <div className="network-page__filter" ref={filterRef}>
+                <div className="network-container__filter-container" ref={filterRef}>
                     <Button
-                        className="network-page__filter-icon"
+                        className="network-container__icon"
                         onClick={() => setShowFilterDropdown((prev) => !prev)}
                         variant="iconButton"
                         aria-label="Filter"
@@ -202,52 +186,49 @@ const Network = () => {
                     <AnimatePresence>
                         {showFilterDropdown && (
                             <motion.div
-                                className="network-page__dropdown"
-                                initial={{ opacity: 0, y: -20, scale: 0.95 }}
-                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                                className="network-container__dropdown"
+                                variants={filterDropdownVariants}
+                                initial="hidden"
+                                animate="visible"
+                                exit="exit"
                                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
                             >
-                                <div className="network-page__option">
-                                    <label htmlFor="name">Name:</label>
-                                    <input
-                                        type="text"
-                                        id="name"
+                                <div className="network-container__option">
+                                    <InputField
+                                        label="Name"
                                         name="name"
                                         value={filters.name}
                                         onChange={handleFilterChange}
+                                        placeholder="Filter by name"
                                         aria-label="Filter by name"
                                     />
                                 </div>
-                                <div className="network-page__option">
-                                    <label htmlFor="location">Location:</label>
-                                    <input
-                                        type="text"
-                                        id="location"
+                                <div className="network-container__option">
+                                    <InputField
+                                        label="Location"
                                         name="location"
                                         value={filters.location}
                                         onChange={handleFilterChange}
+                                        placeholder="Filter by location"
                                         aria-label="Filter by location"
                                     />
                                 </div>
-                                <div className="network-page__option">
-                                    <label htmlFor="sortBy">Sort By:</label>
-                                    <select
-                                        id="sortBy"
-                                        name="sortBy"
+                                <div className="network-container__option">
+                                    <SelectField
+                                        options={[
+                                            { label: 'None', value: '' },
+                                            { label: 'Name', value: 'name' },
+                                            { label: 'Number of Posts', value: 'posts' },
+                                            { label: 'Highest Rating', value: 'rating' },
+                                            { label: 'Location', value: 'location' },
+                                        ]}
                                         value={filters.sortBy}
                                         onChange={handleFilterChange}
                                         aria-label="Sort users"
-                                    >
-                                        <option value="">None</option>
-                                        <option value="name">Name</option>
-                                        <option value="posts">Number of Posts</option>
-                                        <option value="rating">Highest Rating</option>
-                                        <option value="location">Location</option>
-                                    </select>
+                                    />
                                 </div>
                                 {/* Reset Filters Button */}
-                                <div className="network-page__actions">
+                                <div className="network-container__option--actions">
                                     <Button
                                         onClick={resetFilters}
                                         variant="reset"
@@ -256,6 +237,38 @@ const Network = () => {
                                         Reset Filters
                                     </Button>
                                 </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
+
+                {/* Search Functionality */}
+                <div className="network-container__search-container" ref={searchRef}>
+                    <Button
+                        className="network-container__icon"
+                        onClick={() => setShowSearchInput((prev) => !prev)}
+                        variant="iconButton"
+                        aria-label="Search"
+                    >
+                        <FaSearch />
+                    </Button>
+                    <AnimatePresence>
+                        {showSearchInput && (
+                            <motion.div
+                                className="network-container__search-input-wrapper"
+                                variants={searchInputVariants}
+                                initial="hidden"
+                                animate="visible"
+                                exit="hidden"
+                                transition={{ duration: 0.3 }}
+                            >
+                                <InputField
+                                    value={search}
+                                    onChange={handleSearchChange}
+                                    placeholder="Search by name or location"
+                                    aria-label="Search input"
+                                    className="network-container__search-input"
+                                />
                             </motion.div>
                         )}
                     </AnimatePresence>
