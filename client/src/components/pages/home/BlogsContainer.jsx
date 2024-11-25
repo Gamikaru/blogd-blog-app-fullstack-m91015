@@ -99,7 +99,6 @@ const BlogsContainer = () => {
 
         const filtered = posts.filter((post) => {
             const postAuthor = getAuthor(post).toLowerCase();
-            // Removed author filter logic
             const matchesCategory = !filters.category ||
                 post.category === filters.category;
             const matchesSearch = !search ||
@@ -127,10 +126,27 @@ const BlogsContainer = () => {
 
     const sortedPosts = useMemo(() => {
         const sorted = [...filteredPosts];
-        if (filters.sortBy === "name") {
-            sorted.sort((a, b) => getAuthor(a).localeCompare(getAuthor(b)));
-        } else if (filters.sortBy === "title") {
-            sorted.sort((a, b) => a.title?.localeCompare(b.title) || 0);
+        switch (filters.sortBy) {
+            case "author-asc":
+                sorted.sort((a, b) => getAuthor(a).localeCompare(getAuthor(b)));
+                break;
+            case "author-desc":
+                sorted.sort((a, b) => getAuthor(b).localeCompare(getAuthor(a)));
+                break;
+            case "title-asc":
+                sorted.sort((a, b) => a.title?.localeCompare(b.title) || 0);
+                break;
+            case "title-desc":
+                sorted.sort((a, b) => b.title?.localeCompare(a.title) || 0);
+                break;
+            case "date-asc":
+                sorted.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+                break;
+            case "date-desc":
+                sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                break;
+            default:
+                break;
         }
         return sorted;
     }, [filteredPosts, filters.sortBy, getAuthor]);
@@ -177,11 +193,11 @@ const BlogsContainer = () => {
                                 variants={filterDropdownVariants}
                                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
                             >
-                                {/* Removed Author Filter */}
+                                {/* Category Filter */}
                                 <div className="blogs-container__option">
                                     <label htmlFor="category">Category:</label>
                                     <SelectField
-                                        name="category" // Added name prop
+                                        name="category"
                                         options={[
                                             "Health and Fitness",
                                             "Lifestyle",
@@ -201,26 +217,19 @@ const BlogsContainer = () => {
                                         aria-label="Filter by category"
                                     />
                                 </div>
-                                {/* Optional: Add Date Range Filter */}
-                                {/*
-                                <div className="blogs-container__option">
-                                    <label htmlFor="dateRange">Date Range:</label>
-                                    <DateRangePicker
-                                        startDate={filters.startDate}
-                                        endDate={filters.endDate}
-                                        onChange={handleDateRangeChange}
-                                        className="blogs-container__date-range"
-                                    />
-                                </div>
-                                */}
+                                {/* Sort By Filter */}
                                 <div className="blogs-container__option">
                                     <label htmlFor="sortBy">Sort By:</label>
                                     <SelectField
-                                        name="sortBy" // Added name prop
+                                        name="sortBy"
                                         options={[
-                                            "None",
-                                            "Author Name",
-                                            "Title"
+                                            { label: "None", value: "" },
+                                            { label: "Author Name (A-Z)", value: "author-asc" },
+                                            { label: "Author Name (Z-A)", value: "author-desc" },
+                                            { label: "Title (A-Z)", value: "title-asc" },
+                                            { label: "Title (Z-A)", value: "title-desc" },
+                                            { label: "Date (Oldest First)", value: "date-asc" },
+                                            { label: "Date (Newest First)", value: "date-desc" },
                                         ]}
                                         value={filters.sortBy}
                                         onChange={handleFilterChange}
@@ -265,8 +274,8 @@ const BlogsContainer = () => {
                                 <InputField
                                     type="text"
                                     value={searchInput}
-                                    onChange={(e) => handleSearchInputChange(e.target.value)} // Immediate input update
-                                    placeholder="Search by author or title"
+                                    onChange={(e) => handleSearchInputChange(e.target.value)}
+                                    placeholder="Search by author, title, or content"
                                     aria-label="Search input"
                                     className="blogs-container__search-input"
                                 />
