@@ -22,7 +22,7 @@ const categoryOptions = [
     { value: 'Music', label: 'Music' },
     { value: 'Business', label: 'Business' },
     { value: 'Business & Finance', label: 'Business & Finance' },
-    { value: 'Other', label: 'Other' },
+    { value: 'Other', label: 'Other' }
 ];
 
 export default function EditPostModal() {
@@ -40,13 +40,21 @@ export default function EditPostModal() {
 
     useEffect(() => {
         if (selectedPost) {
-            logger.info("Setting post content in modal:", selectedPost.content);
-            setPostContent(selectedPost.content);
+            logger.info("Setting post data in modal:", {
+                title: selectedPost.title,
+                content: selectedPost.content,
+                category: selectedPost.category
+            });
+
+            setPostContent(selectedPost.content || "");
             setPostTitle(selectedPost.title || "");
+
+            // Directly set category from selectedPost
             setCategory(selectedPost.category || "Other");
+
             setImageUrls(selectedPost.imageUrls ? selectedPost.imageUrls.join(",") : "");
-        } else {
-            logger.warn("Post data is not available for setting content in modal.");
+
+            logger.info("Category state set to:", selectedPost.category);
         }
     }, [selectedPost]);
 
@@ -177,10 +185,10 @@ export default function EditPostModal() {
                             type="text"
                             value={postTitle}
                             onChange={handlePostTitleChange}
-                            placeholder="Write your title here..." // Matched PostModal.jsx
+                            placeholder="Write your title here..."
                             className="edit-post-modal__title-textarea"
                             maxLength={100}
-                            ref={titleRef} // Attach ref
+                            ref={titleRef}
                             required
                         />
                         <div className="edit-post-modal__title-separator" />
@@ -203,10 +211,15 @@ export default function EditPostModal() {
                             <h6 className="toolbar-group__title">Category</h6>
                             <div className="toolbar-group__content">
                                 <SelectField
+                                    name="category"
                                     options={categoryOptions}
                                     value={category}
-                                    onChange={(e) => setCategory(e.target.value)}
+                                    onChange={(e) => {
+                                        logger.info("Category changed to:", e.target.value);
+                                        setCategory(e.target.value);
+                                    }}
                                     className="toolbar-input--select"
+                                    aria-label="Select post category"
                                     required
                                 />
                             </div>
@@ -275,7 +288,6 @@ export default function EditPostModal() {
                             </div>
                         </div>
 
-                        {/* Action Buttons */}
                         {/* Action Buttons */}
                         <div className="toolbar-group toolbar-group__actions">
                             <div className="toolbar-group__content">

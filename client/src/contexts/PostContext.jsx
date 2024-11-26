@@ -41,10 +41,11 @@ export const PostProvider = ({ children }) => {
             const data = await fetchAllPosts({ page, limit });
             logger.info(`Fetched ${data.posts.length} posts. Each post should include likesBy.`);
             const postsWithId = data.posts.map(post => {
-                logger.debug(`Post ID: ${post.postId || post._id}, likesBy: ${JSON.stringify(post.likesBy)}`);
+                logger.debug(`Post ID: ${post.postId || post._id}, category: ${post.category}`); // Add category logging
                 return {
                     ...post,
                     postId: post.postId || post._id,
+                    category: post.category || "Other" // Ensure category is included
                 };
             });
             setPosts(postsWithId);
@@ -106,14 +107,15 @@ export const PostProvider = ({ children }) => {
         try {
             const response = await updatePostById(postId, formData);
             const updatedPost = response.post;
+            logger.info("Updated post data:", updatedPost); // Add logging
             const postWithId = {
                 ...updatedPost,
                 postId: updatedPost.postId || updatedPost._id,
+                category: updatedPost.category || "Other" // Ensure category is included
             };
             setPosts((prevPosts) =>
                 prevPosts.map((post) => (post.postId === postId ? postWithId : post))
             );
-            // No need to reload posts if state is updated correctly
             return { success: true, message: response.message };
         } catch (error) {
             logger.error('Error updating post:', error);

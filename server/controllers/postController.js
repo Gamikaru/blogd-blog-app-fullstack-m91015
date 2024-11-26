@@ -50,7 +50,7 @@ export const getUserPosts = async (req, res) => {
             .sort({ createdAt: -1 })
             .skip((page - 1) * limit)
             .limit(Number(limit))
-            .select('title slug userId createdAt likes content imageUrls images')
+            .select('title slug userId createdAt likes content imageUrls images category') // Ensure category is included
             .populate('userId', 'firstName lastName')
             .lean({ virtuals: true });
 
@@ -109,7 +109,7 @@ export const getAllPosts = async (req, res) => {
             .sort({ createdAt: -1 })
             .skip((page - 1) * limit)
             .limit(Number(limit))
-            .select('title slug userId createdAt likes content imageUrls images category')
+            .select('title slug userId createdAt likes content imageUrls images category') // Ensure category is included
             .populate('userId', 'firstName lastName')
             .lean({ virtuals: true });
 
