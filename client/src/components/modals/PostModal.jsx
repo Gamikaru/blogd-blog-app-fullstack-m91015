@@ -1,8 +1,9 @@
-// PostModal.jsx
-import { Button } from '@components';
+// src/components/PostModal.jsx
+
+import { Button, InputField, SelectField } from '@components';
 import { useNotificationContext, usePostContext, usePrivateModalContext, useUser } from '@contexts';
 import { calculateReadingTime, countWords, logger, validatePostContent } from '@utils';
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Form from 'react-bootstrap/Form';
 import Modal from "react-bootstrap/Modal";
 import ReactQuill from 'react-quill';
@@ -21,8 +22,27 @@ export default function PostModal() {
     const { showModal, togglePrivateModal, modalType } = usePrivateModalContext();
     const { showNotification } = useNotificationContext();
     const quillRef = useRef(null);
+    const titleRef = useRef(null); // Ref for the textarea
 
-    // Custom Quill modules config
+    useEffect(() => {
+        if (titleRef.current) {
+            adjustTextareaHeight();
+        }
+    }, [postTitle]);
+
+    const adjustTextareaHeight = () => {
+        const textarea = titleRef.current;
+        if (textarea) {
+            textarea.style.height = 'auto'; // Reset height
+            textarea.style.height = `${textarea.scrollHeight}px`; // Set to scrollHeight
+        }
+    };
+
+    const handlePostTitleChange = (e) => {
+        setPostTitle(e.target.value);
+        adjustTextareaHeight();
+    };
+
     const modules = {
         toolbar: {
             container: [
@@ -52,7 +72,7 @@ export default function PostModal() {
         formData.append('content', postContent);
         formData.append('category', category);
         if (imageUrls) formData.append('imageUrls', imageUrls);
-        selectedFiles.forEach((file) => formData.append('images', file)); // Ensure 'images' field
+        selectedFiles.forEach((file) => formData.append('images', file));
 
         try {
             await addPost(formData);
@@ -71,7 +91,6 @@ export default function PostModal() {
     };
 
     return (
-
         <Modal
             show={showModal && modalType === 'post'}
             onHide={togglePrivateModal}
@@ -81,17 +100,17 @@ export default function PostModal() {
             container={document.body}
         >
             <SimpleBar style={{ maxHeight: '100%' }} className="post-modal">
-
                 <Form onSubmit={handlePostSubmit} className="post-modal__form" id="post-form">
                     <div className="post-modal__preview">
                         <Modal.Header closeButton />
                         <textarea
                             type="text"
                             value={postTitle}
-                            onChange={(e) => setPostTitle(e.target.value)}
+                            onChange={handlePostTitleChange}
                             placeholder="Write your title here..."
-                            className="post-modal__title-input"
+                            className="post-modal__title-textarea"
                             maxLength={100}
+                            ref={titleRef} // Attach ref
                         />
                         <ReactQuill
                             ref={quillRef}
@@ -108,39 +127,40 @@ export default function PostModal() {
                         <div className="toolbar-group toolbar-group__basics">
                             <h6 className="toolbar-group__title">Category</h6>
                             <div className="toolbar-group__content">
-                                <select
+                                <SelectField
+                                    options={[
+                                        "Health and Fitness",
+                                        "Lifestyle",
+                                        "Technology",
+                                        "Philosophy",
+                                        "Cooking",
+                                        "Art",
+                                        "Business & Finance",
+                                        "Productivity",
+                                        "Music",
+                                        "Other"
+                                    ]}
                                     value={category}
                                     onChange={(e) => setCategory(e.target.value)}
                                     className="toolbar-input toolbar-input--select"
-                                >
-                                    <option value="Health and Fitness">Health and Fitness</option>
-                                    <option value="Lifestyle">Lifestyle</option>
-                                    <option value="Technology">Technology</option>
-                                    <option value="Philosophy">Philosophy</option>
-                                    <option value="Cooking">Cooking</option>
-                                    <option value="Art">Art</option>
-                                    <option value="Business & Finance">Business & Finance</option>
-                                    <option value="Productivity">Productivity</option>
-                                    <option value="Music">Music</option>
-                                    <option value="Other">Other</option>
-                                </select>
+                                />
                             </div>
                         </div>
 
                         <div className="toolbar-group toolbar-group__media">
                             <h6 className="toolbar-group__title">Media</h6>
                             <div className="toolbar-group__content">
-                                <input
+                                <InputField
                                     type="text"
                                     value={imageUrls}
                                     onChange={(e) => setImageUrls(e.target.value)}
                                     placeholder="Paste image URLs"
                                     className="toolbar-input toolbar-input--url"
                                 />
-                                <input
+                                <InputField
                                     type="file"
                                     multiple
-                                    accept="image/*" // Ensure only images can be selected
+                                    accept="image/*"
                                     onChange={(e) => setSelectedFiles(Array.from(e.target.files))}
                                     className="toolbar-input toolbar-input--file"
                                 />
@@ -165,12 +185,12 @@ export default function PostModal() {
                         <div className="toolbar-group toolbar-group__seo">
                             <h6 className="toolbar-group__title">SEO</h6>
                             <div className="toolbar-group__content">
-                                <input
+                                <InputField
                                     type="text"
                                     placeholder="Meta Description"
                                     className="toolbar-input"
                                 />
-                                <input
+                                <InputField
                                     type="text"
                                     placeholder="Keywords (comma-separated)"
                                     className="toolbar-input"

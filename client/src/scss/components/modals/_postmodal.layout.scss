@@ -4,7 +4,7 @@
 
 .post-modal,
 .edit-post-modal {
-    --sidebar-top: 6rem;
+    --sidebar-top: 3rem;
     --sidebar-left: 8rem;
     --sidebar-z: 1050;
 
@@ -52,7 +52,7 @@
     }
 
     &__sidebar--top {
-        --sidebar-top: 2rem;
+        --sidebar-top: 0rem;
     }
 
     &__sidebar--bottom {

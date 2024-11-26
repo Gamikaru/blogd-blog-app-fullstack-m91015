@@ -1,27 +1,28 @@
 // src/components/EditPostModal.jsx
-// Desc: A modal component to edit a post
 
-import { Button } from '@components';
+import { Button, InputField, SelectField } from '@components';
 import { useNotificationContext, usePostContext, usePrivateModalContext } from '@contexts';
 import { calculateReadingTime, countWords, logger, validatePostContent } from '@utils';
-import { useEffect, useRef, useState } from "react";
-import Form from "react-bootstrap/Form";
-import Modal from "react-bootstrap/Modal";
+import { useEffect, useRef, useState } from 'react';
+import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import SimpleBar from 'simplebar-react';
+import 'simplebar-react/dist/simplebar.min.css';
 
 const categoryOptions = [
-    'Health and Fitness',
-    'Lifestyle',
-    'Technology',
-    'Cooking',
-    'Philosophy',
-    'Productivity',
-    'Art',
-    'Music',
-    'Business',
-    'Business & Finance',
-    'Other'
+    { value: 'Health and Fitness', label: 'Health and Fitness' },
+    { value: 'Lifestyle', label: 'Lifestyle' },
+    { value: 'Technology', label: 'Technology' },
+    { value: 'Cooking', label: 'Cooking' },
+    { value: 'Philosophy', label: 'Philosophy' },
+    { value: 'Productivity', label: 'Productivity' },
+    { value: 'Art', label: 'Art' },
+    { value: 'Music', label: 'Music' },
+    { value: 'Business', label: 'Business' },
+    { value: 'Business & Finance', label: 'Business & Finance' },
+    { value: 'Other', label: 'Other' },
 ];
 
 export default function EditPostModal() {
@@ -35,6 +36,7 @@ export default function EditPostModal() {
     const [imageUrls, setImageUrls] = useState("");
     const [selectedFiles, setSelectedFiles] = useState([]);
     const quillRef = useRef(null);
+    const titleRef = useRef(null); // Ref for the textarea
 
     useEffect(() => {
         if (selectedPost) {
@@ -60,6 +62,25 @@ export default function EditPostModal() {
         };
     }, [showModal]);
 
+    useEffect(() => {
+        if (titleRef.current) {
+            adjustTextareaHeight();
+        }
+    }, [postTitle]);
+
+    const adjustTextareaHeight = () => {
+        const textarea = titleRef.current;
+        if (textarea) {
+            textarea.style.height = 'auto'; // Reset height
+            textarea.style.height = `${textarea.scrollHeight}px`; // Set to scrollHeight
+        }
+    };
+
+    const handlePostTitleChange = (e) => {
+        setPostTitle(e.target.value);
+        adjustTextareaHeight();
+    };
+
     const handleModalClose = () => {
         setPostContent("");
         setPostTitle("");
@@ -76,14 +97,14 @@ export default function EditPostModal() {
 
         const validationErrors = validatePostContent(postContent);
         if (validationErrors) {
-            showNotification(validationErrors, "error");
+            showNotification(validationErrors, "error", { top: '40%', left: '50%' });
             return;
         }
 
         const postId = selectedPost.postId || selectedPost._id;
 
         if (!selectedPost || !postId) {
-            showNotification("Invalid post data. Please try again.", "error");
+            showNotification("Invalid post data. Please try again.", "error", { top: '40%', left: '50%' });
             return;
         }
 
@@ -94,31 +115,25 @@ export default function EditPostModal() {
             formData.append('category', category);
 
             const urlsArray = imageUrls.split(',').map(url => url.trim()).filter(url => url);
-            // Append imageUrls as a single comma-separated string
             formData.append('imageUrls', urlsArray.join(','));
 
-            // Ensure files are appended with their original names to preserve extensions
             selectedFiles.forEach((file) => {
-                formData.append('images', file, file.name); // Use original filename
-                // Alternatively, for unique filenames:
-                // const extension = file.name.substring(file.name.lastIndexOf('.'));
-                // const uniqueName = `image${index}_${Date.now()}${extension}`;
-                // formData.append('images', file, uniqueName);
+                formData.append('images', file, file.name);
             });
 
             const { success, message } = await updatePost(postId, formData);
 
             if (success) {
-                showNotification(message || "Post edited successfully!", "success");
+                showNotification(message || "Post edited successfully!", "success", { top: '40%', left: '50%' });
             } else {
-                showNotification("Failed to edit post. Please try again.", "error");
+                showNotification("Failed to edit post. Please try again.", "error", { top: '40%', left: '50%' });
             }
 
             handleModalClose();
 
         } catch (error) {
             logger.error("Failed to edit post:", error);
-            showNotification("Failed to edit post. Please try again.", "error");
+            showNotification("Failed to edit post. Please try again.", "error", { top: '40%', left: '50%' });
         }
     };
 
@@ -151,20 +166,24 @@ export default function EditPostModal() {
             className="edit-post-modal"
             backdrop="static"
             keyboard={false}
+            backdropClassName="edit-post-modal__backdrop"
+            container={document.body}
         >
-            <div className="edit-post-modal__container">
-                <div className="edit-post-modal__preview">
-                    <Modal.Header closeButton className="edit-post-modal__header" />
-                    <Form onSubmit={handlePostEditSubmit} className="edit-post-modal__form" id="edit-post-form">
+            <SimpleBar style={{ maxHeight: '100%' }} className="edit-post-modal">
+                <Form onSubmit={handlePostEditSubmit} className="edit-post-modal__form" id="edit-post-form">
+                    <div className="edit-post-modal__preview">
+                        <Modal.Header closeButton />
                         <textarea
                             type="text"
                             value={postTitle}
-                            onChange={(e) => setPostTitle(e.target.value)}
-                            placeholder="Edit your title here..."
-                            className="edit-post-modal__title-input mb-3"
+                            onChange={handlePostTitleChange}
+                            placeholder="Write your title here..." // Matched PostModal.jsx
+                            className="edit-post-modal__title-textarea"
                             maxLength={100}
+                            ref={titleRef} // Attach ref
                             required
                         />
+                        <div className="edit-post-modal__title-separator" />
                         <ReactQuill
                             ref={quillRef}
                             value={postContent}
@@ -174,118 +193,113 @@ export default function EditPostModal() {
                             placeholder="Edit your post here..."
                             className="edit-post-modal__editor"
                         />
-                    </Form>
-                </div>
-
-                <div className="edit-post-modal__sidebar">
-                    <h2 className="edit-post-modal__sidebar-title">Edit Your Post</h2>
-
-                    {/* Category Selection */}
-                    <div className="toolbar-group toolbar-group__basics">
-                        <h6 className="toolbar-group__title">Category</h6>
-                        <div className="toolbar-group__content">
-                            <select
-                                value={category}
-                                onChange={(e) => setCategory(e.target.value)}
-                                className="toolbar-input toolbar-input--select"
-                                required
-                            >
-                                {categoryOptions.map((cat) => (
-                                    <option key={cat} value={cat}>
-                                        {cat}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
                     </div>
 
-                    {/* Media Inputs */}
-                    <div className="toolbar-group toolbar-group__media">
-                        <h6 className="toolbar-group__title">Media</h6>
-                        <div className="toolbar-group__content">
-                            <input
-                                type="text"
-                                value={imageUrls}
-                                onChange={(e) => setImageUrls(e.target.value)}
-                                placeholder="Paste image URLs, separated by commas"
-                                className="toolbar-input toolbar-input--url mb-2"
-                            />
-                            <input
-                                type="file"
-                                multiple
-                                accept="image/*" // **Same as PostModal.jsx**
-                                onChange={handleFileChange}
-                                className="toolbar-input toolbar-input--file"
-                            />
-                        </div>
-                    </div>
+                    <SimpleBar style={{ maxHeight: '100%' }} className="edit-post-modal__sidebar">
+                        <h2 className="edit-post-modal__sidebar-title">Edit Your Post</h2>
 
-                    {/* **12. Post Settings (Same as PostModal.jsx)** */}
-                    <div className="toolbar-group toolbar-group__settings">
-                        <h6 className="toolbar-group__title">Post Settings</h6>
-                        <div className="toolbar-group__content">
-                            <label className="toolbar-checkbox">
-                                <input type="checkbox" /> Allow Comments
-                            </label>
-                            <label className="toolbar-checkbox">
-                                <input type="checkbox" /> Featured Post
-                            </label>
-                            <label className="toolbar-checkbox">
-                                <input type="checkbox" /> Schedule Post
-                            </label>
+                        {/* Category Selection */}
+                        <div className="toolbar-group toolbar-group__basics">
+                            <h6 className="toolbar-group__title">Category</h6>
+                            <div className="toolbar-group__content">
+                                <SelectField
+                                    options={categoryOptions}
+                                    value={category}
+                                    onChange={(e) => setCategory(e.target.value)}
+                                    className="toolbar-input--select"
+                                    required
+                                />
+                            </div>
                         </div>
-                    </div>
 
-                    {/* **13. SEO Settings (Same as PostModal.jsx)** */}
-                    <div className="toolbar-group toolbar-group__seo">
-                        <h6 className="toolbar-group__title">SEO</h6>
-                        <div className="toolbar-group__content">
-                            <input
-                                type="text"
-                                placeholder="Meta Description"
-                                className="toolbar-input"
-                            />
-                            <input
-                                type="text"
-                                placeholder="Keywords (comma-separated)"
-                                className="toolbar-input"
-                            />
+                        {/* Media Inputs */}
+                        <div className="toolbar-group toolbar-group__media">
+                            <h6 className="toolbar-group__title">Media</h6>
+                            <div className="toolbar-group__content">
+                                <InputField
+                                    type="text"
+                                    value={imageUrls}
+                                    onChange={(e) => setImageUrls(e.target.value)}
+                                    placeholder="Paste image URLs"
+                                    className="toolbar-input toolbar-input--url"
+                                />
+                                <InputField
+                                    type="file"
+                                    multiple
+                                    accept="image/*"
+                                    onChange={handleFileChange}
+                                    className="toolbar-input toolbar-input--file"
+                                />
+                            </div>
                         </div>
-                    </div>
 
-                    {/* **14. Text Analytics (Same as PostModal.jsx)** */}
-                    <div className="toolbar-group toolbar-group__meta">
-                        <h6 className="toolbar-group__title">Text Analytics</h6>
-                        <div className="toolbar-group__content">
-                            <span>Reading Time: {calculateReadingTime(postContent)} min</span>
-                            <span>Word Count: {countWords(postContent)}</span>
+                        {/* Post Settings */}
+                        <div className="toolbar-group toolbar-group__settings">
+                            <h6 className="toolbar-group__title">Post Settings</h6>
+                            <div className="toolbar-group__content">
+                                <label className="toolbar-checkbox">
+                                    <input type="checkbox" /> Allow Comments
+                                </label>
+                                <label className="toolbar-checkbox">
+                                    <input type="checkbox" /> Featured Post
+                                </label>
+                                <label className="toolbar-checkbox">
+                                    <input type="checkbox" /> Schedule Post
+                                </label>
+                            </div>
                         </div>
-                    </div>
 
-                    {/* **15. Action Buttons: Save Changes, Delete Post, Discard (Same as PostModal.jsx + Delete Option)** */}
-                    <div className="toolbar-group toolbar-group__actions">
-                        <div className="toolbar-group__content d-flex justify-content-between">
-                            <Button
-                                type="submit"
-                                className="button button-submit"
-                                form="edit-post-form"
-                                variant="submit"
-                            >
-                                Save Changes
-                            </Button>
-
-                            <Button
-                                type="button"
-                                onClick={handleModalClose}
-                                className="button button-secondary"
-                                variant="close"
-                            >
-                                Discard
-                            </Button>
+                        {/* SEO Settings */}
+                        <div className="toolbar-group toolbar-group__seo">
+                            <h6 className="toolbar-group__title">SEO</h6>
+                            <div className="toolbar-group__content">
+                                <InputField
+                                    type="text"
+                                    placeholder="Meta Description"
+                                    className="toolbar-input"
+                                />
+                                <InputField
+                                    type="text"
+                                    placeholder="Keywords (comma-separated)"
+                                    className="toolbar-input"
+                                />
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
+
+                        {/* Text Analytics */}
+                        <div className="toolbar-group toolbar-group__meta">
+                            <h6 className="toolbar-group__title">Text Analytics</h6>
+                            <div className="toolbar-group__content">
+                                <span>Reading Time: {calculateReadingTime(postContent)} min</span>
+                                <span>Word Count: {countWords(postContent)}</span>
+                            </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        {/* Action Buttons */}
+                        <div className="toolbar-group toolbar-group__actions">
+                            <div className="toolbar-group__content">
+                                <Button
+                                    type="submit"
+                                    className="button button-submit"
+                                    variant="submit"
+                                >
+                                    Save Changes
+                                </Button>
+
+                                <Button
+                                    type="button"
+                                    onClick={handleModalClose}
+                                    className="button button-delete"
+                                    variant="delete"
+                                >
+                                    Discard
+                                </Button>
+                            </div>
+                        </div>
+                    </SimpleBar>
+                </Form>
+            </SimpleBar>
         </Modal>
     );
-}
+};
