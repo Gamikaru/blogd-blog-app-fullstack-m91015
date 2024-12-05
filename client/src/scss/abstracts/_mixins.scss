@@ -247,7 +247,6 @@
 @mixin input-field-base {
     border: 1px solid $border-color;
     border-radius: $border-radius;
-    box-sizing: border-box;
     color: $primary-text-color;
     font-size: $body-font-size;
     padding: $input-padding;
