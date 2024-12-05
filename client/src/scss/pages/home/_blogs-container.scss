@@ -1,6 +1,7 @@
 // src/components/BlogsContainer.scss
 
 
+
 .blogs-container {
     background-color: $primary-bg-color;
     color: $primary-text-color;
@@ -36,6 +37,16 @@
         line-height: 1.6;
         max-width: 70%;
         position: relative;
+
+        @media (width <= 768px) {
+            left: -2rem;
+            max-width: 80%;
+            position: relative;
+        }
+
+
+
+
     }
 
     &__filter-search-container {
@@ -139,4 +150,22 @@
         font-size: $sub-heading-font-size;
         text-align: center;
     }
+}
+
+@media (width <= 768px) {
+    .blogs-container {
+        width:75vw;
+    }
+
+    .blogs-container__title {
+        font-size: 1.5rem;
+    }
+
+    .blogs-container__subtitle {
+        font-size: 1rem;
+        position: relative;
+        right: 10rem;
+    }
+
+
 }

@@ -1,6 +1,6 @@
 // src/components/UserProfile/UserProfile.jsx
 
-import { useNotificationContext, useUser, useUserUpdate, usePostContext } from '@contexts';
+import { useNotificationContext, usePostContext, useUser, useUserUpdate } from '@contexts';
 import { userService } from '@services/api';
 import { logger } from '@utils';
 import { useEffect, useState } from 'react';

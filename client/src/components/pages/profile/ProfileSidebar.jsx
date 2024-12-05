@@ -19,8 +19,8 @@ const ProfileSidebar = ({ profileUser, userPosts, isOwnProfile }) => {
 
 ProfileSidebar.propTypes = {
     profileUser: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        role: PropTypes.string.isRequired,
+        // name: PropTypes.string.isRequired,
+        // role: PropTypes.string.isRequired,
         email: PropTypes.string.isRequired,
         phone: PropTypes.string,
         location: PropTypes.string,

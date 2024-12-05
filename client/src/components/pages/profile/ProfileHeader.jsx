@@ -67,29 +67,29 @@ const ProfileHeader = ({
                             </div>
                         </div>
                     ) : (
-                status && (
-                    <h2 className="profile-header__user-status quote-style">
-                        <span className="profile-header__opening-quote">“</span>
-                        <em className="profile-header__status-text"
-                            style={{ lineHeight: '1.5' }}>
-                            {status}
-                        </em><span className="profile-header__closing-quote">”</span>
-                    </h2>
-                )
-            )}
+                        status && (
+                            <h2 className="profile-header__user-status quote-style">
+                                <span className="profile-header__opening-quote">“</span>
+                                <em className="profile-header__status-text"
+                                    style={{ lineHeight: '1.5' }}>
+                                    {status}
+                                </em><span className="profile-header__closing-quote">”</span>
+                            </h2>
+                        )
+                    )}
+                </div>
             </div>
-        </div>
 
-            {/* Profile Picture Modal */ }
-    {
-        isPicModalOpen && (
-            <ProfilePicModal
-                imageUrl={profilePicture || '/images/default-avatar.png'}
-                onClose={handleCloseModal}
-            />
-        )
-    }
-        </div >
+            {/* Profile Picture Modal */}
+            {
+                isPicModalOpen && (
+                    <ProfilePicModal
+                        imageUrl={profilePicture || '/images/default-avatar.png'}
+                        onClose={handleCloseModal}
+                    />
+                )
+            }
+        </div>
     );
 };
 
