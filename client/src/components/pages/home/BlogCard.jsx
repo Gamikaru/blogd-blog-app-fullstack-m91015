@@ -1,7 +1,7 @@
 // src/components/BlogCard.jsx
-import { CustomTagIcon, LazyImage } from '@components';
+import { LazyImage } from '@components';
 import { useUser } from '@contexts/UserContext';
-import logger from '@utils/logger'; // Ensure logger is imported
+import logger from '@utils/logger';
 import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 import { memo, useCallback } from 'react';
@@ -31,14 +31,17 @@ const BlogCard = memo(function BlogCard({ post, author }) {
     const navigate = useNavigate();
     const { user } = useUser();
 
-    // Log userId and post.likesBy
     const userId = user?.userId || user?._id;
-    logger.info(`BlogCard Rendered: postId=${post.postId}, userId=${userId}, likesBy=${JSON.stringify(post.likesBy)}`);
+    logger.info(
+        `BlogCard Rendered: postId=${post.postId}, userId=${userId}, likesBy=${JSON.stringify(
+            post.likesBy
+        )}`
+    );
 
-    const navigateToPost = useCallback(() => navigate(`/blog/${post.postId || post._id}`), [
-        navigate,
-        post,
-    ]);
+    const navigateToPost = useCallback(
+        () => navigate(`/blog/${post.postId || post._id}`),
+        [navigate, post]
+    );
 
     return (
         <motion.div
@@ -70,7 +73,10 @@ const BlogCard = memo(function BlogCard({ post, author }) {
                         className="blog-post-card__image-container__cover-image"
                     />
                 ) : (
-                    <div className="blog-post-card__image-container__cover-placeholder" aria-label="No cover image available">
+                    <div
+                        className="blog-post-card__image-container__cover-placeholder"
+                        aria-label="No cover image available"
+                    >
                         No Image
                     </div>
                 )}
@@ -80,22 +86,25 @@ const BlogCard = memo(function BlogCard({ post, author }) {
                 <div className="blog-post-card__content__header">
                     <span className="blog-post-card__content__header__author-name">{author}</span>
                     <span className="blog-post-card__content__header__post-date">
-                        {post.createdAt ? new Date(post.createdAt).toLocaleDateString() : 'Unknown Date'}
+                        {post.createdAt
+                            ? new Date(post.createdAt).toLocaleDateString()
+                            : 'Unknown Date'}
                     </span>
                 </div>
 
-                <div className="blog-post-card__content__title-category">
-                    <h2 className="blog-post-card__content__title-category__title">{post.title || 'Untitled'}</h2>
-                    <div className="blog-post-card__content__title-category__category">
-                        {post.category ? (
-                            <CustomTagIcon className="blog-post-card__content__title-category__category__icon" text={post.category} />
-                        ) : (
-                            <span className="blog-post-card__content__title-category__category__text"></span>
-                        )}
-                    </div>
-                </div>
+                <h2 className="blog-post-card__content__title">
+                    {post.title || 'Untitled'}
+                </h2>
 
-                {/* Removed interactions section */}
+                {post.category && (
+                    <div className="blog-post-card__content__category">
+                        <span
+                            className={`blog-post-card__content__category-tag ${post.category?.toLowerCase() || 'default'}-category`}
+                        >
+                            {post.category}
+                        </span>
+                    </div>
+                )}
             </div>
         </motion.div>
     );

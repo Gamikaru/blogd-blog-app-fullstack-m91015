@@ -64,6 +64,56 @@
             }
         }
 
+        &__title {
+            color: $primary-text-color;
+            font-family: $font-family-heading;
+            font-size: clamp(1.2rem, 2.5vw, 1.6rem); // Increased max size
+            line-height: 1.2;
+            margin: 0;
+            margin-bottom: spacing(0.5);
+            overflow: hidden;
+            padding-top: spacing(0.5); // Add padding to align vertically
+            width: 100%;
+        }
+
+        &__category {
+            margin-bottom: spacing(0.5);
+
+            &-tag {
+                background-color: $accent-color-1; // Default color
+            border-radius: 999px;
+            color: $primary-text-color;
+            display: inline-block;
+            font-size: $small-font-size;
+            font-weight: bold;
+            padding: 0.2em 0.6em;
+            text-transform: capitalize;
+            }
+
+            // Color coding for categories
+            &.technology-category {
+                background-color: map.get($category-colors, 'technology');
+            }
+
+            &.lifestyle-category {
+                background-color: map.get($category-colors, 'lifestyle');
+            }
+
+            &.business-category {
+                background-color: map.get($category-colors, 'business');
+            }
+
+            &.health-category {
+                background-color: map.get($category-colors, 'health');
+            }
+
+            // Default category color
+            &.default-category {
+                background-color: map.get($category-colors, 'default');
+            }
+
+        }
+
         &__title-category {
             align-items: flex-start;
             display: flex;
@@ -181,6 +231,7 @@
                 }
             }
         }
+
     }
 
     /* Ensure consistent alignment */

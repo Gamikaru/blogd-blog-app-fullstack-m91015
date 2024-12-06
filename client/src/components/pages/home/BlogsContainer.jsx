@@ -87,6 +87,20 @@ const BlogsContainer = () => {
         };
     }, [debouncedSetSearch]);
 
+    // Scroll into view when filter dropdown is shown
+    useEffect(() => {
+        if (showFilterDropdown && filterRef.current) {
+            filterRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    }, [showFilterDropdown]);
+
+    // Scroll into view when search input is shown
+    useEffect(() => {
+        if (showSearchInput && searchRef.current) {
+            searchRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    }, [showSearchInput]);
+
     const filteredPosts = useMemo(() => {
         if (!posts) return [];
         const searchLower = search.toLowerCase();
@@ -99,8 +113,7 @@ const BlogsContainer = () => {
 
         const filtered = posts.filter((post) => {
             const postAuthor = getAuthor(post).toLowerCase();
-            const matchesCategory = !filters.category ||
-                post.category === filters.category;
+            const matchesCategory = !filters.category || post.category === filters.category;
             const matchesSearch = !search ||
                 (post.title?.toLowerCase().includes(searchLower) ||
                     post.content?.toLowerCase().includes(searchLower) ||
@@ -277,7 +290,7 @@ const BlogsContainer = () => {
                                     onChange={(e) => handleSearchInputChange(e.target.value)}
                                     placeholder="Search by author, title, or content"
                                     aria-label="Search input"
-                                    className="blogs-container__search-input" // Custom class
+                                    className="blogs-container__search-input"
                                 />
                             </motion.div>
                         )}
@@ -312,7 +325,6 @@ const BlogsContainer = () => {
             </AnimatePresence>
         </div>
     );
-
 };
 
 export default BlogsContainer;

@@ -56,6 +56,13 @@ $warning-color: map.get($theme-colors, warning-color);
 $hover-color: map.get($theme-colors, hover-color);
 $modal-backdrop-color: map.get($theme-colors, modal-backdrop-color);
 $border-color: map.get($theme-colors, border-color);
+$category-colors: (
+    "technology": #ff5722,
+    "lifestyle": #4caf50,
+    "business": #2196f3,
+    "health": #9c27b0,
+    "default": $accent-color-1
+);
 
 // Typography - Fluid Responsive
 $font-family-primary: "Segoe UI", sans-serif;
