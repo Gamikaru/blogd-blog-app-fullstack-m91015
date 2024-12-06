@@ -89,14 +89,13 @@
         // Modal Footer
         .register-modal__footer {
             display: flex;
-            gap: $spacing-md;
-            justify-content: flex-center;
+            justify-content: center; // Center the content horizontally
             margin-top: $spacing-md;
 
             .submit-container {
-                align-items: center;
-                display: flex-center;
-                justify-content: flex-center;
+                display: flex;
+                justify-content: center; // Center the button horizontally
+                width: 100%;
             }
         }
 

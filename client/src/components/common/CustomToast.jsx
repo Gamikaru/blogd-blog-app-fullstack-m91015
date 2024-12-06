@@ -65,7 +65,7 @@ const CustomToast = React.memo(
                         style={{
                             position: 'fixed',
                             ...position,
-                            zIndex: 3060,
+                            zIndex: 4100,
                         }}
                         role="alert"
                         aria-live="assertive"

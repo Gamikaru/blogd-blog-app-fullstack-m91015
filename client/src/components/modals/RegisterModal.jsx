@@ -217,10 +217,11 @@ export default function RegisterModal() {
                     </div>
 
                     <div className="register-modal__footer">
-                        <div className="submit-container">
+                        <div className="submit-container" style={{ display: 'flex'}}>
                             <Button
                                 variant="submit"
                                 disabled={loading}
+                                classname="button button-register"
                             >
                                 {loading ? 'Registering...' : 'Register'}
                             </Button>

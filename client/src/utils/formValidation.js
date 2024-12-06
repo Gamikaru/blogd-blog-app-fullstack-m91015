@@ -64,8 +64,6 @@ export const validateRegForm = (formData) => {
         if (!passwordRegex.test(password)) {
             errors.password =
                 'Password must be at least 8 characters long and include letters, numbers, and special characters.';
-        } else if (password.length < 12) {
-            errors.password = 'Consider using at least 12 characters for a stronger password.';
         }
     }
 
