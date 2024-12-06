@@ -10,16 +10,14 @@ const PageInfo = ({ welcomeText, categories, location }) => {
         visible: { opacity: 1, x: 0 },
     };
 
-    // Determine if the current page is the profile page
     const isProfilePage = location.pathname.startsWith('/profile');
 
     return (
         <div className="info-and-explore-container">
             {!isProfilePage && (
                 <motion.div
-                    className={`page-info-message ${
-                        welcomeText.isBlogPage ? 'blog-page-info' : ''
-                    }`}
+                    className={`page-info-message ${welcomeText.isBlogPage ? 'blog-page-info' : ''
+                        }`}
                     variants={pageInfoVariants}
                     initial="hidden"
                     animate="visible"
@@ -29,6 +27,13 @@ const PageInfo = ({ welcomeText, categories, location }) => {
                     {welcomeText.subtitle && (
                         welcomeText.isBlogPage ? (
                             <p className="page-subtitle blog-subtitle">
+                                {welcomeText.authorPicture && (
+                                    <img
+                                        src={welcomeText.authorPicture || '/images/default-avatar.png'}
+                                        alt="Author's Profile"
+                                        className="author-profile-picture"
+                                    />
+                                )}
                                 {welcomeText.subtitle}
                             </p>
                         ) : (
@@ -51,9 +56,6 @@ const PageInfo = ({ welcomeText, categories, location }) => {
                             </NavLink>
                         ))}
                     </div>
-                    {/* <div>
-                        <h2 className="cubes-title">Most Liked</h2>
-                    </div> */}
                 </>
             )}
         </div>
@@ -65,7 +67,8 @@ PageInfo.propTypes = {
         title: PropTypes.string.isRequired,
         subtitle: PropTypes.string,
         avatarUrl: PropTypes.string,
-        isBlogPage: PropTypes.bool, // Added isBlogPage
+        isBlogPage: PropTypes.bool,
+        authorPicture: PropTypes.string, // New prop for author's profile picture
     }).isRequired,
     categories: PropTypes.arrayOf(PropTypes.string).isRequired,
     location: PropTypes.shape({

@@ -81,7 +81,7 @@ export const getPostById = async (req, res) => {
 
     try {
         const post = await Post.findById(postId)
-            .populate('userId', 'firstName lastName occupation aboutAuthor')
+            .populate('userId', 'firstName lastName occupation aboutAuthor profilePicture')
             .lean({ virtuals: true });
 
         if (!post) {

@@ -1,4 +1,3 @@
-// FullBlogView.jsx
 import { Button, Comment, ErrorBoundary, Spinner } from '@components';
 import { useCommentActions, useComments } from '@contexts/CommentContext';
 import { useUser } from '@contexts/UserContext';
@@ -50,10 +49,8 @@ const FullBlogView = () => {
 
     const handleCommentSubmit = async (e) => {
         e.preventDefault();
-
         const userId = user?.id || user?._id;
-
-        if (!user || !userId) {
+        if (!userId) {
             logger.error("User must be logged in to submit comments.");
             setError("You must be logged in to submit comments.");
             return;
@@ -76,7 +73,9 @@ const FullBlogView = () => {
     if (loading) return <Spinner message="Loading post..." />;
     if (error) return <div>Error: {error}</div>;
 
-    const authorInfo = post.userId.aboutAuthor || `${post.userId.firstName} ${post.userId.lastName}, ${post.userId.occupation}`;
+    const authorName = `${post.userId.firstName} ${post.userId.lastName}`;
+    const authorInfo = post.userId.aboutAuthor || `${authorName}, ${post.userId.occupation}`;
+    const authorPicture = post.userId.profilePicture || '/images/default-avatar.png';
 
     const allComments = comments[post.postId] || [];
     const displayedComments = allComments.slice(0, currentPage * COMMENTS_PER_PAGE);
@@ -95,13 +94,18 @@ const FullBlogView = () => {
                 </div>
                 <div
                     className="blog-content"
-                    dangerouslySetInnerHTML={{
-                        __html: post.content
-                    }}
+                    dangerouslySetInnerHTML={{ __html: post.content }}
                 />
                 <div className="about-author">
                     <h3>About the Author</h3>
-                    <p>{authorInfo}</p>
+                    <div className="author-info-container">
+                        <img
+                            src={authorPicture}
+                            alt={`${authorName}'s profile`}
+                            className="author-profile-picture"
+                        />
+                        <p>{authorInfo}</p>
+                    </div>
                 </div>
                 <div className="comments-section">
                     <h3>Comments</h3>
@@ -125,10 +129,7 @@ const FullBlogView = () => {
                             )}
                         </div>
                     )}
-                    <form
-                        className="comment-form"
-                        onSubmit={handleCommentSubmit}
-                    >
+                    <form className="comment-form" onSubmit={handleCommentSubmit}>
                         <textarea
                             rows={3}
                             placeholder="Write a comment..."
@@ -137,11 +138,7 @@ const FullBlogView = () => {
                             maxLength={500}
                             required
                         />
-                        <Button
-                            type="submit"
-                            variant="submit"
-                            disabled={!commentText.trim()}
-                        >
+                        <Button type="submit" variant="submit" disabled={!commentText.trim()}>
                             Submit
                         </Button>
                     </form>

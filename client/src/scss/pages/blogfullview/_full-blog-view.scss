@@ -63,9 +63,7 @@
     }
 
     .about-author {
-        clear: both; // Ensure this section starts below floats
-        // After the floated image is done influencing text flow,
-        // content continues as normal below.
+        clear: both;
         margin-top: $spacing-unit * 4;
         text-align: center;
 
@@ -74,9 +72,35 @@
             margin-bottom: $spacing-unit;
         }
 
-        p {
-            color: $secondary-text-color;
-            font-size: $body-font-size;
+        .author-info-container {
+            align-items: center;
+            display: inline-flex;
+            gap: $spacing-xs; // small gap between image and text
+            justify-content: center;
+            margin-top: $spacing-sm;
+
+            .author-profile-picture {
+                border-radius: 50%;
+                height: 40px;
+                object-fit: cover;
+                width: 40px;
+
+                @media (max-width: $breakpoint-md) {
+                    height: 30px;
+                    width: 30px;
+                }
+
+                @media (max-width: $breakpoint-sm) {
+                    height: 25px;
+                    width: 25px;
+                }
+            }
+
+            p {
+                color: $secondary-text-color;
+                font-size: $body-font-size;
+                margin: 0;
+            }
         }
     }
 
@@ -111,7 +135,9 @@
                 margin-bottom: $spacing-unit;
                 padding: $spacing-unit;
                 resize: vertical;
-                transition: border-color 0.3s ease, box-shadow 0.3s ease;
+                transition:
+                    border-color 0.3s ease,
+                    box-shadow 0.3s ease;
 
                 @include border-radius($border-radius);
 
@@ -156,12 +182,6 @@
 
             .blog-image {
                 max-width: 100%;
-            }
-        }
-
-        .about-author {
-            h3 {
-                font-size: $heading-font-size-sm;
             }
         }
     }
