@@ -114,7 +114,7 @@ const Comment = ({ comment }) => {
 
                 </div>
                 {isEditing ? (
-                    <form className="edit-form" onSubmit={handleEdit}>
+                    <form className="comment-form" onSubmit={handleEdit}>
                         <textarea
                             rows={2}
                             value={editText}
@@ -122,12 +122,22 @@ const Comment = ({ comment }) => {
                             maxLength={500}
                             required
                         />
-                        <Button type="submit" variant="submit">
-                            Save
-                        </Button>
-                        <Button onClick={() => setIsEditing(false)} variant="secondary">
-                            Cancel
-                        </Button>
+                        <div className="comment-form__buttons">
+                            <div className="button-group-left">
+                                <Button type="submit" variant="submit">
+                                    Save
+                                </Button>
+                                <Button onClick={handleDelete} variant="delete">
+                                    Delete
+                                </Button>
+                            </div>
+                            <div className="button-group-right">
+                                <Button onClick={() => setIsEditing(false)}
+                                    variant="submit">
+                                    Cancel
+                                </Button>
+                            </div>
+                        </div>
                     </form>
                 ) : (
                     <div className="comment__body">{comment.content}</div>
@@ -165,7 +175,7 @@ const Comment = ({ comment }) => {
                     )}
                 </div>
                 {showReply && (
-                    <form className="reply-form" onSubmit={handleReply}>
+                    <form className="comment-form" onSubmit={handleReply}>
                         <textarea
                             rows={2}
                             placeholder="Write a reply..."

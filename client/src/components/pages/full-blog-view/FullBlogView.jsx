@@ -74,7 +74,7 @@ const FullBlogView = () => {
     if (error) return <div>Error: {error}</div>;
 
     const authorName = `${post.userId.firstName} ${post.userId.lastName}`;
-    const authorInfo = post.userId.aboutAuthor || `${authorName}, ${post.userId.occupation}`;
+    const authorInfo = post.userId.aboutAuthor || `${authorName} | ${post.userId.occupation}`;
     const authorPicture = post.userId.profilePicture || '/images/default-avatar.png';
 
     const allComments = comments[post.postId] || [];

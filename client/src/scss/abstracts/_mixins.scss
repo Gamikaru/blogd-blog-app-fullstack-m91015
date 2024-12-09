@@ -311,3 +311,29 @@
     font-size: $small-font-size;
     padding: 0;
 }
+
+// Mixin for Comment Form Styling
+@mixin comment-form-style {
+    background-color: color.adjust($secondary-bg-color, $lightness: 5%); // Slightly lighter background
+    box-shadow: $box-shadow-small;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    margin-top: $spacing-unit * 1.5;
+    padding: $spacing-md;
+
+    @include border-radius($border-radius-sm);
+
+    textarea {
+        @include input-field-base; // Use existing input field base styles
+
+        background-color: color.adjust($secondary-bg-color, $lightness: 5%); // Match form background
+        resize: vertical;
+
+        &:focus {
+            border-color: $highlight-color;
+            box-shadow: $input-focus-box-shadow;
+            outline: none;
+        }
+    }
+}

@@ -86,62 +86,6 @@
 
         .reply-button {
             @include button-style($highlight-color, $primary-text-color);
-
-        }
-
-        .reply-form {
-            background-color: color.adjust($primary-bg-color, $lightness: 2%);
-            box-shadow: $box-shadow-small;
-            display: flex;
-            flex-direction: column;
-            gap: $spacing-sm;
-            margin-block: $spacing-md;
-            padding: $spacing-md;
-
-            @include border-radius($border-radius-sm);
-
-            textarea {
-                background-color: $secondary-bg-color;
-                border: 1px solid $border-color;
-                color: $primary-text-color;
-                font-family: $font-family-primary;
-                font-size: $body-font-size;
-                line-height: $line-height;
-                padding: $input-padding;
-                width: 100%;
-
-                @include border-radius($border-radius-sm);
-
-                &:focus {
-                    border-color: $highlight-color;
-                    box-shadow: $input-focus-box-shadow;
-                    outline: none;
-                }
-            }
-
-            .replies {
-                background-color: color.adjust($primary-bg-color, $lightness: -1%);
-                background-color: color.adjust($primary-bg-color, $lightness: 3%);
-                border-left: 2px solid color.adjust($secondary-bg-color, $lightness: 20%);
-                margin-left: $spacing-unit * 2;
-                padding-left: $spacing-unit;
-
-                .nested-comment {
-                    background-color: color.adjust($primary-bg-color, $lightness: 3%);
-                }
-
-                &:nth-child(2n) {
-                    background-color: color.adjust($primary-bg-color, $lightness: 1%);
-                }
-
-                & .replies > .comment {
-                    background-color: color.adjust($primary-bg-color, $lightness: 1%);
-                }
-
-                &:hover {
-                    box-shadow: $box-shadow-medium;
-                }
-            }
         }
     }
 
@@ -165,16 +109,37 @@
             gap: $spacing-sm;
 
             .like-count {
+                align-items: center;
                 color: $secondary-text-color;
+                display: flex; // Ensure it behaves like a flex container
                 font-size: $small-font-size;
             }
-
         }
 
         .comment__controls {
             align-items: center;
             display: flex;
             gap: $spacing-xs;
+        }
+    }
+
+    .comment-form {
+        @include comment-form-style;
+
+        &__buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: $spacing-sm;
+
+            .button-group-left,
+            .button-group-right {
+                align-items: center;
+                display: flex;
+            }
+
+            .button-group-left {
+                gap: $spacing-xs;
+            }
         }
     }
 }
