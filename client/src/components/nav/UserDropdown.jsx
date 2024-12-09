@@ -4,7 +4,7 @@ import { Button, Portal, Spinner } from '@components';
 import { usePrivateModalContext, useUser, useUserUpdate } from '@contexts';
 import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import {
     FaBirthdayCake,
     FaBriefcase,
@@ -13,7 +13,7 @@ import {
 } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
-const UserDropdown = React.memo(({ showDropdown, setShowDropdown, position }) => {
+const UserDropdown = ({ showDropdown, setShowDropdown, position }) => {
     const dropdownRef = useRef(null);
     const { user, loading } = useUser();
     const { logout } = useUserUpdate();
@@ -154,9 +154,7 @@ const UserDropdown = React.memo(({ showDropdown, setShowDropdown, position }) =>
             </motion.div>
         </Portal>
     );
-});
-
-UserDropdown.displayName = 'UserDropdown';
+};
 
 UserDropdown.propTypes = {
     showDropdown: PropTypes.bool.isRequired,

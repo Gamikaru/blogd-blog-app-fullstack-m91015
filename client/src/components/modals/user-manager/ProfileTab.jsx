@@ -1,16 +1,15 @@
 // src/components/modals/user-manager/ProfileTab.jsx
 
 import { Button } from '@components';
-import { userService } from '@services/api';
+import { useUserUpdate } from '@contexts';
 import { logger } from '@utils';
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
-const ProfileTab = ({ user, setUser, showNotification, loading }) => {
-    const navigate = useNavigate(); // Initialize useNavigate
+const ProfileTab = ({ user, showNotification, loading }) => {
+    const { updateUser } = useUserUpdate(); // Get updateUser from context
     const [localLoading, setLocalLoading] = useState(false);
 
     const profileInitialValues = {
@@ -53,13 +52,16 @@ const ProfileTab = ({ user, setUser, showNotification, loading }) => {
                 formData.append('profilePicture', values.profilePicture);
             }
 
-            const updatedUser = await userService.updateProfile(user.userId, formData);
-            setUser(updatedUser);
+            // Use updateUser from context instead of setUser
+            await updateUser(user.userId, formData);
+
             showNotification('Profile updated successfully!', 'success');
-            navigate('/profile');
         } catch (error) {
             logger.error('Error updating profile:', error);
-            const errorMessage = error.response?.data?.message || 'Failed to update profile';
+            const errorMessage =
+                error.response?.data?.message ||
+                error.message ||
+                'Failed to update profile';
             showNotification(errorMessage, 'error');
             setFieldError('general', errorMessage);
         } finally {
@@ -172,7 +174,6 @@ ProfileTab.propTypes = {
         occupation: PropTypes.string,
         birthDate: PropTypes.string,
     }).isRequired,
-    setUser: PropTypes.func.isRequired,
     showNotification: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
 };

@@ -501,10 +501,10 @@ As this is a work in progress, future enhancements may include:
 
 - **Email Verification**: Implementing email verification during user registration.
 - **Password Reset**: Completing the password reset functionality.
-- **Advanced Search**: Enhancing search capabilities with filters and sorting.
-- **Notifications System**: Implementing real-time notifications.
 - **Internationalization (i18n)**: Adding support for multiple languages.
 - **Accessibility**: Ensuring the application meets WCAG standards for accessibility.
+- **Social Networking**: Integrating social media login options for user authentication and sharing as well as friend /follow functionality.
+- **Instant Messaging**: Implementing real-time messaging between users.
 
 ---
 

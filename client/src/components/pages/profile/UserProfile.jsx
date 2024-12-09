@@ -23,7 +23,7 @@ const UserProfile = () => {
     useEffect(() => {
         const loadProfile = async () => {
             try {
-                if (userId) {
+                if (userId && userId !== user.userId) {
                     const fetchedUser = await userService.fetchUserById(userId);
                     setProfileUser(fetchedUser);
                     setStatus(fetchedUser.status || '');

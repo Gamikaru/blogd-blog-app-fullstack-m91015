@@ -28,13 +28,27 @@ const ProfileHeader = ({
         <div className="profile-header">
             <div className="profile-header__left">
                 {/* User Picture */}
-                <div className="profile-header__user-picture">
-                    <img
-                        src={profilePicture || '/images/default-avatar.png'}
-                        alt={`${userName}'s Profile`}
-                        className="profile-header__user-image clickable"
-                        onClick={handleProfilePictureClick}
-                    />
+                <div
+                    className="profile-header__user-picture clickable"
+                    onClick={handleProfilePictureClick}
+                >
+                    {profilePicture ? (
+                        <img
+                            src={profilePicture}
+                            alt={`${userName}'s Profile`}
+                            className="profile-header__user-image"
+                        />
+                    ) : (
+                        <div className="initials-avatar">
+                            {userName
+                                ? userName
+                                    .split(' ')
+                                    .map((name) => name[0])
+                                    .join('')
+                                    .toUpperCase()
+                                : ''}
+                        </div>
+                    )}
                 </div>
 
                 {/* User Name and Status */}
