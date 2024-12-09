@@ -2,7 +2,7 @@
 
 import { Footer, Navbar, Sidebar } from '@components';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
 const pageVariants = {
@@ -25,6 +25,27 @@ const AppLayout = () => {
 
     const location = useLocation();
 
+    // State and effect for back-to-top button
+    const [showBackToTop, setShowBackToTop] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            console.log('Scroll Y:', window.scrollY); // Debug scroll
+            if (window.scrollY > 200) {
+                setShowBackToTop(true);
+            } else {
+                setShowBackToTop(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    const handleBackToTop = useCallback(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, []);
+
     return (
         <div className="app-layout">
             <Navbar toggleSidebar={toggleSidebar} />
@@ -45,6 +66,13 @@ const AppLayout = () => {
                 </AnimatePresence>
             </main>
             <Footer />
+
+            {/* Back to top button */}
+            {showBackToTop && (
+                <button className="back-to-top" onClick={handleBackToTop}>
+                    ↑
+                </button>
+            )}
         </div>
     );
 };

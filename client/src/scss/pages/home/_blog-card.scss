@@ -1,5 +1,7 @@
 // src/components/BlogCard.scss
 
+@use "sass:map";
+
 .blog-post-card {
     @include card-style;
 
@@ -78,9 +80,10 @@
 
         &__category {
             margin-bottom: spacing(0.5);
+        }
 
-            &-tag {
-                background-color: $accent-color-1; // Default color
+        &__category-tag {
+            background-color: $accent-color-1; // Default color
             border-radius: 999px;
             color: $primary-text-color;
             display: inline-block;
@@ -88,30 +91,48 @@
             font-weight: bold;
             padding: 0.2em 0.6em;
             text-transform: capitalize;
-            }
 
             // Color coding for categories
             &.technology-category {
-                background-color: map.get($category-colors, 'technology');
+            background-color: map.get($category-colors, "technology");
             }
 
             &.lifestyle-category {
-                background-color: map.get($category-colors, 'lifestyle');
+            background-color: map.get($category-colors, "lifestyle");
             }
 
             &.business-category {
-                background-color: map.get($category-colors, 'business');
+            background-color: map.get($category-colors, "business");
             }
 
             &.health-category {
-                background-color: map.get($category-colors, 'health');
+            background-color: map.get($category-colors, "health & fitness");
+            }
+
+            &.philosophy-category {
+            background-color: map.get($category-colors, "philosophy");
+            }
+
+            &.productivity-category {
+            background-color: map.get($category-colors, "productivity");
+            }
+
+            &.cooking-category {
+            background-color: map.get($category-colors, "cooking");
+            }
+
+            &.art-category {
+            background-color: map.get($category-colors, "art");
+            }
+
+            &.music-category {
+            background-color: map.get($category-colors, "music");
             }
 
             // Default category color
             &.default-category {
-                background-color: map.get($category-colors, 'default');
+            background-color: map.get($category-colors, "default");
             }
-
         }
 
         &__title-category {

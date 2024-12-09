@@ -57,11 +57,16 @@ $hover-color: map.get($theme-colors, hover-color);
 $modal-backdrop-color: map.get($theme-colors, modal-backdrop-color);
 $border-color: map.get($theme-colors, border-color);
 $category-colors: (
-    "technology": #ff5722,
-    "lifestyle": #4caf50,
-    "business": #2196f3,
-    "health": #9c27b0,
-    "default": $accent-color-1
+    "lifestyle":      #fbc4ab, // Pastel Peach
+    "philosophy":     #eac4d5, // Pastel Magenta
+    "productivity":   #ffe5d9, // Pastel Orange
+    "health & fitness": #b8e0d2, // Pastel Mint
+    "technology":     #a8d0e6, // Pastel Blue
+    "cooking":        #f9dcc4, // Pastel Yellow
+    "art":            #e2ece9, // Pastel Green
+    "music":          #d5e1df, // Pastel Teal
+    "business":       #c3aed6, // Pastel Purple
+    "default":        $accent-color-1
 );
 
 // Typography - Fluid Responsive
