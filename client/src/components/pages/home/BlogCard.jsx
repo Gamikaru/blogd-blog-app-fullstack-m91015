@@ -7,6 +7,15 @@ import PropTypes from 'prop-types';
 import { memo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+// Helper function to sanitize category names
+const sanitizeCategory = (category) => {
+    return category
+        ?.toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/&/g, 'and')
+        .replace(/[^\w-]/g, '');
+};
+
 const cardVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -99,7 +108,9 @@ const BlogCard = memo(function BlogCard({ post, author }) {
                 {post.category && (
                     <div className="blog-post-card__content__category">
                         <span
-                            className={`blog-post-card__content__category-tag ${post.category?.toLowerCase() || 'default'}-category`}
+                            className={`blog-post-card__content__category-tag ${sanitizeCategory(
+                                post.category
+                            )}-category`}
                         >
                             {post.category}
                         </span>

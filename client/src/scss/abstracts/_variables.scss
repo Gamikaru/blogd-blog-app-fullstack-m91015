@@ -5,6 +5,45 @@ $base-line-height: 1.6;
 // Theme variable
 $theme: light; // Set to 'light' or 'dark' to switch themes
 
+// Define category colors for light theme
+$light-category-colors: (
+    "lifestyle": #fbc4ab,
+    // Pastel Peach
+    "philosophy": #eac4d5,
+    // Pastel Magenta
+    "productivity": #ffe5d9,
+    // Pastel Orange
+    "health & fitness": #b8e0d2,
+    // Pastel Mint
+    "technology": #a8d0e6,
+    // Pastel Blue
+    "cooking": #f9dcc4,
+    // Pastel Yellow
+    "art": #e2ece9,
+    // Pastel Green
+    "music": #d5e1df,
+    // Pastel Teal
+    "business": #c3aed6,
+    // Pastel Purple
+    "default": #e2e3d5 // Light accent color
+);
+
+// Define category colors for dark theme
+// Define category colors for dark theme
+$dark-category-colors: (
+  'lifestyle':        #ff8c009f,  // Dark Orange
+  'philosophy':       #ff69b49f,  // Hot Pink
+  'productivity':     #ff6347a2,  // Tomato
+  'health & fitness': #20b2aba9,  // Light Sea Green
+  'technology':       #1e8fffab,  // Dodger Blue
+  'cooking':          #ffd900a0,  // Gold
+  'art':              #00ced1a5,  // Dark Turquoise
+  'music':            #7fffd4a3,  // Aquamarine
+  'business':         #9470dba0,  // Medium Purple
+  'default':          #e2e3d59d,   // Dark accent color
+  'other':           #808080   // Gray
+);
+
 // Light theme colors
 $light-theme: (
     primary-bg-color: #f3f0ed,
@@ -19,24 +58,26 @@ $light-theme: (
     warning-color: #f39c12,
     hover-color: color.adjust(#f1f1f1, $lightness: -10%),
     modal-backdrop-color: rgb(0 0 0 / 20%),
-    border-color: rgb(0 0 0 / 10%)
+    border-color: rgb(0 0 0 / 10%),
+    category-colors: $light-category-colors
 );
 
 // Dark theme colors
 $dark-theme: (
     primary-bg-color: #5e6758,
     secondary-bg-color: #232323,
-    primary-text-color: #f0f0f0,
+    primary-text-color: #e2e3d5,
     secondary-text-color: #bfbfbf,
-    accent-color-1: #2a2a2a,
-    accent-color-2: #333,
+    accent-color-1: #e2e3d5,
+    accent-color-2: #e2e3d5,
     highlight-color: #75a2a4,
     success-color: #28a745,
     error-color: #e74c3c,
     warning-color: #f39c12,
-    hover-color: color.adjust(#333, $lightness: 10%),
+    hover-color: color.adjust(#bfbfbf, $lightness: 10%),
     modal-backdrop-color: rgb(255 255 255 / 20%),
-    border-color: rgb(255 255 255 / 10%)
+    border-color: rgb(255 255 255 / 10%),
+    category-colors: $dark-category-colors
 );
 
 // Choose theme colors based on $theme variable
@@ -56,18 +97,7 @@ $warning-color: map.get($theme-colors, warning-color);
 $hover-color: map.get($theme-colors, hover-color);
 $modal-backdrop-color: map.get($theme-colors, modal-backdrop-color);
 $border-color: map.get($theme-colors, border-color);
-$category-colors: (
-    "lifestyle":      #fbc4ab, // Pastel Peach
-    "philosophy":     #eac4d5, // Pastel Magenta
-    "productivity":   #ffe5d9, // Pastel Orange
-    "health & fitness": #b8e0d2, // Pastel Mint
-    "technology":     #a8d0e6, // Pastel Blue
-    "cooking":        #f9dcc4, // Pastel Yellow
-    "art":            #e2ece9, // Pastel Green
-    "music":          #d5e1df, // Pastel Teal
-    "business":       #c3aed6, // Pastel Purple
-    "default":        $accent-color-1
-);
+$category-colors: map.get($theme-colors, category-colors);
 
 // Typography - Fluid Responsive
 $font-family-primary: "Segoe UI", sans-serif;
@@ -168,11 +198,11 @@ $spacing-xxl: map.get($spacing-scale, xxl);
 $spacing-xxxl: map.get($spacing-scale, xxxl);
 $spacing-xxl2: map.get($spacing-scale, xxl2);
 
-// **Added Variables**
+// Added Variables
 $button-hover-bg-color: color.adjust($highlight-color, $lightness: 5%); // Hover background color for buttons
 $input-focus-box-shadow: 0 0 0 2px rgba($highlight-color, 0.2); // Box shadow for focused inputs
 
-// **New Variables for Button Variants**
+// New Variables for Button Variants
 $button-opacity-hover: 1;
 $button-opacity-default: 0.8;
 $button-opacity-disabled: 0.6;
@@ -222,9 +252,9 @@ $z-indices: (
 );
 
 // Input Background Color
-$input-bg-color: #f3f0ed; // Adjust if needed for dark theme
+$input-bg-color: #f3f0ed;
 
-// Padding Variables (If Used)
+// Padding Variables
 $padding-xs: map.get($spacing-scale, xs);
 $padding-sm: map.get($spacing-scale, sm);
 $padding-md: map.get($spacing-scale, md);

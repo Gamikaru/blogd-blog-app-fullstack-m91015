@@ -105,7 +105,7 @@
             background-color: map.get($category-colors, "business");
             }
 
-            &.health-category {
+            &.health-and-fitness-category {
             background-color: map.get($category-colors, "health & fitness");
             }
 
@@ -133,6 +133,11 @@
             &.default-category {
             background-color: map.get($category-colors, "default");
             }
+
+            // Other category color
+            &.other-category {
+                background-color: map.get($category-colors, "other");
+                }
         }
 
         &__title-category {

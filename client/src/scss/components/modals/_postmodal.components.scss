@@ -22,7 +22,7 @@
         z-index: var(--sidebar-z);
 
         .toolbar-section {
-            border-top: 1px solid rgb(0 0 0 / 5%);
+            border-top: 1px solid $border-color;
             display: flex;
             flex-direction: column;
             gap: map.get($modal-spacing, form-gap);
@@ -41,6 +41,7 @@
             }
 
             &__content {
+                color:$primary-text-color;
                 display: flex;
                 gap: 1rem;
                 width: 100%;
@@ -51,7 +52,9 @@
             @include input-field-base;
 
             background-color: $primary-bg-color;
+            color:$primary-text-color;
             width: 100%;
+
         }
 
         .toolbar-input--file {
@@ -64,19 +67,24 @@
             @include input-field-base;
 
             background-color: $primary-bg-color;
+            color:$primary-text-color;
         }
     }
 
     .toolbar-group__actions {
-        border-top: 1px solid rgb(0 0 0 / 8%);
+        border-top: 1px solid $border-color;
+        color:$primary-text-color;
         margin-top: auto;
         padding-top: 1rem;
+
     }
 
     .toolbar-group__content {
+        color:$primary-text-color;
         display: flex;
         gap: 1rem;
         width: 100%;
+
     }
 
     .post-modal__preview,
@@ -138,6 +146,7 @@
             background: transparent;
             border: none;
             box-sizing: border-box;
+            color: $primary-text-color;
             font-family: $font-family-heading;
             font-size: 3rem;
             font-weight: 500;
@@ -168,7 +177,7 @@
 
         .post-modal__title-separator,
         .edit-post-modal__title-separator {
-            background-color: rgb(0 0 0 / 8%);
+            background-color: $border-color;
             display: block;
             height: 1px;
             margin: 1rem 0 1rem 2rem !important;
@@ -178,11 +187,12 @@
 
         .ql-toolbar {
             border: none !important;
-            border-bottom: 1px solid rgb(0 0 0 / 8%) !important;
+            border-bottom: 1px solid $border-color !important;
 
             &::after {
-                background-color: rgb(0 0 0 / 8%) !important;
+                background-color: $border-color !important;
                 bottom: 0 !important;
+                color:$primary-text-color;
                 content: "" !important;
                 display: block !important;
                 height: 1px !important;
@@ -190,6 +200,7 @@
                 margin-left: 2rem !important;
                 position: absolute !important;
                 width: calc(100% - 15rem) !important;
+
             }
         }
 
@@ -204,9 +215,9 @@
 
             .close {
                 backdrop-filter: blur(4px);
-                background: rgb(255 255 255 / 90%);
+                background: rgba($primary-bg-color, 0.9);
                 border-radius: 50%;
-                box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
+                box-shadow: 0 2px 8px rgba($border-color, 0.1);
                 height: 40px;
                 margin: 0;
                 opacity: 0.8;

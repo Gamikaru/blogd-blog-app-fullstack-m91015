@@ -8,6 +8,15 @@ import PropTypes from 'prop-types';
 import { memo, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+// Helper function to sanitize category names
+const sanitizeCategory = (category) => {
+  return category
+    ?.toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/&/g, 'and')
+    .replace(/[^\w-]/g, '');
+};
+
 const PostCard = memo(({ post, isOwnProfile }) => {
     const { user } = useUser(); // Get the current user
     const { setPosts, loadPostsByUser, setSelectedPost } = usePostContext();
@@ -122,7 +131,13 @@ const PostCard = memo(({ post, isOwnProfile }) => {
                         </span>
                     </div>
                     <div className="profile-post-card__category">
-                        {post.category && <span className="profile-post-card__category-tag">{post.category}</span>}
+                        {post.category && (
+                            <span
+                                className={`profile-post-card__category-tag ${sanitizeCategory(post.category)}-category`}
+                            >
+                                {post.category}
+                            </span>
+                        )}
                     </div>
                 </div>
 

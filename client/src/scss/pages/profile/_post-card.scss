@@ -1,5 +1,8 @@
 // components/pages/profile/_post-card.scss
 
+@use 'sass:map';
+@use 'sass:color';
+
 .profile-post-card {
     background: $primary-bg-color;
     border-radius: $border-radius;
@@ -82,7 +85,7 @@
     }
 
     &__category-tag {
-        background: $accent-color-1;
+        background-color: $accent-color-1; // Default color
         border-radius: 999px;
         color: $primary-text-color;
         display: inline-block;
@@ -90,6 +93,53 @@
         font-weight: bold;
         padding: 0.2em 0.6em;
         text-transform: capitalize;
+
+        // Color coding for sanitized categories
+        &.technology-category {
+            background-color: map.get($category-colors, 'technology');
+        }
+
+        &.lifestyle-category {
+            background-color: map.get($category-colors, 'lifestyle');
+        }
+
+        &.business-category {
+            background-color: map.get($category-colors, 'business');
+        }
+
+        &.health-and-fitness-category {
+            background-color: map.get($category-colors, 'health & fitness');
+        }
+
+        &.philosophy-category {
+            background-color: map.get($category-colors, 'philosophy');
+        }
+
+        &.productivity-category {
+            background-color: map.get($category-colors, 'productivity');
+        }
+
+        &.cooking-category {
+            background-color: map.get($category-colors, 'cooking');
+        }
+
+        &.art-category {
+            background-color: map.get($category-colors, 'art');
+        }
+
+        &.music-category {
+            background-color: map.get($category-colors, 'music');
+        }
+
+        // Default category color
+        &.default-category {
+            background-color: map.get($category-colors, 'default');
+        }
+
+        // Other category color
+        &.other-category {
+            background-color: map.get($category-colors, 'other');
+        }
     }
 
     &__excerpt {
