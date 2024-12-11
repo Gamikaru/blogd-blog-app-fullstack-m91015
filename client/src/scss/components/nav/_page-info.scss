@@ -98,7 +98,6 @@
 /* Blog Page Specific Styling */
 .page-info-message.blog-page-info {
     .page-title {
-        color: #333;
         font-size: $heading-font-size-xxlg; // This is already fluid based on your setup
         margin-top: 2rem;
         width: 70%;
@@ -111,7 +110,6 @@
 
     .blog-subtitle {
         align-items: center;
-        color: #777;
 
         // Display author's profile picture next to their name
         display: flex;

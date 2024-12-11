@@ -11,8 +11,6 @@
 
 .app-layout {
     background-color: var(--primary-bg-color-light5);
-
-
 }
 
 /* Links */
@@ -22,7 +20,10 @@ a {
     text-decoration: none;
 
     &:hover {
-        color: adjust-color-lightness(var(--accent-color-2), 10%);
+        /* If desired, adjust hover color slightly:
+           Since we don't have a function adjust-color-lightness defined here,
+           simply pick a slightly darker variant of accent-color-2 */
+        color: #e0e0e0; /* for dark theme or if scss function is not available */
         text-decoration: underline;
     }
 }
@@ -30,12 +31,9 @@ a {
 /* Scrollbar Styles */
 
 /* Override SimpleBar styles for a minimalistic scrollbar */
-
 .app-scrollbar {
     /* Ensure the scrollbar spans the entire viewport */
     height: 100vh;
-
-    /* Optional: Smooth scrolling */
     scroll-behavior: smooth;
     width: 100vw;
 
@@ -46,14 +44,15 @@ a {
 
     /* Customize the scrollbar thumb */
     .simplebar-scrollbar::before {
-        background-color: rgba(var(--primary-text-color), 0.6) !important;
+        /* Use primary-text-color in RGBA, ensuring proper contrast: */
+        background-color: rgb(47 47 47 / 60%) !important;
         border-radius: 8px !important;
         width: 8px !important;
     }
 
     /* Hover effect for the scrollbar thumb */
     .simplebar-scrollbar:hover::before {
-        background-color: rgba(var(--primary-text-color), 0.8) !important;
+        background-color: rgb(47 47 47 / 80%) !important;
     }
 }
 
@@ -66,9 +65,9 @@ a {
     }
 }
 
-/* Firefox */
+/* Firefox scrollbar */
 body {
-    scrollbar-color: rgba(var(--primary-text-color), 0.6) transparent !important;
+    scrollbar-color: rgb(47 47 47 / 60%) transparent !important;
     scrollbar-width: thin !important;
 }
 

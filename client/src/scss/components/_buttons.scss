@@ -134,11 +134,11 @@
     color: var(--error-color);
 
     &:hover {
-        background-color: rgba(var(--error-color), 0.2);
+        background-color: rgba($error-color, 0.2);
     }
 
     &:active {
-        background-color: rgba(var(--error-color), 0.4);
+        background-color: rgba($error-color, 0.4);
     }
 }
 
@@ -146,11 +146,11 @@
     color: var(--error-color);
 
     &:hover {
-        background-color: rgba(var(--error-color), 0.2);
+        background-color: rgba($error-color, 0.2);
     }
 
     &:active {
-        background-color: rgba(var(--error-color), 0.4);
+        background-color: rgba($error-color, 0.4);
     }
 }
 

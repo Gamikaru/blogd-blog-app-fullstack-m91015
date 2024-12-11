@@ -110,7 +110,6 @@
 }
 
 .cube-slider__text-slide__excerpt__quote {
-    color: $secondary-text-color;
     display: -webkit-box;
     font-size: clamp(1rem, 1.1vw, $body-font-size * 1.1);
     font-style: italic;
@@ -125,7 +124,6 @@
 }
 
 .cube-slider__text-slide__opening-quote {
-    color: var(--primary-text-color);
     font-family: $font-family-heading;
     font-size: 2rem;
     font-weight: bold;
@@ -146,7 +144,6 @@
 }
 
 .cube-slider__text-slide__closing-group__closing-quote {
-    color: var(--primary-text-color);
     font-family: $font-family-heading;
     font-size: 2rem;
     font-weight: bold;
