@@ -73,7 +73,6 @@
             padding: $spacing-md;
             width: 100%;
 
-
             &__title {
                 font-size: clamp(1.2rem, 2.2vw, $heading-font-size-md);
                 margin: $spacing-md 0;
@@ -136,4 +135,10 @@
         overflow: visible; // Avoid hiding content
         top: 0;
     }
+}
+
+.dark-theme .cube-slider__text-slide__meta,
+.dark-theme .cube-slider__text-slide__meta__author,
+.dark-theme .cube-slider__text-slide__meta__date {
+    color: #ccc; /* Adjust to a color that stands out in dark mode */
 }
