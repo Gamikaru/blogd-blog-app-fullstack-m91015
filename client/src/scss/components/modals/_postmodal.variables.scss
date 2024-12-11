@@ -21,7 +21,7 @@ $modal-dimensions: (
 
 // Colors and Shadows
 $toolbar-shadow: inset 0 -1px 3px rgb(0 0 0 / 60%);
-$input-border: 1px solid $border-color;
+$input-border: 1px solid var(--border-color);
 
 // Mixins
 @mixin reset-button {
@@ -40,7 +40,7 @@ $input-border: 1px solid $border-color;
 
     &:hover,
     &.active {
-        #{$property}: $highlight-color;
+        #{$property}: var(--highlight-color);
     }
 }
 

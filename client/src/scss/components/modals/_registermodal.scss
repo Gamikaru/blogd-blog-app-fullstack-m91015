@@ -28,7 +28,7 @@
     // Modal container
     &-container {
         animation: modal-fade-in 0.3s ease;
-        background-color: $secondary-bg-color; // Use theme color for better contrast
+        background-color: var(--secondary-bg-color); // Use theme color for better contrast
         border-radius: $border-radius;
         box-shadow: $box-shadow-strong;
         display: flex;
@@ -43,11 +43,11 @@
 
         // Modal Header
         .modal-header {
-            border-bottom: 1px solid $border-color; // Add subtle divider
+            border-bottom: 1px solid var(--border-color); // Add subtle divider
             padding-bottom: $spacing-sm;
 
             .register-modal__title {
-                color: $primary-text-color;
+                color: var(--primary-text-color);
                 font-size: $heading-font-size-lg;
                 margin: 0;
                 text-align: center; // Center the title
@@ -80,7 +80,7 @@
             }
 
             .error-label {
-                color: $error-color;
+                color: var(--error-color);
                 font-size: $xsmall-font-size;
                 margin-top: 2px;
             }

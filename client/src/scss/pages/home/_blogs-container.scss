@@ -3,8 +3,8 @@
 
 
 .blogs-container {
-    background-color: $primary-bg-color;
-    color: $primary-text-color;
+    background-color: var(--primary-bg-color);
+    color: var(--primary-text-color);
     justify-self: center;
     padding: spacing(4);
     padding-bottom: spacing(5);
@@ -71,7 +71,7 @@
     }
 
     &__dropdown {
-        background-color: $secondary-bg-color;
+        background-color: var(--secondary-bg-color);
         border-radius: $border-radius;
         box-shadow: $box-shadow-strong;
         left: 0;
@@ -89,7 +89,7 @@
         margin-bottom: spacing(1);
 
         label {
-            color: $primary-text-color;
+            color: var(--primary-text-color);
             display: block;
             font-size: $small-font-size;
             margin-bottom: spacing(0.5);
@@ -103,7 +103,7 @@
                 padding: spacing(0.5) spacing(1);
 
                 &:hover {
-                    background-color: color.adjust($accent-color-2, $lightness: -10%);
+                    background-color: var(--accent-color-2-dark10);
                 }
             }
         }

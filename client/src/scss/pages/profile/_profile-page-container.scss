@@ -22,7 +22,7 @@
 
     &__loading-spinner {
         align-items: center;
-        color: $primary-text-color;
+        color: var(--primary-text-color);
         display: flex;
         font-size: 1.2rem;
         height: 100vh;

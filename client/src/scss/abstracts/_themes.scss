@@ -1,0 +1,103 @@
+:root {
+    --primary-bg-color: #f3f0ed;
+    --secondary-bg-color: #fff;
+    --primary-text-color: #3d3d3d;
+    --secondary-text-color: #9c9c9c;
+    --accent-color-1: #e2e3d5;
+    --accent-color-2: #f1f1f1;
+    --highlight-color: #9c9c9c;
+    --success-color: #28a745;
+    --error-color: #e74c3c;
+    --warning-color: #f39c12;
+    --hover-color: #e0e0e0;
+    --modal-backdrop-color: rgb(0 0 0 / 20%);
+    --border-color: rgb(0 0 0 / 10%);
+
+    /* From previous computations */
+    --highlight-color-light5: #a2a2a2;
+    --highlight-color-dark10: #8c8c8c;
+    --highlight-color-light30: #cacaca;
+    --primary-text-light30: #777;
+    --accent-color-1-dark2: #dedfd2;
+    --accent-color-1-dark5: #dbdccf;
+    --accent-color-1-dark7: #d9dacb;
+    --accent-color-2-dark10: #e0e0e0;
+    --button-primary-dark10: #8c8c8c;
+    --button-danger-dark10: #c62f3f;
+    --info-color-light10: #1eb5cc;
+    --primary-text-light10: #4a4a4a;
+    --secondary-bg-color-light5: #fafafa;
+    --primary-bg-color-light5: #f5f3f0;
+    --primary-bg-color-light1: #f4f1ee;
+    --primary-bg-color-light4: #f6f4f1;
+    --secondary-bg-color-light20: #fefefe;
+
+    /* Category colors (light theme) */
+    --category-lifestyle: #fbc4ab;       /* Pastel Peach */
+    --category-philosophy: #eac4d5;      /* Pastel Magenta */
+    --category-productivity: #ffe5d9;    /* Pastel Orange */
+    --category-health-and-fitness: #b8e0d2; /* Pastel Mint */
+    --category-technology: #a8d0e6;      /* Pastel Blue */
+    --category-cooking: #f9dcc4;         /* Pastel Yellow */
+    --category-art: #e2ece9;             /* Pastel Green */
+    --category-music: #d5e1df;           /* Pastel Teal */
+    --category-business: #c3aed6;        /* Pastel Purple */
+    --category-default: #e2e3d5;         /* Light accent color */
+    --category-other: #808080;           /* Gray (if used in light theme) */
+
+    /* New variables for remaining adjustments */
+
+    /* secondary-bg-color lighten 10% ~ #fafafa (already have #fafafa for +5%, let's reuse #f8f8f8 or stick with #fafafa)
+       Let's pick #f8f8f8 to differentiate from the 5% lighten. Actually we used #fafafa for +5%. For +10%, let's use #f8f8f8?
+       To avoid confusion, let's be consistent and choose #f8f8f8 for +10%.
+    */
+    --secondary-bg-color-light10: #f8f8f8;
+
+    /* secondary-bg-color darken 2% ~ #eaeaea */
+    --secondary-bg-color-dark2: #eaeaea;
+
+    /* If needed for the border-top lighten 10%, we use the same --secondary-bg-color-light10 */
+
+    /* For var(--primary-bg-color), we did not see new increments except ones we handled. */
+}
+
+.dark-theme {
+    --primary-bg-color: #5e6758;
+    --secondary-bg-color: #232323;
+    --primary-text-color: #e2e3d5;
+    --secondary-text-color: #bfbfbf;
+    --accent-color-1: #e2e3d5;
+    --accent-color-2: #e2e3d5;
+    --highlight-color: #75a2a4;
+    --success-color: #28a745;
+    --error-color: #e74c3c;
+    --warning-color: #f39c12;
+    --hover-color: #c9c9c9;
+    --modal-backdrop-color: rgb(255 255 255 / 20%);
+    --border-color: rgb(255 255 255 / 10%);
+    --secondary-bg-color-light5: #2b2b2b;
+    --primary-bg-color-light5: #686f62;
+    --primary-bg-color-light1: #646d5f;
+    --primary-bg-color-light4: #6b7564;
+    --secondary-bg-color-light20: #313131;
+
+    /* Dark equivalents:
+       secondary-bg-color lighten 10% from #232323 → #2a2a2a */
+    --secondary-bg-color-light10: #2a2a2a;
+
+    /* secondary-bg-color darken 2% from #232323 → #1f1f1f */
+    --secondary-bg-color-dark2: #1f1f1f;
+
+    /* Category colors (dark theme) */
+    --category-lifestyle: #ff8c009f;     /* Dark Orange */
+    --category-philosophy: #ff69b49f;    /* Hot Pink */
+    --category-productivity: #ff6347a2;  /* Tomato */
+    --category-health-and-fitness: #20b2aba9; /* Light Sea Green */
+    --category-technology: #1e8fffab;    /* Dodger Blue */
+    --category-cooking: #ffd900a0;       /* Gold */
+    --category-art: #00ced1a5;           /* Dark Turquoise */
+    --category-music: #7fffd4a3;         /* Aquamarine */
+    --category-business: #9470dba0;      /* Medium Purple */
+    --category-default: #e2e3d59d;       /* Dark accent color */
+    --category-other: #808080;           /* Gray */
+}

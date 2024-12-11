@@ -1,7 +1,7 @@
 // src/components/UserDropdown.jsx
 
 import { Button, Portal, Spinner } from '@components';
-import { usePrivateModalContext, useUser, useUserUpdate } from '@contexts';
+import { usePrivateModalContext, useThemeContext, useUser, useUserUpdate } from '@contexts';
 import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 import { useCallback, useEffect, useRef } from 'react';
@@ -11,6 +11,7 @@ import {
     FaEnvelope,
     FaMapMarkerAlt
 } from 'react-icons/fa';
+import { FiMoon, FiSun } from 'react-icons/fi'; // Updated import for Feather Icons
 import { useNavigate } from 'react-router-dom';
 
 const UserDropdown = ({ showDropdown, setShowDropdown, position }) => {
@@ -19,6 +20,7 @@ const UserDropdown = ({ showDropdown, setShowDropdown, position }) => {
     const { logout } = useUserUpdate();
     const { togglePrivateModal } = usePrivateModalContext();
     const navigate = useNavigate();
+    const { theme, toggleTheme } = useThemeContext();
 
     const handleSettingsClick = useCallback(() => {
         togglePrivateModal('userSettings');
@@ -66,7 +68,7 @@ const UserDropdown = ({ showDropdown, setShowDropdown, position }) => {
     };
 
     if (loading) {
-        return <Spinner />; // Or any loading indicator
+        return <Spinner />;
     }
 
     if (!showDropdown) return null;
@@ -147,6 +149,20 @@ const UserDropdown = ({ showDropdown, setShowDropdown, position }) => {
                                 >
                                     Logout
                                 </Button>
+                            </div>
+                            {/* Theme Toggle Slider */}
+                            <div className="dropdown-actions__button theme-toggle">
+                                <FiSun className="icon sun" /> {/* Updated to Feather Icon */}
+                                <label className="switch">
+                                    <input
+                                        type="checkbox"
+                                        checked={theme === 'dark'}
+                                        onChange={toggleTheme}
+                                        aria-label="Toggle theme"
+                                    />
+                                    <span className="slider round"></span>
+                                </label>
+                                <FiMoon className="icon moon" /> {/* Updated to Feather Icon */}
                             </div>
                         </div>
                     </div>

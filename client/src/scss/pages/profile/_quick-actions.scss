@@ -1,7 +1,7 @@
 // components/pages/profile/_quick-actions.scss
 
 .quick-actions {
-    background: $secondary-bg-color;
+    background: var(--secondary-bg-color);
     border-radius: $border-radius;
     box-shadow: $box-shadow-medium;
     margin-bottom: $spacing-lg;
@@ -14,7 +14,7 @@
     }
 
     &__title {
-        color: $primary-text-color;
+        color: var(--primary-text-color);
         font-size: 1rem; // Slightly reduced for consistency
         margin-bottom: $spacing-md;
         text-align: center;
@@ -42,7 +42,7 @@
             transition: background-color $transitions-base;
 
             &:hover {
-                background-color: color.adjust($button-primary, $lightness: -10%);
+                background-color: var(--button-primary-dark10);
             }
 
             &:disabled {

@@ -6,7 +6,7 @@
 .post-modal,
 .edit-post-modal {
     &__sidebar {
-        background: $secondary-bg-color;
+        background: var(--secondary-bg-color);
         border-radius: $border-radius;
         box-shadow: $box-shadow-medium;
         display: flex;
@@ -22,7 +22,7 @@
         z-index: var(--sidebar-z);
 
         .toolbar-section {
-            border-top: 1px solid $border-color;
+            border-top: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
             gap: map.get($modal-spacing, form-gap);
@@ -31,17 +31,17 @@
 
         .toolbar-group {
             &:not(:last-child) {
-                border-bottom: 1px solid $border-color;
+                border-bottom: 1px solid var(--border-color);
                 padding-block: map.get($modal-spacing, input-gap);
             }
 
             &__title {
-                color: $primary-text-color;
+                color: var(--primary-text-color);
                 margin-bottom: map.get($modal-spacing, input-gap);
             }
 
             &__content {
-                color:$primary-text-color;
+                color:var(--primary-text-color);
                 display: flex;
                 gap: 1rem;
                 width: 100%;
@@ -51,8 +51,8 @@
         .toolbar-input {
             @include input-field-base;
 
-            background-color: $primary-bg-color;
-            color:$primary-text-color;
+            background-color: var(--primary-bg-color);
+            color:var(--primary-text-color);
             width: 100%;
 
         }
@@ -60,27 +60,27 @@
         .toolbar-input--file {
             @include input-field-base;
 
-            background-color: $primary-bg-color;
+            background-color: var(--primary-bg-color);
         }
 
         .toolbar-input--select {
             @include input-field-base;
 
-            background-color: $primary-bg-color;
-            color:$primary-text-color;
+            background-color: var(--primary-bg-color);
+            color:var(--primary-text-color);
         }
     }
 
     .toolbar-group__actions {
-        border-top: 1px solid $border-color;
-        color:$primary-text-color;
+        border-top: 1px solid var(--border-color);
+        color:var(--primary-text-color);
         margin-top: auto;
         padding-top: 1rem;
 
     }
 
     .toolbar-group__content {
-        color:$primary-text-color;
+        color:var(--primary-text-color);
         display: flex;
         gap: 1rem;
         width: 100%;
@@ -89,7 +89,7 @@
 
     .post-modal__preview,
     .edit-post-modal__preview {
-        background-color: $secondary-bg-color;
+        background-color: var(--secondary-bg-color);
         height: 100%;
         left: 0;
         overflow-y: auto;
@@ -105,11 +105,11 @@
         }
 
         .ql-editor {
-            background-color: $secondary-bg-color;
+            background-color: var(--secondary-bg-color);
             border: none;
             border-radius: $border-radius;
             box-shadow: none;
-            color: $primary-text-color;
+            color: var(--primary-text-color);
             font-family: inherit;
             font-size: $body-font-size;
             line-height: 1.8;
@@ -146,7 +146,7 @@
             background: transparent;
             border: none;
             box-sizing: border-box;
-            color: $primary-text-color;
+            color: var(--primary-text-color);
             font-family: $font-family-heading;
             font-size: 3rem;
             font-weight: 500;
@@ -177,7 +177,7 @@
 
         .post-modal__title-separator,
         .edit-post-modal__title-separator {
-            background-color: $border-color;
+            background-color: var(--border-color);
             display: block;
             height: 1px;
             margin: 1rem 0 1rem 2rem !important;
@@ -187,12 +187,12 @@
 
         .ql-toolbar {
             border: none !important;
-            border-bottom: 1px solid $border-color !important;
+            border-bottom: 1px solid var(--border-color) !important;
 
             &::after {
-                background-color: $border-color !important;
+                background-color: var(--border-color) !important;
                 bottom: 0 !important;
-                color:$primary-text-color;
+                color:var(--primary-text-color);
                 content: "" !important;
                 display: block !important;
                 height: 1px !important;
@@ -215,9 +215,9 @@
 
             .close {
                 backdrop-filter: blur(4px);
-                background: rgba($primary-bg-color, 0.9);
+                background: rgba(var(--primary-bg-color), 0.9);
                 border-radius: 50%;
-                box-shadow: 0 2px 8px rgba($border-color, 0.1);
+                box-shadow: 0 2px 8px rgba(var(--border-color), 0.1);
                 height: 40px;
                 margin: 0;
                 opacity: 0.8;

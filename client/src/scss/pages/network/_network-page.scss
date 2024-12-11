@@ -2,8 +2,8 @@
 
 
 .network-page {
-    background-color: $primary-bg-color;
-    color: $primary-text-color;
+    background-color: var(--primary-bg-color);
+    color: var(--primary-text-color);
     margin: 0 auto;
     padding: $spacing-xxl $spacing-lg;
     width: 80vw;
@@ -31,7 +31,7 @@
 }
 
 .network-container__dropdown {
-    background-color: $secondary-bg-color;
+    background-color: var(--secondary-bg-color);
     border-radius: $border-radius;
     box-shadow: $box-shadow-strong;
     left: 0;
@@ -49,7 +49,7 @@
     margin-bottom: spacing(1);
 
     label {
-        color: $primary-text-color;
+        color: var(--primary-text-color);
         display: block;
         font-size: $small-font-size;
         margin-bottom: spacing(0.5);
@@ -63,7 +63,7 @@
             padding: spacing(0.5) spacing(1);
 
             &:hover {
-                background-color: color.adjust($accent-color-2, $lightness: -10%);
+                background-color: var(--accent-color-2-dark10);
             }
         }
     }
@@ -98,7 +98,7 @@
 
 .network-page__messages--loading,
 .network-page__messages--error {
-    background: $secondary-bg-color;
+    background: var(--secondary-bg-color);
     border-radius: $border-radius;
     box-shadow: $box-shadow-medium;
     color: $secondary-text-color;
@@ -110,7 +110,7 @@
 }
 
 .network-page__messages--error {
-    border-left: 4px solid $error-color;
+    border-left: 4px solid var(--error-color);
 }
 
 .network-page__messages--no-users {

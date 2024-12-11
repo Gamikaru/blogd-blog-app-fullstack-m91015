@@ -1,9 +1,9 @@
 // Footer Styles
 .footer {
-    background-color: $primary-bg-color;
-    border-top: 1px solid $border-color;
+    background-color: var(--primary-bg-color);
+    border-top: 1px solid var(--border-color);
     box-shadow: $box-shadow-strong;
-    color: $primary-text-color;
+    color: var(--primary-text-color);
     margin-top: $spacing-xxl2;
     padding: $spacing-lg;
     position: relative;
@@ -27,13 +27,13 @@
         gap: $spacing-md;
 
         a {
-            color: $primary-text-color;
+            color: var(--primary-text-color);
             font-size: $body-font-size;
             text-decoration: none;
             transition: color $transitions-base;
 
             &:hover {
-                color: $highlight-color;
+                color: var(--highlight-color);
                 text-decoration: underline;
             }
         }
@@ -45,12 +45,12 @@
         gap: $spacing-md;
 
         a {
-            color: $primary-text-color;
+            color: var(--primary-text-color);
             font-size: $heading-font-size-md;
             transition: color $transitions-base;
 
             &:hover {
-                color: $highlight-color;
+                color: var(--highlight-color);
             }
         }
     }

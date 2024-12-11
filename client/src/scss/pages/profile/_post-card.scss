@@ -4,7 +4,7 @@
 @use 'sass:color';
 
 .profile-post-card {
-    background: $primary-bg-color;
+    background: var(--primary-bg-color);
     border-radius: $border-radius;
     box-shadow: $card-shadow;
     cursor: pointer;
@@ -40,8 +40,8 @@
 
     &__image-placeholder {
         align-items: center;
-        background: color.adjust($secondary-bg-color, $lightness: 10%);
-        color: $secondary-text-color;
+        background: var(--secondary-bg-color);
+        color: var(--secondary-text-color);
         display: flex;
         font-size: $body-font-size;
         height: 100%;
@@ -64,7 +64,7 @@
     }
 
     &__title {
-        color: $primary-text-color;
+        color: var(--primary-text-color);
         flex: 1;
         font-family: $font-family-heading;
         font-size: $heading-font-size-md;
@@ -76,7 +76,7 @@
     }
 
     &__date {
-        color: $secondary-text-color;
+        color: var(--secondary-text-color);
         font-size: $small-font-size;
     }
 
@@ -85,9 +85,9 @@
     }
 
     &__category-tag {
-        background-color: $accent-color-1; // Default color
+        background-color: var(--accent-color-1); // Default color
         border-radius: 999px;
-        color: $primary-text-color;
+        color: var(--primary-text-color);
         display: inline-block;
         font-size: $small-font-size;
         font-weight: bold;
@@ -96,55 +96,55 @@
 
         // Color coding for sanitized categories
         &.technology-category {
-            background-color: map.get($category-colors, 'technology');
+            background-color: var(--category-technology);
         }
 
         &.lifestyle-category {
-            background-color: map.get($category-colors, 'lifestyle');
+            background-color: var(--category-lifestyle);
         }
 
         &.business-category {
-            background-color: map.get($category-colors, 'business');
+            background-color: var(--category-business);
         }
 
         &.health-and-fitness-category {
-            background-color: map.get($category-colors, 'health & fitness');
+            background-color: var(--category-health-and-fitness);
         }
 
         &.philosophy-category {
-            background-color: map.get($category-colors, 'philosophy');
+            background-color: var(--category-philosophy);
         }
 
         &.productivity-category {
-            background-color: map.get($category-colors, 'productivity');
+            background-color: var(--category-productivity);
         }
 
         &.cooking-category {
-            background-color: map.get($category-colors, 'cooking');
+            background-color: var(--category-cooking);
         }
 
         &.art-category {
-            background-color: map.get($category-colors, 'art');
+            background-color: var(--category-art);
         }
 
         &.music-category {
-            background-color: map.get($category-colors, 'music');
+            background-color: var(--category-music);
         }
 
         // Default category color
         &.default-category {
-            background-color: map.get($category-colors, 'default');
+            background-color: var(--category-default);
         }
 
         // Other category color
         &.other-category {
-            background-color: map.get($category-colors, 'other');
+            background-color: var(--category-other);
         }
     }
 
     &__excerpt {
         -webkit-box-orient: vertical;
-        color: $primary-text-color;
+        color: var(--primary-text-color);
         display: -webkit-box;
         flex-grow: 1;
         font-size: $body-font-size;
@@ -156,7 +156,7 @@
     }
 
     &__actions {
-        border-top: 1px solid $border-color;
+        border-top: 1px solid var(--border-color);
         display: flex;
         gap: $spacing-sm;
         justify-content: flex-end;
@@ -182,7 +182,7 @@
             color: #fff;
 
             &:hover {
-                background-color: color.adjust($button-primary, $lightness: -10%);
+                background-color: var(--button-primary-dark10);
             }
 
             &:disabled {
@@ -195,7 +195,7 @@
             color: #fff;
 
             &:hover {
-                background-color: color.adjust($button-danger, $lightness: -10%);
+                background-color: var(--button-danger-dark10);
             }
 
             &:disabled {
@@ -211,13 +211,13 @@
 
     /* Modal Actions Specific to Profile */
     &__modal-title {
-        color: $primary-text-color;
+        color: var(--primary-text-color);
         font-size: $heading-font-size-md;
         margin-bottom: $spacing-sm;
     }
 
     &__modal-message {
-        color: $secondary-text-color;
+        color: var(--secondary-text-color);
         font-size: $body-font-size;
         margin-bottom: $spacing-md;
     }
@@ -241,7 +241,7 @@
             transition: background-color $transitions-base;
 
             &:hover {
-                background-color: color.adjust($button-danger, $lightness: -10%);
+                background-color: var(--button-danger-dark10);
             }
 
             &:disabled {
@@ -261,7 +261,7 @@
             transition: background-color $transitions-base;
 
             &:hover {
-                background-color: color.adjust($button-primary, $lightness: -10%);
+                background-color: var(--button-primary-dark10);
             }
         }
     }

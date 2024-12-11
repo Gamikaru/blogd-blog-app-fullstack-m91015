@@ -17,3 +17,6 @@ export { UserProvider, useUser, useUserUpdate } from './UserContext';
 
 // Comment Context
 export { CommentProvider, useCommentActions, useComments } from './CommentContext';
+
+// Theme Context
+export { ThemeProvider, useThemeContext } from './ThemeContext';

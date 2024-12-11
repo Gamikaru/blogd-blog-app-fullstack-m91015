@@ -39,7 +39,7 @@
 
     &__backdrop {
         backdrop-filter: blur(10px);
-        background-color: $modal-backdrop-color;
+        background-color: var(--modal-backdrop-color);
     }
 
     // Sidebar positioning classes

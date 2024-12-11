@@ -44,8 +44,8 @@
 }
 
 .cube-slider__text-slide {
-    background-color: $secondary-bg-color;
-    border: 0.2rem solid $border-color;
+    background-color: var(--secondary-bg-color);
+    border: 0.2rem solid var(--border-color);
     border-radius: $border-radius-lg;
     display: flex;
     flex-direction: column;
@@ -125,7 +125,7 @@
 }
 
 .cube-slider__text-slide__opening-quote {
-    color: $primary-text-color;
+    color: var(--primary-text-color);
     font-family: $font-family-heading;
     font-size: 2rem;
     font-weight: bold;
@@ -146,7 +146,7 @@
 }
 
 .cube-slider__text-slide__closing-group__closing-quote {
-    color: $primary-text-color;
+    color: var(--primary-text-color);
     font-family: $font-family-heading;
     font-size: 2rem;
     font-weight: bold;

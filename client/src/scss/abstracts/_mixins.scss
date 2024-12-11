@@ -37,14 +37,14 @@
 // Mixin for Button Styling
 @mixin button-style($bg-color, $text-color) {
     &:hover {
-        background-color: if($bg-color != none, color.adjust($bg-color, $lightness: -10%), transparent);
+        background-color: if($bg-color != none, var(--accent-color-1), none); // Accent color on hover
         opacity: $button-opacity-default; // Slightly more opaque on hover
     }
 
     &:disabled,
     &.button-disabled {
         background-color: rgb(0 0 0 / 0%); // Maintain transparent background
-        color: color.adjust($primary-text-color, $lightness: 30%); // Lighter text color when disabled
+        color: var(--primary-text-color-disabled); // Lighter text color when disabled
         cursor: not-allowed; // Indicate disabled state
         opacity: $button-opacity-disabled; // Reduced opacity when disabled
     }
@@ -63,7 +63,7 @@
     &:disabled,
     &.button-disabled {
         background-color: rgba($variant-color, $bg-opacity);
-        color: color.adjust($variant-color, $lightness: 30%);
+        color: var(--primary-text-color-disabled);
         cursor: not-allowed;
         opacity: $button-opacity-disabled;
     }
@@ -71,7 +71,7 @@
 
 // Mixin for Heading Styles
 @mixin heading-style($size, $font-family: $font-family-heading, $weight: 700) {
-    color: $primary-text-color;
+    color: var(--primary-text-color);
     font-family: $font-family;
     font-size: $size;
     font-weight: $weight;
@@ -80,10 +80,10 @@
 
 // Mixin for Card Style
 @mixin card-style {
-    background-color: $secondary-bg-color;
+    background-color: var(--secondary-bg-color);
     border-radius: $border-radius;
     box-shadow: $card-shadow;
-    color: $primary-text-color;
+    color: var(--primary-text-color);
     padding: $card-padding;
 
     @include respond-to(md) {
@@ -213,7 +213,7 @@
 @mixin page-title {
     @include heading-style($heading-font-size-xxlg);
 
-    color: $primary-text-color;
+    color: var(--primary-text-color);
     font-weight: bold;
     margin: 0;
     margin-left: $spacing-xs;
@@ -233,21 +233,21 @@
 @mixin filter-search-icon {
     background: none;
     border: none;
-    color: $primary-text-color;
+    color: var(--primary-text-color);
     cursor: pointer;
     font-size: px-to-rem(21);
     transition: color $transitions-base;
 
     &:hover {
-        color: $accent-color-1;
+        color: var(--accent-color-1);
     }
 }
 
 /* Base Mixin for Input Fields */
 @mixin input-field-base {
-    border: 1px solid $border-color;
+    border: 1px solid var(--border-color);
     border-radius: $border-radius;
-    color: $primary-text-color;
+    color: var(--primary-text-color);
     font-size: $body-font-size;
     padding: $input-padding;
     transition:
@@ -257,13 +257,13 @@
     width: 100%;
 
     &:focus {
-        border-color: $accent-color-2;
+        border-color: var(--accent-color-2);
         box-shadow: $input-focus-box-shadow;
         outline: none;
     }
 
     &.input-error {
-        border-color: $error-color;
+        border-color: var(--error-color);
     }
 
     ::placeholder {
@@ -277,18 +277,18 @@
     @include input-field-base;
 
     appearance: none;
-    background-color: $primary-bg-color;
+    background-color: var(--primary-bg-color);
     background-image: none;
     padding-right: 2.5rem; // Space for the chevron icon
 
     &:focus {
-        border-color: $accent-color-2;
+        border-color: var(--accent-color-2);
         box-shadow: $input-focus-box-shadow;
         outline: none;
     }
 
     &.is-invalid {
-        border-color: $error-color;
+        border-color: var(--error-color);
     }
 }
 
@@ -296,8 +296,8 @@
 @mixin search-input-custom {
     @include input-field-base;
 
-    background-color: $secondary-bg-color;
-    border-color: $accent-color-1;
+    background-color: var(--secondary-bg-color);
+    border-color: var(--accent-color-1);
 
     ::placeholder {
         color: silver;
@@ -314,7 +314,7 @@
 
 // Mixin for Comment Form Styling
 @mixin comment-form-style {
-    background-color: color.adjust($secondary-bg-color, $lightness: 5%); // Slightly lighter background
+    background-color: var(--secondary-bg-color-light5); // Slightly lighter background
     box-shadow: $box-shadow-small;
     display: flex;
     flex-direction: column;
@@ -327,11 +327,11 @@
     textarea {
         @include input-field-base; // Use existing input field base styles
 
-        background-color: color.adjust($secondary-bg-color, $lightness: 5%); // Match form background
+        background-color: var(--secondary-bg-color-light5); // Match form background
         resize: vertical;
 
         &:focus {
-            border-color: $highlight-color;
+            border-color: var(--highlight-color);
             box-shadow: $input-focus-box-shadow;
             outline: none;
         }

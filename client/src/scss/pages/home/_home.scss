@@ -1,7 +1,7 @@
 // Variables
 
 .home-page-container {
-    background-color: $primary-bg-color;
+    background-color: var(--primary-bg-color);
     margin: 0 auto;
     min-height: 100vh;
     overflow: visible;
@@ -11,7 +11,7 @@
     width: 75vw;
 
     // border-top: white 5rem solid;
-    // border-right: 0.05rem solid $border-color;
+    // border-right: 0.05rem solid var(--border-color);
 
 }
 

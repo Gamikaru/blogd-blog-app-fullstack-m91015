@@ -1,7 +1,7 @@
 // components/pages/profile/_user-card.scss
 
 .user-card {
-    background: $secondary-bg-color;
+    background: var(--secondary-bg-color);
     border-radius: $border-radius;
     box-shadow: $box-shadow-medium;
     display: flex;
@@ -19,7 +19,7 @@
 
     &__header {
         align-items: center;
-        background: linear-gradient(135deg, $accent-color-1, $accent-color-2);
+        background: linear-gradient(135deg, var(--accent-color-1), var(--accent-color-2));
         display: flex;
         gap: $spacing-md;
         padding: $spacing-lg;
@@ -33,9 +33,9 @@
 
     &__info-strip {
         align-items: center;
-        background-color: $accent-color-1;
+        background-color: var(--accent-color-1);
         border-radius: $border-radius;
-        color: $secondary-bg-color;
+        color: var(--secondary-bg-color);
         display: flex;
         gap: $spacing-sm;
         margin-top: $spacing-md;
@@ -73,7 +73,7 @@
     }
 
     &__detail-icon {
-        color: $accent-color-1;
+        color: var(--accent-color-1);
         flex-shrink: 0;
         font-size: 1rem;
     }
@@ -90,7 +90,7 @@
     }
 
     &__detail-value {
-        color: $primary-text-color;
+        color: var(--primary-text-color);
         font-size: 0.85rem;
         word-break: break-word;
     }

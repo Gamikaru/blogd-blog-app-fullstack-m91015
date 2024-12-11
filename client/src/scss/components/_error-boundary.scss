@@ -1,15 +1,15 @@
 .error-boundary {
-    background-color: $primary-bg-color;
+    background-color: var(--primary-bg-color);
     border-radius: $border-radius;
     box-shadow: $box-shadow-medium;
-    color: $error-color;
+    color: var(--error-color);
     margin: map.get($spacing-scale, xxl) auto;
     max-width: map.get($container-max-widths, sm);
     padding: map.get($spacing-scale, lg);
     text-align: center;
 
     &__title {
-        color: $error-color;
+        color: var(--error-color);
         font-family: $font-family-heading;
         font-size: $heading-font-size-md;
         margin-bottom: map.get($spacing-scale, md);
@@ -23,10 +23,10 @@
     }
 
     &__details {
-        background-color: $secondary-bg-color;
-        border: 1px solid $border-color;
+        background-color: var(--secondary-bg-color);
+        border: 1px solid var(--border-color);
         border-radius: $border-radius;
-        color: $primary-text-color;
+        color: var(--primary-text-color);
         font-family: $font-family-primary;
         font-size: $xsmall-font-size;
         margin-top: map.get($spacing-scale, lg);
@@ -36,10 +36,10 @@
     }
 
     .button-retry {
-        background-color: $highlight-color;
+        background-color: var(--highlight-color);
         border: none;
         border-radius: $button-border-radius;
-        color: $secondary-bg-color;
+        color: var(--secondary-bg-color);
         cursor: pointer;
         padding: map.get($button-padding, md);
         transition: map.get($transitions, button);

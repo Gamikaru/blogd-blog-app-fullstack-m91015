@@ -16,7 +16,7 @@
             // Assuming $heading-font-size-xxlg is fluid as per your initial code:
             @include heading-style($heading-font-size-xxlg);
 
-            color: $primary-text-color;
+            color: var(--primary-text-color);
             font-weight: bold;
             margin: 0;
             margin-left: $spacing-xs;
@@ -62,13 +62,13 @@
         padding-top: $spacing-xxs;
 
         .explore-link {
-            color: $primary-text-color;
+            color: var(--primary-text-color);
             font-size: $small-font-size;
             font-weight: 600;
             text-decoration: none;
 
             &:hover {
-                color: $accent-color-1;
+                color: var(--accent-color-1);
             }
         }
 

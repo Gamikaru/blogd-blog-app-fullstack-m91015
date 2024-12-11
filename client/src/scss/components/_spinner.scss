@@ -5,7 +5,7 @@ $spinner-size: 5rem;
 .spinner-container {
     @include flex-center;
 
-    background-color: $secondary-bg-color; // Ensures spinner stands out against the background
+    background-color: var(--secondary-bg-color); // Ensures spinner stands out against the background
     flex-direction: column;
     height: 100vh; // Full viewport height
     text-align: center;

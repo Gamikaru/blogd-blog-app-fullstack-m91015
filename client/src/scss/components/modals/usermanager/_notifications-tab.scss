@@ -13,7 +13,7 @@
     gap: $spacing-xs;
 
     label {
-        color: $primary-text-color;
+        color: var(--primary-text-color);
         font-size: $small-font-size;
     }
 
@@ -31,9 +31,9 @@
 
     select {
         background-color: $input-bg-color;
-        border: 1px solid $border-color;
+        border: 1px solid var(--border-color);
         border-radius: $border-radius;
-        color: $primary-text-color;
+        color: var(--primary-text-color);
         font-size: $body-font-size;
         padding: $input-padding;
         transition:
@@ -41,14 +41,14 @@
             box-shadow $transitions-base;
 
         &:focus {
-            border-color: $highlight-color;
-            box-shadow: 0 0 0 3px rgba($highlight-color, 0.25);
+            border-color: var(--highlight-color);
+            box-shadow: 0 0 0 3px rgba(var(--highlight-color), 0.25);
             outline: none;
         }
     }
 
     .notifications-tab__error {
-        color: $error-color;
+        color: var(--error-color);
         font-size: $xsmall-font-size;
         margin-top: 2px;
     }

@@ -2,7 +2,7 @@
 
 .login-page {
     align-items: center;
-    background-color: $primary-bg-color;
+    background-color: var(--primary-bg-color);
     display: flex;
     justify-content: center;
     min-height: 100vh;
@@ -11,7 +11,7 @@
 
 .login-container {
     align-items: center;
-    background-color: $secondary-bg-color;
+    background-color: var(--secondary-bg-color);
     border-radius: $border-radius;
     box-shadow: $card-shadow;
     display: flex;
@@ -27,12 +27,12 @@
 }
 
 .login-card {
-    background-color: $secondary-bg-color;
+    background-color: var(--secondary-bg-color);
     border: none;
     width: 100%;
 
     &-header {
-        color: $primary-text-color;
+        color: var(--primary-text-color);
         font-size: $heading-font-size-md;
         font-weight: 600;
         margin-bottom: $spacing-unit * 2;
@@ -61,12 +61,12 @@
 }
 
 .register-link {
-    color: $accent-color-2;
+    color: var(--accent-color-2);
     cursor: pointer;
     text-decoration: underline;
 
     &:hover {
-        color: color.adjust($accent-color-2, $lightness: -10%);
+        color: var(--accent-color-2-dark10);
     }
 }
 
@@ -106,7 +106,7 @@
     z-index: 2;
 
     &:hover {
-        color: $primary-text-color;
+        color: var(--primary-text-color);
     }
 
     svg {

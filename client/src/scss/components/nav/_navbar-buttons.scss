@@ -20,11 +20,11 @@
         white-space: nowrap;
 
         &.active {
-            color: $primary-text-color;
+            color: var(--primary-text-color);
         }
 
         &:hover {
-            color: $accent-color-1;
+            color: var(--accent-color-1);
         }
     }
 }
@@ -41,7 +41,7 @@
         align-items: center;
         background: none;
         border: none;
-        color: $primary-text-color;
+        color: var(--primary-text-color);
         cursor: pointer;
         display: flex;
         font-size: px-to-rem(19.2); // 1.2rem
@@ -57,7 +57,7 @@
     .create-post-icon:hover,
     .search-icon:hover,
     .user-icon:hover {
-        color: $accent-color-1;
+        color: var(--accent-color-1);
     }
 }
 

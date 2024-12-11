@@ -1,109 +1,49 @@
+// abstracts/_variables.scss
+
+@use "sass:math";
+@use "sass:map";
+
 // Base values
 $base-font-size: 16px;
 $base-line-height: 1.6;
 
-// Theme variable
-$theme: light; // Set to 'light' or 'dark' to switch themes
+// Since we rely on CSS variables for theme colors now,
+// we do not need `$theme`, `$light-theme`, `$dark-theme`, `$theme-colors` maps here.
+// Category colors remain as is if you still use them as static maps for other logic, or switch them to CSS variables too.
 
-// Define category colors for light theme
 $light-category-colors: (
     "lifestyle": #fbc4ab,
-    // Pastel Peach
     "philosophy": #eac4d5,
-    // Pastel Magenta
     "productivity": #ffe5d9,
-    // Pastel Orange
     "health & fitness": #b8e0d2,
-    // Pastel Mint
     "technology": #a8d0e6,
-    // Pastel Blue
     "cooking": #f9dcc4,
-    // Pastel Yellow
     "art": #e2ece9,
-    // Pastel Green
     "music": #d5e1df,
-    // Pastel Teal
     "business": #c3aed6,
-    // Pastel Purple
-    "default": #e2e3d5 // Light accent color
+    "default": #e2e3d5
 );
-
-// Define category colors for dark theme
-// Define category colors for dark theme
 $dark-category-colors: (
-  'lifestyle':        #ff8c009f,  // Dark Orange
-  'philosophy':       #ff69b49f,  // Hot Pink
-  'productivity':     #ff6347a2,  // Tomato
-  'health & fitness': #20b2aba9,  // Light Sea Green
-  'technology':       #1e8fffab,  // Dodger Blue
-  'cooking':          #ffd900a0,  // Gold
-  'art':              #00ced1a5,  // Dark Turquoise
-  'music':            #7fffd4a3,  // Aquamarine
-  'business':         #9470dba0,  // Medium Purple
-  'default':          #e2e3d59d,   // Dark accent color
-  'other':           #808080   // Gray
+    "lifestyle": #ff8c009f,
+    "philosophy": #ff69b49f,
+    "productivity": #ff6347a2,
+    "health & fitness": #20b2aba9,
+    "technology": #1e8fffab,
+    "cooking": #ffd900a0,
+    "art": #00ced1a5,
+    "music": #7fffd4a3,
+    "business": #9470dba0,
+    "default": #e2e3d59d,
+    "other": #808080
 );
 
-// Light theme colors
-$light-theme: (
-    primary-bg-color: #f3f0ed,
-    secondary-bg-color: #fff,
-    primary-text-color: #3d3d3d,
-    secondary-text-color: #9c9c9c,
-    accent-color-1: #e2e3d5,
-    accent-color-2: #f1f1f1,
-    highlight-color: #9c9c9c,
-    success-color: #28a745,
-    error-color: #e74c3c,
-    warning-color: #f39c12,
-    hover-color: color.adjust(#f1f1f1, $lightness: -10%),
-    modal-backdrop-color: rgb(0 0 0 / 20%),
-    border-color: rgb(0 0 0 / 10%),
-    category-colors: $light-category-colors
-);
-
-// Dark theme colors
-$dark-theme: (
-    primary-bg-color: #5e6758,
-    secondary-bg-color: #232323,
-    primary-text-color: #e2e3d5,
-    secondary-text-color: #bfbfbf,
-    accent-color-1: #e2e3d5,
-    accent-color-2: #e2e3d5,
-    highlight-color: #75a2a4,
-    success-color: #28a745,
-    error-color: #e74c3c,
-    warning-color: #f39c12,
-    hover-color: color.adjust(#bfbfbf, $lightness: 10%),
-    modal-backdrop-color: rgb(255 255 255 / 20%),
-    border-color: rgb(255 255 255 / 10%),
-    category-colors: $dark-category-colors
-);
-
-// Choose theme colors based on $theme variable
-$theme-colors: if($theme == "dark", $dark-theme, $light-theme);
-
-// Assign colors
-$primary-bg-color: map.get($theme-colors, primary-bg-color);
-$secondary-bg-color: map.get($theme-colors, secondary-bg-color);
-$primary-text-color: map.get($theme-colors, primary-text-color);
-$secondary-text-color: map.get($theme-colors, secondary-text-color);
-$accent-color-1: map.get($theme-colors, accent-color-1);
-$accent-color-2: map.get($theme-colors, accent-color-2);
-$highlight-color: map.get($theme-colors, highlight-color);
-$success-color: map.get($theme-colors, success-color);
-$error-color: map.get($theme-colors, error-color);
-$warning-color: map.get($theme-colors, warning-color);
-$hover-color: map.get($theme-colors, hover-color);
-$modal-backdrop-color: map.get($theme-colors, modal-backdrop-color);
-$border-color: map.get($theme-colors, border-color);
-$category-colors: map.get($theme-colors, category-colors);
+// We no longer map from $theme-colors.
+// Theme colors come directly from CSS variables in the final compiled CSS.
+// Just reference var(--...) in your SCSS where needed:
 
 // Typography - Fluid Responsive
 $font-family-primary: "Segoe UI", sans-serif;
 $font-family-heading: "Merriweather", serif;
-
-// Fluid Typography sizes for headings
 $heading-font-size-xxlg: fluid-type(400px, 1400px, 5rem, 4rem);
 $heading-font-size-lg: fluid-type(320px, 1200px, 1.75rem, 2.5rem);
 $heading-font-size-md: fluid-type(320px, 1200px, 1.5rem, 2rem);
@@ -126,8 +66,6 @@ $spacing-scale: (
     xxxl: 5rem,
     xxl2: 6rem
 );
-
-// Spacing and Layout
 $spacing-unit: map.get($spacing-scale, md);
 $navbar-padding: map.get($spacing-scale, sm) map.get($spacing-scale, md);
 $card-padding: map.get($spacing-scale, lg);
@@ -150,24 +88,16 @@ $box-shadow-medium: 0 clamp(2px, 0.5vw, 4px) clamp(4px, 0.75vw, 8px) rgb(0 0 0 /
 $box-shadow-strong: 0 clamp(4px, 1vw, 8px) clamp(8px, 1.5vw, 12px) rgb(0 0 0 / 40%);
 $shadow-color: rgb(0 0 0 / 8%);
 
-// Breakpoints with em units
+// Breakpoints
 $breakpoints: (
     xxs: 20em,
-    // 320px
     xs: 24em,
-    // 384px
     sm: 36em,
-    // 576px
     md: 48em,
-    // 768px
     lg: 62em,
-    // 992px
     xl: 75em,
-    // 1200px
-    xxl: 90em // 1440px
+    xxl: 90em
 );
-
-// Individual Breakpoint Variables
 $breakpoint-xxs: 20em;
 $breakpoint-xs: 24em;
 $breakpoint-sm: 36em;
@@ -175,8 +105,6 @@ $breakpoint-md: 48em;
 $breakpoint-lg: 62em;
 $breakpoint-xl: 75em;
 $breakpoint-xxl: 90em;
-
-// Viewport-based Container Widths
 $container-max-widths: (
     xxs: 95vw,
     xs: 90vw,
@@ -187,7 +115,7 @@ $container-max-widths: (
     xxl: 70vw
 );
 
-// Utility Variables
+// Utility Spacing Variables
 $spacing-xxs: map.get($spacing-scale, xxs);
 $spacing-xs: map.get($spacing-scale, xs);
 $spacing-sm: map.get($spacing-scale, sm);
@@ -198,19 +126,21 @@ $spacing-xxl: map.get($spacing-scale, xxl);
 $spacing-xxxl: map.get($spacing-scale, xxxl);
 $spacing-xxl2: map.get($spacing-scale, xxl2);
 
-// Added Variables
-$button-hover-bg-color: color.adjust($highlight-color, $lightness: 5%); // Hover background color for buttons
-$input-focus-box-shadow: 0 0 0 2px rgba($highlight-color, 0.2); // Box shadow for focused inputs
+// Theme-dependent button hover background now references CSS var
+$button-hover-bg-color: var(--highlight-color-light5);
 
-// New Variables for Button Variants
+// input-focus-box-shadow uses highlight-color:
+$input-focus-box-shadow: 0 0 0 2px rgb(156 156 156 / 20%); // can't do var(--highlight-color) inside rgba directly unless postcss is used. If needed, hardcode color #9c9c9c.
+
+// Button Variants
 $button-opacity-hover: 1;
 $button-opacity-default: 0.8;
 $button-opacity-disabled: 0.6;
 $button-grey: #6c757d;
 $button-grey-hover: #5a6268;
 $button-grey-disabled: #343a40;
-$button-primary: $highlight-color;
-$button-primary-hover: color.adjust($highlight-color, $lightness: -10%);
+$button-primary: var(--highlight-color);
+$button-primary-hover: var(--highlight-color-dark10);
 $button-primary-disabled: #343a40;
 $button-secondary: #6c757d;
 $button-secondary-hover: #5a6268;
@@ -233,12 +163,17 @@ $button-light-disabled: #343a40;
 $button-dark: #343a40;
 $button-dark-hover: #212529;
 $button-dark-disabled: #212529;
-$button-link: $highlight-color;
-$button-link-hover: color.adjust($highlight-color, $lightness: -10%);
+$button-link: var(--highlight-color);
+$button-link-hover: var(--highlight-color-dark10);
 $button-link-disabled: #343a40;
 $info-color: #17a2b8;
+$success-color: #28a745;
+$error-color: #dc3545;
+$warning-color: #ffc107;
+$secondary-text-color: var(--secondary-text-color);
 
-// Transition Variables
+
+// Transitions
 $transitions-base: 0.3s ease-out;
 $transitions: (
     base: 0.2s ease,
@@ -250,12 +185,4 @@ $z-indices: (
     modal-backdrop: 1040,
     modal: 1050
 );
-
-// Input Background Color
 $input-bg-color: #f3f0ed;
-
-// Padding Variables
-$padding-xs: map.get($spacing-scale, xs);
-$padding-sm: map.get($spacing-scale, sm);
-$padding-md: map.get($spacing-scale, md);
-$padding-lg: map.get($spacing-scale, lg);

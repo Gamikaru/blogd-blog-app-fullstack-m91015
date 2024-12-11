@@ -6,23 +6,25 @@ import {
     PostProvider,
     PrivateModalProvider,
     PublicModalProvider,
+    ThemeProvider,
     UserProvider,
 } from '@contexts';
-
 import PropTypes from 'prop-types';
 
 const Providers = ({ children }) => (
-    <NotificationProvider>
-        <PublicModalProvider>
-            <UserProvider>
-                <CommentProvider> {/* Add CommentProvider here */}
-                    <PostProvider>
-                        <PrivateModalProvider>{children}</PrivateModalProvider>
-                    </PostProvider>
-                </CommentProvider>
-            </UserProvider>
-        </PublicModalProvider>
-    </NotificationProvider>
+    <ThemeProvider>
+        <NotificationProvider>
+            <PublicModalProvider>
+                <UserProvider>
+                    <CommentProvider>
+                        <PostProvider>
+                            <PrivateModalProvider>{children}</PrivateModalProvider>
+                        </PostProvider>
+                    </CommentProvider>
+                </UserProvider>
+            </PublicModalProvider>
+        </NotificationProvider>
+    </ThemeProvider>
 );
 
 Providers.propTypes = {

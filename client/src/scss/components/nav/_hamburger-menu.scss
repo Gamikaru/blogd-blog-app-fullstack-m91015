@@ -17,7 +17,7 @@
 
 
     .line {
-        background-color: $primary-text-color;
+        background-color: var(--primary-text-color);
         height: px-to-rem(2); // Line thickness
         transition: background-color 0.3s ease;
     }
@@ -32,6 +32,6 @@
     }
 
     &:hover .line {
-        background-color: $accent-color-1;
+        background-color: var(--accent-color-1);
     }
 }

@@ -1,6 +1,6 @@
 .full-blog-view {
-    background-color: $secondary-bg-color;
-    color: $primary-text-color;
+    background-color: var(--secondary-bg-color);
+    color: var(--primary-text-color);
     line-height: $line-height;
     margin: 0 auto;
     max-width: 1200px;
@@ -36,7 +36,7 @@
         // Do not float this section.
         // Allow text to flow around the floated image.
         box-sizing: border-box;
-        color: $primary-text-color;
+        color: var(--primary-text-color);
         font-size: $body-font-size;
         line-height: $line-height;
         margin: 0;
@@ -54,7 +54,7 @@
         }
 
         blockquote {
-            border-left: 4px solid $accent-color-2;
+            border-left: 4px solid var(--accent-color-2);
             color: $secondary-text-color;
             font-style: italic;
             margin: $spacing-unit * 2 0;
@@ -106,7 +106,7 @@
 
     .comments-section {
         align-items: center;
-        border-top: 1px solid color.adjust($secondary-bg-color, $lightness: 10%);
+        border-top: 1px solid --secondary-bg-color-light10;
         box-sizing: border-box;
         clear: both; // Start comments below any floats
         margin: 0 auto;
@@ -115,7 +115,7 @@
         width: 80%;
 
         .comment {
-            background-color: color.adjust($primary-bg-color, $lightness: 4%);
+            background-color: var(--primary-bg-color-light4);
 
             &:hover {
                 box-shadow: $box-shadow-medium;
@@ -128,9 +128,9 @@
             margin-top: $spacing-unit * 1.5;
 
             textarea {
-                background-color: color.adjust($primary-bg-color, $lightness: 4%);
-                border: 1px solid color.adjust($secondary-bg-color, $lightness: 20%);
-                color: $primary-text-color;
+                background-color: var(--primary-bg-color-light4);
+                border: 1px solid var(--secondary-bg-color-light20);
+                color: var(--primary-text-color);
                 font-size: $body-font-size;
                 margin-bottom: $spacing-unit;
                 padding: $spacing-unit;
@@ -142,7 +142,7 @@
                 @include border-radius($border-radius);
 
                 &:focus {
-                    border-color: $accent-color-2;
+                    border-color: var(--accent-color-2);
                     box-shadow: $input-focus-box-shadow;
                     outline: none;
                 }

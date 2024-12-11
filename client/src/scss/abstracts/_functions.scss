@@ -19,20 +19,20 @@
     @return #{$value}rem;
 }
 
-// Function for Calculating Lightness Adjustments
-@function adjust-color-lightness($color, $percent) {
-    @return color.adjust($color, $lightness: $percent);
-}
+// // Function for Calculating Lightness Adjustments
+// @function adjust-color-lightness($color, $percent) {
+//     @return color.adjust($color, $lightness: $percent);
+// }
 
-// Function to Darken Color by Percentage
-@function darken-color($color, $percent) {
-    @return color.adjust($color, $lightness: - $percent);
-}
+// // Function to Darken Color by Percentage
+// @function darken-color($color, $percent) {
+//     @return color.adjust($color, $lightness: - $percent);
+// }
 
-// Function to Fade Color by Percentage
-@function fade-color($color, $percent) {
-    @return rgba($color, $percent);
-}
+// // Function to Fade Color by Percentage
+// @function fade-color($color, $percent) {
+//     @return rgba($color, $percent);
+// }
 
 // Function for Border Radius
 @function border-radius($radius: $border-radius) {

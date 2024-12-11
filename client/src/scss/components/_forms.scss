@@ -25,7 +25,7 @@
     @include input-field-base;
 
     &.is-invalid {
-        border-color: $error-color;
+        border-color: var(--error-color);
     }
 }
 
@@ -40,7 +40,7 @@
 }
 
 .error-label {
-    color: $error-color;
+    color: var(--error-color);
     display: block;
     font-size: $xsmall-font-size;
     margin-top: $spacing-xs;

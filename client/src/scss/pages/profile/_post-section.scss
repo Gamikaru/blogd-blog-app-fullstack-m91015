@@ -1,7 +1,7 @@
 // components/pages/profile/_posts-section.scss
 
 .posts-section {
-    background: $secondary-bg-color;
+    background: var(--secondary-bg-color);
     border-radius: $border-radius;
     margin-bottom: $spacing-lg;
     padding: $spacing-lg;
@@ -20,13 +20,13 @@
 
     &__title {
         align-items: center;
-        color: $primary-text-color;
+        color: var(--primary-text-color);
         display: flex;
         font-family: $font-family-heading;
         font-size: $heading-font-size-lg;
 
         svg {
-            color: $highlight-color;
+            color: var(--highlight-color);
             font-size: 1.5em;
             margin-right: $spacing-sm;
         }
@@ -40,7 +40,7 @@
 
         &:hover,
         &:focus {
-            color: color.adjust($info-color, $lightness: 10%);
+            color: var(--info-color-light10);
         }
     }
 
@@ -59,7 +59,7 @@
 
     // Updated tabs styling to match user manager modal
     &__tabs {
-        border-bottom: 1px solid $border-color;
+        border-bottom: 1px solid var(--border-color);
         display: flex;
         flex-wrap: wrap;
         gap: $spacing-sm;
@@ -82,20 +82,20 @@
         transition: all 0.3s ease; // Increased transition duration for smoother effect
 
         &:hover {
-            background: rgba($accent-color-1, 0.2); // Stronger background on hover
+            background: rgba(var(--accent-color-1), 0.2); // Stronger background on hover
 
 
 
 
         &.active {
-            background: $accent-color-1; // Solid background for active state
-            border-bottom: 3px solid $accent-color-2; // Thicker border for emphasis
+            background: var(--accent-color-1); // Solid background for active state
+            border-bottom: 3px solid var(--accent-color-2); // Thicker border for emphasis
             // font-weight: bold; // Bold text to highlight active state
         }
 
 
             &::after {
-                background: $accent-color-1; // Match the border-bottom color
+                background: var(--accent-color-1); // Match the border-bottom color
                 bottom: -1px;
                 content: "";
                 height: 2px;
@@ -106,8 +106,8 @@
         }
 
         &:focus {
-            background: rgba($accent-color-1, 0.2); // Stronger background on hover
-            box-shadow: 0 0 0 3px rgba($accent-color-2, 0.3);
+            background: rgba(var(--accent-color-1), 0.2); // Stronger background on hover
+            box-shadow: 0 0 0 3px rgba(var(--accent-color-2), 0.3);
             outline: none;
 
         }
@@ -133,19 +133,19 @@
     &__search-icon {
         background: none;
         border: none;
-        color: $primary-text-color;
+        color: var(--primary-text-color);
         cursor: pointer;
         font-size: 1.2em;
         transition: color $transitions-base;
 
         &:hover {
-            color: color.adjust($primary-text-color, $lightness: 10%);
+            color: var(--primary-text-light10);
         }
     }
 
     &__filter-dropdown {
-        background: $primary-bg-color;
-        border: 1px solid $border-color;
+        background: var(--primary-bg-color);
+        border: 1px solid var(--border-color);
         border-radius: $border-radius;
         box-shadow: $card-shadow;
         padding: $spacing-sm;
@@ -167,7 +167,7 @@
     }
 
     &__search-input {
-        border: 1px solid $border-color;
+        border: 1px solid var(--border-color);
         border-radius: $border-radius;
         font-size: 0.9rem; // Reduced from $body-font-size
         margin-left: $spacing-sm;

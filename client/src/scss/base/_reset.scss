@@ -10,17 +10,19 @@
 }
 
 .app-layout {
-    background-color: color.adjust($primary-bg-color, $lightness: 5%);
+    background-color: var(--primary-bg-color-light5);
+
+
 }
 
 /* Links */
 a {
-    color: $accent-color-2;
+    color: var(--accent-color-2);
     font-weight: 600;
     text-decoration: none;
 
     &:hover {
-        color: adjust-color-lightness($accent-color-2, 10%);
+        color: adjust-color-lightness(var(--accent-color-2), 10%);
         text-decoration: underline;
     }
 }
@@ -44,14 +46,14 @@ a {
 
     /* Customize the scrollbar thumb */
     .simplebar-scrollbar::before {
-        background-color: rgba($primary-text-color, 0.6) !important;
+        background-color: rgba(var(--primary-text-color), 0.6) !important;
         border-radius: 8px !important;
         width: 8px !important;
     }
 
     /* Hover effect for the scrollbar thumb */
     .simplebar-scrollbar:hover::before {
-        background-color: rgba($primary-text-color, 0.8) !important;
+        background-color: rgba(var(--primary-text-color), 0.8) !important;
     }
 }
 
@@ -66,7 +68,7 @@ a {
 
 /* Firefox */
 body {
-    scrollbar-color: rgba($primary-text-color, 0.6) transparent !important;
+    scrollbar-color: rgba(var(--primary-text-color), 0.6) transparent !important;
     scrollbar-width: thin !important;
 }
 
@@ -94,7 +96,7 @@ p {
 /* Reactive Loading Skeleton */
 .skeleton {
     animation: pulse 1.5s infinite ease-in-out;
-    background-color: $secondary-bg-color;
+    background-color: var(--secondary-bg-color);
     border-radius: $border-radius;
     height: 1rem;
     width: 100%;

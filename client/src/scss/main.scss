@@ -4,6 +4,7 @@
 @use "sass:math";
 @use "sass:meta";
 @use "sass:map";
+@import "abstracts/themes"; // contains :root and .dark-theme definitions
 @import 'bootstrap/scss/bootstrap';
 
 
