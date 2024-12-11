@@ -2,7 +2,7 @@
 
 .login-page {
     align-items: center;
-    background-color: var(--primary-bg-color);
+    background-color: var(--secondary-bg-color);
     display: flex;
     justify-content: center;
     min-height: 100vh;
@@ -11,7 +11,7 @@
 
 .login-container {
     align-items: center;
-    background-color: var(--secondary-bg-color);
+    background-color: var(--primary-bg-color);
     border-radius: $border-radius;
     box-shadow: $card-shadow;
     display: flex;
@@ -22,12 +22,14 @@
 }
 
 .logo-image {
-    margin-bottom: $spacing-unit * 2;
-    width: 150px;
+    margin-bottom: -$spacing-unit * 10;
+    position: relative;
+    top: -$spacing-unit * 5;
+    width: 20rem;
 }
 
 .login-card {
-    background-color: var(--secondary-bg-color);
+    // background-color: var(--secondary-bg-color);
     border: none;
     width: 100%;
 
@@ -61,12 +63,27 @@
 }
 
 .register-link {
-    color: var(--accent-color-2);
     cursor: pointer;
-    text-decoration: underline;
+    position: relative;
+    text-decoration: none;
+
+    &::after {
+        background-color: var(--primary-text-color);
+        bottom: -2px; // Adjust as needed
+        content: "";
+        height: 2px; // Thickness of the underline
+        left: 0;
+        position: absolute;
+        transition: width 0.3s ease;
+        width: 0;
+    }
 
     &:hover {
-        color: var(--accent-color-2-dark10);
+        color: var(--primary-text-color);
+
+        &::after {
+            width: 100%;
+        }
     }
 }
 

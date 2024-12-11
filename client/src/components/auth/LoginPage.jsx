@@ -1,15 +1,16 @@
-// src/components/LoginPage.jsx
 import debounce from 'lodash.debounce';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 
 import { Button, InputField, Spinner } from '@components';
-import { useNotificationContext, usePublicModalContext } from '@contexts';
+import { useNotificationContext, usePublicModalContext, useThemeContext } from '@contexts'; // Added useThemeContext
 import { useUserUpdate } from '@contexts/UserContext';
 import { logger, validateLoginForm } from '@utils';
 
 const LoginPage = () => {
+    const { theme } = useThemeContext(); // Get theme from context
+
     const [loginForm, setLoginForm] = useState({ email: '', password: '' });
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
@@ -84,13 +85,19 @@ const LoginPage = () => {
         return <Spinner message="Logging you in..." />;
     }
 
+    // Choose the logo based on the current theme
+    const logoSrc = theme === 'dark'
+        ? '/assets/images/High-Resolution-Logo-White-on-Transparent-Background.svg'
+        : '/assets/images/High-Resolution-Logo-Black-on-Transparent-Background2.svg';
+
     return (
         <div className="login-page">
             <div className="login-container">
                 <img
                     alt="CodeBlogs logo"
                     className="logo-image"
-                    src="/assets/images/High-Resolution-Logo-Black-on-Transparent-Background.png"
+                    src={logoSrc}
+
                 />
 
                 <div className="login-card">

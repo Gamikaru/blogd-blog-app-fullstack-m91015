@@ -124,6 +124,20 @@ const UserDropdown = ({ showDropdown, setShowDropdown, position }) => {
                                     <span className="detail-item__text">{user?.location || 'Not set'}</span>
                                 </motion.div>
                             </div>
+                            {/* Theme Toggle Slider */}
+                            <div className="dropdown-actions__button theme-toggle">
+                                <FiSun className="icon sun" /> {/* Updated to Feather Icon */}
+                                <label className="switch">
+                                    <input
+                                        type="checkbox"
+                                        checked={theme === 'dark'}
+                                        onChange={toggleTheme}
+                                        aria-label="Toggle theme"
+                                    />
+                                    <span className="slider round"></span>
+                                </label>
+                                <FiMoon className="icon moon" /> {/* Updated to Feather Icon */}
+                            </div>
                         </div>
                         <div className="dropdown-actions">
                             <div className="dropdown-actions__button">
@@ -142,6 +156,8 @@ const UserDropdown = ({ showDropdown, setShowDropdown, position }) => {
                                     Settings
                                 </Button>
                             </div>
+
+
                             <div className="dropdown-actions__button">
                                 <Button
                                     onClick={handleLogout}
@@ -150,20 +166,7 @@ const UserDropdown = ({ showDropdown, setShowDropdown, position }) => {
                                     Logout
                                 </Button>
                             </div>
-                            {/* Theme Toggle Slider */}
-                            <div className="dropdown-actions__button theme-toggle">
-                                <FiSun className="icon sun" /> {/* Updated to Feather Icon */}
-                                <label className="switch">
-                                    <input
-                                        type="checkbox"
-                                        checked={theme === 'dark'}
-                                        onChange={toggleTheme}
-                                        aria-label="Toggle theme"
-                                    />
-                                    <span className="slider round"></span>
-                                </label>
-                                <FiMoon className="icon moon" /> {/* Updated to Feather Icon */}
-                            </div>
+
                         </div>
                     </div>
                 </div>
