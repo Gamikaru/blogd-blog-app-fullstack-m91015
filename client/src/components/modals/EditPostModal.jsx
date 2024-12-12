@@ -10,6 +10,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import SimpleBar from 'simplebar-react';
 import 'simplebar-react/dist/simplebar.min.css';
+import PropTypes from 'prop-types';
 
 const categoryOptions = [
     { value: 'Health and Fitness', label: 'Health and Fitness' },
@@ -25,7 +26,7 @@ const categoryOptions = [
     { value: 'Other', label: 'Other' }
 ];
 
-export default function EditPostModal() {
+export default function EditPostModal({ onClose }) {
     const { showModal, togglePrivateModal, modalType } = usePrivateModalContext();
     const { updatePost, selectedPost, setSelectedPost } = usePostContext();
     const { showNotification } = useNotificationContext();
@@ -97,6 +98,7 @@ export default function EditPostModal() {
         setSelectedFiles([]);
         setTimeout(() => setSelectedPost(null), 300);
         togglePrivateModal();
+        onClose();
     };
 
     const handlePostEditSubmit = async (e) => {
@@ -177,10 +179,17 @@ export default function EditPostModal() {
             backdropClassName="edit-post-modal__backdrop"
             container={document.body}
         >
+            <Modal.Header>
+                <Button
+                    variant="close"
+                    onClick={handleModalClose}
+                    aria-label="Close"
+                    className="close-button"
+                />
+            </Modal.Header>
             <SimpleBar style={{ maxHeight: '100%' }} className="edit-post-modal">
                 <Form onSubmit={handlePostEditSubmit} className="edit-post-modal__form" id="edit-post-form">
                     <div className="edit-post-modal__preview">
-                        <Modal.Header closeButton />
                         <textarea
                             type="text"
                             value={postTitle}
@@ -314,4 +323,8 @@ export default function EditPostModal() {
             </SimpleBar>
         </Modal>
     );
+};
+
+EditPostModal.propTypes = {
+    onClose: PropTypes.func.isRequired,
 };

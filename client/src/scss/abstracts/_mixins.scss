@@ -337,3 +337,36 @@
         }
     }
 }
+
+@mixin close-button($position: absolute, $top: $spacing-md, $right: $spacing-md) {
+    @include reset-button;
+
+    align-items: center;
+    color: var(--close-button-color);
+    cursor: pointer;
+    display: flex;
+    font-size: 1.5rem;
+    justify-content: center;
+    padding: $spacing-xs;
+    position: $position;
+    right: $right;
+    top: $top;
+    transition:
+        color $transitions-base,
+        background-color $transitions-base;
+    z-index: 1070;
+
+    &:hover {
+        background-color: transparent;
+        color: var(--primary-text-color);
+    }
+
+    &:active {
+        background-color: transparent;
+        color: var(--highlight-color-dark10);
+    }
+
+    .button-icon {
+        color: inherit;
+    }
+}

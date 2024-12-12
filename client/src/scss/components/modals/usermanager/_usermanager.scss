@@ -39,6 +39,10 @@
         display: flex;
         justify-content: space-between;
         padding: $spacing-lg $spacing-lg;
+
+        // .usermanager-close-button {
+        //     @include close-button;
+        // }
     }
 
     &__title {
@@ -46,20 +50,6 @@
         font-family: $font-family-heading;
         font-size: $heading-font-size-md;
         margin: 0;
-    }
-
-    &__close-button {
-        @include reset-button;
-
-        color: $secondary-text-color;
-        cursor: pointer;
-        font-size: 1.5rem;
-        padding: $spacing-xs;
-        transition: color 0.2s ease;
-
-        &:hover {
-            color: var(--primary-text-color);
-        }
     }
 
     &__tabs-and-controls {

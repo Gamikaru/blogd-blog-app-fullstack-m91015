@@ -65,7 +65,7 @@ const ProfilePicModal = ({ imageUrl, onClose }) => {
                         onClick={onClose}
                         aria-label="Close modal"
                         ref={closeButtonRef}
-                        className="button button-close"
+                        className="close-button"
                     />
                     <img src={imageUrl} alt="Profile" />
                     <div className="profile-pic-modal-buttons">

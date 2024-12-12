@@ -103,6 +103,7 @@ const variantClasses = {
     settings: 'button-settings', // Added settings variant
     settings2: 'button-settings2', // Added settings2 variant
     iconButton: 'icon-only', // Map 'iconButton' to 'icon-only' class
+    close: 'close-button', // Added close variant
 };
 
 const Button = React.memo(
@@ -113,7 +114,7 @@ const Button = React.memo(
         showIcon = true,
         theme = 'light',
         as: Component = 'button',
-        iconOnly = false,
+        iconOnly = variant === 'close' ? true : false,
         filled = false,
         'aria-label': ariaLabel,
         ...props
@@ -126,6 +127,8 @@ const Button = React.memo(
         // Determine motion properties
         const motionProps =
             variant === 'iconButton' && !shouldReduceMotion
+                ? {}
+                : variant === 'close'
                 ? {}
                 : {
                     whileHover: { scale: 1.01, transition: { duration: 0.2 } },

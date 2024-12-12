@@ -32,6 +32,8 @@
     --primary-bg-color-light1: #f4f1ee;
     --primary-bg-color-light4: #f6f4f1;
     --secondary-bg-color-light20: #fefefe;
+    --close-button-color: #2f2f2f; /* Dark color for light mode */
+
 
     /* Updated Category Colors (light theme):
        Slightly deepened and adjusted to maintain contrast on light backgrounds */
@@ -70,6 +72,8 @@
     --secondary-bg-color-light20: #313131;
     --secondary-bg-color-light10: #2a2a2a;
     --secondary-bg-color-dark2: #1f1f1f;
+    --close-button-color: #e7e8db; /* Light color for dark mode */
+
 
     /* Category colors (dark theme) */
     --category-lifestyle: #ff8c009f; /* Dark Orange */

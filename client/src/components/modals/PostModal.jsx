@@ -10,8 +10,9 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import SimpleBar from 'simplebar-react';
 import 'simplebar-react/dist/simplebar.min.css';
+import PropTypes from 'prop-types';
 
-export default function PostModal() {
+export default function PostModal({ onClose }) {
     const [postContent, setPostContent] = useState("");
     const [postTitle, setPostTitle] = useState("");
     const [category, setCategory] = useState("Other");
@@ -93,16 +94,23 @@ export default function PostModal() {
     return (
         <Modal
             show={showModal && modalType === 'post'}
-            onHide={togglePrivateModal}
+            onHide={onClose}
             centered
             className="post-modal"
             backdropClassName="post-modal__backdrop"
             container={document.body}
         >
+            <Modal.Header>
+                <Button
+                    variant="close"
+                    onClick={onClose}
+                    aria-label="Close"
+                    className="close-button"
+                />
+            </Modal.Header>
             <SimpleBar style={{ maxHeight: '100%' }} className="post-modal">
                 <Form onSubmit={handlePostSubmit} className="post-modal__form" id="post-form">
                     <div className="post-modal__preview">
-                        <Modal.Header closeButton />
                         <textarea
                             type="text"
                             value={postTitle}
@@ -231,3 +239,7 @@ export default function PostModal() {
         </Modal>
     );
 }
+
+PostModal.propTypes = {
+    onClose: PropTypes.func.isRequired,
+};

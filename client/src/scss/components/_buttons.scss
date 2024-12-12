@@ -82,7 +82,8 @@
     }
 }
 
-.button-create,.button-feather {
+.button-create,
+.button-feather {
     color: $success-color;
 
     &:hover {
@@ -190,7 +191,8 @@
     }
 }
 
-.button-settings,.button-settings2 {
+.button-settings,
+.button-settings2 {
     align-items: center;
     color: var(--primary-text-color);
     cursor: pointer;
@@ -221,7 +223,41 @@
     }
 }
 
+// _buttons.scss
 
+.close-button {
+    @include close-button;
+
+    align-items: center;
+    color: var(--primary-text-color);
+    cursor: pointer;
+    display: flex;
+    font-size: 1.5rem;
+    justify-content: center;
+    padding: $spacing-xs;
+    position: absolute; // Change from relative to absolute
+    right: 1rem; // Position from the right
+    top: 1rem; // Position from the top
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease; // Ensure smooth transitions
+
+    z-index: 1070; // Ensure it's above other elements
+
+    &:hover {
+        background-color: transparent; // Remove background changes to prevent flashing
+        color: var(--accent-color-2);
+    }
+
+    &:active {
+        background-color: transparent;
+        color: var(--highlight-color-dark10);
+    }
+
+    .button-icon {
+        color: inherit;
+    }
+}
 
 // Responsive adjustments for mobile
 @media (max-width: $breakpoint-md) {

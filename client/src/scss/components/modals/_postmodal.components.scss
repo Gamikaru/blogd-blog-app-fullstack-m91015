@@ -41,7 +41,7 @@
             }
 
             &__content {
-                color:var(--primary-text-color);
+                color: var(--primary-text-color);
                 display: flex;
                 gap: 1rem;
                 width: 100%;
@@ -52,9 +52,8 @@
             @include input-field-base;
 
             background-color: var(--primary-bg-color);
-            color:var(--primary-text-color);
+            color: var(--primary-text-color);
             width: 100%;
-
         }
 
         .toolbar-input--file {
@@ -67,24 +66,30 @@
             @include input-field-base;
 
             background-color: var(--primary-bg-color);
-            color:var(--primary-text-color);
+            color: var(--primary-text-color);
         }
+    }
+
+    &__container {
+        display: flex;
+        height: 100%;
+        overflow: hidden;
+        position: relative; // Ensure relative positioning
+        width: 100%;
     }
 
     .toolbar-group__actions {
         border-top: 1px solid var(--border-color);
-        color:var(--primary-text-color);
+        color: var(--primary-text-color);
         margin-top: auto;
         padding-top: 1rem;
-
     }
 
     .toolbar-group__content {
-        color:var(--primary-text-color);
+        color: var(--primary-text-color);
         display: flex;
         gap: 1rem;
         width: 100%;
-
     }
 
     .post-modal__preview,
@@ -192,7 +197,7 @@
             &::after {
                 background-color: var(--border-color) !important;
                 bottom: 0 !important;
-                color:var(--primary-text-color);
+                color: var(--primary-text-color);
                 content: "" !important;
                 display: block !important;
                 height: 1px !important;
@@ -200,7 +205,6 @@
                 margin-left: 2rem !important;
                 position: absolute !important;
                 width: calc(100% - 15rem) !important;
-
             }
         }
 
@@ -208,32 +212,14 @@
             background: transparent;
             border: none;
             padding: 0;
-            position: absolute;
-            right: 2rem;
-            top: 2rem;
-            z-index: 1060;
+            position: relative; // Change to relative if not already
+            z-index: 1060; // Ensure this is higher than other elements
+        }
 
-            .close {
-                backdrop-filter: blur(4px);
-                background: rgba(var(--primary-bg-color), 0.9);
-                border-radius: 50%;
-                box-shadow: 0 2px 8px rgba(var(--border-color), 0.1);
-                height: 40px;
-                margin: 0;
-                opacity: 0.8;
-                padding: 0.5rem;
-                transition: opacity 0.2s ease;
-                width: 40px;
-
-                &:hover {
-                    opacity: 1;
-                }
-
-                span {
-                    display: block;
-                    line-height: 1;
-                }
-            }
+        .close-button {
+            right: 1rem; // Adjust as needed
+            top: 1rem; // Adjust as needed
+            z-index: 1070; // Add a higher z-index
         }
     }
 

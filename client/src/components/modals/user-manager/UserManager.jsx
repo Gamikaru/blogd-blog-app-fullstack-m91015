@@ -1,4 +1,5 @@
 // UserManager.jsx
+import { Button } from '@components';
 import { useNotificationContext, useUser, useUserUpdate } from '@contexts';
 import { AnimatePresence, motion } from 'framer-motion';
 import PropTypes from 'prop-types';
@@ -127,13 +128,13 @@ const UserManager = ({ onClose }) => {
                 >
                     <div className="user-manager__header">
                         <h2 className="user-manager__title">Settings</h2>
-                        <button
-                            className="user-manager__close-button"
+
+                        <Button
+                            variant="close"
                             onClick={onClose}
                             aria-label="Close"
-                        >
-                            &times;
-                        </button>
+                            className="close-button"
+                        />
                     </div>
 
                     <div className="user-manager__tabs-and-controls">

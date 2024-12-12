@@ -34,26 +34,6 @@
         max-width: 100%;
     }
 
-    .profile-pic-modal-close {
-        background: none;
-        border: none;
-        color: var(--primary-text-color);
-        cursor: pointer;
-        font-size: 1.5rem;
-        position: absolute;
-        right: $spacing-sm;
-        top: $spacing-sm;
-        transition: color $transitions-base;
-
-        &:hover {
-            color: var(--accent-color-2);
-        }
-
-        &:focus {
-            outline: 2px solid var(--highlight-color);
-        }
-    }
-
     .profile-pic-modal-buttons {
         display: flex;
         gap: $spacing-sm;
