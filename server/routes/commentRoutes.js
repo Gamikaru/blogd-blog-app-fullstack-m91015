@@ -10,7 +10,7 @@ import {
     updateComment
 } from '../controllers/commentController.js';
 import { authenticate } from '../middleware/authMiddleware.js';
-import { validateCreateComment } from '../validators/commentValidator.js'; // Corrected path
+import { validateCreateComment } from '../validators/commentValidate.js'; // Corrected path
 
 const router = express.Router();
 

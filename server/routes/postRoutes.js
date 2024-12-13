@@ -15,7 +15,7 @@ import {
 import { authenticate } from '../middleware/authMiddleware.js';
 import { sanitizeFields } from '../middleware/sanitizeMiddleware.js'; // Ensure this import exists
 import { upload } from '../middleware/uploadMiddleware.js';
-import { validatePostCreation, validatePostUpdate } from '../validators/postValidators.js';
+import { validatePostCreation, validatePostUpdate } from '../validators/postValidate.js';
 
 const router = express.Router();
 
