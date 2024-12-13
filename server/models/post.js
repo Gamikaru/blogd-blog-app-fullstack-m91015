@@ -1,7 +1,7 @@
 // models/post.js
 
 import mongoose from 'mongoose';
-import { validCategories } from '../validators/postValidators.js';
+import { validCategories } from '../validators/postValidate.js';
 
 const { Schema, model } = mongoose;
 

@@ -1,4 +1,4 @@
-// src/validators/commentValidators.js
+// src/validators/commentValidate.js
 
 import { body, validationResult } from 'express-validator';
 
