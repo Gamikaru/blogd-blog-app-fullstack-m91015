@@ -49,14 +49,12 @@ This README provides a comprehensive overview of the application, including key 
 
 ## Demo
 
-[Live Demo](#) *(Link to the deployed application, if available)*
+[![Full Emo Demo](https://img.youtube.com/vi/69nQPBiBVfM/0.jpg)](https://www.youtube.com/watch?v=69nQPBiBVfM)
+*Click on the image above to watch the full emo demo video.*
 
-[![Video Demo](path/to/video-thumbnail.png)](link/to/video)
-*Click on the image above to watch a demo video.*
+[![Light and Dark Theme Toggle Demo](https://img.youtube.com/vi/MdXzkFadSms/0.jpg)](https://www.youtube.com/watch?v=MdXzkFadSms)
+*Click on the image above to watch the light and dark theme toggle demo video.*
 
-![Home Page Screenshot](path/to/homepage-screenshot.png)
-
-*Screenshot: Blogd Home Page*
 
 ---
 
@@ -64,63 +62,23 @@ This README provides a comprehensive overview of the application, including key 
 
 - **User Authentication**: Secure login and registration with form validation.
 
-  ![Login Page Screenshot](path/to/login-page-screenshot.png)
-
-  *Screenshot: Login Page*
-
 - **Post Creation and Editing**: Rich text editor for creating and editing blog posts with media uploads.
-
-  ![Post Creation Modal Screenshot](path/to/post-creation-modal-screenshot.png)
-
-  *Screenshot: Post Creation Modal*
 
 - **User Profiles**: Personalized profile pages with user information, posts, and statistics.
 
-  ![User Profile Screenshot](path/to/user-profile-screenshot.png)
-
-  *Screenshot: User Profile Page*
-
 - **Comments and Replies**: Interactive commenting system with threading and likes.
-
-  ![Comments Section Screenshot](path/to/comments-section-screenshot.png)
-
-  *Screenshot: Comments Section*
 
 - **Networking**: Connect with other users and view their profiles and posts.
 
-  ![Network Page Screenshot](path/to/network-page-screenshot.png)
-
-  *Screenshot: Network Page*
-
 - **Responsive Design**: Mobile-friendly layout with a responsive navbar and sidebar.
-
-  ![Responsive Design Screenshot](path/to/responsive-design-screenshot.png)
-
-  *Screenshot: Mobile View of Navbar and Sidebar*
 
 - **Search and Filtering**: Search posts and filter by categories.
 
-  ![Search and Filtering Screenshot](path/to/search-filtering-screenshot.png)
-
-  *Screenshot: Search and Filtering Options*
-
 - **Notifications**: Custom toast notifications for user feedback.
-
-  ![Notifications Screenshot](path/to/notifications-screenshot.png)
-
-  *Screenshot: Custom Toast Notification*
 
 - **Settings Management**: Update profile information, account settings, and preferences.
 
-  ![Settings Modal Screenshot](path/to/settings-modal-screenshot.png)
-
-  *Screenshot: Settings Modal with Tabs*
-
 - **Error Handling**: Robust error boundaries and handling mechanisms.
-
-  ![Error Boundary Screenshot](path/to/error-boundary-screenshot.png)
-
-  *Screenshot: Error Boundary Fallback UI*
 
 ---
 
@@ -186,67 +144,67 @@ cd Blogd
 
 1. Navigate to the backend directory:
 
-   ```bash
-   cd backend
-   ```
+         ```bash
+         cd backend
+         ```
 
 2. Install dependencies:
 
-   ```bash
-   npm install
-   ```
+         ```bash
+         npm install
+         ```
 
 3. Create a `.env` file in the `backend` directory with the following content:
 
-   ```env
-   PORT=5050
-   ATLAS_URI=your_mongodb_connection_string
-   JWT_SECRET=your_jwt_secret
-   CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
-   CLOUDINARY_API_KEY=your_cloudinary_api_key
-   CLOUDINARY_API_SECRET=your_cloudinary_api_secret
-   ENABLE_EMAIL_VERIFICATION=false
-   ```
+         ```env
+         PORT=5050
+         ATLAS_URI=your_mongodb_connection_string
+         JWT_SECRET=your_jwt_secret
+         CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+         CLOUDINARY_API_KEY=your_cloudinary_api_key
+         CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+         ENABLE_EMAIL_VERIFICATION=false
+         ```
 
-   Replace the placeholder values with your actual credentials.
+         Replace the placeholder values with your actual credentials.
 
 4. Start the backend server:
 
-   ```bash
-   npm start
-   ```
+         ```bash
+         npm start
+         ```
 
-   The server will run on `http://localhost:5050`.
+         The server will run on `http://localhost:5050`.
 
 #### Frontend Setup
 
 1. Navigate to the frontend directory:
 
-   ```bash
-   cd ../frontend
-   ```
+         ```bash
+         cd ../frontend
+         ```
 
 2. Install dependencies:
 
-   ```bash
-   npm install
-   ```
+         ```bash
+         npm install
+         ```
 
 3. Configure environment variables:
 
-   Create a `.env` file in the `frontend` directory (if required) to set up environment variables like API endpoints.
+         Create a `.env` file in the `frontend` directory (if required) to set up environment variables like API endpoints.
 
 4. Start the frontend development server:
 
-   ```bash
-   npm run dev
-   ```
+         ```bash
+         npm run dev
+         ```
 
 5. Open your browser and navigate to:
 
-   ```
-   http://localhost:5173
-   ```
+         ```
+         http://localhost:5173
+         ```
 
 ---
 
@@ -376,18 +334,18 @@ For detailed API documentation, including request and response formats, authenti
 - Unit tests for controllers, models, and utilities.
 - Run tests with:
 
-  ```bash
-  npm test
-  ```
+        ```bash
+        npm test
+        ```
 
 **Frontend Testing**
 
 - End-to-end tests for user flows.
 - Run tests with:
 
-  ```bash
-  npm run test
-  ```
+        ```bash
+        npm run test
+        ```
 
 ---
 
@@ -418,21 +376,21 @@ Contributions are welcome! Please follow these steps:
 
 2. **Create a new branch** for your feature:
 
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
+         ```bash
+         git checkout -b feature/your-feature-name
+         ```
 
 3. **Commit your changes**:
 
-   ```bash
-   git commit -m "Add your message"
-   ```
+         ```bash
+         git commit -m "Add your message"
+         ```
 
 4. **Push to the branch**:
 
-   ```bash
-   git push origin feature/your-feature-name
-   ```
+         ```bash
+         git push origin feature/your-feature-name
+         ```
 
 5. **Open a pull request**.
 
@@ -469,19 +427,19 @@ Feel free to reach out with any questions or to discuss potential collaborations
 # Additional Information
 
 - **Tools Used**:
-  - **Frontend Development**: React.js with Vite for rapid development.
-  - **Backend Development**: Express.js for handling API requests.
-  - **Database**: MongoDB with Mongoose for data modeling.
-  - **Image Management**: Cloudinary for storing and serving images.
-  - **Form Handling**: Formik and Yup for form state management and validation.
-  - **Styling**: Sass (SCSS) for advanced styling capabilities.
-  - **Testing**: Mocha and Selenium WebDriver for automated testing.
+        - **Frontend Development**: React.js with Vite for rapid development.
+        - **Backend Development**: Express.js for handling API requests.
+        - **Database**: MongoDB with Mongoose for data modeling.
+        - **Image Management**: Cloudinary for storing and serving images.
+        - **Form Handling**: Formik and Yup for form state management and validation.
+        - **Styling**: Sass (SCSS) for advanced styling capabilities.
+        - **Testing**: Mocha and Selenium WebDriver for automated testing.
 
 - **Key Features**:
-  - **Security**: Utilizes JWT for authentication, bcrypt for password hashing, and sanitization middleware to prevent XSS attacks.
-  - **Scalability**: Modular code structure with reusable components and middleware.
-  - **User Experience**: Responsive design, animations with Framer Motion, and interactive components enhance the UX.
-  - **API Integration**: Well-defined API endpoints with clear request and response structures.
+        - **Security**: Utilizes JWT for authentication, bcrypt for password hashing, and sanitization middleware to prevent XSS attacks.
+        - **Scalability**: Modular code structure with reusable components and middleware.
+        - **User Experience**: Responsive design, animations with Framer Motion, and interactive components enhance the UX.
+        - **API Integration**: Well-defined API endpoints with clear request and response structures.
 
 ---
 

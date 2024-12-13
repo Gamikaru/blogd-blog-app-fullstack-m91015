@@ -99,6 +99,12 @@
     }
 }
 
+.login-input-field {
+    @include input-field-base;
+
+    padding-right: $spacing-unit * 4;
+}
+
 // .input-control {
 //     &[type="password"] {
 //         padding-right: $spacing-unit * 4;
