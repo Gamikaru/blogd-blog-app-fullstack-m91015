@@ -1,39 +1,72 @@
-// @import "../abstracts/variables";
-// @import "../abstracts/mixins"; // Ensure your mixins are imported for form customizations
+// src/_forms.scss
 
-// // Form Fields
-// .form-input,
-// .input-field,
-// .date-selector {
-//    @include form-field-base(); // Use centralized form field mixin for consistency
-// }
 
-// .input-field.error {
-//    border-color: $bright-red; // Use centralized error color
-// }
 
-// .input-field.success {
-//    border-color: $success-green; // Use centralized success color
-// }
+/* Input and Select Field Styles */
+.input-field-wrapper {
+    box-sizing: border-box; // Prevent padding from affecting total width
+    margin-bottom: $spacing-md;
+    position: relative; // Ensure proper positioning for pseudo-elements if needed
+}
 
-// // Responsive Form Fields
-// @media (max-width: $breakpoint-md) {
-//    .form-input,
-//    .input-field,
-//    .date-selector {
-//       padding: $spacing-s; // Use centralized spacing for small screens
-//       font-size: 0.9rem; // Smaller font size for responsive design
-//    }
-// }
+.input-label {
+    display: block;
+    font-size: $body-font-size; // Ensure label is readable
+    font-weight: 600;
+    margin-bottom: $spacing-xs;
+    text-align: left;
+}
 
-// // Placeholder styles for accessibility improvements
-// ::placeholder {
-//    color: $disabled-gray;
-//    opacity: 0.8;
-// }
+.select-container {
+    position: relative; // Position relative to place the chevron icon
+}
 
-// // Submit Button for Forms
-// .form-submit-btn {
-//    @include button-base($primary-purple, $white, $primary-purple-hover, $border-radius);
-//    margin-top: $spacing-m;
-// }
+.input-control {
+    @include input-field-base;
+
+    &.is-invalid {
+        border-color: var(--error-color);
+    }
+}
+
+.select-icon {
+    color: $secondary-text-color;
+    font-size: 1rem;
+    pointer-events: none; // Allow clicks to pass through to the select
+    position: absolute;
+    right: $spacing-sm;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.error-label {
+    color: var(--error-color);
+    display: block;
+    font-size: $xsmall-font-size;
+    margin-top: $spacing-xs;
+}
+
+.helper-text {
+    color: $secondary-text-color;
+    display: block;
+    font-size: $xsmall-font-size;
+    margin-top: $spacing-xs;
+}
+
+/* Apply Select Field Mixin */
+.select-container .input-control {
+    @include select-field-base;
+}
+
+/* Custom Styles for Specific Instances */
+.input-control.search-input {
+    @include search-input-custom;
+}
+
+/* Input Field Styles (for InputField component) */
+.input-control[type="text"],
+.input-control[type="email"],
+.input-control[type="password"],
+.input-control[type="date"] {
+    /* Additional styles if needed */
+}

@@ -1,0 +1,145 @@
+.comment {
+    @include card-style;
+
+    margin-bottom: $spacing-lg;
+
+    &__header {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: $spacing-sm;
+
+        &__date {
+            color: $secondary-text-color;
+            font-size: $small-font-size;
+        }
+
+        &__controls {
+            align-items: center;
+            display: flex;
+            flex-direction: row;
+            gap: $spacing-xs;
+        }
+
+        .comment__author-info {
+            align-items: center;
+            display: flex;
+
+            .comment__profile-picture {
+                border: 2px solid var(--accent-color-1);
+                border-radius: 50%;
+                height: 40px;
+                margin-right: $spacing-sm;
+                object-fit: cover;
+                width: 40px;
+            }
+
+            .comment__header__author {
+                color: var(--highlight-color);
+                font-size: $sub-heading-font-size;
+                font-weight: bold;
+                margin-left: $spacing-xs;
+            }
+        }
+    }
+
+    &__body {
+        background-color: var(--secondary-bg-color);
+        box-shadow: $box-shadow-small;
+        color: var(--primary-text-color);
+        font-size: $body-font-size;
+        line-height: $line-height;
+        margin-block: $spacing-md;
+        padding: $spacing-md;
+
+        @include border-radius($border-radius-lg);
+
+        & .replies > .comment {
+            background-color: var(--primary-bg-color-light1);
+        }
+
+        &:hover {
+            box-shadow: $box-shadow-medium;
+        }
+    }
+
+    &__actions {
+        align-items: center;
+        display: flex;
+        gap: $spacing-sm;
+        justify-content: flex-end;
+
+        .like-section {
+            align-items: center;
+            display: flex;
+            gap: $spacing-xs;
+
+            .like-button {
+                @include button-style($success-color, var(--primary-text-color));
+            }
+
+            .like-count {
+                color: $secondary-text-color;
+                font-size: $small-font-size;
+            }
+        }
+
+        .reply-button {
+            @include button-style(var(--highlight-color), var(--primary-text-color));
+        }
+    }
+
+    .comment__controls {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        gap: $spacing-xs;
+    }
+
+    .comment__footer {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: $spacing-md;
+        margin-top: $spacing-sm;
+
+        .comment__actions-left {
+            align-items: center;
+            display: flex;
+            gap: $spacing-sm;
+
+            .like-count {
+                align-items: center;
+                color: $secondary-text-color;
+                display: flex; // Ensure it behaves like a flex container
+                font-size: $small-font-size;
+            }
+        }
+
+        .comment__controls {
+            align-items: center;
+            display: flex;
+            gap: $spacing-xs;
+        }
+    }
+
+    .comment-form {
+        @include comment-form-style;
+
+        &__buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: $spacing-sm;
+
+            .button-group-left,
+            .button-group-right {
+                align-items: center;
+                display: flex;
+            }
+
+            .button-group-left {
+                gap: $spacing-xs;
+            }
+        }
+    }
+}

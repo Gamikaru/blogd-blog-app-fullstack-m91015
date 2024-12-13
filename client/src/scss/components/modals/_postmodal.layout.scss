@@ -1,0 +1,77 @@
+// _postmodal.layout.scss
+
+@import "postmodal.variables";
+
+.post-modal,
+.edit-post-modal {
+    --sidebar-top: 3rem;
+    --sidebar-left: 8rem;
+    --sidebar-z: 1050;
+
+    inset: 0 !important;
+    margin: 0 !important;
+    position: fixed !important;
+    transform: none !important;
+
+    &.modal {
+        padding: 0 !important;
+    }
+
+    .modal-dialog,
+    .modal-content {
+        border: none;
+        border-radius: 0;
+        height: 100% !important;
+        margin: 0 !important;
+        max-width: none !important;
+        width: 100% !important;
+    }
+
+    &__container {
+        display: flex;
+        height: 100%;
+        overflow: hidden;
+
+        // background-color: white;
+        position: relative;
+        width: 100%;
+    }
+
+    &__backdrop {
+        backdrop-filter: blur(10px);
+        background-color: var(--modal-backdrop-color);
+    }
+
+    // Sidebar positioning classes
+    &__sidebar--left {
+        --sidebar-left: 2rem;
+    }
+
+    &__sidebar--right {
+        --sidebar-left: calc(100% - #{map.get($modal-dimensions, sidebar-width)} - 2rem);
+    }
+
+    &__sidebar--top {
+        --sidebar-top: 0rem;
+    }
+
+    &__sidebar--bottom {
+        --sidebar-top: calc(100% - #{map.get($modal-dimensions, sidebar-height)} - 2rem);
+    }
+
+    // Responsive adjustments
+    @media (max-width: $breakpoint-md) {
+        &__sidebar {
+            height: 40vh;
+            left: 50%;
+            padding: map.get($modal-spacing, sidebar-padding);
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 80vw;
+        }
+
+        &__preview {
+            padding-top: calc(var(--sidebar-top) + 2rem);
+        }
+    }
+}

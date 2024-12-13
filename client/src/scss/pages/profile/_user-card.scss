@@ -1,0 +1,97 @@
+// components/pages/profile/_user-card.scss
+
+.user-card {
+    background: var(--secondary-bg-color);
+    border-radius: $border-radius;
+    box-shadow: $box-shadow-medium;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: $spacing-lg;
+    max-width: 400px;
+    overflow: hidden;
+    padding: $spacing-md;
+    width: 100%;
+    word-wrap: break-word;
+
+    @media (width <= 768px) {
+        padding: $spacing-sm;
+    }
+
+    &__header {
+        align-items: center;
+        background: linear-gradient(135deg, var(--accent-color-1), var(--accent-color-2));
+        display: flex;
+        gap: $spacing-md;
+        padding: $spacing-lg;
+
+        @media (width <= 768px) {
+            flex-direction: column;
+            padding: $spacing-sm;
+            text-align: center;
+        }
+    }
+
+    &__info-strip {
+        align-items: center;
+        background-color: var(--accent-color-1);
+        border-radius: $border-radius;
+        color: var(--secondary-bg-color);
+        display: flex;
+        gap: $spacing-sm;
+        margin-top: $spacing-md;
+        padding: $spacing-sm;
+        word-wrap: break-word;
+
+        .fi-user-icon {
+            font-size: 1rem;
+        }
+
+        span {
+            word-break: break-word;
+        }
+    }
+
+    &__details {
+        padding: $spacing-sm;
+    }
+
+    &__detail-grid {
+        display: grid;
+        gap: $spacing-md;
+        grid-template-columns: 1fr 1fr;
+
+        @media (width <= 768px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    &__detail-item {
+        align-items: center;
+        display: flex;
+        gap: $spacing-sm;
+        word-wrap: break-word;
+    }
+
+    &__detail-icon {
+        color: var(--accent-color-1);
+        flex-shrink: 0;
+        font-size: 1rem;
+    }
+
+    &__detail-content {
+        display: flex;
+        flex-direction: column;
+        word-break: break-word;
+    }
+
+    &__detail-label {
+        color: $secondary-text-color;
+        font-size: 0.75rem;
+    }
+
+    &__detail-value {
+        color: var(--primary-text-color);
+        font-size: 0.85rem;
+        word-break: break-word;
+    }
+}

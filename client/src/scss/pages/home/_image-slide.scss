@@ -1,0 +1,65 @@
+.cube-slider__container--image {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    margin-left: 0;
+    margin-top: $spacing-xl;
+    position: relative;
+    top: $spacing-xxs;
+    width: 65%;
+    z-index: 2;
+
+    .cube-slider__slider {
+        height: 25rem; // Fixed height for consistency
+        width: 80vw; // Default width, slightly wider than before
+
+        &__slide {
+            box-sizing: border-box;
+            height: 100%;
+            width: 100%;
+
+            @include flex-center;
+
+            img {
+                border-radius: $border-radius-lg;
+                height: 100%;
+                object-fit: cover;
+                width: 100%;
+            }
+        }
+    }
+
+    @media (min-width: $breakpoint-lg) {
+        .cube-slider__slider {
+            height: 28rem; // Increase height for a better aspect ratio
+            width: 75vw; // Slightly reduce width for larger screens
+        }
+    }
+
+    @media (max-width: $breakpoint-md) {
+        margin-top: $spacing-md;
+
+        .cube-slider__slider {
+            height: 22rem; // Reduce height for better proportion on smaller screens
+            width: 70vw; // Increase width slightly on medium screens
+        }
+    }
+
+    @media (max-width: $breakpoint-sm) {
+        .cube-slider__slider {
+            height: 20rem; // Further reduce height
+            width: 70vw; // Nearly full width for small screens
+        }
+    }
+
+    @media (max-width: $breakpoint-xs) {
+        .cube-slider__slider {
+            height: 18rem; // Maintain visual consistency
+            width: 100%; // Full width for extra-small screens
+        }
+
+        img {
+            object-fit: contain; // Ensure no content gets cropped on narrow screens
+        }
+    }
+}

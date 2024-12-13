@@ -1,0 +1,72 @@
+// navbar-buttons.scss
+
+.navbar-links {
+    @include flex-center;
+
+    align-items: center;
+    gap: px-to-rem(24); // 1.5rem
+    justify-content: right;
+    margin: 0;
+    padding-right: px-to-rem(16); // 1rem
+
+    .nav-link {
+        border-radius: $border-radius;
+        color: $secondary-text-color;
+        font-size: $small-font-size; // 0.875rem
+        font-weight: 500;
+        padding: px-to-rem(8) px-to-rem(3.2); // 0.5rem 0.2rem
+        text-decoration: none;
+        transition: color $transitions-base;
+        white-space: nowrap;
+
+        &.active {
+            color: var(--primary-text-color);
+        }
+
+        &:hover {
+            color: var(--accent-color-1);
+        }
+    }
+}
+
+.navbar-right {
+    @include flex-center;
+
+    align-items: center;
+    gap: $spacing-sm; // 1rem
+
+    .create-post-icon,
+    .search-icon,
+    .user-icon {
+        align-items: center;
+        background: none;
+        border: none;
+        color: var(--primary-text-color);
+        cursor: pointer;
+        display: flex;
+        font-size: px-to-rem(19.2); // 1.2rem
+        justify-content: center;
+        padding: $spacing-xs; // 0.25rem
+        transition: color $transitions-base;
+    }
+
+    .user-icon {
+        position: relative;
+    }
+
+    .create-post-icon:hover,
+    .search-icon:hover,
+    .user-icon:hover {
+        color: var(--accent-color-1);
+    }
+}
+
+@media (max-width: $breakpoint-md) {
+    .navbar-links {
+        gap: 0.5rem;
+    }
+
+    .navbar-right {
+        gap: 0.5rem;
+    }
+}

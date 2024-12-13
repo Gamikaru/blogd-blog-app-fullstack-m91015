@@ -1,48 +1,70 @@
-// layout/_footer.scss
-
-@import "../abstracts/variables";
-@import "../abstracts/mixins"; // Flex and grid mixins
-
+// Footer Styles
 .footer {
-   background-color: $charcoal-light;
-   color: $white;
-   padding: $spacing-l;
-   // margin-top: $spacing-l;
-   text-align: center;
+    background-color: var(--primary-bg-color);
+    border-top: 1px solid var(--border-color);
+    box-shadow: $box-shadow-strong;
+    color: var(--primary-text-color);
+    margin-top: $spacing-xxl2;
+    padding: $spacing-lg;
+    position: relative;
+    z-index: map.get($z-indices, modal) + 1; // Ensure higher z-index
 
-   .footer-container {
-      @include flex-container(center, center);
-      flex-wrap: wrap;
+    .footer__content {
+        @include flex-center;
 
-      .footer-section {
-         flex: 1;
-         min-width: 200px;
-         @include padding($spacing-m);
+        flex-direction: column;
+        gap: $spacing-lg;
+        padding: $spacing-md;
 
-         h4 {
-            color: $primary-purple;
-            margin-bottom: $spacing-s;
-         }
+        @include respond-to(md) {
+            flex-direction: column;
+        }
+    }
 
-         p,
-         a {
-            color: $white;
-            font-size: $font-size-small;
+    .footer__links {
+        @include flex-center;
+
+        gap: $spacing-md;
+
+        a {
+            color: var(--primary-text-color);
+            font-size: $body-font-size;
             text-decoration: none;
-         }
+            transition: color $transitions-base;
 
-         a:hover {
-            color: $primary-purple-light;
-         }
-      }
-   }
+            &:hover {
+                color: var(--highlight-color);
+                text-decoration: underline;
+            }
+        }
+    }
 
-   @media (max-width: $breakpoint-md) {
-      padding: $spacing-m;
+    .footer__social {
+        @include flex-center;
 
-      .footer-section {
-         min-width: 100%;
-         @include padding($spacing-s);
-      }
-   }
+        gap: $spacing-md;
+
+        a {
+            color: var(--primary-text-color);
+            font-size: $heading-font-size-md;
+            transition: color $transitions-base;
+
+            &:hover {
+                color: var(--highlight-color);
+            }
+        }
+    }
+
+    .footer__copy {
+        color: $secondary-text-color;
+        font-size: $small-font-size;
+        margin-top: $spacing-md;
+        text-align: center;
+    }
+}
+
+@media (max-width: $breakpoint-md) {
+    .footer {
+        padding: $spacing-md;
+    }
 }

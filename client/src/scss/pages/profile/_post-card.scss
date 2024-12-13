@@ -1,0 +1,268 @@
+// components/pages/profile/_post-card.scss
+
+@use 'sass:map';
+@use 'sass:color';
+
+.profile-post-card {
+    background: var(--primary-bg-color);
+    border-radius: $border-radius;
+    box-shadow: $card-shadow;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    font-family: $font-family-primary;
+    overflow: hidden;
+    transition:
+        transform $transitions-base,
+        box-shadow $transitions-base;
+
+    &:hover {
+        box-shadow: $box-shadow-medium;
+        transform: scale(1.02);
+    }
+
+    &__image-container {
+        height: 200px;
+        overflow: hidden;
+        width: 100%;
+    }
+
+    &__image {
+        height: 100%;
+        object-fit: cover;
+        transition: transform $transitions-base;
+        width: 100%;
+
+        &:hover {
+            transform: scale(1.05);
+        }
+    }
+
+    &__image-placeholder {
+        align-items: center;
+        background: var(--secondary-bg-color);
+        color: var(--secondary-text-color);
+        display: flex;
+        font-size: $body-font-size;
+        height: 100%;
+        justify-content: center;
+        width: 100%;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        padding: $spacing-md;
+    }
+
+    &__header {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: $spacing-sm;
+    }
+
+    &__title {
+        color: var(--primary-text-color);
+        flex: 1;
+        font-family: $font-family-heading;
+        font-size: $heading-font-size-md;
+        margin: 0;
+        margin-right: $spacing-sm;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    &__date {
+        color: var(--secondary-text-color);
+        font-size: $small-font-size;
+    }
+
+    &__category {
+        margin-bottom: $spacing-sm;
+    }
+
+    &__category-tag {
+        background-color: var(--accent-color-1); // Default color
+        border-radius: 999px;
+        color: var(--primary-text-color);
+        display: inline-block;
+        font-size: $small-font-size;
+        font-weight: bold;
+        padding: 0.2em 0.6em;
+        text-transform: capitalize;
+
+        // Color coding for sanitized categories
+        &.technology-category {
+            background-color: var(--category-technology);
+        }
+
+        &.lifestyle-category {
+            background-color: var(--category-lifestyle);
+        }
+
+        &.business-category {
+            background-color: var(--category-business);
+        }
+
+        &.health-and-fitness-category {
+            background-color: var(--category-health-and-fitness);
+        }
+
+        &.philosophy-category {
+            background-color: var(--category-philosophy);
+        }
+
+        &.productivity-category {
+            background-color: var(--category-productivity);
+        }
+
+        &.cooking-category {
+            background-color: var(--category-cooking);
+        }
+
+        &.art-category {
+            background-color: var(--category-art);
+        }
+
+        &.music-category {
+            background-color: var(--category-music);
+        }
+
+        // Default category color
+        &.default-category {
+            background-color: var(--category-default);
+        }
+
+        // Other category color
+        &.other-category {
+            background-color: var(--category-other);
+        }
+    }
+
+    &__excerpt {
+        -webkit-box-orient: vertical;
+        color: var(--primary-text-color);
+        display: -webkit-box;
+        flex-grow: 1;
+        font-size: $body-font-size;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+        margin-bottom: $spacing-md;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &__actions {
+        border-top: 1px solid var(--border-color);
+        display: flex;
+        gap: $spacing-sm;
+        justify-content: flex-end;
+        padding: $spacing-md;
+    }
+
+    &__button {
+        align-items: center;
+        border: none;
+        border-radius: $button-border-radius;
+        cursor: pointer;
+        display: flex;
+        font-family: $font-family-primary;
+        font-size: $small-font-size;
+        opacity: $button-opacity-default;
+        padding: 0.4em 0.8em;
+        transition:
+            background-color map.get($transitions, button),
+            opacity map.get($transitions, button);
+
+        &--edit {
+            background-color: $button-primary;
+            color: #fff;
+
+            &:hover {
+                background-color: var(--button-primary-dark10);
+            }
+
+            &:disabled {
+                background-color: $button-primary-disabled;
+            }
+        }
+
+        &--delete {
+            background-color: $button-danger;
+            color: #fff;
+
+            &:hover {
+                background-color: var(--button-danger-dark10);
+            }
+
+            &:disabled {
+                background-color: $button-danger-disabled;
+            }
+        }
+
+        &__icon {
+            font-size: 1em;
+            margin-right: 0.4em;
+        }
+    }
+
+    /* Modal Actions Specific to Profile */
+    &__modal-title {
+        color: var(--primary-text-color);
+        font-size: $heading-font-size-md;
+        margin-bottom: $spacing-sm;
+    }
+
+    &__modal-message {
+        color: var(--secondary-text-color);
+        font-size: $body-font-size;
+        margin-bottom: $spacing-md;
+    }
+
+    &__modal-actions {
+        display: flex;
+        gap: $spacing-sm;
+        justify-content: flex-end;
+        margin-top: $spacing-md;
+    }
+
+    &__modal-button {
+        &--delete {
+            background-color: $button-danger;
+            border: none;
+            border-radius: $button-border-radius;
+            color: #fff;
+            cursor: pointer;
+            font-size: $small-font-size;
+            padding: 0.4em 0.8em;
+            transition: background-color $transitions-base;
+
+            &:hover {
+                background-color: var(--button-danger-dark10);
+            }
+
+            &:disabled {
+                background-color: $button-danger-disabled;
+                cursor: not-allowed;
+            }
+        }
+
+        &--cancel {
+            background-color: $button-primary;
+            border: none;
+            border-radius: $button-border-radius;
+            color: #fff;
+            cursor: pointer;
+            font-size: $small-font-size;
+            padding: 0.4em 0.8em;
+            transition: background-color $transitions-base;
+
+            &:hover {
+                background-color: var(--button-primary-dark10);
+            }
+        }
+    }
+}

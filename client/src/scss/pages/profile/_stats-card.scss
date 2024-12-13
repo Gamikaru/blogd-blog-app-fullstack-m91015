@@ -1,0 +1,52 @@
+// components/pages/profile/_stats-card.scss
+
+.user-stats-card {
+    background: var(--secondary-bg-color);
+    border-radius: $border-radius;
+    box-shadow: $box-shadow-medium;
+    margin-bottom: $spacing-lg;
+    max-width: 400px;
+    padding: $spacing-md;
+    width: 100%;
+
+    @media (width <= 768px) {
+        padding: $spacing-sm;
+    }
+
+    &__stats-grid {
+        display: grid;
+        gap: $spacing-md;
+        grid-template-columns: repeat(2, 1fr); // Two-column grid
+
+        @media (width <= 768px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    &__stat-item {
+        background: var(--secondary-bg-color-light5);
+        border-radius: $border-radius;
+        padding: $spacing-md;
+        text-align: center;
+
+        @media (width <= 768px) {
+            padding: $spacing-sm;
+        }
+    }
+
+    &__stat-value {
+        color: var(--primary-text-color);
+        font-size: 1rem; // Slightly reduced for consistency
+        font-weight: bold;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+    }
+
+    &__stat-label {
+        color: $secondary-text-color;
+        font-size: 0.75rem; // Slightly reduced for consistency
+        margin-top: $spacing-xs;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+    }
+}

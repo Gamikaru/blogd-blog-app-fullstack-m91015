@@ -1,53 +1,76 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AppLayout, PrivateRoute, PublicRoute } from './components/layout'; // Import PublicRoute
-import { Providers } from './Providers'; // Modularized providers
-import { ModalManager } from './components/modals/ModalManager'; // Modularized ModalManager
-import { RedirectIfLoggedIn, LoginPage } from './components/auth'; // Auth pages barrel import
-import { HomePage, Bloggs, Admin, Network } from './components/pages'; // Pages barrel import
-import Logger from './utils/Logger';
+// src/App.jsx
+
+import {
+    // Admin,
+    AppLayout,
+    ErrorBoundary,
+    FullBlogView,
+    HomePage,
+    LoginPage,
+    ModalManager,
+    Network,
+    PrivateRoute,
+    PublicRoute,
+    UserProfile
+} from '@components';
+import { logger } from '@utils';
+import { AnimatePresence } from 'framer-motion';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import SimpleBar from 'simplebar-react';
+import 'simplebar-react/dist/simplebar.min.css';
+
+import './scss/main.scss';
+
+import 'swiper/css';
+import 'swiper/css/autoplay';
+import 'swiper/css/effect-cube';
 
 const App = () => {
-   Logger.info('App component rendered');
+    logger.info('App component rendered');
+    const location = useLocation();
 
-   return (
-      <Providers>
-         <BrowserRouter>
-            <Routes>
-               {/* Public Routes */}
-               <Route
-                  path="/login"
-                  element={
-                     <PublicRoute> {/* PublicRoute ensures center toast positioning */}
-                        <RedirectIfLoggedIn>
-                           <LoginPage />
-                        </RedirectIfLoggedIn>
-                     </PublicRoute>
-                  }
-               />
+    return (
+        <>
+            <SimpleBar style={{ maxHeight: '100vh' }} className="app-scrollbar">
 
-               {/* Private Routes */}
-               <Route
-                  path="/"
-                  element={
-                     <PrivateRoute> {/* PrivateRoute ensures top-right toast positioning */}
-                        <AppLayout />
-                     </PrivateRoute>
-                  }
-               >
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/bloggs" element={<Bloggs />} />
-                  <Route path="/admin" element={<Admin />} />
-                  <Route path="/network" element={<Network />} />
-                  <Route path="*" element={<h1>Page Not Found</h1>} /> {/* Simple fallback */}
-               </Route>
-            </Routes>
+                <ErrorBoundary>
+                    <AnimatePresence mode="wait">
+                        <Routes location={location} key={location.pathname}>
+                            {/* Public Routes */}
+                            <Route
+                                path="/login"
+                                element={
+                                    <PublicRoute>
+                                        <LoginPage />
+                                    </PublicRoute>
+                                }
+                            />
 
-            {/* Handle modals with the ModalManager */}
-            <ModalManager />
-         </BrowserRouter>
-      </Providers>
-   );
+                            {/* Private Routes */}
+                            <Route
+                                path="/"
+                                element={
+                                    <PrivateRoute>
+                                        <AppLayout />
+                                    </PrivateRoute>
+                                }
+                            >
+                                <Route path="/" element={<HomePage />} />
+                                {/* <Route path="/admin" element={<Admin />} /> */}
+                                <Route path="/network" element={<Network />} />
+                                <Route path="/blog/:id" element={<FullBlogView />} />
+                                <Route path="/profile" element={<UserProfile />} />
+                                <Route path="/profile/:userId" element={<UserProfile />} />
+                                <Route path="*" element={<h1>Page Not Found</h1>} />
+                            </Route>
+                        </Routes>
+                    </AnimatePresence>
+                    <ModalManager />
+                </ErrorBoundary>
+            </SimpleBar>
+
+        </>
+    );
 };
 
 export default App;

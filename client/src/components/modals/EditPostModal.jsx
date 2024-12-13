@@ -1,106 +1,330 @@
-import React, { useEffect, useState } from "react";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Modal from "react-bootstrap/Modal";
-import { useNotificationContext, usePostContext, usePrivateModalContext } from "../../contexts";
-import { updatePostById } from "../../services/api/PostService";
-import Logger from "../../utils/Logger";
-import { validatePostContent } from "../../utils/formValidation";
+// src/components/EditPostModal.jsx
 
-export default function EditPostModal() {
-   const { showModal, togglePrivateModal, modalType } = usePrivateModalContext();
-   const { posts, setPosts, selectedPost, setSelectedPost, refreshPosts } = usePostContext();  // <--- Add `posts`
-   const { showNotification } = useNotificationContext();
+import { Button, InputField, SelectField } from '@components';
+import { useNotificationContext, usePostContext, usePrivateModalContext } from '@contexts';
+import { calculateReadingTime, countWords, logger, validatePostContent } from '@utils';
+import { useEffect, useRef, useState } from 'react';
+import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import SimpleBar from 'simplebar-react';
+import 'simplebar-react/dist/simplebar.min.css';
+import PropTypes from 'prop-types';
 
-   const [postContent, setPostContent] = useState("");
+const categoryOptions = [
+    { value: 'Health and Fitness', label: 'Health and Fitness' },
+    { value: 'Lifestyle', label: 'Lifestyle' },
+    { value: 'Technology', label: 'Technology' },
+    { value: 'Cooking', label: 'Cooking' },
+    { value: 'Philosophy', label: 'Philosophy' },
+    { value: 'Productivity', label: 'Productivity' },
+    { value: 'Art', label: 'Art' },
+    { value: 'Music', label: 'Music' },
+    { value: 'Business', label: 'Business' },
+    { value: 'Business & Finance', label: 'Business & Finance' },
+    { value: 'Other', label: 'Other' }
+];
 
-   useEffect(() => {
-      if (selectedPost) {
-         Logger.info("Setting post content in modal:", selectedPost.content);
-         setPostContent(selectedPost.content);
-      } else {
-         Logger.warn("Post data is not available for setting content in modal.");
-      }
-   }, [selectedPost]);
+export default function EditPostModal({ onClose }) {
+    const { showModal, togglePrivateModal, modalType } = usePrivateModalContext();
+    const { updatePost, selectedPost, setSelectedPost } = usePostContext();
+    const { showNotification } = useNotificationContext();
 
-   const handleModalClose = () => {
-      setPostContent("");
-      setTimeout(() => setSelectedPost(null), 300);
-      togglePrivateModal();
-   };
+    const [postContent, setPostContent] = useState("");
+    const [postTitle, setPostTitle] = useState("");
+    const [category, setCategory] = useState("Other");
+    const [imageUrls, setImageUrls] = useState("");
+    const [selectedFiles, setSelectedFiles] = useState([]);
+    const quillRef = useRef(null);
+    const titleRef = useRef(null); // Ref for the textarea
 
-   const handlePostEditSubmit = async (e) => {
-      e.preventDefault();
-      Logger.info("Submitting edited post with content:", postContent);
+    useEffect(() => {
+        if (selectedPost) {
+            logger.info("Setting post data in modal:", {
+                title: selectedPost.title,
+                content: selectedPost.content,
+                category: selectedPost.category
+            });
 
-      const validationErrors = validatePostContent(postContent);
-      if (validationErrors) {
-         showNotification(validationErrors, "error");
-         return;
-      }
+            setPostContent(selectedPost.content || "");
+            setPostTitle(selectedPost.title || "");
 
-      if (!selectedPost || !selectedPost._id) {
-         showNotification("Invalid post data. Please try again.", "error");
-         return;
-      }
+            // Directly set category from selectedPost
+            setCategory(selectedPost.category || "Other");
 
-      try {
-         // Optimistic UI Update
-         const tempPosts = posts.map((p) => p._id === selectedPost._id ? { ...p, content: postContent } : p); // <-- Update here
-         setPosts(tempPosts);  // <--- Ensure posts are updated optimistically
+            setImageUrls(selectedPost.imageUrls ? selectedPost.imageUrls.join(",") : "");
 
-         const updatedPost = await updatePostById(selectedPost._id, { content: postContent });
-         Logger.info("Post updated successfully:", updatedPost);
+            logger.info("Category state set to:", selectedPost.category);
+        }
+    }, [selectedPost]);
 
-         setPosts((prevPosts) =>
-            prevPosts.map((p) =>
-               p._id === updatedPost._id ? { ...p, ...updatedPost } : p
-            )
-         );
+    useEffect(() => {
+        if (showModal) {
+            document.body.classList.add('modal-open');
+        } else {
+            document.body.classList.remove('modal-open');
+        }
 
-         // Notification after post update
-         showNotification("Post edited successfully!", "success");
+        return () => {
+            document.body.classList.remove('modal-open');
+        };
+    }, [showModal]);
 
-         // Close the modal
-         handleModalClose();
+    useEffect(() => {
+        if (titleRef.current) {
+            adjustTextareaHeight();
+        }
+    }, [postTitle]);
 
-         // Re-fetch posts to ensure UI sync with server
-         setTimeout(() => {
-            refreshPosts();  // Delay the refresh to avoid overwriting the optimistic update
-         }, 1000);
-      } catch (error) {
-         showNotification("Failed to edit post. Please try again.", "error");
-      }
-   };
+    const adjustTextareaHeight = () => {
+        const textarea = titleRef.current;
+        if (textarea) {
+            textarea.style.height = 'auto'; // Reset height
+            textarea.style.height = `${textarea.scrollHeight}px`; // Set to scrollHeight
+        }
+    };
 
-   return (
-      <Modal show={showModal && modalType === 'editPost' && !!selectedPost} onHide={handleModalClose} centered className="edit-post-modal-container">
-         <Modal.Header closeButton className="edit-post-modal-header">
-            <Modal.Title className="edit-post-modal-title">Edit Your Post</Modal.Title>
-         </Modal.Header>
-         <Modal.Body className="edit-post-modal-body">
-            {selectedPost ? (
-               <Form onSubmit={handlePostEditSubmit} className="edit-post-form">
-                  <Form.Group controlId="editPostContent">
-                     <Form.Control
-                        as="textarea"
-                        rows={3}
-                        value={postContent}
-                        onChange={(e) => setPostContent(e.target.value)}
-                        placeholder="Edit your post here"
-                        className="edit-post-textarea"
-                     />
-                  </Form.Group>
-                  <div className="edit-post-modal-submit-container">
-                     <Button type="submit" className="edit-post-submit-btn">
-                        Save Changes
-                     </Button>
-                  </div>
-               </Form>
-            ) : (
-               <p>Loading post data...</p>
-            )}
-         </Modal.Body>
-      </Modal>
-   );
-}
+    const handlePostTitleChange = (e) => {
+        setPostTitle(e.target.value);
+        adjustTextareaHeight();
+    };
+
+    const handleModalClose = () => {
+        setPostContent("");
+        setPostTitle("");
+        setCategory("Other");
+        setImageUrls("");
+        setSelectedFiles([]);
+        setTimeout(() => setSelectedPost(null), 300);
+        togglePrivateModal();
+        onClose();
+    };
+
+    const handlePostEditSubmit = async (e) => {
+        e.preventDefault();
+        logger.info("Submitting edited post with content:", postContent);
+
+        const validationErrors = validatePostContent(postContent);
+        if (validationErrors) {
+            showNotification(validationErrors, "error", { top: '40%', left: '50%' });
+            return;
+        }
+
+        const postId = selectedPost.postId || selectedPost._id;
+
+        if (!selectedPost || !postId) {
+            showNotification("Invalid post data. Please try again.", "error", { top: '40%', left: '50%' });
+            return;
+        }
+
+        try {
+            const formData = new FormData();
+            formData.append('title', postTitle);
+            formData.append('content', postContent);
+            formData.append('category', category);
+
+            const urlsArray = imageUrls.split(',').map(url => url.trim()).filter(url => url);
+            formData.append('imageUrls', urlsArray.join(','));
+
+            selectedFiles.forEach((file) => {
+                formData.append('images', file, file.name);
+            });
+
+            const { success, message } = await updatePost(postId, formData);
+
+            if (success) {
+                showNotification(message || "Post edited successfully!", "success", { top: '40%', left: '50%' });
+            } else {
+                showNotification("Failed to edit post. Please try again.", "error", { top: '40%', left: '50%' });
+            }
+
+            handleModalClose();
+
+        } catch (error) {
+            logger.error("Failed to edit post:", error);
+            showNotification("Failed to edit post. Please try again.", "error", { top: '40%', left: '50%' });
+        }
+    };
+
+    const handleFileChange = (e) => {
+        setSelectedFiles(Array.from(e.target.files));
+    };
+
+    const modules = {
+        toolbar: [
+            [{ 'header': [1, 2, false] }],
+            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+            ['link', 'image', 'video'],
+            ['clean']
+        ]
+    };
+
+    const formats = [
+        'header', 'font', 'size',
+        'bold', 'italic', 'underline', 'strike', 'blockquote',
+        'list', 'bullet', 'indent',
+        'link', 'image', 'video'
+    ];
+
+    return (
+        <Modal
+            show={showModal && modalType === 'editPost' && !!selectedPost}
+            onHide={handleModalClose}
+            centered
+            className="edit-post-modal"
+            backdrop="static"
+            keyboard={false}
+            backdropClassName="edit-post-modal__backdrop"
+            container={document.body}
+        >
+            <Modal.Header>
+                <Button
+                    variant="close"
+                    onClick={handleModalClose}
+                    aria-label="Close"
+                    className="close-button"
+                />
+            </Modal.Header>
+            <SimpleBar style={{ maxHeight: '100%' }} className="edit-post-modal">
+                <Form onSubmit={handlePostEditSubmit} className="edit-post-modal__form" id="edit-post-form">
+                    <div className="edit-post-modal__preview">
+                        <textarea
+                            type="text"
+                            value={postTitle}
+                            onChange={handlePostTitleChange}
+                            placeholder="Write your title here..."
+                            className="edit-post-modal__title-textarea"
+                            maxLength={100}
+                            ref={titleRef}
+                            required
+                        />
+                        <div className="edit-post-modal__title-separator" />
+                        <ReactQuill
+                            ref={quillRef}
+                            value={postContent}
+                            onChange={setPostContent}
+                            modules={modules}
+                            formats={formats}
+                            placeholder="Edit your post here..."
+                            className="edit-post-modal__editor"
+                        />
+                    </div>
+
+                    <SimpleBar style={{ maxHeight: '100%' }} className="edit-post-modal__sidebar">
+                        <h2 className="edit-post-modal__sidebar-title">Edit Your Post</h2>
+
+                        {/* Category Selection */}
+                        <div className="toolbar-group toolbar-group__basics">
+                            <h6 className="toolbar-group__title">Category</h6>
+                            <div className="toolbar-group__content">
+                                <SelectField
+                                    name="category"
+                                    options={categoryOptions}
+                                    value={category}
+                                    onChange={(e) => {
+                                        logger.info("Category changed to:", e.target.value);
+                                        setCategory(e.target.value);
+                                    }}
+                                    className="toolbar-input--select"
+                                    aria-label="Select post category"
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        {/* Media Inputs */}
+                        <div className="toolbar-group toolbar-group__media">
+                            <h6 className="toolbar-group__title">Media</h6>
+                            <div className="toolbar-group__content">
+                                <InputField
+                                    type="text"
+                                    value={imageUrls}
+                                    onChange={(e) => setImageUrls(e.target.value)}
+                                    placeholder="Paste image URLs"
+                                    className="toolbar-input toolbar-input--url"
+                                />
+                                <InputField
+                                    type="file"
+                                    multiple
+                                    accept="image/*"
+                                    onChange={handleFileChange}
+                                    className="toolbar-input toolbar-input--file"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Post Settings */}
+                        <div className="toolbar-group toolbar-group__settings">
+                            <h6 className="toolbar-group__title">Post Settings</h6>
+                            <div className="toolbar-group__content">
+                                <label className="toolbar-checkbox">
+                                    <input type="checkbox" /> Allow Comments
+                                </label>
+                                <label className="toolbar-checkbox">
+                                    <input type="checkbox" /> Featured Post
+                                </label>
+                                <label className="toolbar-checkbox">
+                                    <input type="checkbox" /> Schedule Post
+                                </label>
+                            </div>
+                        </div>
+
+                        {/* SEO Settings */}
+                        <div className="toolbar-group toolbar-group__seo">
+                            <h6 className="toolbar-group__title">SEO</h6>
+                            <div className="toolbar-group__content">
+                                <InputField
+                                    type="text"
+                                    placeholder="Meta Description"
+                                    className="toolbar-input"
+                                />
+                                <InputField
+                                    type="text"
+                                    placeholder="Keywords (comma-separated)"
+                                    className="toolbar-input"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Text Analytics */}
+                        <div className="toolbar-group toolbar-group__meta">
+                            <h6 className="toolbar-group__title">Text Analytics</h6>
+                            <div className="toolbar-group__content">
+                                <span>Reading Time: {calculateReadingTime(postContent)} min</span>
+                                <span>Word Count: {countWords(postContent)}</span>
+                            </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="toolbar-group toolbar-group__actions">
+                            <div className="toolbar-group__content">
+                                <Button
+                                    type="submit"
+                                    className="button button-submit"
+                                    variant="submit"
+                                >
+                                    Save Changes
+                                </Button>
+
+                                <Button
+                                    type="button"
+                                    onClick={handleModalClose}
+                                    className="button button-delete"
+                                    variant="delete"
+                                >
+                                    Discard
+                                </Button>
+                            </div>
+                        </div>
+                    </SimpleBar>
+                </Form>
+            </SimpleBar>
+        </Modal>
+    );
+};
+
+EditPostModal.propTypes = {
+    onClose: PropTypes.func.isRequired,
+};

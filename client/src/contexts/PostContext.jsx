@@ -1,143 +1,209 @@
-import { createContext, useCallback, useContext, useState } from 'react';
-import { createPost, fetchPostsByUser, likePost, unlikePost, updatePostById } from '../services/api/PostService';
-import Logger from '../utils/Logger'; // Import Logger for debugging
+// src/contexts/PostContext.jsx
 
-// Create PostContext
-const PostContext = createContext();
+import PropTypes from 'prop-types'; // Import prop-Types
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import {
+    createPost,
+    deletePostById,
+    fetchAllPosts,
+    fetchPostsByUser,
+    fetchTopLikedPosts,
+    likePost,
+    unlikePost,
+    updatePostById,
+} from '../services/api/postService';
+import logger from '../utils/logger'; // Ensure logger is imported
 
-// Custom hook to use PostContext
-export const usePostContext = () => useContext(PostContext);
+export const PostContext = createContext();
 
-// Provider component to wrap parts of the app that need post management
+export const usePostContext = () => {
+    const context = useContext(PostContext);
+    if (!context) {
+        throw new Error('usePostContext must be used within a PostProvider');
+    }
+    return context;
+};
+
 export const PostProvider = ({ children }) => {
-   const [posts, setPosts] = useState([]); // Store posts for the current user
-   const [likeStatus, setLikeStatus] = useState({}); // Track like status for each post
-   const [selectedPost, setSelectedPost] = useState(null); // Track selected post for editing
-   const [postsFetched, setPostsFetched] = useState(false); // Track whether posts are fetched
+    const [posts, setPosts] = useState([]);
+    const [topLikedPosts, setTopLikedPosts] = useState([]);
+    const [paginationInfo, setPaginationInfo] = useState({
+        totalPosts: 0,
+        currentPage: 1,
+        totalPages: 1,
+    });
+    const [loading, setLoading] = useState(false);
+    const [selectedPost, setSelectedPost] = useState(null); // Added selectedPost state
 
-   // Function to refresh posts (re-trigger fetch)
-   const refreshPosts = useCallback(() => {
-      Logger.info("Refreshing posts...");
-      setPostsFetched(false); // Trigger re-fetching of posts
-   }, []);
+    const loadPosts = useCallback(async (page = 1, limit = 25) => {
+        setLoading(true);
+        try {
+            const data = await fetchAllPosts({ page, limit });
+            logger.info(`Fetched ${data.posts.length} posts. Each post should include likesBy.`);
+            const postsWithId = data.posts.map(post => {
+                logger.debug(`Post ID: ${post.postId || post._id}, category: ${post.category}`); // Add category logging
+                return {
+                    ...post,
+                    postId: post.postId || post._id,
+                    category: post.category || "Other" // Ensure category is included
+                };
+            });
+            setPosts(postsWithId);
+            setPaginationInfo({
+                totalPosts: data.totalPosts,
+                currentPage: data.currentPage,
+                totalPages: data.totalPages,
+            });
+        } catch (error) {
+            logger.error('Error loading posts:', error);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
 
-   // Function to fetch posts for a specific user
-   const fetchPostsByUserHandler = useCallback(async (userId) => {
-      if (!postsFetched) { // Only fetch if posts have not been fetched
-         Logger.info('Fetching posts for user with ID:', userId);
-         try {
-            const userPosts = await fetchPostsByUser(userId); // Fetch posts for a specific user
-            setPosts(userPosts);
+    const refreshPosts = useCallback(async () => {
+        await loadPosts();
+    }, [loadPosts]);
 
-            // Initialize like status for each post
-            const likeStatuses = {};
-            userPosts.forEach(post => (likeStatuses[post._id] = post.likesBy || []));
-            setLikeStatus(likeStatuses);
-            Logger.info('Fetched posts for user successfully with ID:', userId);
-            setPostsFetched(true); // Mark posts as fetched
-         } catch (error) {
-            Logger.error('Error fetching user posts with ID:', userId, error);
-         }
-      }
-   }, [postsFetched]);
+    const loadTopLikedPosts = useCallback(async () => {
+        setLoading(true);
+        try {
+            const data = await fetchTopLikedPosts();
+            const postsWithId = data.map(post => ({
+                ...post,
+                postId: post.postId || post._id,
+            }));
+            setTopLikedPosts(postsWithId);
+        } catch (error) {
+            logger.error('Error loading top liked posts:', error);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
 
-   // Handle new post creation
-   const handleNewPost = async (content) => {
-      Logger.info('Creating a new post with content:', content);
-      try {
-         const newPost = await createPost(content); // Use PostService's createPost
-         setPosts((prevPosts) => [newPost, ...prevPosts]); // Add new post at the top of the list
-         setLikeStatus((prev) => ({ ...prev, [newPost._id]: [] })); // Initialize like status for the new post
-         Logger.info('Created post successfully:', newPost);
+    const loadPostsByUser = useCallback(async (userId) => {
+        setLoading(true);
+        try {
+            const data = await fetchPostsByUser(userId);
+            setPosts(data.posts);
+        } catch (error) {
+            logger.error('Error loading user posts:', error);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
 
-         refreshPosts(); // Ensure the new post is reflected in UI
-      } catch (error) {
-         Logger.error('Error creating post:', error);
-      }
-   };
+    const addPost = useCallback(async (formData) => {
+        try {
+            const newPost = await createPost(formData);
+            const postWithId = { ...newPost, postId: newPost.postId || newPost._id };
+            setPosts((prevPosts) => [postWithId, ...prevPosts]);
+        } catch (error) {
+            logger.error('Error adding post:', error);
+        }
+    }, []);
 
-   // Handle liking a post
-   const handleLike = async (postId, userId) => {
-      Logger.info('Liking post with ID:', postId, 'by user with ID:', userId);
-      try {
-         await likePost(postId); // Send the like request
-         const updatedPosts = posts.map(post =>
-            post._id === postId
-               ? { ...post, likes: post.likes + 1, likesBy: [...post.likesBy, userId] }
-               : post
-         );
-         setPosts(updatedPosts); // Update the post with the new like count
-         setLikeStatus((prev) => ({ ...prev, [postId]: [...prev[postId], userId] })); // Mark as liked by the user
-         Logger.info('Liked post successfully with ID:', postId);
-      } catch (error) {
-         Logger.error('Error liking post with ID:', postId, error);
-      }
-   };
+    const updatePost = useCallback(async (postId, formData) => {
+        try {
+            const response = await updatePostById(postId, formData);
+            const updatedPost = response.post;
+            logger.info("Updated post data:", updatedPost); // Add logging
+            const postWithId = {
+                ...updatedPost,
+                postId: updatedPost.postId || updatedPost._id,
+                category: updatedPost.category || "Other" // Ensure category is included
+            };
+            setPosts((prevPosts) =>
+                prevPosts.map((post) => (post.postId === postId ? postWithId : post))
+            );
+            return { success: true, message: response.message };
+        } catch (error) {
+            logger.error('Error updating post:', error);
+            throw error;
+        }
+    }, [setPosts]);
 
-   // Handle unliking a post
-   const handleUnlike = async (postId, userId) => {
-      Logger.info('Unliking post with ID:', postId, 'by user with ID:', userId);
-      try {
-         await unlikePost(postId); // Send the unlike request
-         const updatedPosts = posts.map(post =>
-            post._id === postId
-               ? { ...post, likes: post.likes - 1, likesBy: post.likesBy.filter((id) => id !== userId) }
-               : post
-         );
-         setPosts(updatedPosts); // Update the post with the new like count
-         setLikeStatus((prev) => ({ ...prev, [postId]: prev[postId].filter((id) => id !== userId) })); // Mark as unliked by the user
-         Logger.info('Unliked post successfully with ID:', postId);
-      } catch (error) {
-         Logger.error('Error unliking post with ID:', postId, error);
-      }
-   };
+    const removePost = useCallback(async (postId) => {
+        try {
+            await deletePostById(postId);
+            setPosts((prevPosts) => prevPosts.filter((post) => post.postId !== postId));
+        } catch (error) {
+            logger.error('Error deleting post:', error);
+        }
+    }, []);
 
-   // Handle post editing
-   const handleEditPost = async (postId, updatedContent) => {
-      Logger.info('Editing post with ID:', postId, 'with content:', updatedContent);
+    const like = useCallback(async (postId) => {
+        try {
+            const data = await likePost(postId);
+            logger.info(`Post ${postId} liked by user.`);
+            setPosts((prevPosts) =>
+                prevPosts.map((post) =>
+                    post.postId === postId
+                        ? { ...post, likes: data.likes, likesBy: data.likesBy }
+                        : post
+                )
+            );
+        } catch (error) {
+            logger.error('Error liking post:', error);
+        }
+    }, []);
 
-      // Optimistically update the post before confirming with the server
-      const prevPosts = [...posts]; // Make a copy of the posts array
-      setPosts(prevPosts.map(post => post._id === postId ? { ...post, content: updatedContent } : post));
+    const unlike = useCallback(async (postId) => {
+        try {
+            const data = await unlikePost(postId);
+            logger.info(`Post ${postId} unliked by user.`);
+            setPosts((prevPosts) =>
+                prevPosts.map((post) =>
+                    post.postId === postId
+                        ? { ...post, likes: data.likes, likesBy: data.likesBy }
+                        : post
+                )
+            );
+        } catch (error) {
+            logger.error('Error unliking post:', error);
+        }
+    }, []);
 
-      try {
-         const updatedPost = await updatePostById(postId, { content: updatedContent });
-         Logger.info('Updated post received from server:', updatedPost);
-
-         if (!updatedPost || !updatedPost._id || !updatedPost.content || !updatedPost.userId) {
-            throw new Error('Incomplete post data received from server.');
-         }
-
-         setPosts((prevPosts) =>
-            prevPosts.map(post => post._id === postId ? { ...post, ...updatedPost } : post)
-         );
-
-         Logger.info('Edited post successfully with ID:', postId);
-         refreshPosts(); // Ensure the updated post is reflected in UI
-      } catch (error) {
-         // Rollback changes in case of failure
-         setPosts(prevPosts); // Rollback to previous state
-         Logger.error('Error editing post with ID:', postId, error);
-      }
-   };
-
-   return (
-      <PostContext.Provider
-         value={{
+    const contextValue = useMemo(
+        () => ({
             posts,
             setPosts,
-            likeStatus,
-            fetchPostsByUserHandler,
-            handleNewPost,
-            handleLike,
-            handleUnlike,
-            handleEditPost,
-            refreshPosts, // Provide refreshPosts function
-            selectedPost, // Provide selectedPost to the context
-            setSelectedPost // Allow setting the selected post
-         }}
-      >
-         {children}
-      </PostContext.Provider>
-   );
+            topLikedPosts,
+            paginationInfo,
+            loading,
+            loadPosts,
+            loadTopLikedPosts,
+            addPost,
+            updatePost,
+            removePost,
+            like,
+            unlike,
+            selectedPost,       // Provided selectedPost
+            setSelectedPost,    // Provided setSelectedPost
+            refreshPosts,       // Provided refreshPosts
+            loadPostsByUser,    // Provided loadPostsByUser
+        }),
+        [
+            posts,
+            selectedPost,
+            refreshPosts,
+            topLikedPosts,
+            paginationInfo,
+            loading,
+            loadPosts,
+            loadTopLikedPosts,
+            addPost,
+            updatePost,
+            removePost,
+            like,
+            unlike,
+            loadPostsByUser,
+        ]
+    );
+
+    return <PostContext.Provider value={contextValue}>{children}</PostContext.Provider>;
+};
+
+PostProvider.propTypes = {
+    children: PropTypes.node.isRequired,
 };

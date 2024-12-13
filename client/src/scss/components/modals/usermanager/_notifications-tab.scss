@@ -1,0 +1,67 @@
+// src/components/NotificationsTab.scss
+// Updated styles for NotificationsTab component
+
+.notifications-tab__form {
+    display: grid;
+    gap: $spacing-md;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.notifications-tab__form-group {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+
+    label {
+        color: var(--primary-text-color);
+        font-size: $small-font-size;
+    }
+
+    .notifications-tab__notification-options {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-xs;
+
+        label {
+            align-items: center;
+            display: flex;
+            gap: $spacing-xs;
+        }
+    }
+
+    select {
+        background-color: $input-bg-color;
+        border: 1px solid var(--border-color);
+        border-radius: $border-radius;
+        color: var(--primary-text-color);
+        font-size: $body-font-size;
+        padding: $input-padding;
+        transition:
+            border-color $transitions-base,
+            box-shadow $transitions-base;
+
+        &:focus {
+            border-color: var(--highlight-color);
+            box-shadow: 0 0 0 3px rgba(var(--highlight-color), 0.25);
+            outline: none;
+        }
+    }
+
+    .notifications-tab__error {
+        color: var(--error-color);
+        font-size: $xsmall-font-size;
+        margin-top: 2px;
+    }
+}
+
+.notifications-tab__form > .button {
+    grid-column: 1 / -1;
+    justify-self: end;
+    margin-top: $spacing-md;
+}
+
+@media (max-width: $breakpoint-md) {
+    .notifications-tab__form {
+        grid-template-columns: 1fr;
+    }
+}

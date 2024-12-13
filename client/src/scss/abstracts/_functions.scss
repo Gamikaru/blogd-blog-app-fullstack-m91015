@@ -1,44 +1,123 @@
-// scss/abstracts/_functions.scss
+@use "sass:math";
+@use "sass:selector";
+@use "sass:string";
+@use "sass:color";
+@use "sass:list";
+@use "sass:map";
+@use "sass:meta";
 
-// Function to adjust color brightness by a given percentage
-@function adjust-color($color, $percent) {
-   @return mix($color, if($percent > 0, white, black), abs($percent));
+
+// Function for Rem Conversion
+@function px-to-rem($px) {
+    @if meta.type-of($px) != "number" {
+        @error "px-to-rem: Expected a numeric value, got #{type-of($px)}.";
+    }
+
+    $base: 16;
+    $value: $px / $base;
+
+    @return #{$value}rem;
 }
 
-// Function for responsive font-size scaling between min and max sizes
-@function responsive-font-size($min-size, $max-size) {
-   @return calc(#{$min-size} + (#{$max-size} - $min-size) * ((100vw - 360px) / (1920 - 360)));
+// // Function for Calculating Lightness Adjustments
+// @function adjust-color-lightness($color, $percent) {
+//     @return color.adjust($color, $lightness: $percent);
+// }
+
+// // Function to Darken Color by Percentage
+// @function darken-color($color, $percent) {
+//     @return color.adjust($color, $lightness: - $percent);
+// }
+
+// // Function to Fade Color by Percentage
+// @function fade-color($color, $percent) {
+//     @return rgba($color, $percent);
+// }
+
+// Function for Border Radius
+@function border-radius($radius: $border-radius) {
+    @return $radius;
 }
 
-// Function to convert pixels to rem for typography and layout consistency
-@function px-to-rem($px-value) {
-   $base-font-size: 16px; // Base font size for the project
-   @return #{$px-value / $base-font-size}rem;
+// Function for Spacing Units
+@function spacing($multiplier) {
+    @return $spacing-unit * $multiplier;
 }
 
-// Function to handle dynamic spacing based on a factor (for modular spacing)
-@function modular-spacing($factor) {
-   $base-spacing: 1rem;
-   @return $factor * $base-spacing;
+@function luminance($color) {
+    $r: get-color-channel($color, "red");
+    $g: get-color-channel($color, "green");
+    $b: get-color-channel($color, "blue");
+
+    @return (0.299 * $r + 0.587 * $g + 0.114 * $b);
 }
 
-// Function to calculate clamp for fluid responsive values
-@function clamp-value($min, $mid, $max) {
-   @return clamp(#{$min}, #{$mid}, #{$max});
+// Function for Color Channel
+@function get-color-channel($color, $channel) {
+    @if $channel == "red" {
+        @return color.red($color);
+    } @else if $channel == "green" {
+        @return color.green($color);
+    } @else if $channel == "blue" {
+        @return color.blue($color);
+    }
+
+    @return 0;
 }
 
-// Function to calculate rem from pixel values for both width and height
-@function rem-calc($value) {
-   $base-size: 16px;
-   @return calc(#{$value / $base-size}rem);
+// Utility Functions
+@function modal-spacing($key) {
+    @return map.get($modal-spacing, $key);
 }
 
-// Function to calculate percentage widths
-@function percentage($value, $context) {
-   @return calc((#{$value} / #{$context}) * 100%);
+@function modal-dimension($key) {
+    @return map.get($modal-dimensions, $key);
 }
 
-// Function to set linear-gradient color for backgrounds
-@function linear-bg($start-color, $end-color, $angle: 145deg) {
-   @return linear-gradient($angle, $start-color, $end-color);
+@function get-z-index($key) {
+    @return map.get($z-indices, $key);
+}
+
+// Function for Fluid Width
+@function fluid-width($min-vw, $max-vw, $min-width, $max-width) {
+    @if math.unit($min-width) != math.unit($max-width) {
+        @error "fluid-width: $min-width and $max-width must have the same units.";
+    }
+
+    @if math.unit($min-vw) != math.unit($max-vw) {
+        @error "fluid-width: $min-vw and $max-vw must have the same units.";
+    }
+
+    $slope: math.div($max-width - $min-width, $max-vw - $min-vw);
+    $intercept: $min-width - ($slope * $min-vw);
+
+    @return clamp(#{$min-width}, calc(#{$slope} * 100vw + #{$intercept}), #{$max-width});
+}
+
+// Function for Fluid Typography
+@function fluid-type($min-vw, $max-vw, $min-size, $max-size) {
+    @if math.unit($min-size) != math.unit($max-size) {
+        @error "fluid-type: $min-size and $max-size must have the same units.";
+    }
+
+    @if math.unit($min-vw) != math.unit($max-vw) {
+        @error "fluid-type: $min-vw and $max-vw must have the same units.";
+    }
+
+    $slope: math.div($max-size - $min-size, $max-vw - $min-vw);
+    $intercept: $min-size - ($slope * $min-vw);
+
+    @return clamp(#{$min-size}, calc(#{$slope} * 100vw + #{$intercept}), #{$max-size});
+}
+
+// Function for Responsive Breakpoint
+@function breakpoint($name) {
+    @return map.get($breakpoints, $name);
+}
+
+
+
+// Function to Calculate Container Width
+@function container-width($size) {
+    @return map.get($container-max-widths, $size);
 }

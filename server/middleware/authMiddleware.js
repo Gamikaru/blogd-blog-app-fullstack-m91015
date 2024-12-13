@@ -1,61 +1,54 @@
-import jwt from 'jsonwebtoken';
+// middleware/authMiddleware.js
+
 import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
+import logger from '../utils/logger.js';
 
 dotenv.config();
 
 /**
- * @middleware authenticate
- * @desc       Middleware to authenticate user using JWT
+ * Middleware to authenticate user using JWT.
  */
 export const authenticate = (req, res, next) => {
-   const { authorization } = req.headers;
+    const { authorization } = req.headers;
 
-   // Check if the authorization header is present
-   if (!authorization) {
-      console.log('Authorization header is missing');
-      return res.status(401).send('Authorization header is missing');
-   }
+    if (!authorization) {
+        logger.error('Authentication Failed: No token provided', { ip: req.ip });
+        return res.status(401).json({ message: 'No token provided' });
+    }
 
-   console.log('Authorization header received');
+    const parts = authorization.split(' ');
+    if (parts[0] !== 'Bearer' || parts.length !== 2) {
+        logger.error('Authentication Failed: Invalid token format', { ip: req.ip, authorization });
+        return res.status(401).json({ message: 'Invalid token format' });
+    }
 
-   // Ensure token is in the correct format "Bearer <token>"
-   const parts = authorization.split(' ');
-   if (parts[0] !== 'Bearer' || parts.length !== 2) {
-      console.log('Malformed token format');
-      return res.status(401).send('Malformed token');
-   }
+    const token = parts[1];
 
-   const token = parts[1];
+    try {
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
 
-   // Verify the JWT token
-   jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
-      if (err) {
-         if (err.name === 'TokenExpiredError') {
-            console.error('Token expired:', err.message);
-            return res.status(403).send('Token expired, please log in again');
-         }
-         console.error('Invalid token:', err.message);
-         return res.status(403).send(`Invalid token: ${err.message}`);
-      }
+        // Check if the decoded token has the required fields
+        if (!decodedToken.userId || !decodedToken.email || !decodedToken.authLevel) {
+            logger.error('Token payload missing required fields', { token: decodedToken, ip: req.ip });
+            return res.status(400).json({ message: 'Invalid token payload' });
+        }
 
-      console.log('Decoded token:', decodedToken);
+        req.user = {
+            userId: decodedToken.userId,
+            email: decodedToken.email,
+            authLevel: decodedToken.authLevel,
+        };
 
-      // Check if the decoded token has the required fields
-      if (!decodedToken._id || !decodedToken.email || !decodedToken.authLevel) {
-         console.log('Token payload missing required fields');
-         return res.status(400).send('Invalid token payload');
-      }
+        logger.info('User authenticated successfully', { userId: req.user.userId, ip: req.ip });
 
-      // Set the user information on the request object
-      req.user = {
-         _id: decodedToken._id,
-         email: decodedToken.email,
-         authLevel: decodedToken.authLevel,
-      };
-
-      console.log('User authenticated successfully');
-
-      // Continue to the next middleware or route
-      next();
-   });
+        next();
+    } catch (err) {
+        if (err.name === 'TokenExpiredError') {
+            logger.error('Token expired', { message: err.message, ip: req.ip });
+            return res.status(403).json({ message: 'Token expired, please log in again' });
+        }
+        logger.error('Invalid token', { message: err.message, ip: req.ip });
+        return res.status(403).json({ message: 'Invalid token' });
+    }
 };

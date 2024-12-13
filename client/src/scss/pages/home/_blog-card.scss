@@ -1,0 +1,268 @@
+// src/components/BlogCard.scss
+
+@use "sass:map";
+
+.blog-post-card {
+    @include card-style;
+
+    box-shadow: 0 2px 5px rgb(0 0 0 / 5%);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    height: 100%; // Ensure full height for consistency
+    overflow: hidden;
+    padding: spacing(1); // Increased padding for more vertical space
+    padding-bottom: spacing(1.5); // Reduced bottom padding
+    transition:
+        transform $transitions-base,
+        box-shadow $transitions-base;
+
+    &__image-container {
+        border-radius: $border-radius;
+        height: 28vh;
+        overflow: hidden;
+        width: 100%;
+
+        &__cover-image,
+        &__cover-placeholder {
+            height: 100%;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        &__cover-placeholder {
+            @include flex-center;
+
+            background-color: var(--accent-color-1);
+            color: $secondary-text-color;
+            font-size: $body-font-size;
+        }
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        justify-content: flex-start; // Align items to start
+        padding-inline: spacing(0.5);
+        position: relative;
+
+        &__header {
+            @include flex-start;
+
+            color: $secondary-text-color;
+            justify-content: space-between;
+            margin-top: spacing(0.2);
+            min-height: spacing(4); // Ensure consistent height
+
+            &__author-name {
+                color: var(--primary-text-color);
+                font-weight: bold;
+            }
+
+            &__post-date {
+                color: $secondary-text-color;
+                font-size: $small-font-size;
+            }
+        }
+
+        &__title {
+            color: var(--primary-text-color);
+            font-family: $font-family-heading;
+            font-size: clamp(1.2rem, 2.5vw, 1.6rem); // Increased max size
+            line-height: 1.2;
+            margin: 0;
+            margin-bottom: spacing(0.5);
+            overflow: hidden;
+            padding-top: spacing(0.5); // Add padding to align vertically
+            width: 100%;
+        }
+
+        &__category {
+            margin-bottom: spacing(0.5);
+        }
+
+        &__category-tag {
+            background-color: var(--accent-color-1); // Default color
+            border-radius: 999px;
+            color: var(--primary-text-color);
+            display: inline-block;
+            font-size: $small-font-size;
+            font-weight: bold;
+            padding: 0.2em 0.6em;
+            text-transform: capitalize;
+
+            // Color coding for categories
+            &.technology-category {
+                background-color: var(--category-technology);
+            }
+
+            &.lifestyle-category {
+                background-color: var(--category-lifestyle);
+            }
+
+            &.business-category {
+                background-color: var(--category-business);
+            }
+
+            &.health-and-fitness-category {
+                background-color: var(--category-health-and-fitness);
+            }
+
+            &.philosophy-category {
+                background-color: var(--category-philosophy);
+            }
+
+            &.productivity-category {
+                background-color: var(--category-productivity);
+            }
+
+            &.cooking-category {
+                background-color: var(--category-cooking);
+            }
+
+            &.art-category {
+                background-color: var(--category-art);
+            }
+
+            &.music-category {
+                background-color: var(--category-music);
+            }
+
+            // Default category color
+            &.default-category {
+                background-color: var(--category-default);
+            }
+
+            // Other category color
+            &.other-category {
+                background-color: var(--category-other);
+            }
+        }
+
+        &__title-category {
+            align-items: flex-start;
+            display: flex;
+            flex-direction: column;
+            margin: spacing(0) 0 spacing(0.5);
+
+            // padding-top: spacing(0.5);
+            margin-bottom: spacing(1); // Added margin for spacing below
+
+            &__title {
+                color: var(--primary-text-color);
+                font-family: $font-family-heading;
+                font-size: clamp(1.2rem, 2.5vw, 1.6rem); // Increased max size
+                line-height: 1.2;
+                margin: 0;
+                margin-bottom: spacing(0.5);
+                overflow: hidden;
+                padding-top: spacing(0.5); // Add padding to align vertically
+                width: 100%;
+            }
+
+            &__category {
+                align-items: center;
+                color: $secondary-text-color;
+                display: flex;
+                font-size: $sub-heading-font-size;
+
+                &:empty::before {
+                    content: "\00a0";
+                    visibility: hidden;
+                }
+            }
+
+            &__category-icon {
+                margin-right: spacing(0.5);
+            }
+
+            &__category-text {
+                color: $secondary-text-color;
+                font-size: $sub-heading-font-size;
+            }
+        }
+
+        &__content-text {
+            color: var(--primary-text-color);
+            font-size: $body-font-size;
+            line-height: $line-height;
+            margin: spacing(1) 0;
+            max-height: px-to-rem(80);
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            &__quote {
+                color: $secondary-text-color;
+                display: inline;
+                font-size: $sub-heading-font-size;
+                font-style: italic;
+                line-height: px-to-rem(25.6);
+            }
+
+            &__opening-quote {
+                color: var(--primary-text-color);
+                font-family: $font-family-heading;
+                font-size: px-to-rem(32);
+                font-weight: bold;
+                margin-right: px-to-rem(8);
+                vertical-align: text-top;
+            }
+
+            &__closing-group {
+                align-items: center;
+                display: inline-flex;
+                margin-left: px-to-rem(4);
+                position: relative;
+                top: px-to-rem(4.8);
+            }
+
+            &__closing-quote {
+                color: var(--primary-text-color);
+                font-size: px-to-rem(32);
+                font-weight: bold;
+                vertical-align: baseline;
+            }
+        }
+
+        &__interactions {
+            @include flex-start;
+
+            gap: spacing(1);
+            margin-bottom: spacing(1.5); // Increased margin for more space
+            margin-top: auto; // Push interactions to the bottom
+
+            &__like-button {
+                @include button-style(none, var(--primary-text-color));
+
+                align-items: center;
+                display: flex;
+                font-size: $body-font-size;
+                margin-top: spacing(0.5); // Shifted down
+                padding: 0;
+
+                &__heart-icon {
+                    font-size: px-to-rem(19.2);
+                    margin-right: spacing(0.5);
+                    transition: color $transitions-base;
+                }
+
+                &__likes-count {
+                    color: $secondary-text-color;
+                    font-size: $small-font-size;
+                }
+
+                &:hover &__heart-icon {
+                    color: var(--accent-color-2);
+                }
+            }
+        }
+
+    }
+
+    /* Ensure consistent alignment */
+    .blog-post-card__content__title-category__title,
+    .blog-post-card__content__title-category__category {
+        margin-top: spacing(0);
+    }
+}

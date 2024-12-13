@@ -1,0 +1,90 @@
+:root {
+    /* Base Colors & Backgrounds */
+    --primary-bg-color: #f3f0ed; /* Warm, off-white background */
+    --secondary-bg-color: #fff; /* Pure white for contrast elements */
+    --primary-text-color: #2f2f2f; /* Darkened slightly for improved contrast */
+    --secondary-text-color: #7c7c7c; /* Slightly darker gray for better legibility */
+    --accent-color-1: #e2e3d5; /* Warm neutral accent */
+    --accent-color-2: #f1f1f1; /* Light neutral accent */
+    --highlight-color: #8c8c8c; /* Neutral highlight slightly adjusted */
+    --success-color: #28a745;
+    --error-color: #e74c3c;
+    --warning-color: #f39c12;
+    --hover-color: #e0e0e0;
+    --modal-backdrop-color: rgb(0 0 0 / 20%);
+    --border-color: rgb(0 0 0 / 10%);
+
+    /* Slight variations */
+    --highlight-color-light5: #a2a2a2;
+    --highlight-color-dark10: #8c8c8c;
+    --highlight-color-light30: #cacaca;
+    --primary-text-light30: #777;
+    --accent-color-1-dark2: #dedfd2;
+    --accent-color-1-dark5: #dbdccf;
+    --accent-color-1-dark7: #d9dacb;
+    --accent-color-2-dark10: #e0e0e0;
+    --button-primary-dark10: #8c8c8c;
+    --button-danger-dark10: #c62f3f;
+    --info-color-light10: #1eb5cc;
+    --primary-text-light10: #4a4a4a;
+    --secondary-bg-color-light5: #fafafa;
+    --primary-bg-color-light5: #f6f4f1;
+    --primary-bg-color-light1: #f4f1ee;
+    --primary-bg-color-light4: #f6f4f1;
+    --secondary-bg-color-light20: #fefefe;
+    --close-button-color: #2f2f2f; /* Dark color for light mode */
+
+
+    /* Updated Category Colors (light theme):
+       Slightly deepened and adjusted to maintain contrast on light backgrounds */
+    --category-lifestyle: #f8b89b; /* Adjusted from #fbc4ab */
+    --category-philosophy: #e3b4c5; /* Adjusted from #eac4d5 */
+    --category-productivity: #ffd9c6; /* Adjusted from #ffe5d9 */
+    --category-health-and-fitness: #acd9c6; /* Adjusted from #b8e0d2 */
+    --category-technology: #9cc4d8; /* Adjusted from #a8d0e6 */
+    --category-cooking: #f4cca6; /* Adjusted from #f9dcc4 */
+    --category-art: #d8e4df; /* Adjusted from #e2ece9 */
+    --category-music: #c9d7d4; /* Adjusted from #d5e1df */
+    --category-business: #b19ac8; /* Adjusted from #c3aed6 */
+    --category-default: #e2e3d5; /* Remains neutral */
+    --category-other: #808080; /* Gray remains the same */
+}
+
+.dark-theme {
+    /* Dark theme adjustments for a warmer, earthy tone */
+    --primary-bg-color: #4f5649; /* Slightly darker, earthy background from #5e6758 */
+    --secondary-bg-color: #242824; /* Dark base with a subtle green/brown hue */
+    --primary-text-color: #e7e8db; /* Brightened slightly for better contrast */
+    --secondary-text-color: #ccc; /* Lightened from #bfbfbf */
+    --accent-color-1: #aaab9e; /* Keep a similar warm neutral accent */
+    --accent-color-2: #e2e3d5; /* Same as accent-color-1 for consistency */
+    --highlight-color: #75a2a4; /* Slightly teal highlight as in original, can remain for contrast */
+    --success-color: #28a745;
+    --error-color: #e74c3c;
+    --warning-color: #f39c12;
+    --hover-color: #c9c9c9;
+    --modal-backdrop-color: rgb(255 255 255 / 20%);
+    --border-color: rgb(255 255 255 / 10%);
+    --secondary-bg-color-light5: #2b2b2b;
+    --primary-bg-color-light5: #686f62;
+    --primary-bg-color-light1: #646d5f;
+    --primary-bg-color-light4: #6b7564;
+    --secondary-bg-color-light20: #313131;
+    --secondary-bg-color-light10: #2a2a2a;
+    --secondary-bg-color-dark2: #1f1f1f;
+    --close-button-color: #e7e8db; /* Light color for dark mode */
+
+
+    /* Category colors (dark theme) */
+    --category-lifestyle: #ff8c009f; /* Dark Orange */
+    --category-philosophy: #ff69b49f; /* Hot Pink */
+    --category-productivity: #ff6347a2; /* Tomato */
+    --category-health-and-fitness: #20b2aba9; /* Light Sea Green */
+    --category-technology: #1e8fffab; /* Dodger Blue */
+    --category-cooking: #ffd900a0; /* Gold */
+    --category-art: #00ced1a5; /* Dark Turquoise */
+    --category-music: #7fffd4a3; /* Aquamarine */
+    --category-business: #9470dba0; /* Medium Purple */
+    --category-default: #e2e3d59d; /* Dark accent color */
+    --category-other: #808080; /* Gray */
+}

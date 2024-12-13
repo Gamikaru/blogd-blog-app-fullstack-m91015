@@ -1,0 +1,33 @@
+// navbar.scss
+
+.nav-header {
+    background-color: var(--primary-bg-color);
+    border-radius: 0 0 px-to-rem(80);
+    border-right: 0.1rem solid var(--border-color);
+    height: px-to-rem(500);
+    margin-right: px-to-rem(32); // 2rem
+    padding-bottom: px-to-rem(160); // 10rem
+    padding-inline: $navbar-padding;
+    position: fixed;
+    position: relative;
+}
+
+.navbar {
+    align-items: center;
+    display: flex;
+    justify-content: flex-start; // Align items to the left
+    padding: $spacing-md;
+}
+
+.navbar-left {
+    @include flex-start;
+
+    gap: $spacing-md; // 1rem
+    position: relative;
+}
+
+@media (max-width: $breakpoint-md) {
+    .navbar {
+        padding: $spacing-sm $spacing-md;
+    }
+}

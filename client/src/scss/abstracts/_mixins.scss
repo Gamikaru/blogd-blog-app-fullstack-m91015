@@ -1,16 +1,372 @@
-// scss/abstracts/_mixins.scss
+// _mixins.scss
 
+// Mixin for Flex Centering
+@mixin flex-center {
+    align-items: center;
+    display: flex;
+    flex: 1 1 auto; // Allow shrinking but keep proportions
+    justify-content: center;
+}
 
-@import './mixins/component_mixins';
-@import './mixins/flexbox_mixins';
-@import './mixins/layout_mixins';
-@import './mixins/fx_mixins';
-@import './mixins/typography_mixins';
-@import './mixins/utility_mixins';
+@mixin flex-start {
+    align-items: center;
+    display: flex;
+    justify-content: flex-start;
+}
 
+// Mixin for Box Shadows
+@mixin card-shadow {
+    box-shadow: $card-shadow;
+}
 
+// Mixin for Responsive Grids
+@mixin responsive-grid($columns) {
+    display: grid;
+    gap: $spacing-unit;
+    grid-template-columns: repeat($columns, 1fr);
 
+    @media (max-width: $breakpoint-md) {
+        grid-template-columns: repeat(2, 1fr);
+    }
 
+    @media (max-width: $breakpoint-sm) {
+        grid-template-columns: 1fr;
+    }
+}
 
+// Mixin for Button Styling
+@mixin button-style($bg-color, $text-color) {
+    &:hover {
+        background-color: if($bg-color != none, var(--accent-color-1), none); // Accent color on hover
+        opacity: $button-opacity-default; // Slightly more opaque on hover
+    }
 
+    &:disabled,
+    &.button-disabled {
+        background-color: rgb(0 0 0 / 0%); // Maintain transparent background
+        color: var(--primary-text-color-disabled); // Lighter text color when disabled
+        cursor: not-allowed; // Indicate disabled state
+        opacity: $button-opacity-disabled; // Reduced opacity when disabled
+    }
+}
 
+// Mixin for Button Variants
+@mixin button-variant($variant-color, $bg-opacity: 0.1, $hover-bg-opacity: 0.2) {
+    background-color: rgba($variant-color, $bg-opacity);
+    color: $variant-color;
+
+    &:hover {
+        background-color: rgba($variant-color, $hover-bg-opacity);
+        opacity: $button-opacity-hover; // Fully opaque on hover
+    }
+
+    &:disabled,
+    &.button-disabled {
+        background-color: rgba($variant-color, $bg-opacity);
+        color: var(--primary-text-color-disabled);
+        cursor: not-allowed;
+        opacity: $button-opacity-disabled;
+    }
+}
+
+// Mixin for Heading Styles
+@mixin heading-style($size, $font-family: $font-family-heading, $weight: 700) {
+    color: var(--primary-text-color);
+    font-family: $font-family;
+    font-size: $size;
+    font-weight: $weight;
+    line-height: 1.2;
+}
+
+// Mixin for Card Style
+@mixin card-style {
+    background-color: var(--secondary-bg-color);
+    border-radius: $border-radius;
+    box-shadow: $card-shadow;
+    color: var(--primary-text-color);
+    padding: $card-padding;
+
+    @include respond-to(md) {
+        padding: map.get($spacing-scale, md);
+    }
+
+    @include respond-to(sm) {
+        padding: map.get($spacing-scale, sm);
+    }
+}
+
+// Responsive Typography Mixin
+@mixin responsive-typography($small, $medium, $large) {
+    font-size: $small;
+
+    @include respond-to(sm) {
+        font-size: $medium;
+    }
+
+    @include respond-to(lg) {
+        font-size: $large;
+    }
+}
+
+// Mixin for Media Queries
+@mixin respond-to($breakpoint) {
+    @media (max-width: map.get($breakpoints, $breakpoint)) {
+        @content;
+    }
+}
+
+// Mixin to Hide on Specific Breakpoint
+@mixin hide-on($breakpoint) {
+    @media (max-width: map.get($breakpoints, $breakpoint)) {
+        display: none !important;
+    }
+}
+
+// Mixin to Show on Specific Breakpoint
+@mixin show-on($breakpoint) {
+    display: none;
+
+    @media (min-width: map.get($breakpoints, $breakpoint)) {
+        display: block !important;
+    }
+}
+
+// Mixin for Responsive Margin
+@mixin responsive-margin($margin-xs, $margin-md, $margin-lg) {
+    margin: $margin-xs;
+
+    @include respond-to(sm) {
+        margin: $margin-md;
+    }
+
+    @include respond-to(lg) {
+        margin: $margin-lg;
+    }
+}
+
+// Mixin for Responsive Padding
+@mixin responsive-padding() {
+    @include respond-to(xxs) {
+        padding: $spacing-xxs;
+    }
+
+    @include respond-to(xs) {
+        padding: $padding-xs;
+    }
+
+    @include respond-to(sm) {
+        padding: $padding-sm;
+    }
+
+    @include respond-to(md) {
+        padding: $padding-md;
+    }
+
+    @include respond-to(lg) {
+        padding: $padding-lg;
+    }
+}
+
+@mixin responsive-grid-auto($min-size) {
+    display: grid;
+    gap: $spacing-unit;
+    grid-template-columns: repeat(auto-fit, minmax($min-size, 1fr));
+}
+
+// Mixin for Container
+@mixin container {
+    margin: 0 auto;
+    max-width: map.get($container-max-widths, sm);
+    padding: 0 map.get($spacing-scale, sm);
+    width: 100%;
+
+    @include respond-to(md) {
+        max-width: map.get($container-max-widths, md);
+    }
+
+    @include respond-to(lg) {
+        max-width: map.get($container-max-widths, lg);
+    }
+
+    @include respond-to(xl) {
+        max-width: map.get($container-max-widths, xl);
+    }
+
+    @include respond-to(xxl) {
+        max-width: map.get($container-max-widths, xxl);
+    }
+}
+
+// Mixin for Fluid Typography
+@mixin fluid-font-size($min-size, $max-size) {
+    font-size: $min-size;
+
+    @media (min-width: map.get($breakpoints, xxs)) and (max-width: map.get($breakpoints, xxl)) {
+        font-size: calc(#{$min-size} + (#{$max-size} - #{$min-size}) * ((100vw - 320px) / (1440 - 320)));
+    }
+
+    @media (min-width: map.get($breakpoints, xxl)) {
+        font-size: $max-size;
+    }
+}
+
+@mixin page-title {
+    @include heading-style($heading-font-size-xxlg);
+
+    color: var(--primary-text-color);
+    font-weight: bold;
+    margin: 0;
+    margin-left: $spacing-xs;
+    padding-inline: px-to-rem(50);
+}
+
+@mixin page-subtitle {
+    color: $secondary-text-color;
+    font-family: $font-family-primary;
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    font-style: italic;
+    line-height: 1.6;
+    margin-top: $spacing-sm;
+}
+
+// Mixin for Filter and Search Icon Styling
+@mixin filter-search-icon {
+    background: none;
+    border: none;
+    color: var(--primary-text-color);
+    cursor: pointer;
+    font-size: px-to-rem(21);
+    transition: color $transitions-base;
+
+    &:hover {
+        color: var(--accent-color-1);
+    }
+}
+
+/* Base Mixin for Input Fields */
+@mixin input-field-base {
+    border: 1px solid var(--border-color);
+    border-radius: $border-radius;
+    color: var(--primary-text-color);
+    font-size: $body-font-size;
+    padding: $input-padding;
+    transition:
+        background-color $transitions-base,
+        border-color $transitions-base,
+        box-shadow $transitions-base;
+    width: 100%;
+
+    &:focus {
+        border-color: var(--accent-color-2);
+        box-shadow: $input-focus-box-shadow;
+        outline: none;
+    }
+
+    &.input-error {
+        border-color: var(--error-color);
+    }
+
+    ::placeholder {
+        color: $secondary-text-color;
+        opacity: 1;
+    }
+}
+
+/* Base Mixin for Select Fields */
+@mixin select-field-base {
+    @include input-field-base;
+
+    appearance: none;
+    background-color: var(--primary-bg-color);
+    background-image: none;
+    padding-right: 2.5rem; // Space for the chevron icon
+
+    &:focus {
+        border-color: var(--accent-color-2);
+        box-shadow: $input-focus-box-shadow;
+        outline: none;
+    }
+
+    &.is-invalid {
+        border-color: var(--error-color);
+    }
+}
+
+/* Custom Mixin for Search Input */
+@mixin search-input-custom {
+    @include input-field-base;
+
+    background-color: var(--secondary-bg-color);
+    border-color: var(--accent-color-1);
+
+    ::placeholder {
+        color: silver;
+    }
+}
+
+@mixin reset-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: $small-font-size;
+    padding: 0;
+}
+
+// Mixin for Comment Form Styling
+@mixin comment-form-style {
+    background-color: var(--secondary-bg-color-light5); // Slightly lighter background
+    box-shadow: $box-shadow-small;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    margin-top: $spacing-unit * 1.5;
+    padding: $spacing-md;
+
+    @include border-radius($border-radius-sm);
+
+    textarea {
+        @include input-field-base; // Use existing input field base styles
+
+        background-color: var(--secondary-bg-color-light5); // Match form background
+        resize: vertical;
+
+        &:focus {
+            border-color: var(--highlight-color);
+            box-shadow: $input-focus-box-shadow;
+            outline: none;
+        }
+    }
+}
+
+@mixin close-button($position: absolute, $top: $spacing-md, $right: $spacing-md) {
+    @include reset-button;
+
+    align-items: center;
+    color: var(--close-button-color);
+    cursor: pointer;
+    display: flex;
+    font-size: 1.5rem;
+    justify-content: center;
+    padding: $spacing-xs;
+    position: $position;
+    right: $right;
+    top: $top;
+    transition:
+        color $transitions-base,
+        background-color $transitions-base;
+    z-index: 1070;
+
+    &:hover {
+        background-color: transparent;
+        color: var(--primary-text-color);
+    }
+
+    &:active {
+        background-color: transparent;
+        color: var(--highlight-color-dark10);
+    }
+
+    .button-icon {
+        color: inherit;
+    }
+}

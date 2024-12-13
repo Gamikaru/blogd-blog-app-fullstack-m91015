@@ -1,0 +1,43 @@
+// components/pages/profile/_connections-section.scss
+
+.connections-section {
+    background: var(--secondary-bg-color);
+    border-radius: $border-radius;
+    box-shadow: $box-shadow-medium;
+    padding: $spacing-md;
+
+    &__header {
+        align-items: center;
+        display: flex;
+        gap: $spacing-sm;
+    }
+
+    &__icon {
+        color: var(--primary-text-color);
+        font-size: 1.2em;
+    }
+
+    &__action {
+        color: $info-color;
+        cursor: pointer;
+        font-size: $body-font-size;
+        margin-left: auto;
+        transition: color $transitions-base;
+
+        &:hover,
+        &:focus {
+            color: var(--info-color-light10);
+        }
+    }
+
+    &__placeholder-content {
+        align-items: center;
+        background: var(--primary-bg-color);
+        border-radius: $border-radius;
+        color: $secondary-text-color;
+        display: flex;
+        font-size: $sub-heading-font-size;
+        height: 200px;
+        justify-content: center;
+    }
+}

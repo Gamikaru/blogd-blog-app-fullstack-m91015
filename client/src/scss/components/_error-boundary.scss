@@ -1,0 +1,55 @@
+.error-boundary {
+    background-color: var(--primary-bg-color);
+    border-radius: $border-radius;
+    box-shadow: $box-shadow-medium;
+    color: var(--error-color);
+    margin: map.get($spacing-scale, xxl) auto;
+    max-width: map.get($container-max-widths, sm);
+    padding: map.get($spacing-scale, lg);
+    text-align: center;
+
+    &__title {
+        color: var(--error-color);
+        font-family: $font-family-heading;
+        font-size: $heading-font-size-md;
+        margin-bottom: map.get($spacing-scale, md);
+    }
+
+    &__message {
+        color: $secondary-text-color;
+        font-family: $font-family-primary;
+        font-size: $body-font-size;
+        margin-bottom: map.get($spacing-scale, lg);
+    }
+
+    &__details {
+        background-color: var(--secondary-bg-color);
+        border: 1px solid var(--border-color);
+        border-radius: $border-radius;
+        color: var(--primary-text-color);
+        font-family: $font-family-primary;
+        font-size: $xsmall-font-size;
+        margin-top: map.get($spacing-scale, lg);
+        padding: map.get($spacing-scale, sm);
+        text-align: left;
+        white-space: pre-wrap;
+    }
+
+    .button-retry {
+        background-color: var(--highlight-color);
+        border: none;
+        border-radius: $button-border-radius;
+        color: var(--secondary-bg-color);
+        cursor: pointer;
+        padding: map.get($button-padding, md);
+        transition: map.get($transitions, button);
+
+        &:hover {
+            background-color: $button-hover-bg-color;
+        }
+
+        &:focus {
+            box-shadow: $input-focus-box-shadow;
+        }
+    }
+}

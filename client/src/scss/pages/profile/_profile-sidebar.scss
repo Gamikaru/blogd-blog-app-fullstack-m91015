@@ -1,0 +1,35 @@
+// client/src/scss/pages/profile/_profile-sidebar.scss
+
+.profile-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+    height: fit-content;
+    position: sticky;
+    top: 2rem; // Stay in view on scroll
+    width: 20vw;
+
+    @media (width <= 1200px) {
+        width: 25vw;
+    }
+
+    @media (width <= 992px) {
+        width: 30vw;
+    }
+
+    @media (width <= 768px) {
+        margin-bottom: $spacing-lg;
+        width: 100%;
+    }
+
+    @media (width <= 768px) {
+        /* On small screens, stack the components vertically */
+        align-items: center;
+    }
+
+    &__sidebar-columns {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-lg;
+    }
+}

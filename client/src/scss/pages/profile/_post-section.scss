@@ -1,0 +1,211 @@
+// components/pages/profile/_posts-section.scss
+
+.posts-section {
+    background: var(--secondary-bg-color);
+    border-radius: $border-radius;
+    margin-bottom: $spacing-lg;
+    padding: $spacing-lg;
+    width: 62vw;
+
+    @media (width <= 768px) {
+        padding: $spacing-md;
+    }
+
+    &__header {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: $spacing-md;
+    }
+
+    &__title {
+        align-items: center;
+        color: var(--primary-text-color);
+        display: flex;
+        font-family: $font-family-heading;
+        font-size: $heading-font-size-lg;
+
+        svg {
+            color: var(--highlight-color);
+            font-size: 1.5em;
+            margin-right: $spacing-sm;
+        }
+    }
+
+    &__action {
+        color: $info-color;
+        cursor: pointer;
+        font-size: $body-font-size;
+        transition: color $transitions-base;
+
+        &:hover,
+        &:focus {
+            color: var(--info-color-light10);
+        }
+    }
+
+    &__tabs-and-controls {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-bottom: $spacing-md;
+
+        @media (width <= 768px) {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+    }
+
+    // Updated tabs styling to match user manager modal
+    &__tabs {
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        flex-wrap: wrap;
+        gap: $spacing-sm;
+        justify-content: space-around;
+        margin-bottom: $spacing-md;
+    }
+
+    &__tab {
+        @include reset-button; // Reset button styles
+
+        align-items: center;
+        border-radius: $border-radius $border-radius 0 0;
+        color: $secondary-text-color;
+        cursor: pointer;
+        display: flex;
+        font-size: $small-font-size;
+        gap: $spacing-xs;
+        padding: $spacing-sm $spacing-md;
+        position: relative;
+        transition: all 0.3s ease; // Increased transition duration for smoother effect
+
+        &:hover {
+            background: rgba(var(--accent-color-1), 0.2); // Stronger background on hover
+
+
+
+
+        &.active {
+            background: var(--accent-color-1); // Solid background for active state
+            border-bottom: 3px solid var(--accent-color-2); // Thicker border for emphasis
+            // font-weight: bold; // Bold text to highlight active state
+        }
+
+
+            &::after {
+                background: var(--accent-color-1); // Match the border-bottom color
+                bottom: -1px;
+                content: "";
+                height: 2px;
+                left: 0;
+                position: absolute;
+                width: 100%;
+            }
+        }
+
+        &:focus {
+            background: rgba(var(--accent-color-1), 0.2); // Stronger background on hover
+            box-shadow: 0 0 0 3px rgba(var(--accent-color-2), 0.3);
+            outline: none;
+
+        }
+    }
+
+    &__controls {
+        align-items: center;
+        display: flex;
+        gap: $spacing-sm;
+        justify-content: center;
+
+        @media (width <= 768px) {
+            justify-content: flex-start;
+            width: 100%;
+        }
+    }
+
+    &__filter-container {
+        position: relative;
+    }
+
+    &__filter-icon,
+    &__search-icon {
+        background: none;
+        border: none;
+        color: var(--primary-text-color);
+        cursor: pointer;
+        font-size: 1.2em;
+        transition: color $transitions-base;
+
+        &:hover {
+            color: var(--primary-text-light10);
+        }
+    }
+
+    &__filter-dropdown {
+        background: var(--primary-bg-color);
+        border: 1px solid var(--border-color);
+        border-radius: $border-radius;
+        box-shadow: $card-shadow;
+        padding: $spacing-sm;
+        position: absolute;
+        right: 0;
+        top: 100%;
+        width: 200px;
+        z-index: 10;
+
+        @media (width <= 768px) {
+            width: 100%;
+        }
+    }
+
+    &__search-container {
+        align-items: center;
+        display: flex;
+        position: relative;
+    }
+
+    &__search-input {
+        border: 1px solid var(--border-color);
+        border-radius: $border-radius;
+        font-size: 0.9rem; // Reduced from $body-font-size
+        margin-left: $spacing-sm;
+        max-width: 100%;
+        outline: none;
+        padding: $spacing-xs $spacing-sm;
+        width: 200px;
+
+        @media (width <= 768px) {
+            width: 100%;
+        }
+    }
+
+    &__posts-gallery {
+        display: flex;
+        margin-left: 1rem;
+        width: auto;
+    }
+
+    &__posts-gallery-column {
+        background-clip: padding-box;
+        padding: 1rem; /* Adjust gutter size */
+    }
+
+    @media (width <= 768px) {
+        &__posts-gallery {
+            margin-left: 0;
+        }
+
+        &__posts-gallery-column {
+            padding-left: 0;
+        }
+    }
+
+    &__no-posts-message {
+        color: $secondary-text-color;
+        font-size: 0.9rem; // Reduced
+        padding: $spacing-md 0;
+        text-align: center;
+    }
+}

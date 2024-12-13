@@ -1,4 +1,4 @@
-// utils/formValidation.js
+// src/utils/formValidation.js
 
 /**
  * Capitalizes the first letter of a given string.
@@ -6,132 +6,129 @@
  * @returns {string} - The capitalized string.
  */
 export const capitalizeFirstLetter = (string) => {
-   return string.charAt(0).toUpperCase() + string.slice(1);
+    if (typeof string !== 'string' || !string) return '';
+    return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
 /**
  * Validates the registration form data.
  * @param {Object} formData - The form data to validate.
- * @returns {Object} - An object containing any validation errors.
+ * @returns {Object} - An object containing any validation errors and a flag if all fields are empty.
  */
 export const validateRegForm = (formData) => {
-   const errors = {};
-   let allFieldsEmpty = true; // To track if all fields are empty
+    const errors = {};
+    let allFieldsEmpty = true; // To track if all fields are empty
 
-   // Validate first name
-   if (!formData.firstName.trim()) {
-      errors.firstName = "First name is required.";
-   } else {
-      allFieldsEmpty = false;
-      if (formData.firstName.length < 2) {
-         errors.firstName = "First name must be at least 2 characters long.";
-      }
-   }
+    // Helper function to check if a field is empty
+    const isEmpty = (value) => !value || !value.trim();
 
-   // Validate last name
-   if (!formData.lastName.trim()) {
-      errors.lastName = "Last name is required.";
-   } else {
-      allFieldsEmpty = false;
-      if (formData.lastName.length < 2) {
-         errors.lastName = "Last name must be at least 2 characters long.";
-      }
-   }
+    // Validate first name
+    if (isEmpty(formData.firstName)) {
+        errors.firstName = 'First name is required.';
+    } else {
+        allFieldsEmpty = false;
+        if (formData.firstName.length < 2) {
+            errors.firstName = 'First name must be at least 2 characters long.';
+        }
+    }
 
-   // Validate email with regex for valid format
-   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-   if (!formData.email.trim()) {
-      errors.email = "Email is required.";
-      console.log("Validation: Email field is considered empty.");
-   } else {
-      if (!emailRegex.test(formData.email)) {
-         errors.email = "Please enter a valid email address.";
-         console.log("Validation: Invalid email format detected.");
-      }
-   }
+    // Validate last name
+    if (isEmpty(formData.lastName)) {
+        errors.lastName = 'Last name is required.';
+    } else {
+        allFieldsEmpty = false;
+        if (formData.lastName.length < 2) {
+            errors.lastName = 'Last name must be at least 2 characters long.';
+        }
+    }
 
-   // Validate password strength with feedback on missing elements
-   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-   if (!formData.password) {
-      errors.password = "Password is required.";
-   } else {
-      allFieldsEmpty = false;
-      if (!passwordRegex.test(formData.password)) {
-         errors.password = "Password must be at least 8 characters long and include letters, numbers, and special characters.";
-      } else if (formData.password.length < 12) {
-         errors.password = "Consider using at least 12 characters for a stronger password.";
-      }
-   }
+    // Validate email
+    const email = formData.email.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (isEmpty(email)) {
+        errors.email = 'Email is required.';
+    } else {
+        allFieldsEmpty = false;
+        if (!emailRegex.test(email)) {
+            errors.email = 'Please enter a valid email address.';
+        }
+    }
 
-   // Validate password confirmation
-   if (!formData.confirmPassword) {
-      errors.confirmPassword = "Please confirm your password.";
-   } else {
-      allFieldsEmpty = false;
-      if (formData.password !== formData.confirmPassword) {
-         errors.confirmPassword = "Passwords do not match.";
-      }
-   }
+    // Validate password
+    const password = formData.password || '';
+    if (isEmpty(password)) {
+        errors.password = 'Password is required.';
+    } else {
+        allFieldsEmpty = false;
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).{8,}$/;
+        if (!passwordRegex.test(password)) {
+            errors.password =
+                'Password must be at least 8 characters long and include letters, numbers, and special characters.';
+        }
+    }
 
-   // Validate birth date: Future date check and minimum age (18+)
-   const today = new Date();
+    // Validate password confirmation
+    if (isEmpty(formData.confirmPassword)) {
+        errors.confirmPassword = 'Please confirm your password.';
+    } else {
+        allFieldsEmpty = false;
+        if (formData.password !== formData.confirmPassword) {
+            errors.confirmPassword = 'Passwords do not match.';
+        }
+    }
 
-   // Parse the birth date correctly from the form data (force UTC to avoid timezone issues)
-   const birthDate = new Date(`${formData.birthDate}T00:00:00Z`);
+    // Validate birth date
+    const today = new Date();
+    const birthDate = new Date(`${formData.birthDate}T00:00:00Z`);
 
-   // Calculate the difference in years
-   let age = today.getFullYear() - birthDate.getFullYear();
+    if (!formData.birthDate) {
+        errors.birthDate = 'Birth date is required.';
+    } else {
+        allFieldsEmpty = false;
+        if (birthDate > today) {
+            errors.birthDate = 'Birth date cannot be in the future.';
+        } else {
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            if (
+                monthDiff < 0 ||
+                (monthDiff === 0 && today.getDate() < birthDate.getDate())
+            ) {
+                age--;
+            }
+            if (age < 18) {
+                errors.birthDate = 'You must be at least 18 years old to register.';
+            }
+        }
+    }
 
-   // Adjust age if the birthdate has not yet occurred this year
-   const hasHadBirthdayThisYear = (today.getMonth() > birthDate.getMonth()) ||
-      (today.getMonth() === birthDate.getMonth() && today.getDate() >= birthDate.getDate());
-   if (!hasHadBirthdayThisYear) {
-      age--;  // Reduce the age by 1 if the birthday hasn't occurred yet this year
-   }
+    // Validate occupation
+    if (isEmpty(formData.occupation)) {
+        errors.occupation = 'Occupation is required.';
+    } else {
+        allFieldsEmpty = false;
+        if (formData.occupation.length < 2) {
+            errors.occupation = 'Occupation must be at least 2 characters long.';
+        }
+    }
 
-   if (!formData.birthDate) {
-      errors.birthDate = "Birth date is required.";
-   } else {
-      allFieldsEmpty = false;
+    // Validate location
+    const allowedLocations = [
+        'Washington, D.C.', 'Ottawa', 'Mexico City', 'London', 'Paris', 'Berlin',
+        'Rome', 'Madrid', 'Tokyo', 'Beijing', 'Canberra', 'Brasília', 'Moscow',
+        'New Delhi', 'Cairo', 'Buenos Aires', 'Ankara', 'Seoul', 'Bangkok', 'Jakarta',
+    ];
+    if (!formData.location) {
+        errors.location = 'Location is required.';
+    } else {
+        allFieldsEmpty = false;
+        if (!allowedLocations.includes(formData.location)) {
+            errors.location = 'Please select a valid location from the list.';
+        }
+    }
 
-      if (birthDate > today) {
-         errors.birthDate = "Birth date cannot be in the future.";
-      } else if (age < 18) {
-         errors.birthDate = "You must be at least 18 years old to register.";
-      }
-   }
-
-   // Validate occupation
-   if (!formData.occupation.trim()) {
-      errors.occupation = "Occupation is required.";
-   } else {
-      allFieldsEmpty = false;
-      if (formData.occupation.length < 2) {
-         errors.occupation = "Occupation must be at least 2 characters long.";
-      }
-   }
-
-   // Validate location (only allow specific options)
-   const allowedLocations = [
-      "Washington, D.C.", "Ottawa", "Mexico City", "London", "Paris", "Berlin",
-      "Rome", "Madrid", "Tokyo", "Beijing", "Canberra", "Brasília", "Moscow",
-      "New Delhi", "Cairo", "Buenos Aires", "Ankara", "Seoul", "Bangkok", "Jakarta"
-   ];
-   if (!formData.location) {
-      errors.location = "Location is required.";
-   } else {
-      allFieldsEmpty = false;
-      if (!allowedLocations.includes(formData.location)) {
-         errors.location = "Please select a valid location from the list.";
-      }
-   }
-
-   // Return the errors and a flag indicating if all fields are empty
-   return { errors, allFieldsEmpty };
+    return { errors, allFieldsEmpty };
 };
-
-
-
 
 /**
  * Validates the login form data.
@@ -139,25 +136,25 @@ export const validateRegForm = (formData) => {
  * @returns {Object} - An object containing any validation errors.
  */
 export const validateLoginForm = (formData) => {
-   const errors = {};
+    const errors = {};
 
-   // Validate email with regex for valid format
-   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-   if (!formData.email.trim()) {
-      errors.email = "Email is required.";
-   } else if (!emailRegex.test(formData.email.trim())) {
-      errors.email = "Please enter a valid email address in the format: example@domain.com.";
-   }
+    // Validate email
+    const email = formData.email.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) {
+        errors.email = 'Email is required.';
+    } else if (!emailRegex.test(email)) {
+        errors.email = 'Please enter a valid email address.';
+    }
 
-   // Validate password (at least 6 characters for example)
-   if (!formData.password.trim()) {
-      errors.password = "Password is required.";
-   }
+    // Validate password
+    const password = formData.password || '';
+    if (!password) {
+        errors.password = 'Password is required.';
+    }
 
-   return errors;
+    return errors;
 };
-
-
 
 /**
  * Validates post content.
@@ -165,39 +162,36 @@ export const validateLoginForm = (formData) => {
  * @returns {string|null} - An error message or null if valid.
  */
 export const validatePostContent = (postContent) => {
-   const trimmedContent = postContent.trim();
+    const trimmedContent = postContent.trim();
 
-   // Validate for empty content
-   if (!trimmedContent) {
-      return "Post content cannot be empty.";
-   }
+    // Validate for empty content
+    if (!trimmedContent) {
+        return 'Post content cannot be empty.';
+    }
 
-   // Validate minimum length (e.g., 10 characters as per the original logic)
-   if (trimmedContent.length < 10) {
-      return "Post content must be at least 10 characters long.";
-   }
+    // Validate minimum length
+    if (trimmedContent.length < 10) {
+        return 'Post content must be at least 10 characters long.';
+    }
 
-   // Optional: Validate maximum length (e.g., 5000 characters)
-   if (trimmedContent.length > 5000) {
-      return "Post content cannot exceed 5000 characters.";
-   }
+    // Validate maximum length
+    if (trimmedContent.length > 10000) {
+        return 'Post content cannot exceed 10000 characters.';
+    }
 
-   // List of restricted words (commonly blocked swear words)
-   const restrictedWords = [
-      "fuck", "shit", "bitch", "asshole", "bastard", "damn", "crap", "dick", "piss", "cock", "pussy",
-      "cunt", "slut", "whore", "nigger", "faggot", "motherfucker", "cocksucker", "nigga", "twat",
-      "bollocks", "arse", "wanker", "tosser", "bloody", "bugger", "shag", "tit", "dildo", "cum",
-      "skank", "spunk", "wank", "prick", "homo", "spaz"
-   ];
+    // List of restricted words (commonly blocked words)
+    const restrictedWords = [
+        // [List of restricted words]
+    ];
 
-   // Check for restricted words (case-insensitive)
-   for (let word of restrictedWords) {
-      const regex = new RegExp(`\\b${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i'); // Escapes special characters in words
-      if (regex.test(trimmedContent)) {
-         return `Inappropriate language detected in post content. The word "${word}" is not allowed.`;
-      }
-   }
+    // Check for restricted words (case-insensitive)
+    for (let word of restrictedWords) {
+        const escapedWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(`\\b${escapedWord}\\b`, 'i');
+        if (regex.test(trimmedContent)) {
+            return `Inappropriate language detected in post content. The word "${word}" is not allowed.`;
+        }
+    }
 
-   return null;
+    return null;
 };
-

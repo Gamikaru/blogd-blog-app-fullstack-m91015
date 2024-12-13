@@ -1,37 +1,80 @@
-import React, { useCallback, useRef, useState, useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
-import { Navbar, Sidebar } from '../common'; // Import Navbar and Sidebar
-import Logger from '../../utils/Logger'; // Import Logger from utils barrel
-import { useNotificationContext } from '../../contexts'; // Import NotificationContext
+// src/layouts/AppLayout.jsx
+
+import { Footer, Navbar, Sidebar } from '@components';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useCallback, useEffect, useState } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
+
+const pageVariants = {
+    initial: { opacity: 0, y: 20 },
+    in: { opacity: 1, y: 0 },
+    out: { opacity: 0, y: -20 },
+};
+
+const pageTransition = {
+    type: 'tween',
+    ease: 'easeInOut',
+    duration: 0.8,
+};
 
 const AppLayout = () => {
-   const [sidebarOpen, setSidebarOpen] = useState(false);
-   const toggleButtonRef = useRef(null); // Ref for the toggle button
-   const { setPosition, notification } = useNotificationContext(); // Use setPosition from NotificationContext
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const toggleSidebar = useCallback(() => {
+        setSidebarOpen((prev) => !prev);
+    }, []);
 
-   const toggleSidebar = useCallback(() => {
-      Logger.info(`Toggling sidebar to ${!sidebarOpen}`);
-      setSidebarOpen((prevState) => !prevState); // Properly toggle the sidebar state
-   }, [sidebarOpen]);
+    const location = useLocation();
 
-   // Set position once when component mounts
-   useEffect(() => {
-      Logger.info('AppLayout mounted and setting toast position based on notification type');
-      setPosition(notification.type, true); // Set the toast to top-right for private routes (success)
+    // State and effect for back-to-top button
+    const [showBackToTop, setShowBackToTop] = useState(false);
 
-      return () => {
-         Logger.info('AppLayout unmounted');
-      };
-   }, [setPosition, notification.type]); // Re-run when notification type changes
+    useEffect(() => {
+        const handleScroll = () => {
+            console.log('Scroll Y:', window.scrollY); // Debug scroll
+            if (window.scrollY > 200) {
+                setShowBackToTop(true);
+            } else {
+                setShowBackToTop(false);
+            }
+        };
 
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
-   return (
-      <div className="app-layout">
-         <Navbar toggleSidebar={toggleSidebar} toggleButtonRef={toggleButtonRef} />
-         <Sidebar sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} toggleButtonRef={toggleButtonRef} />
-         <Outlet />
-      </div>
-   );
+    const handleBackToTop = useCallback(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, []);
+
+    return (
+        <div className="app-layout">
+            <Navbar toggleSidebar={toggleSidebar} />
+            <Sidebar sidebarOpen={sidebarOpen} handleSidebarClose={() => setSidebarOpen(false)} />
+            <main className="main-content">
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={location.pathname}
+                        variants={pageVariants}
+                        initial="initial"
+                        animate="in"
+                        exit="out"
+                        transition={pageTransition}
+                        className="page-container"
+                    >
+                        <Outlet />
+                    </motion.div>
+                </AnimatePresence>
+            </main>
+            <Footer />
+
+            {/* Back to top button */}
+            {showBackToTop && (
+                <button className="back-to-top" onClick={handleBackToTop}>
+                    ↑
+                </button>
+            )}
+        </div>
+    );
 };
 
 export default AppLayout;

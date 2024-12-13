@@ -1,82 +1,125 @@
-// base/_reset.scss
+// src/styles/_reset.scss
 
-/* Box sizing rules */
+/* Reset Browser Defaults */
 *,
 *::before,
 *::after {
-   box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-/* Remove default margin */
-* {
-   margin: 0;
-   padding: 0;
+.app-layout {
+    background-color: var(--primary-bg-color-light5);
 }
 
-/* Allow percentage-based heights in the application */
-html,
-body {
-   height: 100%;
-}
-
-/* Set base font-size and ensure a consistent line-height */
-html {
-   font-size: 100%; // Adjusts to 16px as default
-   line-height: 1.6;
-   scroll-behavior: smooth;
-   text-size-adjust: 100%; // Disable text-size adjustment on mobile devices
-}
-
-/* Reset body styling */
-body {
-   font-family: $font-primary, sans-serif; // Custom font
-   color: $charcoal; // Default text color
-   background-color: $white; // Background color
-   -webkit-font-smoothing: antialiased;
-   -moz-osx-font-smoothing: grayscale;
-}
-
-
-/* Remove list styling */
-ul,
-ol {
-   list-style: none;
-}
-
-/* Remove default text underline */
+/* Links */
 a {
-   text-decoration: none;
-   color: inherit; // Ensures it takes custom link color
+    color: var(--accent-color-2);
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover {
+        /* If desired, adjust hover color slightly:
+           Since we don't have a function adjust-color-lightness defined here,
+           simply pick a slightly darker variant of accent-color-2 */
+        color: #e0e0e0; /* for dark theme or if scss function is not available */
+        text-decoration: underline;
+    }
 }
 
-/* Make images easier to work with */
-img,
-picture {
-   max-width: 100%;
-   display: block;
+/* Scrollbar Styles */
+
+/* Override SimpleBar styles for a minimalistic scrollbar */
+.app-scrollbar {
+    /* Ensure the scrollbar spans the entire viewport */
+    height: 100vh;
+    scroll-behavior: smooth;
+    width: 100vw;
+
+    /* Hide the default scrollbar track */
+    .simplebar-track {
+        background: transparent !important;
+    }
+
+    /* Customize the scrollbar thumb */
+    .simplebar-scrollbar::before {
+        /* Use primary-text-color in RGBA, ensuring proper contrast: */
+        background-color: rgb(47 47 47 / 60%) !important;
+        border-radius: 8px !important;
+        width: 8px !important;
+    }
+
+    /* Hover effect for the scrollbar thumb */
+    .simplebar-scrollbar:hover::before {
+        background-color: rgb(47 47 47 / 80%) !important;
+    }
 }
 
-/* Reset table layout */
-table {
-   border-collapse: collapse;
-   width: 100%;
+/* Optional: Hide scrollbar on touch devices */
+@media (hover: none) and (pointer: coarse) {
+    .app-scrollbar {
+        .simplebar-scrollbar::before {
+            display: none !important;
+        }
+    }
 }
 
-
-/* Focus styles for accessibility */
-:focus {
-   outline: 2px solid $primary-purple;
-   outline-offset: 2px;
+/* Firefox scrollbar */
+body {
+    scrollbar-color: rgb(47 47 47 / 60%) transparent !important;
+    scrollbar-width: thin !important;
 }
 
-/* Remove all animations, transitions for people that prefer reduced motion */
-@media (prefers-reduced-motion: reduce) {
-   *,
-   *::before,
-   *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-   }
+/* Responsive Typography */
+h1 {
+    @include heading-style($heading-font-size-xxlg);
+}
+
+h2 {
+    @include heading-style($heading-font-size-md, $heading-font-size-sm);
+
+    font-family: $font-family-heading;
+}
+
+h3,
+h4 {
+    @include heading-style($sub-heading-font-size);
+}
+
+p {
+    font-size: $body-font-size;
+    margin-bottom: $spacing-unit;
+}
+
+/* Reactive Loading Skeleton */
+.skeleton {
+    animation: pulse 1.5s infinite ease-in-out;
+    background-color: var(--secondary-bg-color);
+    border-radius: $border-radius;
+    height: 1rem;
+    width: 100%;
+}
+
+.back-to-top {
+    background: #333;
+    border: none;
+    border-radius: 50%;
+    bottom: 20px;
+    box-shadow: 0 2px 5px rgb(0 0 0 / 30%);
+    color: #fff;
+    cursor: pointer;
+    font-size: 20px;
+    height: 40px;
+    line-height: 40px;
+    opacity: 0.7;
+    position: fixed;
+    right: 20px;
+    text-align: center;
+    transition: opacity 0.3s;
+    width: 40px;
+
+    &:hover {
+        opacity: 1;
+    }
 }

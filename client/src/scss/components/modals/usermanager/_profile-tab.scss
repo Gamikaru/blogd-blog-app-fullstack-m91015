@@ -1,0 +1,74 @@
+// src/components/ProfileTab.scss
+// Updated styles for ProfileTab component
+
+.profile-tab__form {
+    display: grid;
+    gap: $spacing-md;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.profile-tab__form-group {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+
+    label {
+        color: var(--primary-text-color);
+        font-size: $small-font-size;
+    }
+
+    input,
+    select {
+        background: var(--primary-bg-color);
+        border: 1px solid rgb(0 0 0 / 8%);
+        border-radius: $border-radius;
+        color: var(--primary-text-color);
+        font-size: $body-font-size;
+        padding: $spacing-sm;
+        transition: all 0.2s ease;
+
+        &:focus {
+            border-color: var(--highlight-color);
+            box-shadow: 0 0 0 3px rgba(var(--highlight-color), 0.25);
+            outline: none;
+        }
+    }
+
+    input[type="file"] {
+        padding: $spacing-xs;
+
+        &::-webkit-file-upload-button {
+            display: none;
+        }
+
+        &::before {
+            background-color: var(--accent-color-2);
+            border: 1px solid var(--accent-color-1);
+            border-radius: $border-radius;
+            color: $secondary-text-color;
+            content: "Choose file";
+            cursor: pointer;
+            display: inline-block;
+            margin-right: $spacing-xs;
+            padding: $spacing-xs $spacing-sm;
+        }
+    }
+
+    .profile-tab__error {
+        color: var(--error-color);
+        font-size: $xsmall-font-size;
+        margin-top: 2px;
+    }
+}
+
+.profile-tab__form > .button {
+    grid-column: 1 / -1;
+    justify-self: end;
+    margin-top: $spacing-md;
+}
+
+@media (max-width: $breakpoint-md) {
+    .profile-tab__form {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,194 @@
+.full-blog-view {
+    background-color: var(--secondary-bg-color);
+    color: var(--primary-text-color);
+    line-height: $line-height;
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: $spacing-unit * 1;
+    position: relative;
+    z-index: 14;
+
+    // We are relying on floats for wrapping instead of flex.
+    // Remove any display: flex and flex-wrap rules.
+    // Keep content in normal flow so text can wrap around the floated image.
+
+    .blog-images {
+        box-sizing: border-box;
+        float: left;
+        margin-bottom: $spacing-unit * 2;
+        margin-right: $spacing-unit * 2;
+
+        // Push image upward to overlap navbar:
+        margin-top: -6rem;
+        width: 50%;
+
+        .blog-image {
+            height: auto;
+            max-width: 100%;
+            object-fit: cover;
+            padding: 0;
+
+            @include border-radius($border-radius);
+        }
+    }
+
+    .blog-content {
+        // Do not float this section.
+        // Allow text to flow around the floated image.
+        box-sizing: border-box;
+        color: var(--primary-text-color);
+        font-size: $body-font-size;
+        line-height: $line-height;
+        margin: 0;
+        padding: 0 $spacing-unit * 2;
+
+        p {
+            margin-bottom: $spacing-unit * 1.5;
+        }
+
+        img {
+            margin: $spacing-unit * 2 0;
+            max-width: 100%;
+
+            @include border-radius($border-radius);
+        }
+
+        blockquote {
+            border-left: 4px solid var(--accent-color-2);
+            color: $secondary-text-color;
+            font-style: italic;
+            margin: $spacing-unit * 2 0;
+            padding-left: $spacing-unit;
+        }
+    }
+
+    .about-author {
+        clear: both;
+        margin-top: $spacing-unit * 4;
+        text-align: center;
+
+        h3 {
+            font-size: $heading-font-size-md;
+            margin-bottom: $spacing-unit;
+        }
+
+        .author-info-container {
+            align-items: center;
+            display: inline-flex;
+            gap: $spacing-xs; // small gap between image and text
+            justify-content: center;
+            margin-top: $spacing-sm;
+
+            .author-profile-picture {
+                border-radius: 50%;
+                height: 40px;
+                object-fit: cover;
+                width: 40px;
+
+                @media (max-width: $breakpoint-md) {
+                    height: 30px;
+                    width: 30px;
+                }
+
+                @media (max-width: $breakpoint-sm) {
+                    height: 25px;
+                    width: 25px;
+                }
+            }
+
+            p {
+                color: $secondary-text-color;
+                font-size: $body-font-size;
+                margin: 0;
+            }
+        }
+    }
+
+    .comments-section {
+        align-items: center;
+        border-top: 1px solid --secondary-bg-color-light10;
+        box-sizing: border-box;
+        clear: both; // Start comments below any floats
+        margin: 0 auto;
+        margin-top: $spacing-unit * 4;
+        padding-top: $spacing-unit;
+        width: 80%;
+
+        .comment {
+            background-color: var(--primary-bg-color-light4);
+
+            &:hover {
+                box-shadow: $box-shadow-medium;
+            }
+        }
+
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            margin-top: $spacing-unit * 1.5;
+
+            textarea {
+                background-color: var(--primary-bg-color-light4);
+                border: 1px solid var(--secondary-bg-color-light20);
+                color: var(--primary-text-color);
+                font-size: $body-font-size;
+                margin-bottom: $spacing-unit;
+                padding: $spacing-unit;
+                resize: vertical;
+                transition:
+                    border-color 0.3s ease,
+                    box-shadow 0.3s ease;
+
+                @include border-radius($border-radius);
+
+                &:focus {
+                    border-color: var(--accent-color-2);
+                    box-shadow: $input-focus-box-shadow;
+                    outline: none;
+                }
+            }
+        }
+    }
+
+    // Responsive adjustments
+    @media (max-width: $breakpoint-md) {
+        .blog-images {
+            float: none;
+            margin-bottom: $spacing-unit * 2;
+            margin-right: 0;
+            margin-top: -4rem; // Adjust the overlap for medium screens
+            width: 100%;
+
+            .blog-image {
+                height: auto;
+
+                // Make sure the image scales well on medium screens
+                max-width: 100%;
+            }
+        }
+
+        .blog-content {
+            padding: $spacing-unit;
+        }
+    }
+
+    @media (max-width: $breakpoint-sm) {
+        .blog-images {
+            // Stacking layout: no float
+            float: none;
+            margin-right: 0;
+            margin-top: -2rem; // Slight overlap on smaller screens
+            width: 100%;
+
+            .blog-image {
+                max-width: 100%;
+            }
+        }
+    }
+
+    @media (max-width: $breakpoint-xs) {
+        .blog-content {
+            padding: $spacing-unit * 0.5;
+        }
+    }
+}

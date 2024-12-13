@@ -1,0 +1,141 @@
+.info-and-explore-container {
+    @include flex-center;
+
+    align-items: flex-start;
+    flex-direction: column;
+    margin-left: px-to-rem(200); // 8rem
+
+    .page-info-message {
+        margin-top: $spacing-xxl;
+        text-align: left;
+        width: 100%;
+
+        .page-title {
+            // Ensure the title is fluid. If $heading-font-size-xxlg is already fluid,
+            // we can leave it, or replace with a clamp for finer control.
+            // Assuming $heading-font-size-xxlg is fluid as per your initial code:
+            @include heading-style($heading-font-size-xxlg);
+
+            color: var(--primary-text-color);
+            font-weight: bold;
+            margin: 0;
+            margin-left: $spacing-xs;
+            padding-inline: px-to-rem(50); // 12.5rem, can be large on smaller screens
+
+            // More responsive adjustments
+            // Reduce padding and margin on smaller screens
+            @media (max-width: $breakpoint-md) {
+                margin-left: $spacing-sm;
+                padding-inline: $spacing-sm;
+            }
+
+            @media (max-width: $breakpoint-sm) {
+                margin-left: $spacing-xs;
+                padding-inline: $spacing-xs;
+            }
+        }
+
+        .page-subtitle {
+            color: $secondary-text-color;
+            font-size: clamp(1rem, 2.5vw, 1.5rem); // Responsive subtitle size
+            font-style: italic;
+            margin-left: px-to-rem(50);
+            margin-top: $spacing-sm;
+
+            @media (max-width: $breakpoint-md) {
+                margin-left: $spacing-sm;
+            }
+
+            @media (max-width: $breakpoint-sm) {
+                margin-left: $spacing-xs;
+            }
+        }
+    }
+
+    .explore-links {
+        @include flex-center;
+
+        gap: $spacing-md;
+        justify-content: flex-start;
+        margin-left: px-to-rem(50); // 15rem
+        margin-top: $spacing-xxs;
+        padding-top: $spacing-xxs;
+
+        .explore-link {
+            color: var(--primary-text-color);
+            font-size: $small-font-size;
+            font-weight: 600;
+            text-decoration: none;
+
+            &:hover {
+                color: var(--accent-color-1);
+            }
+        }
+
+        @media (max-width: $breakpoint-md) {
+            flex-wrap: wrap;
+            gap: $spacing-sm;
+            margin-left: $spacing-sm;
+            padding: $spacing-xs $spacing-sm;
+        }
+    }
+}
+
+@media (max-width: $breakpoint-md) {
+    .info-and-explore-container {
+        margin-left: $spacing-sm;
+
+        .page-info-message {
+            .page-title,
+            .page-subtitle {
+                font-size: $heading-font-size-md;
+                margin-left: $spacing-sm;
+            }
+        }
+    }
+}
+
+/* Blog Page Specific Styling */
+.page-info-message.blog-page-info {
+    .page-title {
+        font-size: $heading-font-size-xxlg; // This is already fluid based on your setup
+        margin-top: 2rem;
+        width: 70%;
+
+        @media (max-width: $breakpoint-md) {
+            margin-top: $spacing-md;
+            width: 100%;
+        }
+    }
+
+    .blog-subtitle {
+        align-items: center;
+
+        // Display author's profile picture next to their name
+        display: flex;
+        font-style: italic;
+        gap: 0.5rem;
+        margin-top: 0.3rem;
+
+        .author-profile-picture {
+            border-radius: 50%;
+            height: 40px;
+            object-fit: cover;
+            width: 40px;
+        }
+
+        @media (max-width: $breakpoint-md) {
+            .author-profile-picture {
+                height: 30px;
+                width: 30px;
+            }
+        }
+
+        @media (max-width: $breakpoint-sm) {
+            .author-profile-picture {
+                height: 25px;
+                width: 25px;
+            }
+        }
+    }
+}

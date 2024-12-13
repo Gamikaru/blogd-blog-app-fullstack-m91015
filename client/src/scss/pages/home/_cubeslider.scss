@@ -1,0 +1,144 @@
+/* _cube-slider.scss */
+
+.cube-slider {
+    background-color: var(--primary-bg-color);
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    justify-content: center;
+    margin: 0 0 $spacing-xxxl auto;
+    max-width: 80vw;
+    min-height: 20rem; // Ensure it never collapses to 0
+    overflow: visible;
+    padding-bottom: $spacing-xxxl;
+    z-index: 2;
+
+    &__container {
+        margin-top: -13rem;
+        position: relative;
+    }
+
+    &__slider {
+        height: 25rem;
+        margin-top: -2rem;
+        min-height: 15rem;
+        width: 100%;
+
+        @include flex-center;
+
+        &__slide {
+            height: 100%;
+            position: relative;
+            width: 100%;
+
+            @include flex-center;
+        }
+    }
+
+    @media (max-width: $breakpoint-md) {
+        align-items: center;
+        flex-direction: column;
+        margin-top: -5rem;
+
+        &__container {
+            height: 100%;
+            margin-left: 0;
+            margin-top: 0;
+            max-width: 100%;
+        }
+
+        &__container--image,
+        &__container--text {
+            margin: 0;
+        }
+
+        &__container--text {
+            margin-top: -$spacing-lg; // Adjusted to overlap with image
+        }
+
+        &__slider {
+            height: auto; // Let the height adjust automatically
+            height: 100%;
+            margin-top: 0;
+            width: 100%;
+        }
+
+        &__slider__slide {
+            height: auto;
+            width: 100%;
+        }
+
+        &__text-slide {
+            height: 100%;
+            padding: $spacing-md;
+            width: 100%;
+
+            &__title {
+                font-size: clamp(1.2rem, 2.2vw, $heading-font-size-md);
+                margin: $spacing-md 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            &__excerpt {
+                -webkit-box-orient: vertical;
+                display: -webkit-box;
+
+                /* Default line clamp */
+                -webkit-line-clamp: 2;
+                line-clamp: 2;
+                margin-left: 0;
+                max-width: 100%;
+                overflow: hidden;
+                padding-right: 0;
+                text-overflow: ellipsis;
+            }
+
+            &__meta {
+                align-items: flex-start;
+                flex-direction: column;
+                padding-left: 0;
+            }
+
+            &__meta .author,
+            &__meta .date {
+                margin-right: 0;
+
+                &::after {
+                    content: none;
+                }
+            }
+        }
+    }
+
+    &__loading,
+    &__error {
+        color: #fff;
+        font-family: $font-family-primary;
+        font-size: $body-font-size;
+        height: 300px;
+
+        @include flex-center;
+    }
+}
+
+@media (width <= 768px) {
+    .cube-slider {
+        height: auto; // Let it adapt dynamically
+        min-height: 60vh; // Always keep slider visible within viewport
+    }
+
+    .cube-slider__container {
+        height: auto; // Let it adapt dynamically
+        margin: 0 auto; // Center container at all sizes
+        overflow: visible; // Avoid hiding content
+        top: 0;
+    }
+}
+
+.dark-theme .cube-slider__text-slide__meta,
+.dark-theme .cube-slider__text-slide__meta__author,
+.dark-theme .cube-slider__text-slide__meta__date {
+    color: #ccc; /* Adjust to a color that stands out in dark mode */
+}

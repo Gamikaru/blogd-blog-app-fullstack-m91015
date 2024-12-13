@@ -1,0 +1,248 @@
+// _postmodal.components.scss
+
+@import "postmodal.variables";
+@import "postmodal.layout";
+
+.post-modal,
+.edit-post-modal {
+    &__sidebar {
+        background: var(--secondary-bg-color);
+        border-radius: $border-radius;
+        box-shadow: $box-shadow-medium;
+        display: flex;
+        flex-direction: column;
+        gap: map.get($modal-spacing, content-gap);
+        height: 90vh;
+        left: var(--sidebar-left);
+        overflow-y: auto;
+        padding: map.get($modal-spacing, sidebar-padding);
+        position: absolute;
+        top: var(--sidebar-top);
+        width: map.get($modal-dimensions, sidebar-width);
+        z-index: var(--sidebar-z);
+
+        .toolbar-section {
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: map.get($modal-spacing, form-gap);
+            padding-top: map.get($modal-spacing, input-gap);
+        }
+
+        .toolbar-group {
+            &:not(:last-child) {
+                border-bottom: 1px solid var(--border-color);
+                padding-block: map.get($modal-spacing, input-gap);
+            }
+
+            &__title {
+                color: var(--primary-text-color);
+                margin-bottom: map.get($modal-spacing, input-gap);
+            }
+
+            &__content {
+                color: var(--primary-text-color);
+                display: flex;
+                gap: 1rem;
+                width: 100%;
+            }
+        }
+
+        .toolbar-input {
+            @include input-field-base;
+
+            background-color: var(--primary-bg-color);
+            color: var(--primary-text-color);
+            width: 100%;
+        }
+
+        .toolbar-input--file {
+            @include input-field-base;
+
+            background-color: var(--primary-bg-color);
+        }
+
+        .toolbar-input--select {
+            @include input-field-base;
+
+            background-color: var(--primary-bg-color);
+            color: var(--primary-text-color);
+        }
+    }
+
+    &__container {
+        display: flex;
+        height: 100%;
+        overflow: hidden;
+        position: relative; // Ensure relative positioning
+        width: 100%;
+    }
+
+    .toolbar-group__actions {
+        border-top: 1px solid var(--border-color);
+        color: var(--primary-text-color);
+        margin-top: auto;
+        padding-top: 1rem;
+    }
+
+    .toolbar-group__content {
+        color: var(--primary-text-color);
+        display: flex;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    .post-modal__preview,
+    .edit-post-modal__preview {
+        background-color: var(--secondary-bg-color);
+        height: 100%;
+        left: 0;
+        overflow-y: auto;
+        padding-left: calc(var(--sidebar-left) + #{map.get($modal-dimensions, sidebar-width)} + 2rem);
+        padding-top: var(--sidebar-top);
+        position: relative;
+        top: 0;
+        width: 100%;
+
+        .ql-container {
+            border: none !important;
+            height: calc(100vh - var(--sidebar-top) - #{map.get($modal-spacing, container-padding)});
+        }
+
+        .ql-editor {
+            background-color: var(--secondary-bg-color);
+            border: none;
+            border-radius: $border-radius;
+            box-shadow: none;
+            color: var(--primary-text-color);
+            font-family: inherit;
+            font-size: $body-font-size;
+            line-height: 1.8;
+            min-height: 100%;
+            padding: $spacing-md;
+            padding-right: 10rem;
+            padding-top: 2rem;
+
+            &:focus {
+                outline: none;
+            }
+
+            p {
+                margin-bottom: 1.2rem;
+            }
+
+            p:first-child {
+                margin-top: 0;
+            }
+
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6 {
+                font-family: $font-family-heading;
+                margin: 1.5rem 0 1rem;
+            }
+        }
+
+        .post-modal__title-textarea,
+        .edit-post-modal__title-textarea {
+            background: transparent;
+            border: none;
+            box-sizing: border-box;
+            color: var(--primary-text-color);
+            font-family: $font-family-heading;
+            font-size: 3rem;
+            font-weight: 500;
+
+            /* Allow the textarea to grow */
+            height: auto;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+            max-height: calc($heading-font-size-lg * 3);
+            max-width: 52vw;
+            min-height: 3rem; // Adjust as needed
+            outline: none;
+            overflow: visible; // Hide scrollbar
+            overflow-wrap: break-word;
+            padding: 2rem 10rem 1rem 1rem;
+            resize: none; // Prevent manual resizing
+            text-overflow: hidden;
+            text-wrap: normal;
+            width: 100%;
+            word-wrap: break-word;
+
+            &::placeholder {
+                color: $secondary-text-color;
+                font-weight: normal;
+                opacity: 0.6;
+            }
+        }
+
+        .post-modal__title-separator,
+        .edit-post-modal__title-separator {
+            background-color: var(--border-color);
+            display: block;
+            height: 1px;
+            margin: 1rem 0 1rem 2rem !important;
+            position: relative;
+            width: calc(100% - 20rem) !important;
+        }
+
+        .ql-toolbar {
+            border: none !important;
+            border-bottom: 1px solid var(--border-color) !important;
+
+            &::after {
+                background-color: var(--border-color) !important;
+                bottom: 0 !important;
+                color: var(--primary-text-color);
+                content: "" !important;
+                display: block !important;
+                height: 1px !important;
+                left: -1rem !important;
+                margin-left: 2rem !important;
+                position: absolute !important;
+                width: calc(100% - 15rem) !important;
+            }
+        }
+
+        .modal-header {
+            background: transparent;
+            border: none;
+            padding: 0;
+            position: relative; // Change to relative if not already
+            z-index: 1060; // Ensure this is higher than other elements
+        }
+
+        .close-button {
+            right: 1rem; // Adjust as needed
+            top: 1rem; // Adjust as needed
+            z-index: 1070; // Add a higher z-index
+        }
+    }
+
+    // Animations
+    @keyframes modal-fade-in {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes backdrop-fade-in {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+}

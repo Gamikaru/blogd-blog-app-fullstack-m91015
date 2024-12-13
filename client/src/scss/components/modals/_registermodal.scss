@@ -1,0 +1,168 @@
+// src/components/_registermodal.scss
+
+.register-modal {
+    // Base modal styles
+    align-items: center;
+    animation: backdrop-fade-in 0.3s ease;
+    backdrop-filter: blur(5px);
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 4000; // Ensure it's above other elements
+
+    // Backdrop styling
+    &__backdrop {
+        background-color: rgb(0 0 0 / 50%);
+        cursor: pointer;
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+    }
+
+    // Modal container
+    &-container {
+        animation: modal-fade-in 0.3s ease;
+        background-color: var(--secondary-bg-color); // Use theme color for better contrast
+        border-radius: $border-radius;
+        box-shadow: $box-shadow-strong;
+        display: flex;
+        flex-direction: column;
+        max-height: 100%;
+        max-width: 100%;
+        overflow-y: auto;
+        padding: $spacing-lg;
+        position: relative;
+        width: 100%;
+        z-index: 4001; // Above the backdrop
+
+        // Modal Header
+        .modal-header {
+            border-bottom: 1px solid var(--border-color); // Add subtle divider
+            padding-bottom: $spacing-sm;
+
+            .register-modal__title {
+                color: var(--primary-text-color);
+                font-size: $heading-font-size-lg;
+                margin: 0;
+                text-align: center; // Center the title
+                width: 100%;
+            }
+        }
+
+        // Modal Body
+        .register-modal__body {
+            display: grid;
+            gap: $spacing-md;
+            grid-template-columns: repeat(2, 1fr); // Two columns on larger screens
+            margin-top: $spacing-md;
+
+            .form-column {
+                display: flex;
+                flex-direction: column;
+                gap: $spacing-xs;
+            }
+
+            .form-row {
+                display: flex;
+                flex-direction: column;
+                gap: $spacing-md;
+                grid-column: 1 / -1; // Span all columns
+            }
+
+            .register-modal-input {
+                // Input styles are handled by InputField component.
+            }
+
+            .error-label {
+                color: var(--error-color);
+                font-size: $xsmall-font-size;
+                margin-top: 2px;
+            }
+        }
+
+        // Modal Footer
+        .register-modal__footer {
+            display: flex;
+            justify-content: center; // Center the content horizontally
+            margin-top: $spacing-md;
+
+            .submit-container {
+                display: flex;
+                justify-content: center; // Center the button horizontally
+                width: 100%;
+            }
+        }
+
+        // Animations
+        @keyframes modal-fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes backdrop-fade-in {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        // Responsive Design
+        @media (max-width: $breakpoint-md) {
+            &-container {
+                padding: $spacing-md; // Reduce padding on smaller screens
+            }
+
+            .register-modal__body {
+                grid-template-columns: 1fr; // Single column on smaller screens
+            }
+
+            .register-modal__footer {
+                .submit-container {
+                    justify-content: center;
+                }
+            }
+
+            .modal-header {
+                .register-modal__title {
+                    font-size: $heading-font-size-md;
+                }
+            }
+
+            .input-control {
+                font-size: $body-font-size; // Ensure readable text
+                // padding: $input-padding; // Adjust padding if necessary
+            }
+        }
+
+        @media (max-width: $breakpoint-xs) {
+            .register-modal__body {
+                gap: $spacing-sm; // Reduce gap for very small screens
+            }
+
+            .register-modal__title {
+                font-size: $heading-font-size-sm;
+            }
+
+            .input-control {
+                font-size: $body-font-size; // Maintain readability
+                padding: $input-padding; // Adjust padding to prevent text overflow
+            }
+        }
+    }
+}

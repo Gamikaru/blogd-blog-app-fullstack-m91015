@@ -1,31 +1,53 @@
-import { createContext, useContext, useState } from 'react';
-import Logger from '../utils/Logger';
+// src/contexts/PublicModalContext.jsx
 
-// Create PublicModalContext
-const PublicModalContext = createContext();
+import PropTypes from 'prop-types';
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import logger from '../utils/logger';
 
-// Custom hook to use PublicModalContext
-export const usePublicModalContext = () => useContext(PublicModalContext);
 
-// Provider component to wrap the app or components that need public modal management
-export const PublicModalProvider = ({ children }) => {
-   const [publicModalState, setPublicModalState] = useState({
-      showModal: false,
-      modalType: null, // Can be 'register', 'login', etc.
-   });
+export const PublicModalContext = createContext();
 
-   // Function to toggle public modal visibility
-   const togglePublicModal = (modalType = null) => {
-      Logger.info(`Toggling public modal: ${modalType}`);
-      setPublicModalState((prev) => ({
-         showModal: !prev.showModal,
-         modalType: !prev.showModal ? modalType : null,
-      }));
-   };
-
-   return (
-      <PublicModalContext.Provider value={{ ...publicModalState, togglePublicModal }}>
-         {children}
-      </PublicModalContext.Provider>
-   );
+export const usePublicModalContext = () => {
+    const context = useContext(PublicModalContext);
+    if (!context) {
+        throw new Error('usePublicModalContext must be used within a PublicModalProvider');
+    }
+    return context;
 };
+
+export const PublicModalProvider = ({ children }) => {
+    const [publicModalState, setPublicModalState] = useState({
+        showModal: false,
+        modalType: null,
+    });
+
+    const togglePublicModal = useCallback((modalType = null) => {
+        logger.info(`Toggling public modal: ${modalType}`);
+        setPublicModalState((prev) => ({
+            showModal: !prev.showModal,
+            modalType: !prev.showModal ? modalType : null,
+        }));
+    }, []);
+
+    const contextValue = useMemo(
+        () => ({
+            ...publicModalState,
+            togglePublicModal,
+        }),
+        [publicModalState, togglePublicModal]
+    );
+
+    return (
+        <PublicModalContext.Provider value={contextValue}>
+            {children}
+        </PublicModalContext.Provider>
+    );
+};
+
+// Define PropTypes for PublicModalProvider
+PublicModalProvider.propTypes = {
+    children: PropTypes.node.isRequired,
+};
+
+
+// src/contexts/PrivateModalContext.jsx
