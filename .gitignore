@@ -135,3 +135,8 @@ DevOps/
 # Driver Notes
 Driver_Notes/
 
+# macOS system files
+.DS_Store
+
+# Logs
+logs/

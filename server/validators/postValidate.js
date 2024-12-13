@@ -1,4 +1,4 @@
-// src/validators/postValidators.js
+// src/validators/postValidate.js
 
 import { body, validationResult } from 'express-validator';
 
